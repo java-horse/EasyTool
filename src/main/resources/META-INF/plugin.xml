@@ -1,0 +1,26 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>easy.char</id>
+    <name>EasyChar</name>
+    <vendor email="mabin2804@163.com" url="https://www.horsemuzi.top">Mr.Horse</vendor>
+    <depends>com.intellij.modules.platform</depends>
+    <description>Chinese character replacement plugin EasyChar</description>
+    <change-notes>
+        <![CDATA[
+     EasyChar使用方法步骤：先点击 CTRL + ALT + K 快捷键，然后就可以愉快的编码了......
+    ]]>
+    </change-notes>
+
+    <idea-version since-build="231.8109.175"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable instance="easy.action.EasyCharConfig"/>
+    </extensions>
+
+    <actions>
+        <action id="EasyCharAction" class="easy.action.EasyCharAction" text="EasyChar"
+                description="Chinese character replacement plugin">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+        </action>
+    </actions>
+
+</idea-plugin>
