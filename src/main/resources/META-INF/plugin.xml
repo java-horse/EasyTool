@@ -7,7 +7,11 @@
     <description>Chinese character replacement plugin EasyChar</description>
     <change-notes>
         <![CDATA[
-     EasyChar使用方法步骤：先点击 CTRL + ALT + K 快捷键，然后就可以愉快的编码了......
+      <h3>v1.0.0 version</h3>
+      <ul>
+          <li>Plugin initialization, supporting basic Chinese character replacement processing</li>
+      </ul>
+      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a><br>
     ]]>
     </change-notes>
 
