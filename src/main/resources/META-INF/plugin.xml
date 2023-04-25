@@ -15,15 +15,20 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="231.8109.175"/>
+    <idea-version since-build="222" until-build="232.*"/>
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="easy.action.EasyCharConfig"/>
     </extensions>
 
+    <application-components>
+        <component>
+            <implementation-class>easy.action.EasyCharComponent</implementation-class>
+        </component>
+    </application-components>
+
     <actions>
         <action id="EasyCharAction" class="easy.action.EasyCharAction" text="EasyChar"
                 description="Chinese character replacement plugin">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
         </action>
     </actions>
 

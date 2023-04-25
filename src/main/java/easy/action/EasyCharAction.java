@@ -28,10 +28,14 @@ import java.util.Map;
 
 public class EasyCharAction extends AnAction {
 
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    static {
         TypedAction typedAction = TypedAction.getInstance();
         typedAction.setupRawHandler(new EasyCharHandler(typedAction.getRawHandler()));
+    }
+
+    @Override
+    public void actionPerformed(@NotNull AnActionEvent e) {
+
     }
 
 }

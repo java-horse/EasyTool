@@ -13,15 +13,15 @@ repositories {
 
 intellij {
     version.set("2022.2.4")
-    type.set("IC") // Target IDE Platform
+    type.set("IC")
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
 tasks {
-    // Set the JVM compatibility versions
     withType<JavaCompile> {
         sourceCompatibility = "11"
         targetCompatibility = "11"
+        options.encoding = "UTF-8"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "11"
