@@ -7,6 +7,10 @@
     <description>Chinese character replacement plugin EasyChar</description>
     <change-notes>
         <![CDATA[
+      <h3>v1.0.1 version</h3>
+      <ul>
+          <li>Update the startup mechanism of the plugin, Load available upon startup</li>
+      </ul>
       <h3>v1.0.0 version</h3>
       <ul>
           <li>Plugin initialization, supporting basic Chinese character replacement processing</li>
