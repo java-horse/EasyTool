@@ -4,7 +4,27 @@
     <name>EasyChar</name>
     <vendor email="mabin2804@163.com" url="https://www.horsemuzi.top">Mr.Horse</vendor>
     <depends>com.intellij.modules.platform</depends>
-    <description>Chinese character replacement plugin EasyChar</description>
+    <description>
+        <![CDATA[
+      <h4>function Overview</h4>
+      <ul>
+        <li>Chinese character replacement plugin EasyChar</li>
+      </ul>
+	  <h4>function Points</h4>
+      <ul>
+        <li>Automatically replace commonly used encoding characters such as commas, periods, semicolons, parentheses, and question marks in both Chinese and English</li>
+        <li>No need to repeatedly switch between Chinese and English input methods. Increase keyboard lifespan and reduce code bugs caused by Chinese and English characters</li>
+        <li>This plugin supports the latest version of the JetBrains IDE family bucket</li>
+      </ul>
+	  <h4>instructions</h4>
+      <ul>
+        <li>When the following characters are entered ( ，。；！（）「」《》), they will be automatically converted to corresponding English characters</li>
+        <li>If you want to input the above Chinese characters, first input them, and then input the desired Chinese characters</li>
+      </ul>
+      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a><br>
+      <img src="https://horse-blog.oss-cn-hangzhou.aliyuncs.com/easychar/EasyCharSetting.png"/><br>
+    ]]>
+    </description>
     <change-notes>
         <![CDATA[
       <h3>v1.0.2 version</h3>
