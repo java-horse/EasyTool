@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>easy.char</id>
     <name>EasyChar</name>
-    <vendor email="mabin2804@163.com" url="https://www.horsemuzi.top">Mr.Horse</vendor>
+    <vendor email="mabin2804@163.com" url="https://gitee.com/milubin/easy-char">Mr.Horse</vendor>
     <depends>com.intellij.modules.platform</depends>
     <description>
         <![CDATA[
