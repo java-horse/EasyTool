@@ -41,7 +41,8 @@
     <idea-version since-build="193" until-build="232.*"/>
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="easy.action.EasyCharConfig"/>
-        <toolWindow id="EasyChar" secondary="false" anchor="bottom" factoryClass="easy.config.SidebarConfigFactory"/>
+        <toolWindow id="EasyChar" secondary="false" anchor="bottom" icon="/icons/logo.png"
+                    factoryClass="easy.config.SidebarConfigFactory"/>
     </extensions>
 
     <application-components>
