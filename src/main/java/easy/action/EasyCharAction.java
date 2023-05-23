@@ -12,9 +12,14 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.JBColor;
 import easy.base.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +46,8 @@ public class EasyCharAction extends AnAction {
 }
 
 class EasyCharHandler implements TypedActionHandler {
+
+    private static PropertiesComponent PROPERTIES_COMPONENT = PropertiesComponent.getInstance();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
     private char lastChar = ' ';
@@ -91,6 +98,10 @@ class EasyCharHandler implements TypedActionHandler {
         int caretOffset = primaryCaret.getOffset();
         String cStr = String.valueOf(c);
         String enChar = EN_ZH_CHAR_MAP.get(cStr);
+        String existCount = PROPERTIES_COMPONENT.getValue(Constants.TOTAL_CONVERT_COUNT);
+        if (StringUtils.isBlank(existCount)) {
+            PROPERTIES_COMPONENT.setValue(Constants.TOTAL_CONVERT_COUNT, "0");
+        }
         if (lastChar == Constants.PREFIX_CHAR && enChar != null) {
             Runnable runnable = () -> {
                 document.deleteString(caretOffset - 1, caretOffset);
@@ -98,12 +109,38 @@ class EasyCharHandler implements TypedActionHandler {
                 primaryCaret.moveToOffset(caretOffset);
             };
             WriteCommandAction.runWriteCommandAction(project, runnable);
+            PROPERTIES_COMPONENT.setValue(Constants.TOTAL_CONVERT_COUNT, Long.toString(getTotalConvertCount() + 1));
         } else if (enChar != null) {
             orignTypedActionHandler.execute(editor, enChar.charAt(0), dataContext);
+            PROPERTIES_COMPONENT.setValue(Constants.TOTAL_CONVERT_COUNT, Long.toString(getTotalConvertCount() + 1));
         } else {
             orignTypedActionHandler.execute(editor, c, dataContext);
         }
         this.lastChar = c;
+        javax.swing.text.Document doc = Constants.STATISTICS.getTextField().getDocument();
+        try {
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, "EasyChar已累计为您自动转换中英文字符 ", null);
+            SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
+            StyleConstants.setForeground(simpleAttributeSet, JBColor.GREEN);
+            doc.insertString(doc.getLength(), Long.toString(getTotalConvertCount()), simpleAttributeSet);
+            doc.insertString(doc.getLength(), " 次", null);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 获取总转换次数
+     *
+     * @param
+     * @return java.lang.Long
+     * @author mabin
+     * @date 2023/5/23 10:54
+     **/
+    private Long getTotalConvertCount() {
+        String value = PROPERTIES_COMPONENT.getValue(Constants.TOTAL_CONVERT_COUNT);
+        return StringUtils.isBlank(value) ? 0 : Long.parseLong(value);
     }
 
 }

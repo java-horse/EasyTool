@@ -72,10 +72,10 @@ public class EasyCharConfig implements SearchableConfigurable {
             labels2[i].setBounds(95 + (i / 15) * 200, 32 * (i % 15), 25, 32);
             labels1[i].setText((i + 1) + ".");
             labels2[i].setText("->");
-            labels1[i].setHorizontalAlignment(JLabel.CENTER);
-            labels2[i].setHorizontalAlignment(JLabel.CENTER);
-            text1[i].setHorizontalAlignment(JLabel.CENTER);
-            text2[i].setHorizontalAlignment(JLabel.CENTER);
+            labels1[i].setHorizontalAlignment(SwingConstants.CENTER);
+            labels2[i].setHorizontalAlignment(SwingConstants.CENTER);
+            text1[i].setHorizontalAlignment(SwingConstants.CENTER);
+            text2[i].setHorizontalAlignment(SwingConstants.CENTER);
             settingPanel.add(text1[i]);
             settingPanel.add(text2[i]);
             settingPanel.add(labels1[i]);
