@@ -9,10 +9,19 @@ import javax.swing.*;
  **/
 
 public class Statistics {
+
+    public static Statistics INSTANCE;
     private JTextField textField;
 
     public JTextField getTextField() {
         return textField;
+    }
+
+    public static Statistics getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Statistics();
+        }
+        return INSTANCE;
     }
 
 }

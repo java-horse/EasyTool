@@ -30,11 +30,10 @@ import java.awt.*;
 
 public class SidebarConfigFactory implements ToolWindowFactory {
 
-    private Statistics statistics = new Statistics();
-
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.getInstance();
+        Statistics statistics = Statistics.getInstance();
         Content content = contentFactory.createContent(statistics.getTextField(), StringUtils.EMPTY, false);
         toolWindow.getContentManager().addContent(content);
         String value = PropertiesComponent.getInstance().getValue(Constants.TOTAL_CONVERT_COUNT);
@@ -54,7 +53,6 @@ public class SidebarConfigFactory implements ToolWindowFactory {
         textField.setHorizontalAlignment(SwingConstants.CENTER);
         textField.setFont(new Font("微软雅黑", Font.BOLD, 18));
         textField.setEditable(false);
-        Constants.STATISTICS = statistics;
     }
 
 }

@@ -14,6 +14,7 @@ import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
+import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -118,7 +119,7 @@ class EasyCharHandler implements TypedActionHandler {
             orignTypedActionHandler.execute(editor, c, dataContext);
         }
         this.lastChar = c;
-        JTextField textField = Constants.STATISTICS.getTextField();
+        JTextField textField = Statistics.getInstance().getTextField();
         javax.swing.text.Document doc = textField.getDocument();
         try {
             doc.remove(0, doc.getLength());

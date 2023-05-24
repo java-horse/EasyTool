@@ -23,8 +23,6 @@ public class Constants {
     public static final String DEFAULT_STRING = "， , 。 . ： : ； ; ！ ! ？ ? “ \" ” \" ‘ ' ’ ' 【 [ 】 ] （ ( ） ) 「 { 」 } 《 < 》 >"
             .replace(" ", "\n");
 
-    public static Statistics STATISTICS = null;
-
     public static final String TOTAL_CONVERT_COUNT = "total_convert_count";
 
 
