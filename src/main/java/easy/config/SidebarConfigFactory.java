@@ -34,7 +34,7 @@ public class SidebarConfigFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        ContentFactory contentFactory = new ContentFactoryImpl();
+        ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(statistics.getTextField(), StringUtils.EMPTY, false);
         toolWindow.getContentManager().addContent(content);
         String value = PropertiesComponent.getInstance().getValue(Constants.TOTAL_CONVERT_COUNT);
