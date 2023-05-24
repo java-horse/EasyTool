@@ -17,6 +17,7 @@ import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -117,7 +118,8 @@ class EasyCharHandler implements TypedActionHandler {
             orignTypedActionHandler.execute(editor, c, dataContext);
         }
         this.lastChar = c;
-        javax.swing.text.Document doc = Constants.STATISTICS.getTextField().getDocument();
+        JTextField textField = Constants.STATISTICS.getTextField();
+        javax.swing.text.Document doc = textField.getDocument();
         try {
             doc.remove(0, doc.getLength());
             doc.insertString(0, "EasyChar已累计为您自动转换中英文字符 ", null);
@@ -125,6 +127,7 @@ class EasyCharHandler implements TypedActionHandler {
             StyleConstants.setForeground(simpleAttributeSet, JBColor.GREEN);
             doc.insertString(doc.getLength(), Long.toString(getTotalConvertCount()), simpleAttributeSet);
             doc.insertString(doc.getLength(), " 次", null);
+            textField.setDocument(doc);
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }

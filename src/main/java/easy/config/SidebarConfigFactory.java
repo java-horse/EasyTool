@@ -7,6 +7,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.ui.content.ContentFactoryImpl;
 import easy.base.Constants;
 import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +34,7 @@ public class SidebarConfigFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        ContentFactory contentFactory = ContentFactory.getInstance();
+        ContentFactory contentFactory = new ContentFactoryImpl();
         Content content = contentFactory.createContent(statistics.getTextField(), StringUtils.EMPTY, false);
         toolWindow.getContentManager().addContent(content);
         String value = PropertiesComponent.getInstance().getValue(Constants.TOTAL_CONVERT_COUNT);
@@ -49,6 +50,7 @@ public class SidebarConfigFactory implements ToolWindowFactory {
         } catch (BadLocationException e) {
             throw new RuntimeException(e);
         }
+        textField.setDocument(document);
         textField.setHorizontalAlignment(SwingConstants.CENTER);
         textField.setFont(new Font("微软雅黑", Font.BOLD, 18));
         textField.setEditable(false);
