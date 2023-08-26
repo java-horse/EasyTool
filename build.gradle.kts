@@ -8,23 +8,25 @@ group = "Mr.Horse"
 version = "1.0.1"
 
 repositories {
-    mavenCentral()
+    maven {
+        setUrl("https://maven.aliyun.com/nexus/content/groups/public/")
+    }
 }
 
 intellij {
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("com.intellij.java", "org.jetbrains.kotlin"))
 }
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
         options.encoding = "UTF-8"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "1.8"
     }
 
     patchPluginXml {
