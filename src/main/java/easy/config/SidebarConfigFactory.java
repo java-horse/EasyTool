@@ -7,7 +7,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import com.intellij.ui.content.ContentFactoryImpl;
 import easy.base.Constants;
 import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +45,7 @@ public class SidebarConfigFactory implements ToolWindowFactory {
             StyleConstants.setForeground(simpleAttributeSet, JBColor.GREEN);
             document.insertString(document.getLength(), (StringUtils.isBlank(value) ? "0" : value), simpleAttributeSet);
             document.insertString(document.getLength(), " 次", null);
-        } catch (BadLocationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         textField.setDocument(document);

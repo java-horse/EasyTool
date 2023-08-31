@@ -42,7 +42,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="easy.action.EasyCharConfig"/>
         <toolWindow id="EasyChar" secondary="false" anchor="bottom" icon="/icons/logo.png"
-                    factoryClass="easy.config.SidebarConfigFactory"/>
+                    canCloseContents="true" factoryClass="easy.config.SidebarConfigFactory"/>
     </extensions>
 
     <application-components>
