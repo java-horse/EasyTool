@@ -40,11 +40,7 @@ public class SidebarConfigFactory implements ToolWindowFactory {
         Document document = textField.getDocument();
         try {
             document.remove(0, document.getLength());
-            document.insertString(0, "EasyChar已累计为您自动转换中英文字符 ", null);
-            SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
-            StyleConstants.setForeground(simpleAttributeSet, JBColor.GREEN);
-            document.insertString(document.getLength(), (StringUtils.isBlank(value) ? "0" : value), simpleAttributeSet);
-            document.insertString(document.getLength(), " 次", null);
+            document.insertString(0, "EasyChar已累计为您自动转换中英文字符 " + (StringUtils.isBlank(value) ? "0" : value) + " 次", null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,16 +1,17 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>easy.char</id>
     <name>EasyChar</name>
     <vendor email="mabin2804@163.com" url="https://gitee.com/milubin/easy-char">Mr.Horse</vendor>
+
     <depends>com.intellij.modules.platform</depends>
+
     <description>
         <![CDATA[
-      <h4>function Overview</h4>
+      <h4>overview</h4>
       <ul>
         <li>Chinese character replacement plugin EasyChar</li>
       </ul>
-	  <h4>function Points</h4>
+	  <h4>points</h4>
       <ul>
         <li>Automatically replace commonly used encoding characters such as commas, periods, semicolons, parentheses, and question marks in both Chinese and English</li>
         <li>No need to repeatedly switch between Chinese and English input methods. Increase keyboard lifespan and reduce code bugs caused by Chinese and English characters</li>
@@ -21,9 +22,12 @@
         <li>When the following characters are entered ( ，。；！（）「」《》), they will be automatically converted to corresponding English characters</li>
         <li>If you want to input the above Chinese characters, first input them, and then input the desired Chinese characters</li>
       </ul>
-      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a><br>
+      <br>
+      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a>
+      <br>
     ]]>
     </description>
+
     <change-notes>
         <![CDATA[
       <h3>v1.0.1 version</h3>
@@ -34,15 +38,18 @@
       <ul>
           <li>Plugin initialization, supporting basic Chinese character replacement processing</li>
       </ul>
-      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a><br>
+      <br>
+      <a href="https://gitee.com/milubin/easy-char">easy char source code and document</a>
+      <br>
     ]]>
     </change-notes>
 
     <idea-version since-build="193" until-build="232.*"/>
+
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="easy.action.EasyCharConfig"/>
-        <toolWindow id="EasyChar" secondary="false" anchor="bottom" icon="/icons/logo.png"
-                    canCloseContents="true" factoryClass="easy.config.SidebarConfigFactory"/>
+        <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="/icons/logo.png"
+                    canCloseContents="false" factoryClass="easy.config.SidebarConfigFactory"/>
     </extensions>
 
     <application-components>

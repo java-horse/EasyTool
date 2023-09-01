@@ -123,13 +123,9 @@ class EasyCharHandler implements TypedActionHandler {
         javax.swing.text.Document doc = textField.getDocument();
         try {
             doc.remove(0, doc.getLength());
-            doc.insertString(0, "EasyChar已累计为您自动转换中英文字符 ", null);
-            SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet();
-            StyleConstants.setForeground(simpleAttributeSet, JBColor.GREEN);
-            doc.insertString(doc.getLength(), Long.toString(getTotalConvertCount()), simpleAttributeSet);
-            doc.insertString(doc.getLength(), " 次", null);
+            doc.insertString(0, "EasyChar已累计为您自动转换中英文字符 " + getTotalConvertCount() + " 次", null);
             textField.setDocument(doc);
-        } catch (BadLocationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
