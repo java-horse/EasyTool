@@ -82,7 +82,7 @@ public class EasyCharConfig implements SearchableConfigurable {
             settingPanel.add(labels2[i]);
         }
         btnDefault = new JLabel();
-        btnDefault.setText("RESET");
+        btnDefault.setText("Reset");
         btnDefault.setForeground(JBColor.BLUE);
         btnDefault.setBounds(30, 32 * 15, 60, 32);
         btnDefault.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -109,12 +109,12 @@ public class EasyCharConfig implements SearchableConfigurable {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnDefault.setText("<html><u>RESET</u></html>");
+                btnDefault.setText("<html><u>Reset</u></html>");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnDefault.setText("<html>RESET</html>");
+                btnDefault.setText("<html>Reset</html>");
             }
         });
         settingPanel.add(btnDefault);

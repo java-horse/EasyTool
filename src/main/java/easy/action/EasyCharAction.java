@@ -100,8 +100,7 @@ class EasyCharHandler implements TypedActionHandler {
         int caretOffset = primaryCaret.getOffset();
         String cStr = String.valueOf(c);
         String enChar = EN_ZH_CHAR_MAP.get(cStr);
-        String existCount = PROPERTIES_COMPONENT.getValue(Constants.TOTAL_CONVERT_COUNT);
-        if (StringUtils.isBlank(existCount)) {
+        if (StringUtils.isBlank(PROPERTIES_COMPONENT.getValue(Constants.TOTAL_CONVERT_COUNT))) {
             PROPERTIES_COMPONENT.setValue(Constants.TOTAL_CONVERT_COUNT, "0");
         }
         if (lastChar == Constants.PREFIX_CHAR && enChar != null) {

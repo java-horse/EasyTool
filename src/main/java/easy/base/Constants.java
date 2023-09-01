@@ -13,17 +13,14 @@ import easy.form.Statistics;
 public class Constants {
 
     public static final int TOTAL_LENGTH = 45;
-
     public static final int SPLIT_LENGTH = 2;
-
     public static final char PREFIX_CHAR = '/';
-
     public static final String EASY_CHAR_KEY = "easy_char_key";
-
     public static final String DEFAULT_STRING = "， , 。 . ： : ； ; ！ ! ？ ? “ \" ” \" ‘ ' ’ ' 【 [ 】 ] （ ( ） ) 「 { 」 } 《 < 》 >"
             .replace(" ", "\n");
-
     public static final String TOTAL_CONVERT_COUNT = "total_convert_count";
+    public static final String GITEE_URL = "https://gitee.com/mabin/easy-char";
+    public static final String JETBRAINS_URL = "https://gitee.com/milubin/easy-char";
 
 
 }
