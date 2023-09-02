@@ -30,8 +30,8 @@ public class PluginStartListener implements ProjectManagerListener {
     // 上次通知时间
     private volatile long lastNoticeTime = 0L;
 
-    // 通知时间间隔 (30分钟之内打开项目只弹窗一次提示)
-    private static final long INTERVAL = 30 * 60 * 1000L;
+    // 通知时间间隔 (7天之内打开项目只弹窗一次提示)
+    private static final long INTERVAL = 7 * 24 * 60 * 60 * 1000L;
 
     /**
      * project open listener
