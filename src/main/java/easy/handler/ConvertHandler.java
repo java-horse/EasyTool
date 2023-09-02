@@ -1,54 +1,32 @@
-package easy.action;
+package easy.handler;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.project.Project;
-import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * EasyChar中文字符实时替换Action
+ * 中英文字符转换处理器
  *
  * @author mabin
  * @project EasyChar
- * @date 2023/04/24 10:31
+ * @date 2023/09/02 15:17
  **/
 
-public class EasyCharAction extends AnAction {
-
-    static {
-        TypedAction typedAction = TypedAction.getInstance();
-        typedAction.setupRawHandler(new EasyCharHandler(typedAction.getRawHandler()));
-    }
-
-    @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
-
-    }
-
-}
-
-class EasyCharHandler implements TypedActionHandler {
-
+public class ConvertHandler implements TypedActionHandler {
     private static PropertiesComponent PROPERTIES_COMPONENT = PropertiesComponent.getInstance();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
@@ -58,7 +36,7 @@ class EasyCharHandler implements TypedActionHandler {
         reload();
     }
 
-    public EasyCharHandler(TypedActionHandler orignTypedActionHandler) {
+    public ConvertHandler(TypedActionHandler orignTypedActionHandler) {
         this.orignTypedActionHandler = orignTypedActionHandler;
     }
 

@@ -1,7 +1,9 @@
-package easy.action;
+package easy.init;
 
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import easy.action.ConvertAction;
 
 /**
  * EasyChar项目初始化处理
@@ -15,7 +17,8 @@ public class EasyCharComponent implements ApplicationComponent {
 
     @Override
     public void initComponent() {
-        ApplicationManager.getApplication().invokeLater(EasyCharAction::new);
+        Application application = ApplicationManager.getApplication();
+        application.invokeLater(ConvertAction::new);
     }
 
     @Override

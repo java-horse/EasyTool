@@ -23,7 +23,7 @@ import java.awt.*;
  * @date 2023/05/23 09:02
  **/
 
-public class SidebarConfigFactory implements ToolWindowFactory {
+public class SidebarConfig implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {

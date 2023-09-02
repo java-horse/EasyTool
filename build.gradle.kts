@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "Mr.Horse"
-version = "1.0.2"
+version = "1.0.2-beta"
 
 repositories {
     maven {

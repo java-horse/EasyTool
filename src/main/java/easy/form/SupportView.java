@@ -22,7 +22,7 @@ public class SupportView extends DialogWrapper {
     public SupportView() {
         super(false);
         init();
-        setTitle("Thank you very much");
+        setTitle("感谢赞赏");
     }
 
     @Nullable
@@ -32,12 +32,12 @@ public class SupportView extends DialogWrapper {
     }
 
     private void createUIComponents() {
-        ImageIcon wechatIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/wechat.jpg")), "wechat");
+        ImageIcon wechatIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/wechat.jpg")));
         wechatIcon.setImage(wechatIcon.getImage().getScaledInstance((int) (wechatIcon.getIconWidth() * (400d / wechatIcon.getIconHeight())), 400, Image.SCALE_DEFAULT));
         wechatLabel = new JLabel(wechatIcon);
         wechatLabel.setVisible(true);
 
-        ImageIcon alipayIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/alipay.jpg")), "alipay");
+        ImageIcon alipayIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/alipay.jpg")));
         alipayIcon.setImage(alipayIcon.getImage().getScaledInstance((int) (alipayIcon.getIconWidth() * (400d / alipayIcon.getIconHeight())), 400, Image.SCALE_DEFAULT));
         alipayLabel = new JLabel(alipayIcon);
         alipayLabel.setVisible(true);

@@ -48,26 +48,35 @@
     <idea-version since-build="193" until-build="232.*"/>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable instance="easy.action.EasyCharConfig"/>
+        <applicationConfigurable id="easy.char.settings" displayName="EasyChar" instance="easy.config.ConvertConfig"/>
+
+
         <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="AllIcons.Actions.ForceRefresh"
-                    canCloseContents="false" factoryClass="easy.config.SidebarConfigFactory"/>
+                    canCloseContents="false" factoryClass="easy.config.SidebarConfig"/>
     </extensions>
 
     <application-components>
         <component>
-            <implementation-class>easy.action.EasyCharComponent</implementation-class>
+            <implementation-class>easy.init.EasyCharComponent</implementation-class>
         </component>
     </application-components>
 
     <actions>
-        <action id="EasyCharAction" class="easy.action.EasyCharAction" text="EasyChar" icon="AllIcons.Actions.Refresh"
-                description="Chinese character replacement plugin">
-        </action>
+        <group id="easy.char.actions" text="EasyCharTool" icon="AllIcons.Actions.ForceRefresh"
+               description="Chinese character replacement plugin" popup="true">
+            <separator/>
+            <group id="EasyCharSubGroup"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
+                    class="easy.action.WeChatOfficialAction" text="微信公众号"/>
+        </group>
+        <action id="EasyCharCoreAction" icon="AllIcons.Actions.Refresh" class="easy.action.ConvertAction"
+                text="EasyChar"/>
     </actions>
 
-    <projectListeners>
-        <listener class="easy.listener.PluginStartListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </projectListeners>
+    <!--<projectListeners>-->
+    <!--    <listener class="easy.listener.ProjectActiveListener"-->
+    <!--              topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
+    <!--</projectListeners>-->
 
 </idea-plugin>

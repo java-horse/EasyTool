@@ -4,9 +4,9 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManagerListener;
+import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
 import easy.form.SupportView;
 import easy.util.NotificationUtil;
@@ -16,16 +16,16 @@ import java.awt.*;
 import java.net.URI;
 
 /**
- * 插件运行（项目打开）监听器
+ * IDEA启动监听
  *
  * @author mabin
  * @project EasyChar
- * @date 2023/09/01 14:26
+ * @date 2023/09/02 14:12
  **/
 
-public class PluginStartListener implements ProjectManagerListener {
+public class AppActiveListener implements ApplicationActivationListener {
 
-    private static final Logger log = Logger.getInstance(PluginStartListener.class);
+    private static final Logger log = Logger.getInstance(AppActiveListener.class);
 
     // 上次通知时间
     private volatile long lastNoticeTime = 0L;
@@ -33,18 +33,11 @@ public class PluginStartListener implements ProjectManagerListener {
     // 通知时间间隔 (7天之内打开项目只弹窗一次提示)
     private static final long INTERVAL = 7 * 24 * 60 * 60 * 1000L;
 
-    /**
-     * project open listener
-     *
-     * @param project
-     * @return void
-     * @author mabin
-     * @date 2023/9/1 14:27
-     **/
     @Override
-    public void projectOpened(@NotNull Project project) {
-        activate();
+    public synchronized void applicationActivated(@NotNull IdeFrame ideFrame) {
+        this.activate();
     }
+
 
     /**
      * 激活消息
@@ -54,7 +47,11 @@ public class PluginStartListener implements ProjectManagerListener {
      * @author mabin
      * @date 2023/9/1 14:47
      **/
-    private void activate() {
+    public synchronized void activate() {
+        this.support();
+    }
+
+    private void support() {
         if (System.currentTimeMillis() - lastNoticeTime < INTERVAL) {
             return;
         }
@@ -90,9 +87,15 @@ public class PluginStartListener implements ProjectManagerListener {
                 SupportView supportView = new SupportView();
                 supportView.show();
             }
+
         };
         NotificationUtil.notify("EasyChar", "如果EasyChar甚得您心, 请支持一下开发者!", starAction, reviewsAction, payAction);
         lastNoticeTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void applicationDeactivated(@NotNull IdeFrame ideFrame) {
+        this.applicationActivated(ideFrame);
     }
 
 }

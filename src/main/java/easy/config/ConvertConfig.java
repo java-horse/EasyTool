@@ -1,9 +1,10 @@
-package easy.action;
+package easy.config;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
+import easy.handler.ConvertHandler;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ import java.awt.event.MouseListener;
  * @date 2023/04/24 14:39
  **/
 
-public class EasyCharConfig implements SearchableConfigurable {
+public class ConvertConfig implements SearchableConfigurable {
 
     private JPanel settingPanel;
     private JTextField[] text1;
@@ -33,7 +34,7 @@ public class EasyCharConfig implements SearchableConfigurable {
     @NonNls
     @Override
     public String getId() {
-        return "EasyChar";
+        return "easy.char.settings";
     }
 
     @Nls
@@ -92,7 +93,7 @@ public class EasyCharConfig implements SearchableConfigurable {
                 int response = JOptionPane.showConfirmDialog(settingPanel, "Confirm Reset Relation?", getId(), JOptionPane.OK_CANCEL_OPTION);
                 if (response == JOptionPane.OK_OPTION) {
                     PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
-                    EasyCharHandler.reload();
+                    ConvertHandler.reload();
                     reset();
                 }
             }
@@ -147,7 +148,7 @@ public class EasyCharConfig implements SearchableConfigurable {
     @Override
     public void apply() {
         PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, getConfigString());
-        EasyCharHandler.reload();
+        ConvertHandler.reload();
     }
 
     /**

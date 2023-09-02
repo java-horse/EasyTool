@@ -14,6 +14,7 @@
         </constraints>
         <properties>
           <text value=""/>
+          <toolTipText value="支付宝"/>
         </properties>
       </component>
       <component id="cfe7d" class="javax.swing.JLabel" binding="wechatLabel" custom-create="true">
@@ -22,6 +23,7 @@
         </constraints>
         <properties>
           <text value=""/>
+          <toolTipText value="微信"/>
         </properties>
       </component>
     </children>
