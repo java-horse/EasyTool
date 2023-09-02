@@ -49,7 +49,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable instance="easy.action.EasyCharConfig"/>
-        <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="/icons/logo.png"
+        <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="AllIcons.Actions.ForceRefresh"
                     canCloseContents="false" factoryClass="easy.config.SidebarConfigFactory"/>
     </extensions>
 
@@ -60,7 +60,7 @@
     </application-components>
 
     <actions>
-        <action id="EasyCharAction" class="easy.action.EasyCharAction" text="EasyChar"
+        <action id="EasyCharAction" class="easy.action.EasyCharAction" text="EasyChar" icon="AllIcons.Actions.Refresh"
                 description="Chinese character replacement plugin">
         </action>
     </actions>

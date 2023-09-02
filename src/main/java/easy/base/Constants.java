@@ -20,7 +20,7 @@ public class Constants {
             .replace(" ", "\n");
     public static final String TOTAL_CONVERT_COUNT = "total_convert_count";
     public static final String GITEE_URL = "https://gitee.com/mabin/easy-char";
-    public static final String JETBRAINS_URL = "https://gitee.com/milubin/easy-char";
+    public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easychar/reviews";
 
 
 }

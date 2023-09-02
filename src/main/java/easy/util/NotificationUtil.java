@@ -25,7 +25,7 @@ public class NotificationUtil {
      * @param actions
      */
     public static void notify(String title, String content, AnAction... actions) {
-        NotificationGroup group = new NotificationGroup("EasyChar", NotificationDisplayType.BALLOON, true, null, AllIcons.General.AddJdk);
+        NotificationGroup group = new NotificationGroup("EasyChar", NotificationDisplayType.BALLOON, true, null, AllIcons.Actions.ForceRefresh);
         Notification notification = group.createNotification(title, content, NotificationType.INFORMATION, NotificationListener.URL_OPENING_LISTENER);
         if (ArrayUtils.isNotEmpty(actions)) {
             for (AnAction action : actions) {
