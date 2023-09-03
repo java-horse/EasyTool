@@ -1,4 +1,4 @@
-package easy.config;
+package easy.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -23,7 +23,7 @@ import java.awt.event.MouseListener;
  * @date 2023/04/24 14:39
  **/
 
-public class ConvertConfig implements SearchableConfigurable {
+public class ConvertConfigurable implements SearchableConfigurable {
 
     private JPanel settingPanel;
     private JTextField[] text1;

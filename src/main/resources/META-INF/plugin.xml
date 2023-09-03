@@ -48,8 +48,11 @@
     <idea-version since-build="222.3345.118" until-build="232.*"/>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable id="easy.char.settings" displayName="EasyChar" instance="easy.config.ConvertConfig"/>
+        <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent" order="first"/>
+        <applicationService serviceImplementation="easy.service.TranslateService"/>
 
+        <applicationConfigurable id="easy.char.settings" displayName="EasyChar" instance="easy.settings.ConvertConfigurable"/>
+        <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate" instance="easy.settings.TranslateSettingConfigurable"/>
 
         <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="AllIcons.Actions.ForceRefresh"
                     canCloseContents="false" factoryClass="easy.config.SidebarConfig"/>
