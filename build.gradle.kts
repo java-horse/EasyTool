@@ -4,8 +4,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.13.1"
 }
 
-group = "Mr.Horse"
-version = "1.0.2-beta"
+group = "mabin"
+version = "1.0.2"
 
 repositories {
     maven {
