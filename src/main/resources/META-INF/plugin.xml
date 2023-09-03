@@ -45,7 +45,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="193" until-build="232.*"/>
+    <idea-version since-build="222.3345.118" until-build="232.*"/>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable id="easy.char.settings" displayName="EasyChar" instance="easy.config.ConvertConfig"/>
@@ -57,7 +57,7 @@
 
     <application-components>
         <component>
-            <implementation-class>easy.init.EasyCharComponent</implementation-class>
+            <implementation-class>easy.init.EasyCharInit</implementation-class>
         </component>
     </application-components>
 

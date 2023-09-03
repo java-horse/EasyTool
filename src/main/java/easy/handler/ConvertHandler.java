@@ -3,6 +3,7 @@ package easy.handler;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
@@ -27,6 +28,7 @@ import java.util.Map;
  **/
 
 public class ConvertHandler implements TypedActionHandler {
+    private static final Logger log = Logger.getInstance(ConvertHandler.class);
     private static PropertiesComponent PROPERTIES_COMPONENT = PropertiesComponent.getInstance();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
@@ -60,7 +62,7 @@ public class ConvertHandler implements TypedActionHandler {
     }
 
     /**
-     * 中英文字符自动替换处理
+     * 中英文字符自动替换处理: 每次在编辑器中按键都会触发此方法
      *
      * @param editor
      * @param c
@@ -103,7 +105,7 @@ public class ConvertHandler implements TypedActionHandler {
             doc.insertString(0, "EasyChar已累计为您自动转换中英文字符 " + getTotalConvertCount() + " 次", null);
             textField.setDocument(doc);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("EasyChar自动转换中英文字符异常: " + e.getMessage(), e);
         }
     }
 

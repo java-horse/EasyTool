@@ -13,7 +13,7 @@ import easy.action.ConvertAction;
  * @date 2023/04/24 18:27
  **/
 
-public class EasyCharComponent implements ApplicationComponent {
+public class EasyCharInit implements ApplicationComponent {
 
     @Override
     public void initComponent() {
@@ -28,7 +28,7 @@ public class EasyCharComponent implements ApplicationComponent {
 
     @Override
     public String getComponentName() {
-        return "EasyCharComponent";
+        return "EasyCharInit";
     }
 
 }
