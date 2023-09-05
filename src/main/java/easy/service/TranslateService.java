@@ -1,5 +1,21 @@
 package easy.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import easy.base.Constants;
+import easy.config.translate.TranslateConfig;
+import easy.enums.TranslateEnum;
+import easy.service.impl.BaiDuTranslate;
+import easy.util.LanguageUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 /**
  * 翻译服务实现
  *
@@ -9,6 +25,99 @@ package easy.service;
  **/
 
 public class TranslateService {
+
+    private TranslateConfig translateConfig;
+
+    private Map<String, Translate> translateMap;
+
+    private static final Object LOCK = new Object();
+
+    /**
+     * 翻译引擎初始化
+     *
+     * @param translateConfig
+     * @return void
+     * @author mabin
+     * @date 2023/9/4 20:49
+     **/
+    public void init(TranslateConfig translateConfig) {
+        if (MapUtils.isNotEmpty(translateMap) && this.translateConfig != null) {
+            return;
+        }
+        synchronized (LOCK) {
+            if (MapUtils.isNotEmpty(translateMap) && this.translateConfig != null) {
+                return;
+            }
+            translateMap = ImmutableMap.<String, Translate>builder()
+                    .put(TranslateEnum.BAIDU.getTranslate(), new BaiDuTranslate().init(translateConfig))
+                    .build();
+            this.translateConfig = translateConfig;
+        }
+    }
+
+    /**
+     * 中英互译
+     *
+     * @param source
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/9/4 20:59
+     **/
+    public String translate(String source) {
+        if (StringUtils.isBlank(source)) {
+            return StringUtils.EMPTY;
+        }
+        Translate translate = translateMap.get(translateConfig.getTranslateChannel());
+        if (Objects.isNull(translate)) {
+            return StringUtils.EMPTY;
+        }
+        // 中译英
+        if (LanguageUtil.isAllChinese(source)) {
+            String enStr = translate.ch2En(source);
+            List<String> chList = StringUtils.isBlank(enStr) ? Lists.newArrayList() : Lists.newArrayList(StringUtils.split(enStr));
+            chList = chList.stream().filter(c -> !Constants.STOP_WORDS.contains(c.toLowerCase()))
+                    .map(c -> c.replaceAll("[,.'\\-+;:`~]+", ""))
+                    .collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(chList)) {
+                return StringUtils.EMPTY;
+            }
+            int size = chList.size();
+            if (size == 1) {
+                return chList.get(0);
+            }
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < size; i++) {
+                if (StringUtils.isBlank(chList.get(i))) {
+                    continue;
+                }
+                String lowEn = chList.get(i).toLowerCase();
+                if (Constants.STOP_WORDS.contains(lowEn)) {
+                    continue;
+                }
+                if (i == 0) {
+                    builder.append(lowEn);
+                } else {
+                    builder.append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
+                            .append(StringUtils.substring(lowEn, 1));
+                }
+            }
+            return builder.toString();
+        }
+        // 英译中
+        return translate.en2Ch(StringUtils.replace(source, StringUtils.LF, StringUtils.SPACE));
+    }
+
+    /**
+     * 清空缓存
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/9/4 21:19
+     **/
+    public void clearCache() {
+        translateMap.values().forEach(Translate::clearCache);
+    }
 
 
 }

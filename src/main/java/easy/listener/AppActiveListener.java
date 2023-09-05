@@ -4,11 +4,16 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
+import easy.config.translate.TranslateConfig;
+import easy.config.translate.TranslateConfigComponent;
 import easy.form.SupportView;
+import easy.service.TranslateService;
 import easy.util.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,8 +54,17 @@ public class AppActiveListener implements ApplicationActivationListener {
      **/
     public synchronized void activate() {
         this.support();
+        this.translateServiceInit();
     }
 
+    /**
+     * 赞赏支持
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/9/4 21:21
+     **/
     private void support() {
         if (System.currentTimeMillis() - lastNoticeTime < INTERVAL) {
             return;
@@ -91,6 +105,21 @@ public class AppActiveListener implements ApplicationActivationListener {
         };
         NotificationUtil.notify("EasyChar", "如果EasyChar甚得您心, 请支持一下开发者!", starAction, reviewsAction, payAction);
         lastNoticeTime = System.currentTimeMillis();
+    }
+
+    /**
+     * 翻译引擎服务初始化
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/9/4 21:21
+     **/
+    private void translateServiceInit() {
+        Application application = ApplicationManager.getApplication();
+        TranslateConfig translateConfig = application.getService(TranslateConfigComponent.class).getState();
+        TranslateService translateService = application.getService(TranslateService.class);
+        translateService.init(translateConfig);
     }
 
     @Override

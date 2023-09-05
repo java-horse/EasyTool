@@ -51,8 +51,10 @@
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent" order="first"/>
         <applicationService serviceImplementation="easy.service.TranslateService"/>
 
-        <applicationConfigurable id="easy.char.settings" displayName="EasyChar" instance="easy.settings.ConvertConfigurable"/>
-        <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate" instance="easy.settings.TranslateSettingConfigurable"/>
+        <applicationConfigurable id="easy.char.settings" displayName="EasyChar"
+                                 instance="easy.settings.ConvertConfigurable"/>
+        <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate"
+                                 instance="easy.settings.TranslateSettingConfigurable"/>
 
         <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="AllIcons.Actions.ForceRefresh"
                     canCloseContents="false" factoryClass="easy.config.SidebarConfig"/>
@@ -65,6 +67,7 @@
     </application-components>
 
     <actions>
+        <!--工具栏快捷菜单-->
         <group id="easy.char.actions" text="EasyCharTool" icon="AllIcons.Actions.ForceRefresh"
                description="Chinese character replacement plugin" popup="true">
             <separator/>
@@ -73,8 +76,18 @@
             <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
                     class="easy.action.WeChatOfficialAction" text="微信公众号"/>
         </group>
-        <action id="EasyCharCoreAction" icon="AllIcons.Actions.Refresh" class="easy.action.ConvertAction"
-                text="EasyChar"/>
+        <!--中英字符互转-->
+        <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
+                description="EasyCharCore"/>
+        <!--中英互译-->
+        <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="EasyCharTranslate"
+                description="EasyCharTranslate">
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
+        </action>
     </actions>
 
     <!--<projectListeners>-->

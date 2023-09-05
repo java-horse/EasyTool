@@ -6,6 +6,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.enums.TranslateEnum;
 import easy.form.TranslateSettingView;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -80,24 +81,24 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setSecretKey(translateSettingView.getSecretKeyTextField().getText());
         translateConfig.setAccessKeyId(translateSettingView.getAccessKeyIdTextField().getText());
         translateConfig.setAccessKeySecret(translateSettingView.getAccessKeySecretTextField().getText());
-        if (Objects.isNull(translateConfig.getTranslateChannel()) || !Constants.ENABLE_TRANSLATOR_SET.contains(translateConfig.getTranslateChannel())) {
+        if (Objects.isNull(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel())) {
             throw new ConfigurationException("请选择正确的翻译渠道");
         }
-        if (Constants.TRANSLATE.BAIDU.equals(translateConfig.getTranslateChannel())) {
+        if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (StringUtils.isBlank(translateConfig.getAppId())) {
                 throw new ConfigurationException("百度AppId不能为空");
             }
             if (StringUtils.isBlank(translateConfig.getAppSecret())) {
                 throw new ConfigurationException("百度AppSecret不能为空");
             }
-        } else if (Constants.TRANSLATE.ALIYUN.equals(translateConfig.getTranslateChannel())) {
+        } else if (TranslateEnum.ALIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (StringUtils.isBlank(translateConfig.getAccessKeyId())) {
                 throw new ConfigurationException("阿里云AccessKeyId不能为空");
             }
             if (StringUtils.isBlank(translateConfig.getAccessKeySecret())) {
                 throw new ConfigurationException("阿里云AccessKeySecret不能为空");
             }
-        } else if (Constants.TRANSLATE.YOUDAO.equals(translateConfig.getSecretId())) {
+        } else if (TranslateEnum.YOUDAO.getTranslate().equals(translateConfig.getSecretId())) {
             if (StringUtils.isBlank(translateConfig.getSecretId())) {
                 throw new ConfigurationException("有道SecretId不能为空");
             }

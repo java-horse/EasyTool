@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.enums.TranslateEnum;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,7 +111,7 @@ public class TranslateSettingView {
      * @date 2023/9/3 15:29
      **/
     private void setVisibleChannel(Object selectedItem) {
-        if (Objects.equals(Constants.TRANSLATE.BAIDU, selectedItem)) {
+        if (Objects.equals(TranslateEnum.BAIDU.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(true);
             appIdTextField.setVisible(true);
             appSecretLabel.setVisible(true);
@@ -123,7 +124,7 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
-        } else if (Objects.equals(Constants.TRANSLATE.ALIYUN, selectedItem)) {
+        } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -136,7 +137,7 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(true);
             accessKeySecretLabel.setVisible(true);
             accessKeySecretTextField.setVisible(true);
-        } else if (Objects.equals(Constants.TRANSLATE.YOUDAO, selectedItem)) {
+        } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);

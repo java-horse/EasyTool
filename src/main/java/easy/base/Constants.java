@@ -1,6 +1,7 @@
 package easy.base;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 import java.util.Set;
 
@@ -23,22 +24,6 @@ public class Constants {
     public static final String TOTAL_CONVERT_COUNT = "total_convert_count";
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-char";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easychar/reviews";
-
-    /**
-     * 可用翻译平台集合
-     */
-    public static final Set<String> ENABLE_TRANSLATOR_SET = ImmutableSet.of(TRANSLATE.BAIDU, TRANSLATE.ALIYUN,
-            TRANSLATE.YOUDAO, TRANSLATE.TENCENT);
-
-    /**
-     * 翻译平台
-     */
-    public interface TRANSLATE {
-        String BAIDU = "百度翻译";
-        String ALIYUN = "阿里翻译";
-        String YOUDAO = "有道翻译";
-        String TENCENT = "腾讯翻译";
-    }
-
+    public static final Set<String> STOP_WORDS = Sets.newHashSet("the");
 
 }

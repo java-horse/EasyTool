@@ -118,4 +118,18 @@ public class TranslateConfig {
     public void setAccessKeySecret(String accessKeySecret) {
         this.accessKeySecret = accessKeySecret;
     }
+
+    @Override
+    public String toString() {
+        return "TranslateConfig{" +
+                "translateChannel='" + translateChannel + '\'' +
+                ", appId='" + appId + '\'' +
+                ", appSecret='" + appSecret + '\'' +
+                ", secretId='" + secretId + '\'' +
+                ", secretKey='" + secretKey + '\'' +
+                ", accessKeyId='" + accessKeyId + '\'' +
+                ", accessKeySecret='" + accessKeySecret + '\'' +
+                '}';
+    }
+
 }
