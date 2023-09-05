@@ -87,17 +87,18 @@ public class TranslateService {
             }
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < size; i++) {
-                if (StringUtils.isBlank(chList.get(i))) {
+                String lowEn = chList.get(i);
+                if (StringUtils.isBlank(lowEn)) {
                     continue;
                 }
-                String lowEn = chList.get(i).toLowerCase();
-                if (Constants.STOP_WORDS.contains(lowEn)) {
+                if (Constants.STOP_WORDS.contains(lowEn.toLowerCase())) {
                     continue;
                 }
                 if (i == 0) {
                     builder.append(lowEn);
                 } else {
-                    builder.append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
+                    builder.append(StringUtils.SPACE)
+                            .append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
                             .append(StringUtils.substring(lowEn, 1));
                 }
             }

@@ -68,10 +68,10 @@
 
     <actions>
         <!--工具栏快捷菜单-->
-        <group id="easy.char.actions" text="EasyCharTool" icon="AllIcons.Actions.ForceRefresh"
+        <group id="easy.char.tool.actions" text="EasyChar" icon="AllIcons.Actions.ForceRefresh"
                description="Chinese character replacement plugin" popup="true">
             <separator/>
-            <group id="EasyCharSubGroup"/>
+            <group id="EasyCharToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
                     class="easy.action.WeChatOfficialAction" text="微信公众号"/>
@@ -80,14 +80,21 @@
         <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
                 description="EasyCharCore"/>
         <!--中英互译-->
-        <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="EasyCharTranslate"
-                description="EasyCharTranslate">
-            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
-            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
-            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
-        </action>
+        <group id="easy.char.editor.actions" text="EasyChar" description="EasyChatTranslate"
+               icon="AllIcons.Actions.ForceRefresh" popup="true">
+            <separator/>
+            <group id="EasyCharEditorSubGroup"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
+                    description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
+                <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
+                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
+                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
+                <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
+            </action>
+        </group>
+
     </actions>
 
     <!--<projectListeners>-->
