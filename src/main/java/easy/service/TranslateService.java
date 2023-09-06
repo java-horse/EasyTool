@@ -76,7 +76,7 @@ public class TranslateService {
             String enStr = translate.ch2En(source);
             List<String> chList = StringUtils.isBlank(enStr) ? Lists.newArrayList() : Lists.newArrayList(StringUtils.split(enStr));
             chList = chList.stream().filter(c -> !Constants.STOP_WORDS.contains(c.toLowerCase()))
-                    .map(c -> c.replaceAll("[,.'\\-+;:`~]+", ""))
+                    .map(c -> c.replaceAll("[,.'\\-+;:`~]+", StringUtils.EMPTY))
                     .collect(Collectors.toList());
             if (CollectionUtils.isEmpty(chList)) {
                 return StringUtils.EMPTY;

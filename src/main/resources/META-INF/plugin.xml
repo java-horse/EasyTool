@@ -7,29 +7,33 @@
 
     <description>
         <![CDATA[
-      <h4>overview</h4>
+      <h3>EasyChar is a set of development assistance tools for converting and translating Chinese and English characters</h3>
       <ul>
-        <li>Chinese character replacement plugin EasyChar</li>
+        <li>Support automatic conversion of Chinese characters to English characters</li>
+        <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
+        <li>Support text right-click to access web shortcut search</li>
       </ul>
-	  <h4>points</h4>
+	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
-        <li>Automatically replace commonly used encoding characters such as commas, periods, semicolons, parentheses, and question marks in both Chinese and English</li>
-        <li>No need to repeatedly switch between Chinese and English input methods. Increase keyboard lifespan and reduce code bugs caused by Chinese and English characters</li>
-        <li>This plugin supports the latest version of the JetBrains IDE family bucket</li>
+        <li>支持中文字符自动转为英文字符</li>
+        <li>支持中英文互译，且支持设置多种翻译引擎</li>
+        <li>支持文本选中右键进入web快捷搜索</li>
       </ul>
-	  <h4>instructions</h4>
+      <h3>Source</h3>
       <ul>
-        <li>When the following characters are entered ( ，。；！（）「」《》), they will be automatically converted to corresponding English characters</li>
-        <li>If you want to input the above Chinese characters, first input them, and then input the desired Chinese characters</li>
-        <li>Click View ->Tool Windows ->EasyChar to view the statistics of Chinese and English character conversion times</li>
+        <li><a href="https://gitee.com/milubin/easy-char">Gitee</a></li>
+        <li><a href="https://gitee.com/milubin/easy-char">Github</a></li>
       </ul>
-      <h4>source</h4>
-      <ul><a href="https://gitee.com/milubin/easy-char">EasyChar Source Code</a></ul>
     ]]>
     </description>
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.3</h3>
+      <ul>
+          <li>Support for text translation between Chinese and English</li>
+          <li>Support for visual settings of translation engines</li>
+      </ul>
       <h3>v1.0.2</h3>
       <ul>
           <li>Open the project and pop up a warm reminder</li>
