@@ -90,7 +90,7 @@ public class ConvertConfigurable implements SearchableConfigurable {
         btnDefault.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int response = JOptionPane.showConfirmDialog(settingPanel, "Confirm Reset Relation?", getId(), JOptionPane.OK_CANCEL_OPTION);
+                int response = JOptionPane.showConfirmDialog(settingPanel, "Confirm Reset Relation?", "重置映射", JOptionPane.OK_CANCEL_OPTION);
                 if (response == JOptionPane.OK_OPTION) {
                     PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
                     ConvertHandler.reload();

@@ -60,7 +60,7 @@
         <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
 
-        <toolWindow id="EasyChar" secondary="true" anchor="bottom" icon="AllIcons.Actions.ForceRefresh"
+        <toolWindow id="EasyChar" secondary="true" anchor="right" icon="AllIcons.Actions.ForceRefresh"
                     canCloseContents="false" factoryClass="easy.config.SidebarConfig"/>
     </extensions>
 
