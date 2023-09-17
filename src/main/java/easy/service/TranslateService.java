@@ -71,7 +71,6 @@ public class TranslateService {
         if (Objects.isNull(translate)) {
             return StringUtils.EMPTY;
         }
-        // 中译英
         if (LanguageUtil.isAllChinese(source)) {
             String enStr = translate.ch2En(source);
             List<String> chList = StringUtils.isBlank(enStr) ? Lists.newArrayList() : Lists.newArrayList(StringUtils.split(enStr));
@@ -95,17 +94,15 @@ public class TranslateService {
                     continue;
                 }
                 if (i == 0) {
-                    builder.append(lowEn);
+                    builder.append(lowEn.toLowerCase());
                 } else {
-                    builder.append(StringUtils.SPACE)
-                            .append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
+                    builder.append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
                             .append(StringUtils.substring(lowEn, 1));
                 }
             }
             return builder.toString();
         }
-        // 英译中
-        return translate.en2Ch(StringUtils.replace(source, StringUtils.LF, StringUtils.SPACE));
+        return translate.en2Ch(source.replace(StringUtils.LF, StringUtils.SPACE));
     }
 
     /**

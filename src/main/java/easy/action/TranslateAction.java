@@ -10,6 +10,9 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ThrowableRunnable;
+import easy.config.translate.TranslateConfig;
+import easy.config.translate.TranslateConfigComponent;
+import easy.form.TranslateResultView;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +32,7 @@ public class TranslateAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(TranslateAction.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -42,7 +46,6 @@ public class TranslateAction extends AnAction {
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
         if (StringUtils.isNotBlank(selectedText)) {
-            // 中文直接翻译且替换, 否则显示翻译结果
             String translateResult = translateService.translate(selectedText);
             if (StringUtils.isBlank(translateResult)) {
                 return;
@@ -59,7 +62,8 @@ public class TranslateAction extends AnAction {
                     log.error("中英互译写入编辑器异常", ex);
                 }
             } else {
-
+                TranslateResultView translateResultView = new TranslateResultView(translateConfig.getTranslateChannel(), translateResult);
+                translateResultView.show();
             }
         }
     }

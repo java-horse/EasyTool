@@ -36,7 +36,7 @@ public class BaiDuTranslate extends AbstractTranslate {
     @Override
     protected String translateCh2En(String chStr) {
         try {
-            return translate("zh", "en", chStr);
+            return translate(chStr);
         } catch (Exception e) {
             log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
         }
@@ -54,7 +54,7 @@ public class BaiDuTranslate extends AbstractTranslate {
     @Override
     protected String translateEn2Ch(String enStr) {
         try {
-            return translate("en", "zh", enStr);
+            return translate(enStr);
         } catch (Exception e) {
             log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
         }
@@ -64,22 +64,20 @@ public class BaiDuTranslate extends AbstractTranslate {
     /**
      * 中英互译
      *
-     * @param sourceLanguage
-     * @param targetLanguage
      * @param text
      * @return java.lang.String
      * @author mabin
      * @date 2023/9/4 13:56
      **/
-    private String translate(String sourceLanguage, String targetLanguage, String text) throws InterruptedException {
-        if (StringUtils.isAnyBlank(sourceLanguage, targetLanguage, text)) {
+    private String translate(String text) throws InterruptedException {
+        if (StringUtils.isBlank(text)) {
             return StringUtils.EMPTY;
         }
         for (int i = 0; i < 10; i++) {
             Map<String, String> paramsMap = new HashMap<>(16);
             paramsMap.put("q", text);
-            paramsMap.put("from", sourceLanguage);
-            paramsMap.put("to", targetLanguage);
+            paramsMap.put("from", "auto");
+            paramsMap.put("to", "auto");
             String appId = getTranslateConfig().getAppId();
             paramsMap.put("appid", appId);
             String salt = Long.toString(System.currentTimeMillis());

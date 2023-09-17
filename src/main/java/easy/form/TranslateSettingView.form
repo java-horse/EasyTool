@@ -37,8 +37,6 @@
             <properties>
               <model>
                 <item value="百度翻译"/>
-                <item value="阿里翻译"/>
-                <item value="有道翻译"/>
               </model>
             </properties>
           </component>
