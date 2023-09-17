@@ -3,6 +3,7 @@ package easy.util;
 import com.intellij.icons.AllIcons;
 import com.intellij.notification.*;
 import com.intellij.openapi.actionSystem.AnAction;
+import easy.base.Constants;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -17,12 +18,29 @@ public class NotificationUtil {
     private NotificationUtil() {
     }
 
+
+    /**
+     * 全局消息通知
+     *
+     * @param content
+     * @param actions
+     * @return void
+     * @author mabin
+     * @date 2023/9/17 16:26
+     */
+    public static void notify(String content, AnAction... actions) {
+        notify(Constants.PLUGIN_NAME, content, actions);
+    }
+
     /**
      * 全局消息通知
      *
      * @param title
      * @param content
      * @param actions
+     * @return void
+     * @author mabin
+     * @date 2023/9/17 16:26
      */
     public static void notify(String title, String content, AnAction... actions) {
         NotificationGroup group = new NotificationGroup("EasyChar", NotificationDisplayType.BALLOON, true, null, AllIcons.Actions.ForceRefresh);

@@ -12,9 +12,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.util.ThrowableRunnable;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.enums.TranslateEnum;
 import easy.form.TranslateResultView;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
+import easy.util.NotificationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +47,7 @@ public class TranslateAction extends AnAction {
             return;
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
-        if (StringUtils.isNotBlank(selectedText)) {
+        if (StringUtils.isNotBlank(selectedText) && Boolean.FALSE.equals(keyConfigurationReminder())) {
             String translateResult = translateService.translate(selectedText);
             if (StringUtils.isBlank(translateResult)) {
                 return;
@@ -74,6 +76,36 @@ public class TranslateAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+    }
+
+    /**
+     * 翻译渠道密钥配置提醒
+     *
+     * @param
+     * @return java.lang.Boolean
+     * @author mabin
+     * @date 2023/9/17 16:35
+     */
+    private Boolean keyConfigurationReminder() {
+        String translateChannel = translateConfig.getTranslateChannel();
+        boolean isRemind = false;
+        if (StringUtils.equals(translateChannel, TranslateEnum.BAIDU.getTranslate())) {
+            if (StringUtils.isAnyBlank(translateConfig.getAppId(), translateConfig.getAppSecret())) {
+                isRemind = true;
+            }
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.ALIYUN.getTranslate())) {
+            if (StringUtils.isAnyBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret())) {
+                isRemind = true;
+            }
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.YOUDAO.getTranslate())) {
+            if (StringUtils.isAnyBlank(translateConfig.getSecretId(), translateConfig.getSecretKey())) {
+                isRemind = true;
+            }
+        }
+        if (isRemind) {
+            NotificationUtil.notify("请先配置翻译渠道密钥!");
+        }
+        return isRemind;
     }
 
 }

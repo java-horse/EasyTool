@@ -103,7 +103,7 @@ public class AppActiveListener implements ApplicationActivationListener {
             }
 
         };
-        NotificationUtil.notify("EasyChar", "如果EasyChar甚得您心, 请支持一下开发者!", starAction, reviewsAction, payAction);
+        NotificationUtil.notify(Constants.PLUGIN_NAME, "如果EasyChar甚得您心, 请支持一下开发者!", starAction, reviewsAction, payAction);
         lastNoticeTime = System.currentTimeMillis();
     }
 

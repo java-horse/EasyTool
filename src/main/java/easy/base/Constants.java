@@ -15,6 +15,7 @@ import java.util.Set;
 
 public class Constants {
 
+    public static final String PLUGIN_NAME = "EasyChar";
     public static final int TOTAL_LENGTH = 45;
     public static final int SPLIT_LENGTH = 2;
     public static final char PREFIX_CHAR = '/';
