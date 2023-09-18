@@ -28,6 +28,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.4-beta</h3>
+      <ul>
+          <li>Add Alibaba Cloud Translation Channel Engine</li>
+      </ul>
       <h3>v1.0.3</h3>
       <ul>
           <li>Support for text translation between Chinese and English</li>
