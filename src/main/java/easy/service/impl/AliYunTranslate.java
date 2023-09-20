@@ -1,5 +1,21 @@
 package easy.service.impl;
 
+import com.intellij.openapi.diagnostic.Logger;
+import easy.config.translate.TranslateConfig;
+import easy.enums.TranslateEnum;
+import easy.util.HttpUtil;
+import easy.util.JsonUtil;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * 阿里云翻译服务
  *
@@ -7,6 +23,8 @@ package easy.service.impl;
  * @date 2023/9/18 14:44
  */
 public class AliYunTranslate extends AbstractTranslate {
+
+    private static final Logger log = Logger.getInstance(AliYunTranslate.class);
 
     /**
      * 中译英
@@ -18,7 +36,7 @@ public class AliYunTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return null;
+        return translate(chStr, "auto", "en");
     }
 
     /**
@@ -31,7 +49,7 @@ public class AliYunTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return null;
+        return translate(enStr, "auto", "zh");
     }
 
     /**
@@ -45,7 +63,177 @@ public class AliYunTranslate extends AbstractTranslate {
      * @date 2023/9/18 14:45
      */
     private String translate(String text, String source, String target) {
-
-        return null;
+        try {
+            Map<String, String> paramsMap = new HashMap<>(16);
+            paramsMap.put("SourceText", text);
+            paramsMap.put("SourceLanguage", source);
+            paramsMap.put("TargetLanguage", target);
+            paramsMap.put("FormatType", "text");
+            paramsMap.put("Scene", "general");
+            TranslateConfig translateConfig = getTranslateConfig();
+            String res = sendPost(TranslateEnum.ALIYUN.getUrl(), paramsMap, translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
+            AliYunResponseVO responseVO = JsonUtil.fromJson(res, AliYunResponseVO.class);
+            return Objects.requireNonNull(responseVO).getData().getTranslated();
+        } catch (Exception e) {
+            log.error("请求阿里云翻译接口异常：请检查本地网络是否可连接外网，也有可能被阿里云限流", e);
+            return StringUtils.EMPTY;
+        }
     }
+
+    /**
+     * 计算 HMAC-SHA1
+     *
+     * @param data
+     * @param key
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/9/19 17:50
+     */
+    private String hmacSha1(String data, String key) throws NoSuchAlgorithmException, InvalidKeyException {
+        SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(), "HmacSHA1");
+        Mac mac = Mac.getInstance("HmacSHA1");
+        mac.init(signingKey);
+        byte[] rawHmac = mac.doFinal(data.getBytes());
+        return Base64.getEncoder().encodeToString(rawHmac).trim();
+    }
+
+    /**
+     * 获取时间
+     *
+     * @param date
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/9/19 17:51
+     */
+    private String toGMTString(Date date) {
+        SimpleDateFormat df1 = new SimpleDateFormat("E, dd ", Locale.UK);
+        SimpleDateFormat df2 = new SimpleDateFormat("MMM", Locale.UK);
+        SimpleDateFormat df3 = new SimpleDateFormat(" yyyy HH:mm:ss z", Locale.UK);
+        df1.setTimeZone(new SimpleTimeZone(0, "GMT"));
+        df2.setTimeZone(new SimpleTimeZone(0, "GMT"));
+        df3.setTimeZone(new SimpleTimeZone(0, "GMT"));
+        String month = df2.format(date);
+        if (month.length() > 3) {
+            month = month.substring(0, 3);
+        }
+        return df1.format(date) + month + df3.format(date);
+    }
+
+    /**
+     * 发送翻译请求
+     *
+     * @param url
+     * @param paramsMap
+     * @param akId
+     * @param akSecret
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/9/19 17:51
+     */
+    private String sendPost(String url, Map<String, String> paramsMap, String akId, String akSecret) throws Exception {
+        URL realUrl = new URL(url);
+        String method = "POST";
+        String accept = "application/json";
+        String contentType = "application/json;charset=utf-8";
+        String path = realUrl.getFile();
+        String date = toGMTString(new Date());
+        String host = realUrl.getHost();
+        String bodyMd5 = Base64.getEncoder().encodeToString(DigestUtils.md5(JsonUtil.toJson(paramsMap)));
+        String uuid = UUID.randomUUID().toString();
+        String stringToSign = method + "\n" + accept + "\n" + bodyMd5 + "\n" + contentType + "\n" + date + "\n"
+                + "x-acs-signature-method:HMAC-SHA1\n"
+                + "x-acs-signature-nonce:" + uuid + "\n"
+                + "x-acs-version:2019-01-02\n"
+                + path;
+        String signature = hmacSha1(stringToSign, akSecret);
+        String authHeader = "acs " + akId + ":" + signature;
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", accept);
+        headers.put("Content-Type", contentType);
+        headers.put("Content-MD5", bodyMd5);
+        headers.put("Date", date);
+        headers.put("Host", host);
+        headers.put("Authorization", authHeader);
+        headers.put("x-acs-signature-nonce", uuid);
+        headers.put("x-acs-signature-method", "HMAC-SHA1");
+        headers.put("x-acs-version", "2019-01-02");
+        log.warn("headers=" + JsonUtil.toJson(headers));
+        log.warn("paramsMap=" + JsonUtil.toJson(paramsMap));
+        return HttpUtil.doPost(url, headers, paramsMap, Boolean.FALSE);
+    }
+
+    /**
+     * 响应实例
+     */
+    private static class AliYunResponseVO {
+
+        private String Code;
+        private String RequestId;
+        private AliYunResponseDataVO Data;
+
+        public String getCode() {
+            return Code;
+        }
+
+        public void setCode(String code) {
+            Code = code;
+        }
+
+        public String getRequestId() {
+            return RequestId;
+        }
+
+        public void setRequestId(String requestId) {
+            RequestId = requestId;
+        }
+
+        public AliYunResponseDataVO getData() {
+            return Data;
+        }
+
+        public void setData(AliYunResponseDataVO data) {
+            Data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "AliYunResponseVO{" +
+                    "Code='" + Code + '\'' +
+                    ", RequestId='" + RequestId + '\'' +
+                    ", Data=" + Data +
+                    '}';
+        }
+    }
+
+    private static class AliYunResponseDataVO {
+        private String WordCount;
+        private String Translated;
+
+        public String getWordCount() {
+            return WordCount;
+        }
+
+        public void setWordCount(String wordCount) {
+            WordCount = wordCount;
+        }
+
+        public String getTranslated() {
+            return Translated;
+        }
+
+        public void setTranslated(String translated) {
+            Translated = translated;
+        }
+
+        @Override
+        public String toString() {
+            return "AliYunResponseDataVO{" +
+                    "WordCount='" + WordCount + '\'' +
+                    ", Translated='" + Translated + '\'' +
+                    '}';
+        }
+
+    }
+
 }

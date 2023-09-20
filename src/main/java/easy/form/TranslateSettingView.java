@@ -6,6 +6,7 @@ import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
+import easy.service.TranslateService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class TranslateSettingView {
     private static final Logger log = Logger.getInstance(TranslateSettingView.class);
 
     private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
+    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
 
     private JPanel panel;
     private JPanel commonPanel;
@@ -64,7 +66,7 @@ public class TranslateSettingView {
             int result = JOptionPane.showConfirmDialog(null, "确认清空所有翻译缓存?", "清空缓存", JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.INFORMATION_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
-                // TODO 清空翻译数据缓存
+                translateService.clearCache();
             }
         });
         startButton.addActionListener(event -> {

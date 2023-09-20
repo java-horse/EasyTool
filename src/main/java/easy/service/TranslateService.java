@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.service.impl.AliYunTranslate;
 import easy.service.impl.BaiDuTranslate;
 import easy.util.LanguageUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,6 +51,7 @@ public class TranslateService {
             }
             translateMap = ImmutableMap.<String, Translate>builder()
                     .put(TranslateEnum.BAIDU.getTranslate(), new BaiDuTranslate().init(translateConfig))
+                    .put(TranslateEnum.ALIYUN.getTranslate(), new AliYunTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }
