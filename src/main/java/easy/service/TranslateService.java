@@ -9,6 +9,7 @@ import easy.enums.TranslateEnum;
 import easy.service.impl.AliYunTranslate;
 import easy.service.impl.BaiDuTranslate;
 import easy.service.impl.TencentTranslate;
+import easy.service.impl.YouDaoTranslate;
 import easy.util.LanguageUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -57,6 +58,7 @@ public class TranslateService {
                     .put(TranslateEnum.BAIDU.getTranslate(), new BaiDuTranslate().init(translateConfig))
                     .put(TranslateEnum.ALIYUN.getTranslate(), new AliYunTranslate().init(translateConfig))
                     .put(TranslateEnum.TENCENT.getTranslate(), new TencentTranslate().init(translateConfig))
+                    .put(TranslateEnum.YOUDAO.getTranslate(), new YouDaoTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }

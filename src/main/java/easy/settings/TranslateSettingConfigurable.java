@@ -107,17 +107,17 @@ public class TranslateSettingConfigurable implements Configurable {
             }
         } else if (TranslateEnum.YOUDAO.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (StringUtils.isBlank(translateConfig.getSecretId())) {
-                throw new ConfigurationException("有道SecretId不能为空");
+                throw new ConfigurationException("有道智云SecretId不能为空");
             }
             if (StringUtils.isBlank(translateConfig.getSecretKey())) {
-                throw new ConfigurationException("有道SecretKey不能为空");
+                throw new ConfigurationException("有道智云SecretKey不能为空");
             }
         } else if (TranslateEnum.TENCENT.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (StringUtils.isBlank(translateConfig.getTencentSecretId())) {
-                throw new ConfigurationException("腾讯SecretId不能为空");
+                throw new ConfigurationException("腾讯云TencentSecretId不能为空");
             }
             if (StringUtils.isBlank(translateConfig.getTencentSecretKey())) {
-                throw new ConfigurationException("腾讯SecretKey不能为空");
+                throw new ConfigurationException("腾讯云TencentSecretKey不能为空");
             }
         }
     }
