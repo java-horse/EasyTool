@@ -101,6 +101,10 @@ public class TranslateAction extends AnAction {
             if (StringUtils.isAnyBlank(translateConfig.getSecretId(), translateConfig.getSecretKey())) {
                 isRemind = true;
             }
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.TENCENT.getTranslate())) {
+            if (StringUtils.isAnyBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey())) {
+                isRemind = true;
+            }
         }
         if (isRemind) {
             NotificationUtil.notify("请先配置翻译渠道密钥!");

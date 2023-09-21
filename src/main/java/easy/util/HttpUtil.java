@@ -1,7 +1,9 @@
 package easy.util;
 
 import com.intellij.openapi.diagnostic.Logger;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -10,10 +12,14 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Http客户端处理
@@ -134,15 +140,21 @@ public class HttpUtil {
                     .setConnectTimeout(CONNECT_TIMEOUT)
                     .setSocketTimeout(SOCKET_TIMEOUT)
                     .build());
-            if (Boolean.TRUE.equals(isJson)) {
+            if (Objects.isNull(isJson) || Boolean.FALSE.equals(isJson)) {
+                List<NameValuePair> nameValuePairList = new ArrayList<>();
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    nameValuePairList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+                }
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, StandardCharsets.UTF_8));
+            } else {
                 headers.put("Content-Type", "application/json;charset=utf-8");
+                httpPost.setEntity(new StringEntity(JsonUtil.toJson(params), StandardCharsets.UTF_8));
             }
             if (headers != null) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     httpPost.addHeader(entry.getKey(), entry.getValue());
                 }
             }
-            httpPost.setEntity(new StringEntity(JsonUtil.toJson(params), StandardCharsets.UTF_8));
             response = httpClient.execute(httpPost);
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
         } catch (Exception e) {

@@ -2,11 +2,13 @@ package easy.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
 import easy.service.impl.AliYunTranslate;
 import easy.service.impl.BaiDuTranslate;
+import easy.service.impl.TencentTranslate;
 import easy.util.LanguageUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
  **/
 
 public class TranslateService {
+
+    private static final Logger log = Logger.getInstance(TranslateConfig.class);
 
     private TranslateConfig translateConfig;
 
@@ -52,6 +56,7 @@ public class TranslateService {
             translateMap = ImmutableMap.<String, Translate>builder()
                     .put(TranslateEnum.BAIDU.getTranslate(), new BaiDuTranslate().init(translateConfig))
                     .put(TranslateEnum.ALIYUN.getTranslate(), new AliYunTranslate().init(translateConfig))
+                    .put(TranslateEnum.TENCENT.getTranslate(), new TencentTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }
@@ -84,7 +89,7 @@ public class TranslateService {
             }
             int size = chList.size();
             if (size == 1) {
-                return chList.get(0);
+                return chList.get(0).toLowerCase();
             }
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < size; i++) {

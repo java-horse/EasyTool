@@ -1,5 +1,7 @@
 package easy.config.translate;
 
+import easy.enums.TranslateEnum;
+
 /**
  * 翻译渠道设置
  *
@@ -46,6 +48,17 @@ public class TranslateConfig {
     private String accessKeySecret;
 
     /**
+     * 腾讯secretId
+     */
+    private String tencentSecretId;
+
+    /**
+     * 腾讯secretKey
+     */
+    private String tencentSecretKey;
+
+
+    /**
      * 重置翻译配置
      *
      * @param
@@ -54,13 +67,15 @@ public class TranslateConfig {
      * @date 2023/9/3 15:36
      **/
     public void reset() {
-        translateChannel = "百度翻译";
+        translateChannel = TranslateEnum.BAIDU.getTranslate();
         appId = null;
         appSecret = null;
         secretId = null;
         secretKey = null;
         accessKeyId = null;
         accessKeySecret = null;
+        tencentSecretId = null;
+        tencentSecretKey = null;
     }
 
     public String getTranslateChannel() {
@@ -119,6 +134,22 @@ public class TranslateConfig {
         this.accessKeySecret = accessKeySecret;
     }
 
+    public String getTencentSecretId() {
+        return tencentSecretId;
+    }
+
+    public void setTencentSecretId(String tencentSecretId) {
+        this.tencentSecretId = tencentSecretId;
+    }
+
+    public String getTencentSecretKey() {
+        return tencentSecretKey;
+    }
+
+    public void setTencentSecretKey(String tencentSecretKey) {
+        this.tencentSecretKey = tencentSecretKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -129,6 +160,8 @@ public class TranslateConfig {
                 ", secretKey='" + secretKey + '\'' +
                 ", accessKeyId='" + accessKeyId + '\'' +
                 ", accessKeySecret='" + accessKeySecret + '\'' +
+                ", tencentSecretId='" + tencentSecretId + '\'' +
+                ", tencentSecretKey='" + tencentSecretKey + '\'' +
                 '}';
     }
 

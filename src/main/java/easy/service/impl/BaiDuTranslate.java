@@ -1,5 +1,6 @@
 package easy.service.impl;
 
+import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
 import easy.util.HttpUtil;
@@ -35,12 +36,7 @@ public class BaiDuTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        try {
-            return translate(chStr);
-        } catch (Exception e) {
-            log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
-        }
-        return StringUtils.EMPTY;
+        return translate(chStr, "auto", "en");
     }
 
     /**
@@ -53,48 +49,52 @@ public class BaiDuTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        try {
-            return translate(enStr);
-        } catch (Exception e) {
-            log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
-        }
-        return StringUtils.EMPTY;
+        return translate(enStr, "auto", "zh");
     }
 
     /**
      * 中英互译
      *
      * @param text
+     * @param source
+     * @param target
      * @return java.lang.String
      * @author mabin
      * @date 2023/9/4 13:56
      **/
-    private String translate(String text) throws InterruptedException {
+    private String translate(String text, String source, String target) {
         if (StringUtils.isBlank(text)) {
             return StringUtils.EMPTY;
         }
-        for (int i = 0; i < 10; i++) {
-            Map<String, String> paramsMap = new HashMap<>(16);
-            paramsMap.put("q", text);
-            paramsMap.put("from", "auto");
-            paramsMap.put("to", "auto");
-            String appId = getTranslateConfig().getAppId();
-            paramsMap.put("appid", appId);
-            String salt = Long.toString(System.currentTimeMillis());
-            paramsMap.put("salt", salt);
-            paramsMap.put("sign", DigestUtils.md5Hex(appId + text + salt + getTranslateConfig().getAppSecret()));
-            Map<String, String> headersMap = new HashMap<>(3);
-            headersMap.put("Content-Type", "application/x-www-form-urlencoded");
-            String res = HttpUtil.doPost(TranslateEnum.BAIDU.getUrl(), headersMap, paramsMap, Boolean.FALSE);
-            if (StringUtils.isBlank(res)) {
-                return StringUtils.EMPTY;
+        try {
+            for (int i = 0; i < 10; i++) {
+                Map<String, String> paramsMap = new HashMap<>(16);
+                paramsMap.put("q", text);
+                paramsMap.put("from", source);
+                paramsMap.put("to", target);
+                String appId = getTranslateConfig().getAppId();
+                paramsMap.put("appid", appId);
+                String salt = Long.toString(System.currentTimeMillis());
+                paramsMap.put("salt", salt);
+                paramsMap.put("sign", DigestUtils.md5Hex(appId + text + salt + getTranslateConfig().getAppSecret()));
+                Map<String, String> headersMap = new HashMap<>(3);
+                headersMap.put("Content-Type", "application/x-www-form-urlencoded");
+                log.warn("paramsMap=" + paramsMap);
+                String res = HttpUtil.doPost(TranslateEnum.BAIDU.getUrl(), headersMap, paramsMap, Boolean.FALSE);
+                if (StringUtils.isBlank(res)) {
+                    return StringUtils.EMPTY;
+                }
+                log.warn("res=" + res);
+                BaiduResponse baiduResponse = JsonUtil.fromJson(res, BaiduResponse.class);
+                log.warn("baiduResponse=" + baiduResponse);
+                if (Objects.isNull(baiduResponse) || "54003".equals(baiduResponse.getErrorCode())) {
+                    Thread.sleep(500);
+                } else {
+                    return baiduResponse.getTransResult().get(0).getDst();
+                }
             }
-            BaiduResponse baiduResponse = JsonUtil.fromJson(res, BaiduResponse.class);
-            if (Objects.isNull(baiduResponse) || "54003".equals(baiduResponse.getError_code())) {
-                Thread.sleep(500);
-            } else {
-                return baiduResponse.getTrans_result().get(0).getDst();
-            }
+        } catch (Exception e) {
+            log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
         }
         return StringUtils.EMPTY;
     }
@@ -103,11 +103,14 @@ public class BaiDuTranslate extends AbstractTranslate {
      * 响应实例
      */
     private static class BaiduResponse {
-        private String error_code;
-        private String error_msg;
+        @SerializedName("error_code")
+        private String errorCode;
+        @SerializedName("error_msg")
+        private String errorMsg;
         private String from;
         private String to;
-        private List<TransResult> trans_result;
+        @SerializedName("trans_result")
+        private List<TransResult> transResult;
 
         public void setFrom(String from) {
             this.from = from;
@@ -125,67 +128,67 @@ public class BaiDuTranslate extends AbstractTranslate {
             return to;
         }
 
-        public String getError_code() {
-            return error_code;
+        public String getErrorCode() {
+            return errorCode;
         }
 
-        public void setError_code(String error_code) {
-            this.error_code = error_code;
+        public void setErrorCode(String errorCode) {
+            this.errorCode = errorCode;
         }
 
-        public String getError_msg() {
-            return error_msg;
+        public String getErrorMsg() {
+            return errorMsg;
         }
 
-        public void setError_msg(String error_msg) {
-            this.error_msg = error_msg;
+        public void setErrorMsg(String errorMsg) {
+            this.errorMsg = errorMsg;
         }
 
-        public List<TransResult> getTrans_result() {
-            return trans_result;
+        public List<TransResult> getTransResult() {
+            return transResult;
         }
 
-        public void setTrans_result(List<TransResult> trans_result) {
-            this.trans_result = trans_result;
-        }
-
-        private static class TransResult {
-            private String src;
-            private String dst;
-
-            public void setSrc(String src) {
-                this.src = src;
-            }
-
-            public String getSrc() {
-                return src;
-            }
-
-            public void setDst(String dst) {
-                this.dst = dst;
-            }
-
-            public String getDst() {
-                return dst;
-            }
-
-            @Override
-            public String toString() {
-                return "TransResult{" +
-                        "src='" + src + '\'' +
-                        ", dst='" + dst + '\'' +
-                        '}';
-            }
+        public void setTransResult(List<TransResult> transResult) {
+            this.transResult = transResult;
         }
 
         @Override
         public String toString() {
             return "BaiduResponse{" +
-                    "error_code='" + error_code + '\'' +
-                    ", error_msg='" + error_msg + '\'' +
+                    "errorCode='" + errorCode + '\'' +
+                    ", errorMsg='" + errorMsg + '\'' +
                     ", from='" + from + '\'' +
                     ", to='" + to + '\'' +
-                    ", trans_result=" + trans_result +
+                    ", transResult=" + transResult +
+                    '}';
+        }
+    }
+
+    private static class TransResult {
+        private String src;
+        private String dst;
+
+        public void setSrc(String src) {
+            this.src = src;
+        }
+
+        public String getSrc() {
+            return src;
+        }
+
+        public void setDst(String dst) {
+            this.dst = dst;
+        }
+
+        public String getDst() {
+            return dst;
+        }
+
+        @Override
+        public String toString() {
+            return "TransResult{" +
+                    "src='" + src + '\'' +
+                    ", dst='" + dst + '\'' +
                     '}';
         }
     }

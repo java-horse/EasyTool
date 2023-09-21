@@ -48,6 +48,10 @@ public class TranslateSettingView {
     private JButton payButton;
     private JButton startButton;
     private JButton resetButton;
+    private JLabel tencentSecretIdLabel;
+    private JLabel tencentSecretKeyLabel;
+    private JTextField tencentSecretIdTextField;
+    private JTextField tencentSecretKeyTextField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -105,7 +109,7 @@ public class TranslateSettingView {
     }
 
     /**
-     * 设置有效翻译渠道
+     * 设置翻译渠道
      *
      * @param selectedItem
      * @return void
@@ -126,6 +130,10 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -139,6 +147,10 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(true);
             accessKeySecretLabel.setVisible(true);
             accessKeySecretTextField.setVisible(true);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -152,6 +164,44 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(true);
+            tencentSecretIdTextField.setVisible(true);
+            tencentSecretKeyLabel.setVisible(true);
+            tencentSecretKeyTextField.setVisible(true);
+        } else {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
         }
     }
 
@@ -171,6 +221,8 @@ public class TranslateSettingView {
         setSecretKeyTextField(translateConfig.getSecretKey());
         setAccessKeyIdTextField(translateConfig.getAccessKeyId());
         setAccessKeySecretTextField(translateConfig.getAccessKeySecret());
+        setTencentSecretIdTextField(translateConfig.getTencentSecretId());
+        setTencentSecretKeyTextField(translateConfig.getTencentSecretKey());
     }
 
 
@@ -289,4 +341,37 @@ public class TranslateSettingView {
     public void setAccessKeySecretTextField(String accessKeySecret) {
         this.accessKeySecretTextField.setText(accessKeySecret);
     }
+
+    public JLabel getTencentSecretIdLabel() {
+        return tencentSecretIdLabel;
+    }
+
+    public void setTencentSecretIdLabel(JLabel tencentSecretIdLabel) {
+        this.tencentSecretIdLabel = tencentSecretIdLabel;
+    }
+
+    public JLabel getTencentSecretKeyLabel() {
+        return tencentSecretKeyLabel;
+    }
+
+    public void setTencentSecretKeyLabel(JLabel tencentSecretKeyLabel) {
+        this.tencentSecretKeyLabel = tencentSecretKeyLabel;
+    }
+
+    public JTextField getTencentSecretIdTextField() {
+        return tencentSecretIdTextField;
+    }
+
+    public void setTencentSecretIdTextField(String tencentSecretIdTextField) {
+        this.tencentSecretIdTextField.setText(tencentSecretIdTextField);
+    }
+
+    public JTextField getTencentSecretKeyTextField() {
+        return tencentSecretKeyTextField;
+    }
+
+    public void setTencentSecretKeyTextField(String tencentSecretKeyTextField) {
+        this.tencentSecretKeyTextField.setText(tencentSecretKeyTextField);
+    }
+
 }

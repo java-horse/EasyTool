@@ -1,10 +1,7 @@
 package easy.util;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.Map;
 
 public class JsonUtil {
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().create();
 
     private JsonUtil() {
     }
@@ -51,6 +48,14 @@ public class JsonUtil {
         return list;
     }
 
+    public static <T> Map<String, T> fromMap(String json) {
+        if (json == null) {
+            return null;
+        }
+        return GSON.fromJson(json, new TypeToken<Map<String, T>>() {
+        }.getType());
+    }
+
     public static <T> List<Map<String, T>> fromListMap(String json) {
         if (json == null) {
             return null;
@@ -59,12 +64,28 @@ public class JsonUtil {
         }.getType());
     }
 
-    public static <T> Map<String, T> fromMap(String json) {
+
+    public static JsonObject fromObject(String json) {
         if (json == null) {
             return null;
         }
-        return GSON.fromJson(json, new TypeToken<Map<String, T>>() {
-        }.getType());
+        JsonElement element = JsonParser.parseString(json);
+        if (element.isJsonObject()) {
+            return element.getAsJsonObject();
+        }
+        return null;
     }
+
+    public static JsonArray fromArray(String json) {
+        if (json == null) {
+            return null;
+        }
+        JsonElement element = JsonParser.parseString(json);
+        if (element.isJsonArray()) {
+            return element.getAsJsonArray();
+        }
+        return null;
+    }
+
 
 }

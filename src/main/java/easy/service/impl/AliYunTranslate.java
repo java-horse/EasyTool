@@ -1,5 +1,6 @@
 package easy.service.impl;
 
+import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
@@ -158,82 +159,83 @@ public class AliYunTranslate extends AbstractTranslate {
         headers.put("x-acs-signature-nonce", uuid);
         headers.put("x-acs-signature-method", "HMAC-SHA1");
         headers.put("x-acs-version", "2019-01-02");
-        log.warn("headers=" + JsonUtil.toJson(headers));
-        log.warn("paramsMap=" + JsonUtil.toJson(paramsMap));
-        return HttpUtil.doPost(url, headers, paramsMap, Boolean.FALSE);
+        return HttpUtil.doPost(url, headers, paramsMap, Boolean.TRUE);
     }
 
     /**
      * 响应实例
      */
     private static class AliYunResponseVO {
-
-        private String Code;
-        private String RequestId;
-        private AliYunResponseDataVO Data;
+        @SerializedName("Code")
+        private String code;
+        @SerializedName("RequestId")
+        private String requestId;
+        @SerializedName("Data")
+        private AliYunResponseDataVO data;
 
         public String getCode() {
-            return Code;
+            return code;
         }
 
         public void setCode(String code) {
-            Code = code;
+            this.code = code;
         }
 
         public String getRequestId() {
-            return RequestId;
+            return requestId;
         }
 
         public void setRequestId(String requestId) {
-            RequestId = requestId;
+            this.requestId = requestId;
         }
 
         public AliYunResponseDataVO getData() {
-            return Data;
+            return data;
         }
 
         public void setData(AliYunResponseDataVO data) {
-            Data = data;
+            this.data = data;
         }
 
         @Override
         public String toString() {
             return "AliYunResponseVO{" +
-                    "Code='" + Code + '\'' +
-                    ", RequestId='" + RequestId + '\'' +
-                    ", Data=" + Data +
+                    "code='" + code + '\'' +
+                    ", requestId='" + requestId + '\'' +
+                    ", data=" + data +
                     '}';
         }
     }
 
     private static class AliYunResponseDataVO {
-        private String WordCount;
-        private String Translated;
+        @SerializedName("WordCount")
+        private String wordCount;
+        @SerializedName("Translated")
+        private String translated;
 
         public String getWordCount() {
-            return WordCount;
+            return wordCount;
         }
 
         public void setWordCount(String wordCount) {
-            WordCount = wordCount;
+            this.wordCount = wordCount;
         }
 
         public String getTranslated() {
-            return Translated;
+            return translated;
         }
 
         public void setTranslated(String translated) {
-            Translated = translated;
+            this.translated = translated;
         }
 
         @Override
         public String toString() {
             return "AliYunResponseDataVO{" +
-                    "WordCount='" + WordCount + '\'' +
-                    ", Translated='" + Translated + '\'' +
+                    "wordCount='" + wordCount + '\'' +
+                    ", translated='" + translated + '\'' +
                     '}';
         }
-
     }
 
 }
