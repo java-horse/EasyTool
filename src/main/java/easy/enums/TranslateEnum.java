@@ -17,7 +17,8 @@ public enum TranslateEnum {
     BAIDU("百度翻译", "http://api.fanyi.baidu.com/api/trans/vip/translate"),
     ALIYUN("阿里翻译", "http://mt.cn-hangzhou.aliyuncs.com/api/translate/web/general"),
     YOUDAO("有道翻译", "https://openapi.youdao.com/api"),
-    TENCENT("腾讯翻译", "https://tmt.tencentcloudapi.com");
+    TENCENT("腾讯翻译", "https://tmt.tencentcloudapi.com"),
+    VOLCANO("火山翻译", "xxx");
 
     private final String translate;
     private final String url;

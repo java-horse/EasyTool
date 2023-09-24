@@ -3,14 +3,14 @@
   <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="732" height="401"/>
+      <xy x="20" y="20" width="732" height="471"/>
     </constraints>
     <properties>
       <toolTipText value=""/>
     </properties>
     <border type="none"/>
     <children>
-      <grid id="653ad" binding="commonPanel" layout-manager="GridLayoutManager" row-count="11" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="653ad" binding="commonPanel" layout-manager="GridLayoutManager" row-count="13" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -40,6 +40,7 @@
                 <item value="阿里翻译"/>
                 <item value="腾讯翻译"/>
                 <item value="有道翻译"/>
+                <item value="火山翻译"/>
               </model>
             </properties>
           </component>
@@ -154,12 +155,12 @@
           </component>
           <vspacer id="ee393">
             <constraints>
-              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
           <component id="615ea" class="javax.swing.JLabel">
             <constraints>
-              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="快捷操作"/>
@@ -168,7 +169,7 @@
           <grid id="27250" binding="supportPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -249,6 +250,42 @@
             </constraints>
             <properties>
               <toolTipText value="请输入TencentSecretKey"/>
+            </properties>
+          </component>
+          <component id="df12a" class="javax.swing.JLabel" binding="volcanoSecretIdLabel">
+            <constraints>
+              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="volcanoSecretId"/>
+            </properties>
+          </component>
+          <component id="3eaf2" class="javax.swing.JLabel" binding="volcanoSecretKeyLabel">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="volcanoSecretKey"/>
+            </properties>
+          </component>
+          <component id="33f61" class="javax.swing.JTextField" binding="volcanoSecretIdTextField">
+            <constraints>
+              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText value="请输入volcanoSecretId"/>
+            </properties>
+          </component>
+          <component id="6fe98" class="javax.swing.JTextField" binding="volcanoSecretKeyTextField">
+            <constraints>
+              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText value="请输入volcanoSecretKey"/>
             </properties>
           </component>
         </children>

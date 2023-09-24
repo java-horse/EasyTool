@@ -57,6 +57,17 @@ public class TranslateConfig {
      */
     private String tencentSecretKey;
 
+    /**
+     * 火山SecretId
+     */
+    private String volcanoSecretId;
+
+    /**
+     * 火山SecretKey
+     */
+    private String volcanoSecretKey;
+
+
 
     /**
      * 重置翻译配置
@@ -76,6 +87,8 @@ public class TranslateConfig {
         accessKeySecret = null;
         tencentSecretId = null;
         tencentSecretKey = null;
+        volcanoSecretId = null;
+        volcanoSecretKey = null;
     }
 
     public String getTranslateChannel() {
@@ -150,6 +163,22 @@ public class TranslateConfig {
         this.tencentSecretKey = tencentSecretKey;
     }
 
+    public String getVolcanoSecretId() {
+        return volcanoSecretId;
+    }
+
+    public void setVolcanoSecretId(String volcanoSecretId) {
+        this.volcanoSecretId = volcanoSecretId;
+    }
+
+    public String getVolcanoSecretKey() {
+        return volcanoSecretKey;
+    }
+
+    public void setVolcanoSecretKey(String volcanoSecretKey) {
+        this.volcanoSecretKey = volcanoSecretKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -162,7 +191,8 @@ public class TranslateConfig {
                 ", accessKeySecret='" + accessKeySecret + '\'' +
                 ", tencentSecretId='" + tencentSecretId + '\'' +
                 ", tencentSecretKey='" + tencentSecretKey + '\'' +
+                ", volcanoSecretId='" + volcanoSecretId + '\'' +
+                ", volcanoSecretKey='" + volcanoSecretKey + '\'' +
                 '}';
     }
-
 }

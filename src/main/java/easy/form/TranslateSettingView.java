@@ -52,6 +52,10 @@ public class TranslateSettingView {
     private JLabel tencentSecretKeyLabel;
     private JTextField tencentSecretIdTextField;
     private JTextField tencentSecretKeyTextField;
+    private JLabel volcanoSecretIdLabel;
+    private JLabel volcanoSecretKeyLabel;
+    private JTextField volcanoSecretIdTextField;
+    private JTextField volcanoSecretKeyTextField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -134,6 +138,10 @@ public class TranslateSettingView {
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
             tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -151,6 +159,10 @@ public class TranslateSettingView {
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
             tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -168,6 +180,10 @@ public class TranslateSettingView {
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
             tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -185,6 +201,31 @@ public class TranslateSettingView {
             tencentSecretIdTextField.setVisible(true);
             tencentSecretKeyLabel.setVisible(true);
             tencentSecretKeyTextField.setVisible(true);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(true);
+            volcanoSecretKeyLabel.setVisible(true);
+            volcanoSecretIdTextField.setVisible(true);
+            volcanoSecretKeyTextField.setVisible(true);
         } else {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -202,6 +243,10 @@ public class TranslateSettingView {
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
             tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
         }
     }
 
@@ -223,6 +268,8 @@ public class TranslateSettingView {
         setAccessKeySecretTextField(translateConfig.getAccessKeySecret());
         setTencentSecretIdTextField(translateConfig.getTencentSecretId());
         setTencentSecretKeyTextField(translateConfig.getTencentSecretKey());
+        setVolcanoSecretIdTextField(translateConfig.getVolcanoSecretId());
+        setVolcanoSecretKeyTextField(translateConfig.getVolcanoSecretKey());
     }
 
 
@@ -372,6 +419,38 @@ public class TranslateSettingView {
 
     public void setTencentSecretKeyTextField(String tencentSecretKeyTextField) {
         this.tencentSecretKeyTextField.setText(tencentSecretKeyTextField);
+    }
+
+    public JLabel getVolcanoSecretIdLabel() {
+        return volcanoSecretIdLabel;
+    }
+
+    public void setVolcanoSecretIdLabel(JLabel volcanoSecretIdLabel) {
+        this.volcanoSecretIdLabel = volcanoSecretIdLabel;
+    }
+
+    public JLabel getVolcanoSecretKeyLabel() {
+        return volcanoSecretKeyLabel;
+    }
+
+    public void setVolcanoSecretKeyLabel(JLabel volcanoSecretKeyLabel) {
+        this.volcanoSecretKeyLabel = volcanoSecretKeyLabel;
+    }
+
+    public JTextField getVolcanoSecretIdTextField() {
+        return volcanoSecretIdTextField;
+    }
+
+    public void setVolcanoSecretIdTextField(String volcanoSecretIdTextField) {
+        this.volcanoSecretIdTextField.setText(volcanoSecretIdTextField);
+    }
+
+    public JTextField getVolcanoSecretKeyTextField() {
+        return volcanoSecretKeyTextField;
+    }
+
+    public void setVolcanoSecretKeyTextField(String volcanoSecretKeyTextField) {
+        this.volcanoSecretKeyTextField.setText(volcanoSecretKeyTextField);
     }
 
 }
