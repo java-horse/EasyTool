@@ -11,9 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -35,26 +32,26 @@ public class VolcanoTranslate extends AbstractTranslate {
 
     private static final Logger log = Logger.getInstance(VolcanoTranslate.class);
 
-    private static final BitSet URLENCODER = new BitSet(256);
+    private static final BitSet URL_ENCODER = new BitSet(256);
     private static final String CONST_ENCODE = "0123456789ABCDEF";
 
     static {
         int i;
         for (i = 97; i <= 122; ++i) {
-            URLENCODER.set(i);
+            URL_ENCODER.set(i);
         }
 
         for (i = 65; i <= 90; ++i) {
-            URLENCODER.set(i);
+            URL_ENCODER.set(i);
         }
 
         for (i = 48; i <= 57; ++i) {
-            URLENCODER.set(i);
+            URL_ENCODER.set(i);
         }
-        URLENCODER.set('-');
-        URLENCODER.set('_');
-        URLENCODER.set('.');
-        URLENCODER.set('~');
+        URL_ENCODER.set('-');
+        URL_ENCODER.set('_');
+        URL_ENCODER.set('.');
+        URL_ENCODER.set('~');
     }
 
     /**
@@ -85,8 +82,6 @@ public class VolcanoTranslate extends AbstractTranslate {
 
     /**
      * 翻译处理
-     * AKLTNTQ3YTg4MTdmNmRjNGFkMjkwZmQ2M2RhZDQ0NThhMTU
-     * TVdKbU5qSmhaamRrWWpZNU5ERTRNemszWmpnMlpXTXhNV0l3WldZME5tVQ==
      *
      * @param text
      * @param target
@@ -101,10 +96,8 @@ public class VolcanoTranslate extends AbstractTranslate {
             paramsMap.put("TextList", Lists.newArrayList(text));
             TranslateConfig translateConfig = getTranslateConfig();
             String res = sendPost(TranslateEnum.VOLCANO.getUrl(), paramsMap, translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey());
-            log.warn("res=" + res);
             VolcanoResponse responseVo = JsonUtil.fromJson(res, VolcanoResponse.class);
-            log.warn("responseVo=" + responseVo);
-            return Objects.requireNonNull(responseVo).getTranslateList().get(0).getTranslation();
+            return Objects.requireNonNull(responseVo).getTranslationList().get(0).getTranslation();
         } catch (Exception e) {
             log.error("请求火山云翻译接口异常：请检查本地网络是否可连接外网，也有可能被火山云限流", e);
         }
@@ -135,22 +128,22 @@ public class VolcanoTranslate extends AbstractTranslate {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String xDate = sdf.format(new Date());
         String shortXDate = xDate.substring(0, 8);
-        String contentType = "application/x-www-form-urlencoded";
+        String contentType = "application/json;charset=utf-8";
         String signHeader = "host;x-date;x-content-sha256;content-type";
 
         SortedMap<String, String> realQueryList = new TreeMap<>();
         realQueryList.put("Action", "TranslateText");
         realQueryList.put("Version", "2020-06-01");
-        StringBuilder querySB = new StringBuilder();
+        StringBuilder query = new StringBuilder();
         for (Map.Entry<String, String> entry : realQueryList.entrySet()) {
-            querySB.append(signStringEncoder(entry.getKey()))
+            query.append(signStringEncoder(entry.getKey()))
                     .append("=")
                     .append(signStringEncoder(entry.getValue()))
                     .append("&");
         }
-        querySB.deleteCharAt(querySB.length() - 1);
+        query.deleteCharAt(query.length() - 1);
 
-        String canonicalStringBuilder = method + "\n" + path + "\n" + querySB + "\n" +
+        String canonicalStringBuilder = method + "\n" + path + "\n" + query + "\n" +
                 "host:" + host + "\n" +
                 "x-date:" + xDate + "\n" +
                 "x-content-sha256:" + xContentSha256 + "\n" +
@@ -175,7 +168,7 @@ public class VolcanoTranslate extends AbstractTranslate {
                 " Credential=" + volcanoSecretId + "/" + credentialScope +
                 ", SignedHeaders=" + signHeader +
                 ", Signature=" + signature);
-         return HttpUtil.doPost(url + "?" + querySB, headersMap, paramsMap, Boolean.FALSE);
+        return HttpUtil.doPost(url + "?" + query, headersMap, paramsMap, Boolean.TRUE);
     }
 
 
@@ -187,7 +180,7 @@ public class VolcanoTranslate extends AbstractTranslate {
         ByteBuffer bb = StandardCharsets.UTF_8.encode(source);
         while (bb.hasRemaining()) {
             int b = bb.get() & 255;
-            if (URLENCODER.get(b)) {
+            if (URL_ENCODER.get(b)) {
                 buf.append((char) b);
             } else if (b == 32) {
                 buf.append("%20");
@@ -202,12 +195,12 @@ public class VolcanoTranslate extends AbstractTranslate {
         return buf.toString();
     }
 
-    public static String hashSHA256(byte[] content) throws NoSuchAlgorithmException {
+    public String hashSHA256(byte[] content) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         return HexFormat.of().formatHex(md.digest(content));
     }
 
-    public static byte[] hmacSHA256(byte[] key, String content) throws NoSuchAlgorithmException, InvalidKeyException {
+    public byte[] hmacSHA256(byte[] key, String content) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(new SecretKeySpec(key, "HmacSHA256"));
         return mac.doFinal(content.getBytes());
@@ -222,26 +215,26 @@ public class VolcanoTranslate extends AbstractTranslate {
 
 
     public static class VolcanoResponse {
-        @SerializedName("TranslateList")
-        private List<TranslateList> translateList;
+        @SerializedName("TranslationList")
+        private List<Translation> translationList;
 
-        public List<TranslateList> getTranslateList() {
-            return translateList;
+        public List<Translation> getTranslationList() {
+            return translationList;
         }
 
-        public void setTranslateList(List<TranslateList> translateList) {
-            this.translateList = translateList;
+        public void setTranslationList(List<Translation> translationList) {
+            this.translationList = translationList;
         }
 
         @Override
         public String toString() {
             return "VolcanoResponse{" +
-                    "translateList=" + translateList +
+                    "translationList=" + translationList +
                     '}';
         }
     }
 
-    public static class TranslateList {
+    public static class Translation {
         @SerializedName("Translation")
         private String translation;
         @SerializedName("DetectedSourceLanguage")
@@ -265,7 +258,7 @@ public class VolcanoTranslate extends AbstractTranslate {
 
         @Override
         public String toString() {
-            return "TranslateList{" +
+            return "Translation{" +
                     "translation='" + translation + '\'' +
                     ", detectedSourceLanguage='" + detectedSourceLanguage + '\'' +
                     '}';
