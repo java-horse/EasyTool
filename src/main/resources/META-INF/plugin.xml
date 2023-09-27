@@ -14,8 +14,15 @@
       </ul>
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
-        <li>支持中文字符自动转为英文字符</li>
-        <li>支持中英文互译，且支持设置多种翻译引擎</li>
+        <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎</li>
+        <ul>
+            <li>百度翻译</li>
+            <li>阿里翻译</li>
+            <li>腾讯翻译</li>
+            <li>有道翻译</li>
+            <li>火山翻译</li>
+        </ul>
       </ul>
       <h3>Source</h3>
       <ul>
@@ -27,9 +34,12 @@
 
     <change-notes>
         <![CDATA[
-      <h3>v1.0.4-beta</h3>
+      <h3>v1.0.4</h3>
       <ul>
           <li>Add Alibaba Cloud Translation Channel Engine</li>
+          <li>Add Tencent Cloud Translation Channel Engine</li>
+          <li>Add Youdao Cloud Translation Channel Engine</li>
+          <li>Add Volcano Cloud Translation Channel Engine</li>
       </ul>
       <h3>v1.0.3</h3>
       <ul>
