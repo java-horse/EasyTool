@@ -69,6 +69,9 @@ public class TranslateSettingConfigurable implements Configurable {
         if (!Objects.equals(translateConfig.getTencentSecretKey(), translateSettingView.getTencentSecretKeyTextField().getText())) {
             return true;
         }
+        if (!Objects.equals(translateConfig.getVolcanoSecretId(), translateSettingView.getTencentSecretKeyTextField().getText())) {
+            return true;
+        }
         return false;
     }
 
@@ -88,6 +91,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setAccessKeySecret(translateSettingView.getAccessKeySecretTextField().getText());
         translateConfig.setTencentSecretId(translateSettingView.getTencentSecretIdTextField().getText());
         translateConfig.setTencentSecretKey(translateSettingView.getTencentSecretKeyTextField().getText());
+        translateConfig.setVolcanoSecretId(translateSettingView.getVolcanoSecretIdTextField().getText());
+        translateConfig.setVolcanoSecretKey(translateSettingView.getVolcanoSecretKeyTextField().getText());
         if (Objects.isNull(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel())) {
             throw new ConfigurationException("请选择正确的翻译渠道");
         }
@@ -118,6 +123,13 @@ public class TranslateSettingConfigurable implements Configurable {
             }
             if (StringUtils.isBlank(translateConfig.getTencentSecretKey())) {
                 throw new ConfigurationException("腾讯云TencentSecretKey不能为空");
+            }
+        } else if (TranslateEnum.VOLCANO.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            if (StringUtils.isBlank(translateConfig.getVolcanoSecretId())) {
+                throw new ConfigurationException("火山云VolcanoSecretId不能为空");
+            }
+            if (StringUtils.isBlank(translateConfig.getVolcanoSecretKey())) {
+                throw new ConfigurationException("火山云VolcanoSecretKey不能为空");
             }
         }
     }

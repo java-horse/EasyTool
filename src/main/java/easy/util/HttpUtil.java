@@ -14,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.jetbrains.deft.Obj;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class HttpUtil {
      * @param url    请求地址
      * @param params 参数集合
      */
-    public static String doPost(String url, Map<String, String> params, Boolean isJson) {
+    public static String doPost(String url, Map<String, Object> params, Boolean isJson) {
         return doPost(url, null, params, isJson);
     }
 
@@ -130,7 +131,7 @@ public class HttpUtil {
      * @param headers 请求头集合
      * @param params  请求参数集合
      */
-    public static String doPost(String url, Map<String, String> headers, Map<String, String> params, Boolean isJson) {
+    public static String doPost(String url, Map<String, String> headers, Map<String, Object> params, Boolean isJson) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -142,8 +143,8 @@ public class HttpUtil {
                     .build());
             if (Objects.isNull(isJson) || Boolean.FALSE.equals(isJson)) {
                 List<NameValuePair> nameValuePairList = new ArrayList<>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    nameValuePairList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+                for (Map.Entry<String, Object> entry : params.entrySet()) {
+                    nameValuePairList.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
                 }
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, StandardCharsets.UTF_8));
             } else {

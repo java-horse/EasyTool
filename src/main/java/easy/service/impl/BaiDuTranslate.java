@@ -68,7 +68,7 @@ public class BaiDuTranslate extends AbstractTranslate {
         }
         try {
             for (int i = 0; i < 10; i++) {
-                Map<String, String> paramsMap = new HashMap<>(16);
+                Map<String, Object> paramsMap = new HashMap<>(16);
                 paramsMap.put("q", text);
                 paramsMap.put("from", source);
                 paramsMap.put("to", target);

@@ -65,7 +65,7 @@ public class AliYunTranslate extends AbstractTranslate {
      */
     private String translate(String text, String source, String target) {
         try {
-            Map<String, String> paramsMap = new HashMap<>(16);
+            Map<String, Object> paramsMap = new HashMap<>(16);
             paramsMap.put("SourceText", text);
             paramsMap.put("SourceLanguage", source);
             paramsMap.put("TargetLanguage", target);
@@ -131,7 +131,7 @@ public class AliYunTranslate extends AbstractTranslate {
      * @author mabin
      * @date 2023/9/19 17:51
      */
-    private String sendPost(String url, Map<String, String> paramsMap, String akId, String akSecret) throws Exception {
+    private String sendPost(String url, Map<String, Object> paramsMap, String akId, String akSecret) throws Exception {
         URL realUrl = new URL(url);
         String method = "POST";
         String accept = "application/json";
