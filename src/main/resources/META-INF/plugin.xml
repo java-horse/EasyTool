@@ -15,7 +15,7 @@
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎</li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
             <li>百度翻译</li>
             <li>阿里翻译</li>
@@ -23,6 +23,7 @@
             <li>有道翻译</li>
             <li>火山翻译</li>
         </ul>
+        <li>支持蛇形格式变量转驼峰格式, 快捷键: CTRL + ALT + \ </li>
       </ul>
       <h3>Source</h3>
       <ul>
@@ -34,6 +35,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.5</h3>
+      <ul>
+          <li>Support snakeCase format to camelCase format</li>
+      </ul>
       <h3>v1.0.4</h3>
       <ul>
           <li>Add Alibaba Cloud Translation Channel Engine</li>
@@ -95,12 +100,13 @@
         <!--中英字符互转-->
         <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
                 description="EasyCharCore"/>
-        <!--中英互译-->
+
         <group id="easy.char.editor.actions" text="EasyChar" description="EasyChatTranslate"
                icon="AllIcons.Actions.ForceRefresh" popup="true">
             <separator/>
             <group id="EasyCharEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <!--中英互译-->
             <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
                     description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
                 <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
@@ -108,6 +114,13 @@
                 <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
                 <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
                 <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
+            </action>
+            <!--驼峰命名-->
+            <action id="EasyCharCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
+                    description="SnakeCase to CamelCase"
+                    icon="AllIcons.Actions.StopRefresh">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt U"/>
+                <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt U"/>
             </action>
         </group>
 
