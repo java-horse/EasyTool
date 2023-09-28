@@ -42,37 +42,20 @@ public class TranslateSettingConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        if (!Objects.equals(translateConfig.getTranslateChannel(), translateSettingView.getTranslateChannelBox().getSelectedItem())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getAppSecret(), translateSettingView.getAppSecretTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getAccessKeyId(), translateSettingView.getAccessKeyIdTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getAccessKeySecret(), translateSettingView.getAccessKeySecretTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getTencentSecretId(), translateSettingView.getTencentSecretIdTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getTencentSecretKey(), translateSettingView.getTencentSecretKeyTextField().getText())) {
-            return true;
-        }
-        if (!Objects.equals(translateConfig.getVolcanoSecretId(), translateSettingView.getTencentSecretKeyTextField().getText())) {
-            return true;
-        }
-        return false;
+        return !Objects.equals(translateConfig.getTranslateChannel(), translateSettingView.getTranslateChannelBox().getSelectedItem())
+                || !Objects.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getAppSecret(), translateSettingView.getAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getAccessKeyId(), translateSettingView.getAccessKeyIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getAccessKeySecret(), translateSettingView.getAccessKeySecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getTencentSecretId(), translateSettingView.getTencentSecretIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getTencentSecretKey(), translateSettingView.getTencentSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getVolcanoSecretId(), translateSettingView.getVolcanoSecretIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getVolcanoSecretKey(), translateSettingView.getVolcanoSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getXfAppId(), translateSettingView.getXfAppIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getXfApiKey(), translateSettingView.getXfApiKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getXfApiSecret(), translateSettingView.getXfApiSecretTextField().getText());
     }
 
     @Override
@@ -93,6 +76,9 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setTencentSecretKey(translateSettingView.getTencentSecretKeyTextField().getText());
         translateConfig.setVolcanoSecretId(translateSettingView.getVolcanoSecretIdTextField().getText());
         translateConfig.setVolcanoSecretKey(translateSettingView.getVolcanoSecretKeyTextField().getText());
+        translateConfig.setXfAppId(translateSettingView.getXfAppIdTextField().getText());
+        translateConfig.setXfApiKey(translateSettingView.getXfApiKeyTextField().getText());
+        translateConfig.setXfApiSecret(translateSettingView.getXfApiSecretTextField().getText());
         if (Objects.isNull(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel())) {
             throw new ConfigurationException("请选择正确的翻译渠道");
         }
@@ -130,6 +116,16 @@ public class TranslateSettingConfigurable implements Configurable {
             }
             if (StringUtils.isBlank(translateConfig.getVolcanoSecretKey())) {
                 throw new ConfigurationException("火山云VolcanoSecretKey不能为空");
+            }
+        } else if (TranslateEnum.XFYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            if (StringUtils.isBlank(translateConfig.getXfAppId())) {
+                throw new ConfigurationException("讯飞云appId不能为空");
+            }
+            if (StringUtils.isBlank(translateConfig.getXfApiKey())) {
+                throw new ConfigurationException("讯飞云apiKey不能为空");
+            }
+            if (StringUtils.isBlank(translateConfig.getXfApiSecret())) {
+                throw new ConfigurationException("讯飞云apiSecret不能为空");
             }
         }
     }

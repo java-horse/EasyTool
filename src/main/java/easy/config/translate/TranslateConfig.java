@@ -67,6 +67,20 @@ public class TranslateConfig {
      */
     private String volcanoSecretKey;
 
+    /**
+     * 讯飞AppId
+     */
+    private String xfAppId;
+
+    /**
+     * 讯飞AppSecret
+     */
+    private String xfApiSecret;
+
+    /**
+     * 讯飞AppKey
+     */
+    private String xfApiKey;
 
 
     /**
@@ -89,6 +103,9 @@ public class TranslateConfig {
         tencentSecretKey = null;
         volcanoSecretId = null;
         volcanoSecretKey = null;
+        xfAppId = null;
+        xfApiKey = null;
+        xfApiSecret = null;
     }
 
     public String getTranslateChannel() {
@@ -179,6 +196,30 @@ public class TranslateConfig {
         this.volcanoSecretKey = volcanoSecretKey;
     }
 
+    public String getXfAppId() {
+        return xfAppId;
+    }
+
+    public void setXfAppId(String xfAppId) {
+        this.xfAppId = xfAppId;
+    }
+
+    public String getXfApiSecret() {
+        return xfApiSecret;
+    }
+
+    public void setXfApiSecret(String xfApiSecret) {
+        this.xfApiSecret = xfApiSecret;
+    }
+
+    public String getXfApiKey() {
+        return xfApiKey;
+    }
+
+    public void setXfApiKey(String xfApiKey) {
+        this.xfApiKey = xfApiKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -193,6 +234,9 @@ public class TranslateConfig {
                 ", tencentSecretKey='" + tencentSecretKey + '\'' +
                 ", volcanoSecretId='" + volcanoSecretId + '\'' +
                 ", volcanoSecretKey='" + volcanoSecretKey + '\'' +
+                ", xfAppId='" + xfAppId + '\'' +
+                ", xfApiSecret='" + xfApiSecret + '\'' +
+                ", xfApiKey='" + xfApiKey + '\'' +
                 '}';
     }
 }

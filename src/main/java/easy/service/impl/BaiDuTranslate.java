@@ -79,14 +79,11 @@ public class BaiDuTranslate extends AbstractTranslate {
                 paramsMap.put("sign", DigestUtils.md5Hex(appId + text + salt + getTranslateConfig().getAppSecret()));
                 Map<String, String> headersMap = new HashMap<>(3);
                 headersMap.put("Content-Type", "application/x-www-form-urlencoded");
-                log.warn("paramsMap=" + paramsMap);
-                String res = HttpUtil.doPost(TranslateEnum.BAIDU.getUrl(), headersMap, paramsMap, Boolean.FALSE);
+                String res = HttpUtil.doPost(TranslateEnum.BAIDU.getUrl(), headersMap, paramsMap);
                 if (StringUtils.isBlank(res)) {
                     return StringUtils.EMPTY;
                 }
-                log.warn("res=" + res);
                 BaiduResponse baiduResponse = JsonUtil.fromJson(res, BaiduResponse.class);
-                log.warn("baiduResponse=" + baiduResponse);
                 if (Objects.isNull(baiduResponse) || "54003".equals(baiduResponse.getErrorCode())) {
                     Thread.sleep(500);
                 } else {

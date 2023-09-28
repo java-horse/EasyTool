@@ -123,7 +123,8 @@ public class VolcanoTranslate extends AbstractTranslate {
         String service = "translate";
         String method = "POST";
 
-        String xContentSha256 = hashSHA256(JsonUtil.toJson(paramsMap).getBytes());
+        String paramJson = JsonUtil.toJson(paramsMap);
+        String xContentSha256 = hashSHA256(paramJson.getBytes());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String xDate = sdf.format(new Date());
@@ -168,7 +169,7 @@ public class VolcanoTranslate extends AbstractTranslate {
                 " Credential=" + volcanoSecretId + "/" + credentialScope +
                 ", SignedHeaders=" + signHeader +
                 ", Signature=" + signature);
-        return HttpUtil.doPost(url + "?" + query, headersMap, paramsMap, Boolean.TRUE);
+        return HttpUtil.doPost(url + "?" + query, headersMap, paramJson);
     }
 
 

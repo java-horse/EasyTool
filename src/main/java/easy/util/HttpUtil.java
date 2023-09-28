@@ -14,13 +14,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.jetbrains.deft.Obj;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Http客户端处理
@@ -42,37 +38,23 @@ public class HttpUtil {
      * 设置连接超时时间，单位毫秒
      */
     private static final int CONNECT_TIMEOUT = 2000;
+
     /**
      * 请求获取数据的超时时间(即响应时间)，单位毫秒
      */
     private static final int SOCKET_TIMEOUT = 2000;
 
-    /**
-     * 发送get请求；不带请求头和请求参数
-     *
-     * @param url 请求地址
-     */
+
     public static String doGet(String url) {
         return doGet(url, null, null);
     }
 
-    /**
-     * 发送get请求；带请求参数
-     *
-     * @param url    请求地址
-     * @param params 请求参数集合
-     */
+
     public static String doGet(String url, Map<String, String> params) {
         return doGet(url, null, params);
     }
 
-    /**
-     * 发送get请求；带请求头和请求参数
-     *
-     * @param url     请求地址
-     * @param headers 请求头集合
-     * @param params  请求参数集合
-     */
+
     public static String doGet(String url, Map<String, String> headers, Map<String, String> params) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
@@ -97,7 +79,7 @@ public class HttpUtil {
             response = httpClient.execute(httpGet);
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            log.warn("HttpUtil.doGet execute exception!", e);
+            log.error("HttpUtil.doGet execute exception!", e);
         } finally {
             HttpClientUtils.closeQuietly(response);
             HttpClientUtils.closeQuietly(httpClient);
@@ -105,33 +87,23 @@ public class HttpUtil {
         return null;
     }
 
-    /**
-     * 发送post请求；不带请求头和请求参数
-     *
-     * @param url 请求地址
-     */
-    public static String doPost(String url) {
-        return doPost(url, null, null, Boolean.FALSE);
+    public static String doPost(String url, String paramJson) {
+        return doPost(url, null, paramJson);
     }
 
-    /**
-     * 发送post请求；带请求参数
-     *
-     * @param url    请求地址
-     * @param params 参数集合
-     */
-    public static String doPost(String url, Map<String, Object> params, Boolean isJson) {
-        return doPost(url, null, params, isJson);
+    public static String doPost(String url, Map<String, Object> params) {
+        return doPost(url, null, params);
     }
 
-    /**
-     * 发送post请求；带请求头和请求参数
-     *
-     * @param url     请求地址
-     * @param headers 请求头集合
-     * @param params  请求参数集合
-     */
-    public static String doPost(String url, Map<String, String> headers, Map<String, Object> params, Boolean isJson) {
+    public static String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
+        return doPost(url, headers, params, null, Boolean.FALSE);
+    }
+
+    public static String doPost(String url, Map<String, String> headers, String paramJson) {
+        return doPost(url, headers, null, paramJson, Boolean.TRUE);
+    }
+
+    private static String doPost(String url, Map<String, String> headers, Map<String, Object> params, String paramJson, Boolean isJson) {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -148,8 +120,11 @@ public class HttpUtil {
                 }
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList, StandardCharsets.UTF_8));
             } else {
+                if (headers == null) {
+                    headers = new HashMap<>(3);
+                }
                 headers.put("Content-Type", "application/json;charset=utf-8");
-                httpPost.setEntity(new StringEntity(JsonUtil.toJson(params), StandardCharsets.UTF_8));
+                httpPost.setEntity(new StringEntity(paramJson, StandardCharsets.UTF_8));
             }
             if (headers != null) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -159,7 +134,7 @@ public class HttpUtil {
             response = httpClient.execute(httpPost);
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            log.warn("HttpUtil.doPost execute exception!", e);
+            log.error("HttpUtil.doPost execute exception!", e);
         } finally {
             HttpClientUtils.closeQuietly(response);
             HttpClientUtils.closeQuietly(httpClient);

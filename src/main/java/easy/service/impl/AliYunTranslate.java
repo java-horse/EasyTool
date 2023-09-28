@@ -139,7 +139,8 @@ public class AliYunTranslate extends AbstractTranslate {
         String path = realUrl.getFile();
         String date = toGMTString(new Date());
         String host = realUrl.getHost();
-        String bodyMd5 = Base64.getEncoder().encodeToString(DigestUtils.md5(JsonUtil.toJson(paramsMap)));
+        String paramJson = JsonUtil.toJson(paramsMap);
+        String bodyMd5 = Base64.getEncoder().encodeToString(DigestUtils.md5(paramJson));
         String uuid = UUID.randomUUID().toString();
         String stringToSign = method + "\n" + accept + "\n" + bodyMd5 + "\n" + contentType + "\n" + date + "\n"
                 + "x-acs-signature-method:HMAC-SHA1\n"
@@ -159,7 +160,7 @@ public class AliYunTranslate extends AbstractTranslate {
         headers.put("x-acs-signature-nonce", uuid);
         headers.put("x-acs-signature-method", "HMAC-SHA1");
         headers.put("x-acs-version", "2019-01-02");
-        return HttpUtil.doPost(url, headers, paramsMap, Boolean.TRUE);
+        return HttpUtil.doPost(url, headers, paramJson);
     }
 
     /**
