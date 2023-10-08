@@ -59,6 +59,7 @@ public class TranslateService {
                     .put(TranslateEnum.VOLCANO.getTranslate(), new VolcanoTranslate().init(translateConfig))
                     .put(TranslateEnum.XFYUN.getTranslate(), new XfYunTranslate().init(translateConfig))
                     .put(TranslateEnum.GOOGLE.getTranslate(), new GoogleTranslate().init(translateConfig))
+                    .put(TranslateEnum.MICROSOFT.getTranslate(), new MicrosoftTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }

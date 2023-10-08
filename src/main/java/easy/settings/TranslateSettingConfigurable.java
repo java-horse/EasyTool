@@ -57,7 +57,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getXfAppId(), translateSettingView.getXfAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getXfApiKey(), translateSettingView.getXfApiKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getXfApiSecret(), translateSettingView.getXfApiSecretTextField().getText())
-                || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText());
+                || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText());
     }
 
     @Override
@@ -82,6 +83,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setXfApiKey(translateSettingView.getXfApiKeyTextField().getText());
         translateConfig.setXfApiSecret(translateSettingView.getXfApiSecretTextField().getText());
         translateConfig.setGoogleSecretKey(translateSettingView.getGoogleSecretKeyTextField().getText());
+        translateConfig.setMicrosoftKey(translateSettingView.getMicrosoftKeyTextField().getText());
         if (StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel())) {
             throw new ConfigurationException("请选择正确的翻译渠道", Constants.PLUGIN_NAME);
         }
@@ -133,6 +135,10 @@ public class TranslateSettingConfigurable implements Configurable {
         } else if (TranslateEnum.GOOGLE.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (StringUtils.isBlank(translateConfig.getGoogleSecretKey())) {
                 throw new ConfigurationException("谷歌key不能为空", Constants.PLUGIN_NAME);
+            }
+        } else if (TranslateEnum.MICROSOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            if (StringUtils.isBlank(translateConfig.getMicrosoftKey())) {
+                throw new ConfigurationException("微软key不能为空", Constants.PLUGIN_NAME);
             }
         }
     }

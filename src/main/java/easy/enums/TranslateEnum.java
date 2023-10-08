@@ -20,7 +20,8 @@ public enum TranslateEnum {
     TENCENT("腾讯翻译", "https://tmt.tencentcloudapi.com"),
     VOLCANO("火山翻译", "https://translate.volcengineapi.com"),
     XFYUN("讯飞翻译", "https://itrans.xf-yun.com/v1/its"),
-    GOOGLE("谷歌翻译", "https://translation.googleapis.com/language/translate/v2?q=%s&source=%s&target=%s&key=%s&format=text");
+    GOOGLE("谷歌翻译", "https://translation.googleapis.com/language/translate/v2?q=%s&source=%s&target=%s&key=%s&format=text"),
+    MICROSOFT("微软翻译", "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&textType=plain&from=%s&to=%s");
 
     private final String translate;
     private final String url;

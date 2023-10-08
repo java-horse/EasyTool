@@ -83,9 +83,14 @@ public class TranslateConfig {
     private String xfApiKey;
 
     /**
-     * 谷歌Key
+     * 谷歌key
      */
     private String googleSecretKey;
+
+    /**
+     * 微软key
+     */
+    private String microsoftKey;
 
 
     /**
@@ -112,6 +117,7 @@ public class TranslateConfig {
         xfApiKey = null;
         xfApiSecret = null;
         googleSecretKey = null;
+        microsoftKey = null;
     }
 
     public String getTranslateChannel() {
@@ -234,6 +240,14 @@ public class TranslateConfig {
         this.googleSecretKey = googleSecretKey;
     }
 
+    public String getMicrosoftKey() {
+        return microsoftKey;
+    }
+
+    public void setMicrosoftKey(String microsoftKey) {
+        this.microsoftKey = microsoftKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -252,6 +266,7 @@ public class TranslateConfig {
                 ", xfApiSecret='" + xfApiSecret + '\'' +
                 ", xfApiKey='" + xfApiKey + '\'' +
                 ", googleSecretKey='" + googleSecretKey + '\'' +
+                ", microsoftKey='" + microsoftKey + '\'' +
                 '}';
     }
 
