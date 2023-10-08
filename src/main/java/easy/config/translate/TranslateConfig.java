@@ -82,6 +82,11 @@ public class TranslateConfig {
      */
     private String xfApiKey;
 
+    /**
+     * 谷歌Key
+     */
+    private String googleSecretKey;
+
 
     /**
      * 重置翻译配置
@@ -106,6 +111,7 @@ public class TranslateConfig {
         xfAppId = null;
         xfApiKey = null;
         xfApiSecret = null;
+        googleSecretKey = null;
     }
 
     public String getTranslateChannel() {
@@ -220,6 +226,14 @@ public class TranslateConfig {
         this.xfApiKey = xfApiKey;
     }
 
+    public String getGoogleSecretKey() {
+        return googleSecretKey;
+    }
+
+    public void setGoogleSecretKey(String googleSecretKey) {
+        this.googleSecretKey = googleSecretKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -237,6 +251,8 @@ public class TranslateConfig {
                 ", xfAppId='" + xfAppId + '\'' +
                 ", xfApiSecret='" + xfApiSecret + '\'' +
                 ", xfApiKey='" + xfApiKey + '\'' +
+                ", googleSecretKey='" + googleSecretKey + '\'' +
                 '}';
     }
+
 }

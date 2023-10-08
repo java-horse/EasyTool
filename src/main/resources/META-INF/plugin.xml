@@ -17,12 +17,13 @@
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
-            <li>百度翻译</li>
-            <li>阿里翻译</li>
-            <li>腾讯翻译</li>
-            <li>有道翻译</li>
-            <li>火山翻译</li>
-            <li>讯飞翻译</li>
+            <li>--百度翻译</li>
+            <li>--阿里翻译</li>
+            <li>--腾讯翻译</li>
+            <li>--有道翻译</li>
+            <li>--火山翻译</li>
+            <li>--讯飞翻译</li>
+            <li>--谷歌翻译(VPN)</li>
         </ul>
         <li>支持蛇形格式变量转驼峰格式, 快捷键: CTRL + ALT + \ </li>
       </ul>
@@ -36,6 +37,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.6-alpha</h3>
+      <ul>
+          <li>Add Google Cloud Translation Channel Engine (VPN required)</li>
+      </ul>
       <h3>v1.0.5</h3>
       <ul>
           <li>Support snakeCase format to camelCase format</li>

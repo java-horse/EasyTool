@@ -19,7 +19,8 @@ public enum TranslateEnum {
     YOUDAO("有道翻译", "https://openapi.youdao.com/api"),
     TENCENT("腾讯翻译", "https://tmt.tencentcloudapi.com"),
     VOLCANO("火山翻译", "https://translate.volcengineapi.com"),
-    XFYUN("讯飞翻译", "https://itrans.xf-yun.com/v1/its");
+    XFYUN("讯飞翻译", "https://itrans.xf-yun.com/v1/its"),
+    GOOGLE("谷歌翻译", "https://translation.googleapis.com/language/translate/v2?q=%s&source=%s&target=%s&key=%s&format=text");
 
     private final String translate;
     private final String url;

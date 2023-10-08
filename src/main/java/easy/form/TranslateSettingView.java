@@ -62,6 +62,8 @@ public class TranslateSettingView {
     private JTextField xfApiSecretTextField;
     private JLabel xfApiKeyLabel;
     private JTextField xfApiKeyTextField;
+    private JLabel googleSecretKeyLabel;
+    private JTextField googleSecretKeyTextField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -154,6 +156,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -181,6 +185,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -208,6 +214,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -235,6 +243,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -262,6 +272,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -289,6 +301,37 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(true);
             xfApiKeyLabel.setVisible(true);
             xfApiKeyTextField.setVisible(true);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(true);
+            googleSecretKeyTextField.setVisible(true);
         } else {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -316,6 +359,8 @@ public class TranslateSettingView {
             xfApiSecretTextField.setVisible(false);
             xfApiKeyLabel.setVisible(false);
             xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
         }
     }
 
@@ -342,6 +387,7 @@ public class TranslateSettingView {
         setXfAppIdTextField(translateConfig.getXfAppId());
         setXfApiKeyTextField(translateConfig.getXfApiKey());
         setXfApiSecretTextField(translateConfig.getXfApiSecret());
+        setGoogleSecretKeyTextField(translateConfig.getGoogleSecretKey());
     }
 
 
@@ -571,6 +617,22 @@ public class TranslateSettingView {
 
     public void setXfApiKeyTextField(String xfApiKeyTextField) {
         this.xfApiKeyTextField.setText(xfApiKeyTextField);
+    }
+
+    public JLabel getGoogleSecretKeyLabel() {
+        return googleSecretKeyLabel;
+    }
+
+    public void setGoogleSecretKeyLabel(JLabel googleSecretKeyLabel) {
+        this.googleSecretKeyLabel = googleSecretKeyLabel;
+    }
+
+    public JTextField getGoogleSecretKeyTextField() {
+        return googleSecretKeyTextField;
+    }
+
+    public void setGoogleSecretKeyTextField(String googleSecretKeyTextField) {
+        this.googleSecretKeyTextField.setText(googleSecretKeyTextField);
     }
 
 }
