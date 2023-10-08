@@ -21,7 +21,7 @@ public class WeChatOfficialView extends DialogWrapper {
     public WeChatOfficialView() {
         super(false);
         init();
-        setTitle("欢迎关注微信公众号");
+        setTitle("更多精彩, 尽在<IT小滑头>公众号");
     }
 
     @Nullable

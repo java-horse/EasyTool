@@ -1,5 +1,6 @@
 package easy.action;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -43,30 +44,30 @@ public class TranslateAction extends AnAction {
             return;
         }
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(editor)) {
+        if (Objects.isNull(editor) || !editor.getSelectionModel().hasSelection()) {
             return;
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
-        if (StringUtils.isNotBlank(selectedText) && Boolean.FALSE.equals(keyConfigurationReminder())) {
-            String translateResult = translateService.translate(selectedText);
-            if (StringUtils.isBlank(translateResult)) {
-                return;
+        if (StringUtils.isBlank(selectedText) || Boolean.TRUE.equals(keyConfigurationReminder())) {
+            return;
+        }
+        String translateResult = translateService.translate(selectedText);
+        if (StringUtils.isBlank(translateResult)) {
+            return;
+        }
+        if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
+            try {
+                WriteCommandAction.writeCommandAction(project).run((ThrowableRunnable<Throwable>) () -> {
+                            int start = editor.getSelectionModel().getSelectionStart();
+                            EditorModificationUtilEx.insertStringAtCaret(editor, translateResult);
+                            editor.getSelectionModel().setSelection(start, start + translateResult.length());
+                        }
+                );
+            } catch (Throwable ex) {
+                log.error("中英互译写入编辑器异常", ex);
             }
-            if (LanguageUtil.isAllChinese(selectedText)) {
-                try {
-                    WriteCommandAction.writeCommandAction(project).run((ThrowableRunnable<Throwable>) () -> {
-                                int start = editor.getSelectionModel().getSelectionStart();
-                                EditorModificationUtilEx.insertStringAtCaret(editor, translateResult);
-                                editor.getSelectionModel().setSelection(start, start + translateResult.length());
-                            }
-                    );
-                } catch (Throwable ex) {
-                    log.error("中英互译写入编辑器异常", ex);
-                }
-            } else {
-                TranslateResultView translateResultView = new TranslateResultView(translateConfig.getTranslateChannel(), translateResult);
-                translateResultView.show();
-            }
+        } else {
+            new TranslateResultView(translateConfig.getTranslateChannel(), translateResult).show();
         }
     }
 
@@ -75,7 +76,13 @@ public class TranslateAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && editor.getSelectionModel().hasSelection());
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return super.getActionUpdateThread();
     }
 
     /**
@@ -90,25 +97,21 @@ public class TranslateAction extends AnAction {
         String translateChannel = translateConfig.getTranslateChannel();
         boolean isRemind = false;
         if (StringUtils.equals(translateChannel, TranslateEnum.BAIDU.getTranslate())) {
-            if (StringUtils.isAnyBlank(translateConfig.getAppId(), translateConfig.getAppSecret())) {
-                isRemind = true;
-            }
+            isRemind = StringUtils.isAnyBlank(translateConfig.getAppId(), translateConfig.getAppSecret());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.ALIYUN.getTranslate())) {
-            if (StringUtils.isAnyBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret())) {
-                isRemind = true;
-            }
+            isRemind = StringUtils.isAnyBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.YOUDAO.getTranslate())) {
-            if (StringUtils.isAnyBlank(translateConfig.getSecretId(), translateConfig.getSecretKey())) {
-                isRemind = true;
-            }
+            isRemind = StringUtils.isAnyBlank(translateConfig.getSecretId(), translateConfig.getSecretKey());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.TENCENT.getTranslate())) {
-            if (StringUtils.isAnyBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey())) {
-                isRemind = true;
-            }
+            isRemind = StringUtils.isAnyBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.VOLCANO.getTranslate())) {
-            if (StringUtils.isAnyBlank(translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey())) {
-                isRemind = true;
-            }
+            isRemind = StringUtils.isAnyBlank(translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.XFYUN.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getXfAppId(), translateConfig.getXfApiKey(), translateConfig.getXfApiSecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.GOOGLE.getTranslate())) {
+            isRemind = StringUtils.isNotBlank(translateConfig.getGoogleSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.MICROSOFT.getTranslate())) {
+            isRemind = StringUtils.isNotBlank(translateConfig.getMicrosoftKey());
         }
         if (isRemind) {
             NotificationUtil.notify("请先配置翻译渠道密钥!");

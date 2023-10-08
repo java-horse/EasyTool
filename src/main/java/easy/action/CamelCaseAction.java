@@ -1,6 +1,7 @@
 package easy.action;
 
 import com.google.common.base.CaseFormat;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -34,7 +35,7 @@ public class CamelCaseAction extends AnAction {
             return;
         }
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(editor)) {
+        if (Objects.isNull(editor) || !editor.getSelectionModel().hasSelection()) {
             return;
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
@@ -65,7 +66,13 @@ public class CamelCaseAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && editor.getSelectionModel().hasSelection());
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return super.getActionUpdateThread();
     }
 
 }

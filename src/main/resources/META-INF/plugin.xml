@@ -97,40 +97,58 @@
     </application-components>
 
     <actions>
-        <!--工具栏快捷菜单-->
-        <group id="easy.char.tool.actions" text="EasyChar" icon="AllIcons.Actions.ForceRefresh"
-               description="Chinese character replacement plugin" popup="true">
-            <separator/>
-            <group id="EasyCharToolSubGroup"/>
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
-                    class="easy.action.WeChatOfficialAction" text="微信公众号"/>
-        </group>
         <!--中英字符互转-->
         <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
                 description="EasyCharCore"/>
+        <!--微信公众号-->
+        <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
+                class="easy.action.WeChatOfficialAction" text="微信公众号"/>
+        <!--中英互译-->
+        <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
+                description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
+        </action>
+        <!--驼峰命名-->
+        <action id="EasyCharCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
+                description="SnakeCase to CamelCase" icon="AllIcons.Actions.StopRefresh">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt BACK_SLASH"/>
+        </action>
 
-        <group id="easy.char.editor.actions" text="EasyChar" description="EasyChatTranslate"
+
+        <!--工具栏快捷菜单-->
+        <group id="easy.char.tool.actions" text="EasyChar" icon="AllIcons.Actions.ForceRefresh"
+               description="EasyChar development assistance tools" popup="true">
+            <separator/>
+            <group id="EasyCharToolSubGroup"/>
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <reference ref="EasyChatWeChatOfficialAccount"/>
+        </group>
+        <!--编辑器右键菜单-->
+        <group id="easy.char.editor.actions" text="EasyChar" description="EasyChar development assistance tools"
                icon="AllIcons.Actions.ForceRefresh" popup="true">
             <separator/>
             <group id="EasyCharEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-            <!--中英互译-->
-            <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
-                    description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
-                <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
-                <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
-                <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta BACK_SLASH"/>
-                <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
-            </action>
-            <!--驼峰命名-->
-            <action id="EasyCharCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
-                    description="SnakeCase to CamelCase"
-                    icon="AllIcons.Actions.StopRefresh">
-                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt U"/>
-                <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt U"/>
-            </action>
+            <reference ref="EasyCharTranslateAction"/>
+            <reference ref="EasyCharCamelCaseAction"/>
+            <reference ref="EasyChatWeChatOfficialAccount"/>
+        </group>
+        <!--控制台右键菜单-->
+        <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
+               icon="AllIcons.Actions.ForceRefresh" popup="true">
+            <separator/>
+            <group id="EasyCharConsoleSubGroup"/>
+            <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
+            <reference ref="EasyCharTranslateAction"/>
+            <reference ref="EasyChatWeChatOfficialAccount"/>
         </group>
 
     </actions>
