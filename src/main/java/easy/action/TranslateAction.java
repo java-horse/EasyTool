@@ -109,9 +109,11 @@ public class TranslateAction extends AnAction {
         } else if (StringUtils.equals(translateChannel, TranslateEnum.XFYUN.getTranslate())) {
             isRemind = StringUtils.isAnyBlank(translateConfig.getXfAppId(), translateConfig.getXfApiKey(), translateConfig.getXfApiSecret());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.GOOGLE.getTranslate())) {
-            isRemind = StringUtils.isNotBlank(translateConfig.getGoogleSecretKey());
+            isRemind = StringUtils.isBlank(translateConfig.getGoogleSecretKey());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.MICROSOFT.getTranslate())) {
-            isRemind = StringUtils.isNotBlank(translateConfig.getMicrosoftKey());
+            isRemind = StringUtils.isBlank(translateConfig.getMicrosoftKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.NIU.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getNiuApiKey());
         }
         if (isRemind) {
             NotificationUtil.notify("请先配置翻译渠道密钥!");

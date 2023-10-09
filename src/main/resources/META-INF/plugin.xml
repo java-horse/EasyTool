@@ -25,6 +25,7 @@
             <li>--讯飞翻译</li>
             <li>--微软翻译</li>
             <li>--谷歌翻译(VPN)</li>
+            <li>--小牛翻译</li>
         </ul>
         <li>支持蛇形格式变量转驼峰格式, 快捷键: CTRL + ALT + \ </li>
       </ul>
@@ -42,6 +43,7 @@
       <ul>
           <li>Add Microsoft Cloud Translation Channel Engine</li>
           <li>Add Google Cloud Translation Channel Engine (VPN required)</li>
+          <li>Add niutrans Cloud Translation Channel Engine (https://niutrans.com/cloud)</li>
       </ul>
       <h3>v1.0.5</h3>
       <ul>

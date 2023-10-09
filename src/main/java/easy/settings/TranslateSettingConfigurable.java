@@ -3,11 +3,11 @@ package easy.settings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.form.TranslateSettingView;
+import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -58,7 +58,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getXfApiKey(), translateSettingView.getXfApiKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getXfApiSecret(), translateSettingView.getXfApiSecretTextField().getText())
                 || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText());
+                || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText())
+                || !StringUtils.equals(translateConfig.getNiuApiKey(), translateSettingView.getNiuApiKeyTextField().getText());
     }
 
     @Override
@@ -84,62 +85,35 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setXfApiSecret(translateSettingView.getXfApiSecretTextField().getText());
         translateConfig.setGoogleSecretKey(translateSettingView.getGoogleSecretKeyTextField().getText());
         translateConfig.setMicrosoftKey(translateSettingView.getMicrosoftKeyTextField().getText());
-        if (StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel())) {
-            throw new ConfigurationException("请选择正确的翻译渠道", Constants.PLUGIN_NAME);
-        }
+        translateConfig.setNiuApiKey(translateSettingView.getNiuApiKeyTextField().getText());
+
+        ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getAppId())) {
-                throw new ConfigurationException("百度AppId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getAppSecret())) {
-                throw new ConfigurationException("百度AppSecret不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.ALIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getAccessKeyId())) {
-                throw new ConfigurationException("阿里云AccessKeyId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getAccessKeySecret())) {
-                throw new ConfigurationException("阿里云AccessKeySecret不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.YOUDAO.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getSecretId())) {
-                throw new ConfigurationException("有道智云SecretId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getSecretKey())) {
-                throw new ConfigurationException("有道智云SecretKey不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.TENCENT.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getTencentSecretId())) {
-                throw new ConfigurationException("腾讯云TencentSecretId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getTencentSecretKey())) {
-                throw new ConfigurationException("腾讯云TencentSecretKey不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.VOLCANO.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getVolcanoSecretId())) {
-                throw new ConfigurationException("火山云VolcanoSecretId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getVolcanoSecretKey())) {
-                throw new ConfigurationException("火山云VolcanoSecretKey不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.XFYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getXfAppId())) {
-                throw new ConfigurationException("讯飞云appId不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getXfApiKey())) {
-                throw new ConfigurationException("讯飞云apiKey不能为空", Constants.PLUGIN_NAME);
-            }
-            if (StringUtils.isBlank(translateConfig.getXfApiSecret())) {
-                throw new ConfigurationException("讯飞云apiSecret不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.GOOGLE.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getGoogleSecretKey())) {
-                throw new ConfigurationException("谷歌key不能为空", Constants.PLUGIN_NAME);
-            }
-        } else if (TranslateEnum.MICROSOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
-            if (StringUtils.isBlank(translateConfig.getMicrosoftKey())) {
-                throw new ConfigurationException("微软key不能为空", Constants.PLUGIN_NAME);
-            }
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getAppId(), translateConfig.getAppSecret()), TranslateEnum.BAIDU.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.ALIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret()), TranslateEnum.ALIYUN.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.YOUDAO.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getSecretId(), translateConfig.getSecretKey()), TranslateEnum.YOUDAO.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.TENCENT.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey()), TranslateEnum.TENCENT.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.VOLCANO.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey()), TranslateEnum.VOLCANO.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.XFYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getXfAppId(), translateConfig.getXfApiKey(), translateConfig.getXfApiSecret()), TranslateEnum.XFYUN.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.GOOGLE.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getGoogleSecretKey()), TranslateEnum.GOOGLE.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.MICROSOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getMicrosoftKey()), TranslateEnum.MICROSOFT.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.NIU.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getNiuApiKey()), TranslateEnum.NIU.getTranslate() + "密钥不能为空");
         }
     }
 

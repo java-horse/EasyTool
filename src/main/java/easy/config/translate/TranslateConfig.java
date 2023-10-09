@@ -92,6 +92,11 @@ public class TranslateConfig {
      */
     private String microsoftKey;
 
+    /**
+     * 小牛翻译apiKey
+     */
+    private String niuApiKey;
+
 
     /**
      * 重置翻译配置
@@ -118,6 +123,7 @@ public class TranslateConfig {
         xfApiSecret = null;
         googleSecretKey = null;
         microsoftKey = null;
+        niuApiKey = null;
     }
 
     public String getTranslateChannel() {
@@ -248,6 +254,14 @@ public class TranslateConfig {
         this.microsoftKey = microsoftKey;
     }
 
+    public String getNiuApiKey() {
+        return niuApiKey;
+    }
+
+    public void setNiuApiKey(String niuApiKey) {
+        this.niuApiKey = niuApiKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -267,6 +281,7 @@ public class TranslateConfig {
                 ", xfApiKey='" + xfApiKey + '\'' +
                 ", googleSecretKey='" + googleSecretKey + '\'' +
                 ", microsoftKey='" + microsoftKey + '\'' +
+                ", niuApiKey='" + niuApiKey + '\'' +
                 '}';
     }
 
