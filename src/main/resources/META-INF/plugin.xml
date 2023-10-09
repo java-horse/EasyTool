@@ -39,16 +39,12 @@
 
     <change-notes>
         <![CDATA[
-      <h3>v1.0.6-alpha</h3>
+      <h3>v1.0.5</h3>
       <ul>
           <li>Add Microsoft Cloud Translation Channel Engine</li>
           <li>Add Google Cloud Translation Channel Engine (VPN required)</li>
           <li>Add niutrans Cloud Translation Channel Engine (https://niutrans.com/cloud)</li>
-      </ul>
-      <h3>v1.0.5</h3>
-      <ul>
           <li>Support snakeCase format to camelCase format</li>
-          <li>Add XFYun Cloud Translation Channel Engine</li>
       </ul>
       <h3>v1.0.4</h3>
       <ul>
