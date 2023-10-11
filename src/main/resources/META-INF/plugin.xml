@@ -11,6 +11,8 @@
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
+        <li>Support snakeCase format to camelCase format</li>
+        <li>Supports right-click shortcut network search</li>
       </ul>
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
@@ -27,7 +29,8 @@
             <li>--谷歌翻译(VPN)</li>
             <li>--小牛翻译</li>
         </ul>
-        <li>支持蛇形格式变量转驼峰格式, 快捷键: CTRL + ALT + \ </li>
+        <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
+        <li>支持选中文本右键快捷Web搜索</li>
       </ul>
       <h3>Source</h3>
       <ul>
@@ -39,6 +42,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.6-beat</h3>
+      <ul>
+          <li>Supports right-click shortcut network search</li>
+      </ul>
       <h3>v1.0.5</h3>
       <ul>
           <li>Add Microsoft Cloud Translation Channel Engine</li>
