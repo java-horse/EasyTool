@@ -99,7 +99,7 @@
         <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
                 description="EasyCharCore"/>
         <!--微信公众号-->
-        <action id="EasyChatWeChatOfficialAccount" icon="AllIcons.CodeWithMe.CwmAccessOn"
+        <action id="EasyChatWeChatOfficialAccountAction" icon="AllIcons.CodeWithMe.CwmAccessOn"
                 class="easy.action.WeChatOfficialAction" text="微信公众号"/>
         <!--中英互译-->
         <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
@@ -119,6 +119,10 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt BACK_SLASH"/>
         </action>
+        <!--WebSearch在线搜索-->
+        <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
+               text="WebSearch" description="EasyChar development assistance tools"
+               icon="AllIcons.General.Web" popup="true"/>
 
 
         <!--工具栏快捷菜单-->
@@ -127,7 +131,7 @@
             <separator/>
             <group id="EasyCharToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <reference ref="EasyChatWeChatOfficialAccount"/>
+            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
         <!--编辑器右键菜单-->
         <group id="easy.char.editor.actions" text="EasyChar" description="EasyChar development assistance tools"
@@ -137,7 +141,8 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharCamelCaseAction"/>
-            <reference ref="EasyChatWeChatOfficialAccount"/>
+            <reference ref="EasyChatWeChatOfficialAccountAction"/>
+            <reference ref="EasyCharWebSearchDynamicActions"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
@@ -146,7 +151,8 @@
             <group id="EasyCharConsoleSubGroup"/>
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
-            <reference ref="EasyChatWeChatOfficialAccount"/>
+            <reference ref="EasyChatWeChatOfficialAccountAction"/>
+            <reference ref="EasyCharWebSearchDynamicActions"/>
         </group>
 
     </actions>
