@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -27,8 +28,8 @@ public class WebSearchAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(WebSearchAction.class);
 
-    public WebSearchAction(@Nullable String text) {
-        super(text);
+    public WebSearchAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
+        super(text, description, icon);
     }
 
     @Override
@@ -57,7 +58,11 @@ public class WebSearchAction extends AnAction {
             } else if (WebSearchEnum.GOOGLE.title.equals(actionText)) {
                 searchUrl = String.format(WebSearchEnum.GOOGLE.templateUrl, selectedText);
             } else if (WebSearchEnum.STACK_OVERFLOW.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.STACK_OVERFLOW.templateUrl, selectedText);
+                searchUrl = WebSearchEnum.STACK_OVERFLOW.templateUrl + selectedText;
+            } else if (WebSearchEnum.SO.title.equals(actionText)) {
+                searchUrl = String.format(WebSearchEnum.SO.templateUrl, selectedText);
+            } else if (WebSearchEnum.SO_GOU.title.equals(actionText)) {
+                searchUrl = String.format(WebSearchEnum.SO_GOU.templateUrl, selectedText);
             }
             log.warn("searchUrl:" + searchUrl);
             if (Objects.isNull(searchUrl)) {

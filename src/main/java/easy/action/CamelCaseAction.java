@@ -11,6 +11,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ThrowableRunnable;
+import easy.util.LanguageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +68,8 @@ public class CamelCaseAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && editor.getSelectionModel().hasSelection());
+                && editor.getSelectionModel().hasSelection()
+                && !LanguageUtil.isContainsChinese(editor.getSelectionModel().getSelectedText()));
     }
 
     @Override
