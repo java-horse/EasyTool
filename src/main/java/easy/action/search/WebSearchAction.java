@@ -47,7 +47,6 @@ public class WebSearchAction extends AnAction {
         }
         Presentation presentation = e.getPresentation();
         String actionText = presentation.getText();
-        log.warn("actionText:" + actionText);
         String searchUrl = null;
         try {
             selectedText = URLEncoder.encode(selectedText, StandardCharsets.UTF_8.name());
@@ -64,7 +63,6 @@ public class WebSearchAction extends AnAction {
             } else if (WebSearchEnum.SO_GOU.title.equals(actionText)) {
                 searchUrl = String.format(WebSearchEnum.SO_GOU.templateUrl, selectedText);
             }
-            log.warn("searchUrl:" + searchUrl);
             if (Objects.isNull(searchUrl)) {
                 return;
             }

@@ -105,10 +105,8 @@
     <actions>
         <!--中英字符互转-->
         <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
-                description="EasyCharCore"/>
-        <!--微信公众号-->
-        <action id="EasyChatWeChatOfficialAccountAction" icon="AllIcons.CodeWithMe.CwmAccessOn"
-                class="easy.action.WeChatOfficialAction" text="微信公众号"/>
+                description="EasyCharCore">
+        </action>
         <!--中英互译-->
         <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
                 description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
@@ -130,37 +128,34 @@
         <!--WebSearch在线搜索-->
         <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
                text="WebSearch" description="EasyChar development assistance tools"
-               icon="AllIcons.General.Web" popup="true"/>
+               icon="AllIcons.General.Web" popup="true" compact="true"/>
 
 
         <!--工具栏快捷菜单-->
-        <group id="easy.char.tool.actions" text="EasyChar" icon="AllIcons.Actions.ForceRefresh"
-               description="EasyChar development assistance tools" popup="true">
-            <separator/>
+        <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
+               text="EasyChar" icon="AllIcons.Actions.ForceRefresh" description="EasyChar development assistance tools"
+               popup="true" compact="true">
             <group id="EasyCharToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
         <!--编辑器右键菜单-->
         <group id="easy.char.editor.actions" text="EasyChar" description="EasyChar development assistance tools"
-               icon="AllIcons.Actions.ForceRefresh" popup="true">
+               icon="AllIcons.Actions.ForceRefresh" popup="true" compact="true">
             <separator/>
             <group id="EasyCharEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharCamelCaseAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
-            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
-               icon="AllIcons.Actions.ForceRefresh" popup="true">
+               icon="AllIcons.Actions.ForceRefresh" popup="true" compact="true">
             <separator/>
             <group id="EasyCharConsoleSubGroup"/>
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
-            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
 
     </actions>
