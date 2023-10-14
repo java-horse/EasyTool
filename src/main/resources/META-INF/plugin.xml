@@ -13,6 +13,7 @@
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
         <li>Supports right-click shortcut network search</li>
+        <li>Support for quick generation of serialVersionUID</li>
       </ul>
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
@@ -31,6 +32,7 @@
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
         <li>支持选中文本右键快捷Web搜索</li>
+        <li>支持快捷生成 serialVersionUID</li>
       </ul>
       <h3>Source</h3>
       <ul>
@@ -42,6 +44,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.0.7</h3>
+      <ul>
+          <li>Support for quick generation of serialVersionUID</li>
+      </ul>
       <h3>v1.0.6</h3>
       <ul>
           <li>Supports right-click shortcut network search</li>
@@ -129,6 +135,15 @@
         <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
                text="WebSearch" description="EasyChar development assistance tools"
                icon="AllIcons.General.Web" popup="true" compact="true"/>
+        <!--快捷生成serialVersionUID-->
+        <action id="EasyCharSerialAction" class="easy.action.SerialVersionUIDAction" text="serialVersionUID"
+                description="generate serialVersionUID" icon="AllIcons.Actions.StopRefresh">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta shift alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift alt BACK_SLASH"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
+        </action>
 
 
         <!--工具栏快捷菜单-->
@@ -146,6 +161,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharCamelCaseAction"/>
+            <reference ref="EasyCharSerialAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
         </group>
         <!--控制台右键菜单-->
