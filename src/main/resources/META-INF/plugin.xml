@@ -42,9 +42,10 @@
 
     <change-notes>
         <![CDATA[
-      <h3>v1.0.6-beat</h3>
+      <h3>v1.0.6</h3>
       <ul>
           <li>Supports right-click shortcut network search</li>
+          <li>Optimize Character Conversion Statistics Sidebar</li>
       </ul>
       <h3>v1.0.5</h3>
       <ul>
@@ -129,7 +130,7 @@
         <!--WebSearch在线搜索-->
         <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
                text="WebSearch" description="EasyChar development assistance tools"
-               icon="AllIcons.Javaee.WebModuleGroup" popup="true"/>
+               icon="AllIcons.General.Web" popup="true"/>
 
 
         <!--工具栏快捷菜单-->
@@ -148,8 +149,8 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharCamelCaseAction"/>
-            <reference ref="EasyChatWeChatOfficialAccountAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
+            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
@@ -158,8 +159,8 @@
             <group id="EasyCharConsoleSubGroup"/>
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
-            <reference ref="EasyChatWeChatOfficialAccountAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
+            <reference ref="EasyChatWeChatOfficialAccountAction"/>
         </group>
 
     </actions>

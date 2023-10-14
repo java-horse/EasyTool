@@ -11,7 +11,9 @@ import javax.swing.*;
 public class Statistics {
 
     public static Statistics INSTANCE;
-    private JTextField textField;
+    private JPanel panel;
+    private JTextField dayTextField;
+    private JTextField totalTextField;
 
     public static Statistics getInstance() {
         synchronized (Statistics.class) {
@@ -22,14 +24,21 @@ public class Statistics {
         return INSTANCE;
     }
 
-    public Statistics() {
-        this.textField = new JTextField();
-        this.textField.setFocusable(false);
-        this.textField.setBorder(null);
+    private void createUIComponents() {
+        this.dayTextField = new JTextField();
+        this.totalTextField = new JTextField();
     }
 
-    public JTextField getTextField() {
-        return textField;
+    public JTextField getDayTextField() {
+        return dayTextField;
+    }
+
+    public JTextField getTotalTextField() {
+        return totalTextField;
+    }
+
+    public JComponent getComponent() {
+        return panel;
     }
 
 }
