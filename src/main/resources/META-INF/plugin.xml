@@ -32,12 +32,12 @@
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
         <li>支持选中文本右键快捷Web搜索</li>
-        <li>支持快捷生成 serialVersionUID</li>
+        <li>支持快捷生成 serialVersionUID, 快捷键: CTRL + SHIFT + ALT + \ </li>
       </ul>
       <h3>Source</h3>
       <ul>
-        <li><a href="https://gitee.com/milubin/easy-char">Gitee</a></li>
-        <li><a href="https://gitee.com/milubin/easy-char">Github</a></li>
+        <li><a href="https://gitee.com/milubin/easy-char-plugin">Gitee</a></li>
+        <li><a href="https://gitee.com/milubin/easy-char-plugin">Github</a></li>
       </ul>
     ]]>
     </description>
