@@ -13,7 +13,6 @@ public class Statistics {
     public static Statistics INSTANCE;
     private JPanel panel;
     private JTextField dayTextField;
-    private JTextField totalTextField;
 
     public static Statistics getInstance() {
         synchronized (Statistics.class) {
@@ -24,21 +23,14 @@ public class Statistics {
         return INSTANCE;
     }
 
-    private void createUIComponents() {
+    public Statistics() {
         this.dayTextField = new JTextField();
-        this.totalTextField = new JTextField();
+        this.dayTextField.setFocusable(false);
+        this.dayTextField.setBorder(null);
     }
 
     public JTextField getDayTextField() {
         return dayTextField;
-    }
-
-    public JTextField getTotalTextField() {
-        return totalTextField;
-    }
-
-    public JComponent getComponent() {
-        return panel;
     }
 
 }

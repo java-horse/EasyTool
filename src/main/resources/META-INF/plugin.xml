@@ -47,6 +47,7 @@
       <h3>v1.0.7</h3>
       <ul>
           <li>Support for quick generation of serialVersionUID</li>
+          <li>Fix errors in the statistics sidebar</li>
       </ul>
       <h3>v1.0.6</h3>
       <ul>

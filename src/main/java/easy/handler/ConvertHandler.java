@@ -140,17 +140,9 @@ public class ConvertHandler implements TypedActionHandler {
             JTextField dayTextField = statistics.getDayTextField();
             javax.swing.text.Document dayDocument = dayTextField.getDocument();
             dayDocument.remove(0, dayDocument.getLength());
-            dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已为您自动转换中英文字符 " + getDayConvertCount(dayKeyName) + " 次", null);
+            dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已转换中英文字符 " + getDayConvertCount(dayKeyName) +
+                    " 次 累计 " + getTotalConvertCount() + " 次", null);
             dayTextField.setDocument(dayDocument);
-
-            JTextField totalTextField = statistics.getTotalTextField();
-            javax.swing.text.Document totalDocument = totalTextField.getDocument();
-            totalDocument.remove(0, totalDocument.getLength());
-            totalDocument.insertString(0, Constants.PLUGIN_NAME + " 累计共为您自动转换中英文字符 " + getTotalConvertCount() + " 次", null);
-            totalTextField.setDocument(totalDocument);
-
-            log.warn("totalConvertCount: " + getTotalConvertCount());
-            log.warn("dayConvertCount: " + getDayConvertCount(dayKeyName));
         } catch (Exception e) {
             log.error("更新工具栏统计选项卡文本数据异常", e);
         }

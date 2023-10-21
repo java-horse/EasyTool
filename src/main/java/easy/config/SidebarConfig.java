@@ -53,30 +53,17 @@ public class SidebarConfig implements ToolWindowFactory {
      * @date 2023/10/14 9:21
      */
     private void createStatisticsTab(ContentFactory contentFactory, ContentManager contentManager, PropertiesComponent propertiesComponent) throws Exception {
-        // 天转换次数
         Statistics statistics = Statistics.getInstance();
         JTextField dayTextField = statistics.getDayTextField();
         Document dayDocument = dayTextField.getDocument();
         dayDocument.remove(0, dayDocument.getLength());
         String dayKeyName = Constants.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已为您自动转换中英文字符 " + propertiesComponent.getValue(dayKeyName, "0") + " 次", null);
+        dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已转换中英文字符 " + propertiesComponent.getValue(dayKeyName, "0") +
+                " 次 累计 " + propertiesComponent.getValue(Constants.TOTAL_CONVERT_COUNT, "0") + " 次", null);
         dayTextField.setDocument(dayDocument);
         dayTextField.setHorizontalAlignment(SwingConstants.CENTER);
         dayTextField.setFont(new Font("微软雅黑", Font.BOLD, 18));
-        dayTextField.setFocusable(false);
-        dayTextField.setBorder(null);
-
-        JTextField totalTextField = statistics.getTotalTextField();
-        Document totalDocument = totalTextField.getDocument();
-        totalDocument.remove(0, totalDocument.getLength());
-        totalDocument.insertString(0, Constants.PLUGIN_NAME + " 累计共为您自动转换中英文字符 " + propertiesComponent.getValue(Constants.TOTAL_CONVERT_COUNT, "0") + " 次", null);
-        totalTextField.setDocument(totalDocument);
-        totalTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        totalTextField.setFont(new Font("微软雅黑", Font.BOLD, 18));
-        totalTextField.setFocusable(false);
-        totalTextField.setBorder(null);
-
-        contentManager.addContent(contentFactory.createContent(statistics.getComponent(), "Statistics", false));
+        contentManager.addContent(contentFactory.createContent(statistics.getDayTextField(), "Statistics", false));
     }
 
 }
