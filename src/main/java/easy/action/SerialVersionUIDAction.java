@@ -52,7 +52,8 @@ public class SerialVersionUIDAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && !editor.getSelectionModel().hasSelection());
     }
 
     @Override

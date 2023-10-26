@@ -62,6 +62,8 @@ public class WebSearchAction extends AnAction {
                 searchUrl = String.format(WebSearchEnum.SO.templateUrl, selectedText);
             } else if (WebSearchEnum.SO_GOU.title.equals(actionText)) {
                 searchUrl = String.format(WebSearchEnum.SO_GOU.templateUrl, selectedText);
+            } else if (WebSearchEnum.DUCK_DUCK_GO.title.equals(actionText)) {
+                searchUrl = String.format(WebSearchEnum.DUCK_DUCK_GO.templateUrl, selectedText);
             }
             if (Objects.isNull(searchUrl)) {
                 return;
