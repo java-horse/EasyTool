@@ -91,7 +91,7 @@ public class BaiDuTranslate extends AbstractTranslate {
                 }
             }
         } catch (Exception e) {
-            log.error("请求百度翻译接口异常：请检查本地网络是否可连接外网，也有可能被百度限流", e);
+            log.error(TranslateEnum.BAIDU.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

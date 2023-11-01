@@ -114,6 +114,8 @@ public class TranslateAction extends AnAction {
             isRemind = StringUtils.isBlank(translateConfig.getMicrosoftKey());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.NIU.getTranslate())) {
             isRemind = StringUtils.isBlank(translateConfig.getNiuApiKey());
+        }else if (StringUtils.equals(translateChannel, TranslateEnum.CAIYUN.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getCaiyunToken());
         }
         if (isRemind) {
             NotificationUtil.notify("请先配置翻译渠道密钥!");

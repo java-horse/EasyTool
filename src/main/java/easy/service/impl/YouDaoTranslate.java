@@ -81,7 +81,7 @@ public class YouDaoTranslate extends AbstractTranslate {
             YouDaoAiResponse response = JsonUtil.fromJson(res, YouDaoAiResponse.class);
             return Objects.isNull(response) ? StringUtils.EMPTY : response.getTranslation().get(0);
         } catch (Exception e) {
-            log.error("请求有道智云AI翻译接口异常：请检查本地网络是否可连接外网，也有可能被有道智云AI限流", e);
+            log.error(TranslateEnum.YOUDAO.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

@@ -76,7 +76,7 @@ public class XfYunTranslate extends AbstractTranslate {
             JsonObject resultObject = JsonUtil.fromJson(decodeText, JsonObject.class);
             return resultObject.getAsJsonObject("trans_result").get("dst").getAsString();
         } catch (Exception e) {
-            log.error("请求讯飞云翻译接口异常：请检查本地网络是否可连接外网，也有可能被讯飞云限流", e);
+            log.error(TranslateEnum.XFYUN.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

@@ -65,7 +65,7 @@ public class GoogleTranslate extends AbstractTranslate {
             return resObject.get("data").getAsJsonObject().get("translations").getAsJsonArray().get(0).getAsJsonObject()
                     .get("translatedText").getAsString();
         } catch (Exception e) {
-            log.error("请求谷歌翻译接口异常：请检查本地网络是否可连接外网(需VPN)，也有可能被谷歌限流或网络不稳定", e);
+            log.error(TranslateEnum.GOOGLE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

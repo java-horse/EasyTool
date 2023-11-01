@@ -99,7 +99,7 @@ public class VolcanoTranslate extends AbstractTranslate {
             VolcanoResponse responseVo = JsonUtil.fromJson(res, VolcanoResponse.class);
             return Objects.requireNonNull(responseVo).getTranslationList().get(0).getTranslation();
         } catch (Exception e) {
-            log.error("请求火山云翻译接口异常：请检查本地网络是否可连接外网，也有可能被火山云限流", e);
+            log.error(TranslateEnum.VOLCANO.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

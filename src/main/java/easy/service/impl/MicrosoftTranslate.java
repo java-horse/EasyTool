@@ -72,7 +72,7 @@ public class MicrosoftTranslate extends AbstractTranslate {
             JsonArray resArray = JsonUtil.fromJson(res, JsonArray.class);
             return Objects.requireNonNull(resArray).get(0).getAsJsonObject().get("translations").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString();
         } catch (Exception e) {
-            log.error("请求微软翻译接口异常：请检查本地网络是否可连接外网", e);
+            log.error(TranslateEnum.MICROSOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

@@ -97,6 +97,11 @@ public class TranslateConfig {
      */
     private String niuApiKey;
 
+    /**
+     * 彩云翻译token
+     */
+    private String caiyunToken;
+
 
     /**
      * 重置翻译配置
@@ -124,6 +129,7 @@ public class TranslateConfig {
         googleSecretKey = null;
         microsoftKey = null;
         niuApiKey = null;
+        caiyunToken = null;
     }
 
     public String getTranslateChannel() {
@@ -262,6 +268,14 @@ public class TranslateConfig {
         this.niuApiKey = niuApiKey;
     }
 
+    public String getCaiyunToken() {
+        return caiyunToken;
+    }
+
+    public void setCaiyunToken(String caiyunToken) {
+        this.caiyunToken = caiyunToken;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -282,7 +296,7 @@ public class TranslateConfig {
                 ", googleSecretKey='" + googleSecretKey + '\'' +
                 ", microsoftKey='" + microsoftKey + '\'' +
                 ", niuApiKey='" + niuApiKey + '\'' +
+                ", caiyunToken='" + caiyunToken + '\'' +
                 '}';
     }
-
 }

@@ -22,7 +22,8 @@ public enum TranslateEnum {
     XFYUN("讯飞翻译", "https://itrans.xf-yun.com/v1/its"),
     GOOGLE("谷歌翻译", "https://translation.googleapis.com/language/translate/v2?q=%s&source=%s&target=%s&key=%s&format=text"),
     MICROSOFT("微软翻译", "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&textType=plain&from=%s&to=%s"),
-    NIU("小牛翻译", "http://api.niutrans.com/NiuTransServer/translation?from=%s&to=%s&apikey=%s&src_text=%s");
+    NIU("小牛翻译", "http://api.niutrans.com/NiuTransServer/translation?from=%s&to=%s&apikey=%s&src_text=%s"),
+    CAIYUN("彩云翻译", "http://api.interpreter.caiyunai.com/v1/translator");
 
     private final String translate;
     private final String url;

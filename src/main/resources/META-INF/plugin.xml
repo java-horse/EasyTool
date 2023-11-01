@@ -12,7 +12,7 @@
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
-        <li>Supports right-click shortcut network search</li>
+        <li>Support right-click shortcut network search</li>
         <li>Support for quick generation of serialVersionUID</li>
       </ul>
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
@@ -29,6 +29,7 @@
             <li>--微软翻译</li>
             <li>--谷歌翻译(VPN)</li>
             <li>--小牛翻译</li>
+            <li>--彩云翻译</li>
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
         <li>支持选中文本右键快捷Web搜索</li>
@@ -47,6 +48,7 @@
       <h3>v1.0.8</h3>
       <ul>
           <li>Add DuckDuckGo search engine</li>
+          <li>Add CaiYun Translation engine</li>
       </ul>
       <h3>v1.0.7</h3>
       <ul>
@@ -104,7 +106,7 @@
                                  instance="easy.settings.TranslateSettingConfigurable"/>
 
         <toolWindow id="EasyChar" secondary="true" anchor="right" icon="AllIcons.Actions.ForceRefresh"
-                    canCloseContents="false" factoryClass="easy.config.SidebarConfig"/>
+                    canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
     </extensions>
 
     <application-components>

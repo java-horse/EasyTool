@@ -7,10 +7,12 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -68,6 +70,8 @@ public class TranslateSettingView {
     private JTextField microsoftKeyTextField;
     private JLabel niuApiKeyLabel;
     private JTextField niuApiKeyTextField;
+    private JLabel caiyunTokenLabel;
+    private JTextField caiyunTokenTextField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -166,6 +170,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -199,6 +205,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -232,6 +240,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -265,6 +275,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -298,6 +310,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -331,6 +345,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -364,6 +380,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -397,6 +415,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(true);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -430,6 +450,43 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(true);
             niuApiKeyTextField.setVisible(true);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+            microsoftKeyLabel.setVisible(false);
+            microsoftKeyTextField.setVisible(false);
+            niuApiKeyLabel.setVisible(false);
+            niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(true);
+            caiyunTokenTextField.setVisible(true);
         } else {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -463,6 +520,8 @@ public class TranslateSettingView {
             microsoftKeyTextField.setVisible(false);
             niuApiKeyLabel.setVisible(false);
             niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
         }
     }
 
@@ -492,6 +551,7 @@ public class TranslateSettingView {
         setGoogleSecretKeyTextField(translateConfig.getGoogleSecretKey());
         setMicrosoftKeyTextField(translateConfig.getMicrosoftKey());
         setNiuApiKeyTextField(translateConfig.getNiuApiKey());
+        setCaiyunTokenTextField(translateConfig.getCaiyunToken());
     }
 
 
@@ -769,6 +829,22 @@ public class TranslateSettingView {
 
     public void setNiuApiKeyTextField(String niuApiKeyTextField) {
         this.niuApiKeyTextField.setText(niuApiKeyTextField);
+    }
+
+    public JLabel getCaiyunTokenLabel() {
+        return caiyunTokenLabel;
+    }
+
+    public void setCaiyunTokenLabel(JLabel caiyunTokenLabel) {
+        this.caiyunTokenLabel = caiyunTokenLabel;
+    }
+
+    public JTextField getCaiyunTokenTextField() {
+        return caiyunTokenTextField;
+    }
+
+    public void setCaiyunTokenTextField(String caiyunTokenTextField) {
+        this.caiyunTokenTextField.setText(caiyunTokenTextField);
     }
 
 }

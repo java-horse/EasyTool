@@ -76,7 +76,7 @@ public class AliYunTranslate extends AbstractTranslate {
             AliYunResponseVO responseVO = JsonUtil.fromJson(res, AliYunResponseVO.class);
             return Objects.requireNonNull(responseVO).getData().getTranslated();
         } catch (Exception e) {
-            log.error("请求阿里云翻译接口异常：请检查本地网络是否可连接外网，也有可能被阿里云限流", e);
+            log.error(TranslateEnum.ALIYUN.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
             return StringUtils.EMPTY;
         }
     }

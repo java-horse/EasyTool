@@ -59,7 +59,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getXfApiSecret(), translateSettingView.getXfApiSecretTextField().getText())
                 || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText())
-                || !StringUtils.equals(translateConfig.getNiuApiKey(), translateSettingView.getNiuApiKeyTextField().getText());
+                || !StringUtils.equals(translateConfig.getNiuApiKey(), translateSettingView.getNiuApiKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getCaiyunToken(), translateSettingView.getCaiyunTokenTextField().getText());
     }
 
     @Override
@@ -86,6 +87,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setGoogleSecretKey(translateSettingView.getGoogleSecretKeyTextField().getText());
         translateConfig.setMicrosoftKey(translateSettingView.getMicrosoftKeyTextField().getText());
         translateConfig.setNiuApiKey(translateSettingView.getNiuApiKeyTextField().getText());
+        translateConfig.setCaiyunToken(translateSettingView.getCaiyunTokenTextField().getText());
 
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
@@ -114,6 +116,9 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.NIU.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getNiuApiKey()), TranslateEnum.NIU.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.CAIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getCaiyunToken()), TranslateEnum.CAIYUN.getTranslate() + "Token不能为空");
         }
     }
 
