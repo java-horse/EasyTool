@@ -4,6 +4,7 @@
     <vendor email="3468449362@qq.com" url="https://gitee.com/milubin/easy-char">mabin</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <description>
         <![CDATA[
@@ -151,6 +152,10 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
         </action>
+        <!--自动生成 Swagger2.x 注解-->
+        <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="SwaggerAnnotation"
+                description="EasyChar development assistance tools" icon="AllIcons.Actions.StopRefresh">
+        </action>
 
 
         <!--工具栏快捷菜单-->
@@ -168,6 +173,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
             <reference ref="EasyCharCamelCaseAction"/>
+            <reference ref="EasyCharSwaggerToolAction"/>
             <reference ref="EasyCharSerialAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
         </group>
