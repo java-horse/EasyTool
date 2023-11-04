@@ -5,12 +5,16 @@ plugins {
 }
 
 group = "mabin"
-version = "1.0.8"
+version = "1.0.9"
 
 repositories {
     maven {
         setUrl("https://maven.aliyun.com/nexus/content/groups/public/")
     }
+}
+
+dependencies {
+    // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
 }
 
 intellij {
