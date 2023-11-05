@@ -31,8 +31,6 @@ public class SwaggerGenerateHandler {
     private static final Logger log = Logger.getInstance(SwaggerGenerateHandler.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
 
-    private static final String MAPPING_VALUE = "value";
-    private static final String MAPPING_METHOD = "method";
     private static final String REQUEST_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.RequestMapping";
     private static final String POST_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.PostMapping";
     private static final String GET_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.GetMapping";
@@ -75,38 +73,21 @@ public class SwaggerGenerateHandler {
                 this.generateSelection(psiClass, selectionText, isController);
                 return;
             }
-            // 获取注释
             this.generateClassAnnotation(psiClass, isController);
             if (isController) {
-                // 类方法列表
                 PsiMethod[] methods = psiClass.getMethods();
-                if (methods.length == 0) {
-                    return;
-                }
                 for (PsiMethod psiMethod : methods) {
                     this.generateMethodAnnotation(psiMethod);
                 }
             } else {
                 PsiClass[] innerClasses = psiClass.getInnerClasses();
-                if (innerClasses.length == 0) {
-                    return;
-                }
                 for (PsiClass innerClass : innerClasses) {
                     this.generateClassAnnotation(innerClass, false);
-                    PsiField[] fields = innerClass.getAllFields();
-                    if (fields.length == 0) {
-                        return;
-                    }
-                    for (PsiField psiField : fields) {
+                    for (PsiField psiField : innerClass.getAllFields()) {
                         this.generateFieldAnnotation(psiField);
                     }
                 }
-                // 类属性列表
-                PsiField[] fields = psiClass.getAllFields();
-                if (fields.length == 0) {
-                    return;
-                }
-                for (PsiField psiField : fields) {
+                for (PsiField psiField : psiClass.getAllFields()) {
                     this.generateFieldAnnotation(psiField);
                 }
             }
@@ -124,14 +105,13 @@ public class SwaggerGenerateHandler {
     private void doWrite(String name, String qualifiedName, String annotationText, PsiModifierListOwner psiModifierListOwner) {
         PsiAnnotation psiAnnotationDeclare = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner);
         final PsiNameValuePair[] attributes = psiAnnotationDeclare.getParameterList().getAttributes();
-        PsiAnnotation existAnnotation = psiModifierListOwner.getModifierList().findAnnotation(qualifiedName);
+        PsiModifierList modifierList = psiModifierListOwner.getModifierList();
+        PsiAnnotation existAnnotation = modifierList.findAnnotation(qualifiedName);
         if (Objects.nonNull(existAnnotation)) {
-            log.warn("existAnnotation:" + existAnnotation.getQualifiedName());
-            log.warn("existAnnotation:" + existAnnotation.getText());
             existAnnotation.delete();
         }
         addImport(elementFactory, psiFile, name);
-        PsiAnnotation psiAnnotation = psiModifierListOwner.getModifierList().addAnnotation(name);
+        PsiAnnotation psiAnnotation = modifierList.addAnnotation(name);
         for (PsiNameValuePair pair : attributes) {
             psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
         }
@@ -148,9 +128,6 @@ public class SwaggerGenerateHandler {
             this.generateClassAnnotation(psiClass, isController);
         }
         PsiMethod[] methods = psiClass.getMethods();
-        if (methods.length == 0) {
-            return;
-        }
         for (PsiMethod psiMethod : methods) {
             if (StringUtils.equals(selectionText, psiMethod.getName())) {
                 this.generateMethodAnnotation(psiMethod);
@@ -242,9 +219,6 @@ public class SwaggerGenerateHandler {
     private void generateClassAnnotation(PsiClass psiClass, boolean isController) {
         PsiComment classComment = null;
         PsiElement[] psiElements = psiClass.getChildren();
-        if (psiElements.length == 0) {
-            return;
-        }
         for (PsiElement tmpEle : psiElements) {
             if (tmpEle instanceof PsiComment) {
                 classComment = (PsiComment) tmpEle;
@@ -313,7 +287,7 @@ public class SwaggerGenerateHandler {
         }
 
         PsiAnnotation[] psiAnnotations = psiMethod.getModifierList().getAnnotations();
-        String methodValue = this.getMappingAttribute(psiAnnotations, MAPPING_METHOD);
+        String methodValue = this.getMappingAttribute(psiAnnotations, "method");
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         if (StringUtils.isNotEmpty(methodValue)) {
             methodValue = methodValue.substring(methodValue.indexOf(".") + 1);
