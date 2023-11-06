@@ -20,7 +20,7 @@
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
-        <li>支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理</li>
+        <li>支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理(自动翻译可能会有点慢, 请耐心等待)。支持选中类名、字段名、方法名生成指定Swagger注解</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
             <li>--百度翻译</li>
@@ -51,6 +51,7 @@
       <h3>v1.0.9</h3>
       <ul>
           <li>Support generating Swagger2.x related annotations based on Javadoc. If there is no Javadoc, automatic translation processing will be attempted automatically</li>
+          <li>Update all plugins' icons</li>
           <li>Optimize some code to improve plugin performance</li>
       </ul>
       <h3>v1.0.8</h3>
@@ -113,7 +114,7 @@
         <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
 
-        <toolWindow id="EasyChar" secondary="true" anchor="right" icon="AllIcons.Actions.ForceRefresh"
+        <toolWindow id="EasyChar" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.LOGO"
                     canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
     </extensions>
 
@@ -130,7 +131,7 @@
         </action>
         <!--中英互译-->
         <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
-                description="Translation between Chinese and English" icon="AllIcons.Actions.Refresh">
+                description="Translation between Chinese and English" icon="easy.icons.EasyIcons.ICON.TRANSLATE">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta BACK_SLASH"/>
@@ -139,7 +140,7 @@
         </action>
         <!--驼峰命名-->
         <action id="EasyCharCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
-                description="SnakeCase to CamelCase" icon="AllIcons.Actions.StopRefresh">
+                description="SnakeCase to CamelCase" icon="easy.icons.EasyIcons.ICON.TEXT">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta alt BACK_SLASH"/>
@@ -149,10 +150,10 @@
         <!--WebSearch在线搜索-->
         <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
                text="WebSearch" description="EasyChar development assistance tools"
-               icon="AllIcons.General.Web" popup="true" compact="true"/>
+               icon="easy.icons.EasyIcons.ICON.WEB" popup="true" compact="true"/>
         <!--快捷生成serialVersionUID-->
         <action id="EasyCharSerialAction" class="easy.action.SerialVersionUIDAction" text="serialVersionUID"
-                description="generate serialVersionUID" icon="AllIcons.Actions.StopRefresh">
+                description="generate serialVersionUID" icon="easy.icons.EasyIcons.ICON.COMMON">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift alt BACK_SLASH"/>
@@ -161,20 +162,20 @@
         </action>
         <!--自动生成 Swagger2.x 注解-->
         <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="SwaggerAnnotation"
-                description="EasyChar development assistance tools" icon="AllIcons.Actions.StopRefresh">
+                description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
         </action>
 
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
-               text="EasyChar" icon="AllIcons.Actions.ForceRefresh" description="EasyChar development assistance tools"
+               text="EasyChar" icon="easy.icons.EasyIcons.ICON.LOGO" description="EasyChar development assistance tools"
                popup="true" compact="true">
             <group id="EasyCharToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
         <!--编辑器右键菜单-->
         <group id="easy.char.editor.actions" text="EasyChar" description="EasyChar development assistance tools"
-               icon="AllIcons.Actions.ForceRefresh" popup="true" compact="true">
+               icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyCharEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
@@ -186,7 +187,7 @@
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
-               icon="AllIcons.Actions.ForceRefresh" popup="true" compact="true">
+               icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyCharConsoleSubGroup"/>
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>

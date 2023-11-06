@@ -1,7 +1,6 @@
 package easy.action.tool;
 
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -12,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -24,10 +24,8 @@ import java.util.Objects;
  */
 public class ToolWindowAction extends AnAction {
 
-    private static final Logger log = Logger.getInstance(ToolWindowAction.class);
-
-    public ToolWindowAction(@Nullable String text, @Nullable String description) {
-        super(text, description, null);
+    public ToolWindowAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
+        super(text, description, icon);
     }
 
     @Override
