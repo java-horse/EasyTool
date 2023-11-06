@@ -11,6 +11,7 @@
       <h3>EasyChar is a set of development assistance tools for converting and translating Chinese and English characters</h3>
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
+        <li>Support generating Swagger2.x related annotations based on Javadoc</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
@@ -19,6 +20,7 @@
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
+        <li>支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
             <li>--百度翻译</li>
@@ -47,6 +49,11 @@
     <change-notes>
         <![CDATA[
       <h3>v1.0.9</h3>
+      <ul>
+          <li>Support generating Swagger2.x related annotations based on Javadoc. If there is no Javadoc, automatic translation processing will be attempted automatically</li>
+          <li>Optimize some code to improve plugin performance</li>
+      </ul>
+      <h3>v1.0.8</h3>
       <ul>
           <li>Add DuckDuckGo search engine</li>
           <li>Add CaiYun Translation engine</li>

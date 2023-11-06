@@ -7,7 +7,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import easy.enums.BaseTypeEnum;
+import easy.enums.SwaggerAnnotationEnum;
 import easy.service.TranslateService;
+import easy.util.LanguageUtil;
 import easy.util.SwaggerCommentUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -95,29 +98,6 @@ public class SwaggerGenerateHandler {
     }
 
     /**
-     * 写入到文件
-     *
-     * @param name                 注解名
-     * @param qualifiedName        注解全包名
-     * @param annotationText       生成注解文本
-     * @param psiModifierListOwner 当前写入对象
-     */
-    private void doWrite(String name, String qualifiedName, String annotationText, PsiModifierListOwner psiModifierListOwner) {
-        PsiAnnotation psiAnnotationDeclare = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner);
-        final PsiNameValuePair[] attributes = psiAnnotationDeclare.getParameterList().getAttributes();
-        PsiModifierList modifierList = psiModifierListOwner.getModifierList();
-        PsiAnnotation existAnnotation = modifierList.findAnnotation(qualifiedName);
-        if (Objects.nonNull(existAnnotation)) {
-            existAnnotation.delete();
-        }
-        addImport(elementFactory, psiFile, name);
-        PsiAnnotation psiAnnotation = modifierList.addAnnotation(name);
-        for (PsiNameValuePair pair : attributes) {
-            psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
-        }
-    }
-
-    /**
      * 类是否为controller
      *
      * @param psiClass 类元素
@@ -141,6 +121,293 @@ public class SwaggerGenerateHandler {
                 return;
             }
         }
+    }
+
+    /**
+     * 生成类注解
+     *
+     * @param psiClass
+     * @param isController
+     * @return void
+     * @author mabin
+     * @date 2023/11/4 16:47
+     */
+    private void generateClassAnnotation(PsiClass psiClass, boolean isController) {
+        PsiComment classComment = null;
+        PsiElement[] psiElements = psiClass.getChildren();
+        for (PsiElement tmpEle : psiElements) {
+            if (tmpEle instanceof PsiComment) {
+                classComment = (PsiComment) tmpEle;
+                String tmpText = classComment.getText();
+                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
+                String annotationFromText;
+                String annotation;
+                String qualifiedName;
+                if (isController) {
+                    annotation = SwaggerAnnotationEnum.API.getClassName();
+                    qualifiedName = SwaggerAnnotationEnum.API.getClassPackage();
+                    annotationFromText = String.format("@%s(tags = {\"%s\"})", annotation, commentDesc);
+                } else {
+                    annotation = SwaggerAnnotationEnum.API_MODEL.getClassName();
+                    qualifiedName = SwaggerAnnotationEnum.API_MODEL.getClassPackage();
+                    annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
+                }
+                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+            }
+        }
+        if (Objects.isNull(classComment)) {
+            String annotationFromText;
+            String annotation;
+            String qualifiedName;
+            String commentDesc = translateService.translate(psiClass.getNameIdentifier().getText());
+            if (isController) {
+                annotation = SwaggerAnnotationEnum.API.getClassName();
+                qualifiedName = SwaggerAnnotationEnum.API.getClassPackage();
+                annotationFromText = String.format("@%s(tags = {\"%s\"})", annotation, commentDesc);
+            } else {
+                annotation = SwaggerAnnotationEnum.API_MODEL.getClassName();
+                qualifiedName = SwaggerAnnotationEnum.API_MODEL.getClassPackage();
+                annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
+            }
+            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+        }
+    }
+
+    /**
+     * 生成方法注解
+     *
+     * @param psiMethod
+     * @return void
+     * @author mabin
+     * @date 2023/11/4 16:47
+     */
+    private void generateMethodAnnotation(PsiMethod psiMethod) {
+        String commentDesc = StringUtils.EMPTY;
+        Map<String, String> methodParamCommentDesc = null;
+        for (PsiElement tmpEle : psiMethod.getChildren()) {
+            if (tmpEle instanceof PsiComment) {
+                PsiComment classComment = (PsiComment) tmpEle;
+                String tmpText = classComment.getText();
+                methodParamCommentDesc = SwaggerCommentUtil.getCommentMethodParam(tmpText);
+                commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
+            }
+        }
+        // 如果存在注解，获取注解原本的value和notes内容
+        PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
+        String apiOperationAttrValue = this.getAttribute(apiOperationExist, "value", commentDesc);
+        apiOperationAttrValue = StringUtils.equals(apiOperationAttrValue, "\"\"") ? StringUtils.EMPTY : apiOperationAttrValue;
+        String apiOperationAttrNotes = this.getAttribute(apiOperationExist, "notes", commentDesc);
+        apiOperationAttrNotes = StringUtils.equals(apiOperationAttrNotes, "\"\"") ? StringUtils.EMPTY : apiOperationAttrNotes;
+        // 如果注解和注释都不存在, 尝试自动翻译方法名作为value值
+        if (StringUtils.isBlank(apiOperationAttrValue)) {
+            apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
+        }
+        PsiAnnotation[] psiAnnotations = psiMethod.getModifierList().getAnnotations();
+        String methodValue = this.getMappingAttribute(psiAnnotations, "method");
+        StringBuilder apiOperationAnnotationText = new StringBuilder();
+        if (StringUtils.isNotBlank(methodValue)) {
+            methodValue = methodValue.substring(methodValue.indexOf(".") + 1);
+            apiOperationAnnotationText.append("@").append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
+                    .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
+            if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
+                apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
+            }
+            apiOperationAnnotationText.append(", ").append("httpMethod = ").append("\"").append(methodValue).append("\"").append(")");
+        } else {
+            apiOperationAnnotationText.append("@").append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
+                    .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
+            if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
+                apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
+            }
+            apiOperationAnnotationText.append(")");
+        }
+
+        PsiParameter[] psiParameters = psiMethod.getParameterList().getParameters();
+        List<String> apiImplicitParamList = new ArrayList<>(psiParameters.length);
+        for (PsiParameter psiParameter : psiParameters) {
+            PsiType psiType = psiParameter.getType();
+            String paramType = "query";
+            String required = null;
+            for (PsiAnnotation psiAnnotation : psiParameter.getModifierList().getAnnotations()) {
+                if (StringUtils.isBlank(psiAnnotation.getQualifiedName())) {
+                    break;
+                }
+                switch (psiAnnotation.getQualifiedName()) {
+                    case REQUEST_HEADER_TEXT:
+                        paramType = "header";
+                        break;
+                    case REQUEST_PARAM_TEXT:
+                        paramType = "query";
+                        break;
+                    case PATH_VARIABLE_TEXT:
+                        paramType = "path";
+                        break;
+                    case REQUEST_BODY_TEXT:
+                        paramType = "body";
+                        break;
+                    default:
+                        break;
+                }
+                required = this.getAttribute(psiAnnotation, "required", StringUtils.EMPTY);
+            }
+            String dataType = SwaggerCommentUtil.getDataType(psiType.getCanonicalText(), psiType);
+            if (StringUtils.equals(dataType, "file")) {
+                paramType = "form";
+            }
+            String paramDesc = StringUtils.EMPTY;
+            String paramName = psiParameter.getNameIdentifier().getText();
+            if (methodParamCommentDesc != null) {
+                paramDesc = methodParamCommentDesc.get(paramName);
+            }
+            StringBuilder apiImplicitParamText = new StringBuilder();
+            apiImplicitParamText.append("@").append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName())
+                    .append("(paramType = ").append("\"").append(paramType).append("\"")
+                    .append(", name = ").append("\"").append(paramName).append("\"");
+            if (StringUtils.isBlank(paramDesc)) {
+                paramDesc = translateService.translate(paramName);
+            }
+            if (StringUtils.isNotBlank(paramDesc) && LanguageUtil.isAllChinese(paramDesc)) {
+                apiImplicitParamText.append(", value = ").append("\"").append(paramDesc).append("\"");
+            }
+            if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(dataType)) || StringUtils.equalsAny(dataType, "file")) {
+                apiImplicitParamText.append(", dataType = ").append("\"").append(dataType).append("\"");
+            } else {
+                if (StringUtils.containsAny(dataType, "<", ">")) {
+                    if (!StringUtils.containsAnyIgnoreCase(dataType, "map")) {
+                        String collDataType = StringUtils.substringBetween(dataType, "<", ">");
+                        apiImplicitParamText.append(", dataTypeClass = ").append(collDataType).append(".class");
+                    }
+                } else {
+                    apiImplicitParamText.append(", dataTypeClass = ").append(dataType).append(".class");
+                }
+            }
+            if (StringUtils.equals(required, "true")) {
+                apiImplicitParamText.append(", required = true");
+            }
+            apiImplicitParamText.append(")");
+            apiImplicitParamList.add(apiImplicitParamText.toString());
+        }
+
+        boolean complex = false;
+        String apiImplicitParamsAnnotationText;
+        if (CollectionUtils.isNotEmpty(apiImplicitParamList) && apiImplicitParamList.size() == 1) {
+            apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
+        } else {
+            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", "@" + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
+            complex = true;
+        }
+
+        this.doWrite(SwaggerAnnotationEnum.API_OPERATION.getClassName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), apiOperationAnnotationText.toString(), psiMethod);
+        if (StringUtils.isNotEmpty(apiImplicitParamsAnnotationText)) {
+            if (complex) {
+                this.doWrite(SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName(), SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassPackage(), apiImplicitParamsAnnotationText, psiMethod);
+            } else {
+                this.doWrite(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName(), SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassPackage(), apiImplicitParamsAnnotationText, psiMethod);
+            }
+        }
+    }
+
+    /**
+     * 生成属性注解
+     *
+     * @param psiField
+     * @return void
+     * @author mabin
+     * @date 2023/11/4 15:57
+     */
+    private void generateFieldAnnotation(PsiField psiField) {
+        PsiComment classComment = null;
+        boolean validate = isValidate(psiField.getAnnotations());
+        for (PsiElement tmpEle : psiField.getChildren()) {
+            if (tmpEle instanceof PsiComment) {
+                classComment = (PsiComment) tmpEle;
+                String tmpText = classComment.getText();
+                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
+                StringBuilder apiModelPropertyText = new StringBuilder();
+                if (validate) {
+                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                            .append(commentDesc).append("\"").append(", required=true)");
+                } else {
+                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                            .append(commentDesc).append("\")");
+                }
+                this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
+            }
+        }
+        if (Objects.isNull(classComment)) {
+            String fieldName = psiField.getNameIdentifier().getText();
+            StringBuilder apiModelPropertyText = new StringBuilder();
+            if (StringUtils.equals(fieldName, "serialVersionUID")) {
+                apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+            } else {
+                String commentDesc = translateService.translate(fieldName);
+                if (StringUtils.isNotBlank(commentDesc)) {
+                    if (validate) {
+                        apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                                .append(commentDesc).append("\"").append(", required=true)");
+                    } else {
+                        apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                                .append(commentDesc).append("\")");
+                    }
+                } else {
+                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+                }
+            }
+            this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
+        }
+    }
+
+    /**
+     * 属性上是否有必填校验注解
+     *
+     * @param psiAnnotation
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/4 15:51
+     */
+    private boolean isValidate(PsiAnnotation[] psiAnnotation) {
+        if (Objects.isNull(psiAnnotation) || psiAnnotation.length == 0) {
+            return false;
+        }
+        String a = "javax.validation.constraints";
+        for (PsiAnnotation annotation : psiAnnotation) {
+            String qualifiedName = annotation.getQualifiedName();
+            if (StringUtils.startsWith(qualifiedName, a) && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Null")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 导入类依赖
+     *
+     * @param elementFactory 元素Factory
+     * @param file           当前文件对象
+     * @param className      类名
+     */
+    private void addImport(PsiElementFactory elementFactory, PsiFile file, String className) {
+        if (!(file instanceof PsiJavaFile)) {
+            return;
+        }
+        final PsiJavaFile javaFile = (PsiJavaFile) file;
+        final PsiImportList importList = javaFile.getImportList();
+        if (importList == null) {
+            return;
+        }
+        PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));
+        // 待导入类有多个同名类或没有时 让用户自行处理
+        if (psiClasses.length != 1) {
+            return;
+        }
+        PsiClass waiteImportClass = psiClasses[0];
+        for (PsiImportStatementBase is : importList.getAllImportStatements()) {
+            String impQualifiedName = is.getImportReference().getQualifiedName();
+            if (StringUtils.equals(waiteImportClass.getQualifiedName(), impQualifiedName)) {
+                return;
+            }
+        }
+        importList.add(elementFactory.createImportStatement(waiteImportClass));
     }
 
     /**
@@ -203,273 +470,31 @@ public class SwaggerGenerateHandler {
         if (Objects.isNull(psiAnnotation)) {
             return "\"" + comment + "\"";
         }
-        PsiAnnotationMemberValue psiAnnotationMemberValue = psiAnnotation.findDeclaredAttributeValue(attributeName);
+        PsiAnnotationMemberValue psiAnnotationMemberValue = psiAnnotation.findAttributeValue(attributeName);
         return Objects.isNull(psiAnnotationMemberValue) ? "\"" + comment + "\"" : psiAnnotationMemberValue.getText();
     }
 
     /**
-     * 生成类注解
+     * 写入到文件
      *
-     * @param psiClass
-     * @param isController
-     * @return void
-     * @author mabin
-     * @date 2023/11/4 16:47
+     * @param name                 注解名
+     * @param qualifiedName        注解全包名
+     * @param annotationText       生成注解文本
+     * @param psiModifierListOwner 当前写入对象
      */
-    private void generateClassAnnotation(PsiClass psiClass, boolean isController) {
-        PsiComment classComment = null;
-        PsiElement[] psiElements = psiClass.getChildren();
-        for (PsiElement tmpEle : psiElements) {
-            if (tmpEle instanceof PsiComment) {
-                classComment = (PsiComment) tmpEle;
-                String tmpText = classComment.getText();
-                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                String annotationFromText;
-                String annotation;
-                String qualifiedName;
-                if (isController) {
-                    annotation = "Api";
-                    qualifiedName = "io.swagger.annotations.Api";
-                    annotationFromText = String.format("@%s(tags = {\"%s\"})", annotation, commentDesc);
-                } else {
-                    annotation = "ApiModel";
-                    qualifiedName = "io.swagger.annotations.ApiModel";
-                    annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
-                }
-                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
-            }
+    private void doWrite(String name, String qualifiedName, String annotationText, PsiModifierListOwner psiModifierListOwner) {
+        PsiAnnotation psiAnnotationDeclare = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner);
+        final PsiNameValuePair[] attributes = psiAnnotationDeclare.getParameterList().getAttributes();
+        PsiModifierList modifierList = psiModifierListOwner.getModifierList();
+        PsiAnnotation existAnnotation = modifierList.findAnnotation(qualifiedName);
+        if (Objects.nonNull(existAnnotation)) {
+            existAnnotation.delete();
         }
-        if (Objects.isNull(classComment)) {
-            String annotationFromText;
-            String annotation;
-            String qualifiedName;
-            String commentDesc = translateService.translate(psiClass.getNameIdentifier().getText());
-            if (isController) {
-                annotation = "Api";
-                qualifiedName = "io.swagger.annotations.Api";
-                annotationFromText = String.format("@%s(value = %s)", annotation, commentDesc);
-            } else {
-                annotation = "ApiModel";
-                qualifiedName = "io.swagger.annotations.ApiModel";
-                annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
-            }
-            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+        addImport(elementFactory, psiFile, name);
+        PsiAnnotation psiAnnotation = modifierList.addAnnotation(name);
+        for (PsiNameValuePair pair : attributes) {
+            psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
         }
     }
 
-    /**
-     * 生成方法注解
-     *
-     * @param psiMethod
-     * @return void
-     * @author mabin
-     * @date 2023/11/4 16:47
-     */
-    private void generateMethodAnnotation(PsiMethod psiMethod) {
-        String commentDesc = "";
-        Map<String, String> methodParamCommentDesc = null;
-        for (PsiElement tmpEle : psiMethod.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                PsiComment classComment = (PsiComment) tmpEle;
-                String tmpText = classComment.getText();
-                methodParamCommentDesc = SwaggerCommentUtil.getCommentMethodParam(tmpText);
-                commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-            }
-        }
-        // 如果存在注解，获取注解原本的value和notes内容
-        PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation("io.swagger.annotations.ApiOperation");
-        String apiOperationAttrValue = this.getAttribute(apiOperationExist, "value", commentDesc);
-        String apiOperationAttrNotes = this.getAttribute(apiOperationExist, "notes", commentDesc);
-
-        // 如果注解和注释都不存在, 尝试自动翻译方法名作为value值
-        if (StringUtils.isBlank(apiOperationAttrValue)) {
-            apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
-        }
-
-        PsiAnnotation[] psiAnnotations = psiMethod.getModifierList().getAnnotations();
-        String methodValue = this.getMappingAttribute(psiAnnotations, "method");
-        StringBuilder apiOperationAnnotationText = new StringBuilder();
-        if (StringUtils.isNotEmpty(methodValue)) {
-            methodValue = methodValue.substring(methodValue.indexOf(".") + 1);
-            apiOperationAnnotationText.append("@ApiOperation(value = ").append(apiOperationAttrValue);
-            if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
-                apiOperationAnnotationText.append(", notes = ").append(apiOperationAttrNotes);
-            }
-            apiOperationAnnotationText.append(", ").append("httpMethod = \"").append(methodValue).append("\")");
-        } else {
-            apiOperationAnnotationText.append("@ApiOperation(value = ").append(apiOperationAttrValue);
-            if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
-                apiOperationAnnotationText.append(", notes = ").append(apiOperationAttrNotes);
-            }
-            apiOperationAnnotationText.append(")");
-        }
-
-        PsiParameter[] psiParameters = psiMethod.getParameterList().getParameters();
-        List<String> apiImplicitParamList = new ArrayList<>(psiParameters.length);
-        for (PsiParameter psiParameter : psiParameters) {
-            PsiType psiType = psiParameter.getType();
-            String paramType = "query";
-            String required = null;
-            for (PsiAnnotation psiAnnotation : psiParameter.getModifierList().getAnnotations()) {
-                if (StringUtils.isBlank(psiAnnotation.getQualifiedName())) {
-                    break;
-                }
-                switch (psiAnnotation.getQualifiedName()) {
-                    case REQUEST_HEADER_TEXT:
-                        paramType = "header";
-                        break;
-                    case REQUEST_PARAM_TEXT:
-                        paramType = "query";
-                        break;
-                    case PATH_VARIABLE_TEXT:
-                        paramType = "path";
-                        break;
-                    case REQUEST_BODY_TEXT:
-                        paramType = "body";
-                        break;
-                    default:
-                        break;
-                }
-                required = this.getAttribute(psiAnnotation, "required", "");
-            }
-            String dataType = SwaggerCommentUtil.getDataType(psiType.getCanonicalText(), psiType);
-            if (StringUtils.equals(dataType, "file")) {
-                paramType = "form";
-            }
-            String paramDesc = StringUtils.EMPTY;
-            String paramName = psiParameter.getNameIdentifier().getText();
-            if (methodParamCommentDesc != null) {
-                paramDesc = methodParamCommentDesc.get(paramName);
-            }
-            StringBuilder apiImplicitParamText = new StringBuilder();
-            apiImplicitParamText.append("@ApiImplicitParam(paramType = ").append(paramType)
-                    .append(", name = ").append(paramName);
-            if (StringUtils.isBlank(paramDesc)) {
-                paramDesc = translateService.translate(paramName);
-            }
-            if (StringUtils.isNotBlank(paramDesc)) {
-                apiImplicitParamText.append(", value = ").append(paramDesc);
-            }
-            apiImplicitParamText.append(", dataType = ").append(dataType);
-            if (StringUtils.equals(required, "true")) {
-                apiImplicitParamText.append(", required = true");
-            }
-            apiImplicitParamText.append(")");
-
-            apiImplicitParamList.add(apiImplicitParamText.toString());
-        }
-
-        boolean complex = false;
-        String apiImplicitParamsAnnotationText;
-        if (CollectionUtils.isNotEmpty(apiImplicitParamList) && apiImplicitParamList.size() == 1) {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
-        } else {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", "@ApiImplicitParams({\n", "\n})"));
-            complex = true;
-        }
-
-        this.doWrite("ApiOperation", "io.swagger.annotations.ApiOperation", apiOperationAnnotationText.toString(), psiMethod);
-        if (StringUtils.isNotEmpty(apiImplicitParamsAnnotationText)) {
-            if (complex) {
-                this.doWrite("ApiImplicitParams", "io.swagger.annotations.ApiImplicitParams", apiImplicitParamsAnnotationText, psiMethod);
-            } else {
-                this.doWrite("ApiImplicitParam", "io.swagger.annotations.ApiImplicitParam", apiImplicitParamsAnnotationText, psiMethod);
-            }
-        }
-        addImport(elementFactory, psiFile, "ApiImplicitParam");
-    }
-
-    /**
-     * 生成属性注解
-     *
-     * @param psiField
-     * @return void
-     * @author mabin
-     * @date 2023/11/4 15:57
-     */
-    private void generateFieldAnnotation(PsiField psiField) {
-        PsiComment classComment = null;
-        for (PsiElement tmpEle : psiField.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                classComment = (PsiComment) tmpEle;
-                String tmpText = classComment.getText();
-                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                String apiModelPropertyText;
-                if (isValidate(psiField.getAnnotations())) {
-                    apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\", required=true)", commentDesc);
-                } else {
-                    apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")", commentDesc);
-                }
-                this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
-            }
-        }
-        if (Objects.isNull(classComment)) {
-            String fieldName = psiField.getNameIdentifier().getText();
-            String apiModelPropertyText;
-            if (StringUtils.equals(fieldName, "serialVersionUID")) {
-                apiModelPropertyText = "@ApiModelProperty(hidden = true)";
-            } else {
-                String commentDesc = translateService.translate(fieldName);
-                if (StringUtils.isNotBlank(commentDesc)) {
-                    apiModelPropertyText = isValidate(psiField.getAnnotations()) ? String.format("@ApiModelProperty(value=\"%s\", required=true)", commentDesc)
-                            : String.format("@ApiModelProperty(value=\"%s\")", commentDesc);
-                } else {
-                    apiModelPropertyText = "@ApiModelProperty(hidden = true)";
-                }
-            }
-            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
-        }
-    }
-
-    /**
-     * 属性上是否有必填校验注解
-     *
-     * @param psiAnnotation
-     * @return boolean
-     * @author mabin
-     * @date 2023/11/4 15:51
-     */
-    private boolean isValidate(PsiAnnotation[] psiAnnotation) {
-        if (Objects.isNull(psiAnnotation) || psiAnnotation.length == 0) {
-            return false;
-        }
-        String a = "javax.validation.constraints";
-        for (PsiAnnotation annotation : psiAnnotation) {
-            if (StringUtils.startsWith(annotation.getQualifiedName(), a)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 导入类依赖
-     *
-     * @param elementFactory 元素Factory
-     * @param file           当前文件对象
-     * @param className      类名
-     */
-    private void addImport(PsiElementFactory elementFactory, PsiFile file, String className) {
-        if (!(file instanceof PsiJavaFile)) {
-            return;
-        }
-        final PsiJavaFile javaFile = (PsiJavaFile) file;
-        final PsiImportList importList = javaFile.getImportList();
-        if (importList == null) {
-            return;
-        }
-        PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));
-        // 待导入类有多个同名类或没有时 让用户自行处理
-        if (psiClasses.length != 1) {
-            return;
-        }
-        PsiClass waiteImportClass = psiClasses[0];
-        for (PsiImportStatementBase is : importList.getAllImportStatements()) {
-            String impQualifiedName = is.getImportReference().getQualifiedName();
-            if (StringUtils.equals(waiteImportClass.getQualifiedName(), impQualifiedName)) {
-                return;
-            }
-        }
-        importList.add(elementFactory.createImportStatement(waiteImportClass));
-    }
 }

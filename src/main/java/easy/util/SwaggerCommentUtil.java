@@ -1,5 +1,6 @@
 package easy.util;
 
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiType;
 import easy.enums.BaseTypeEnum;
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,6 +18,9 @@ import java.util.Map;
  * @date: 2023/11/04 10:23:07
  */
 public class SwaggerCommentUtil {
+
+    private static final Logger log = Logger.getInstance(SwaggerCommentUtil.class);
+
     private SwaggerCommentUtil() {
     }
 
@@ -34,7 +38,7 @@ public class SwaggerCommentUtil {
         if (StringUtils.isNotBlank(baseType)) {
             return baseType;
         }
-        if (BaseTypeEnum.isBaseType(dataType)) {
+        if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(dataType))) {
             return dataType;
         }
         String multipartFileText = "org.springframework.web.multipart.MultipartFile";
