@@ -152,8 +152,8 @@
                text="WebSearch" description="EasyChar development assistance tools"
                icon="easy.icons.EasyIcons.ICON.WEB" popup="true" compact="true"/>
         <!--快捷生成serialVersionUID-->
-        <action id="EasyCharSerialAction" class="easy.action.SerialVersionUIDAction" text="serialVersionUID"
-                description="generate serialVersionUID" icon="easy.icons.EasyIcons.ICON.COMMON">
+        <action id="EasyCharSerialAction" class="easy.action.SerialVersionUIDAction" text="GenUID"
+                description="generate UID" icon="easy.icons.EasyIcons.ICON.COMMON">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift alt BACK_SLASH"/>
@@ -161,7 +161,7 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
         </action>
         <!--自动生成 Swagger2.x 注解-->
-        <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="SwaggerAnnotation"
+        <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="GenSwagger"
                 description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
         </action>
 

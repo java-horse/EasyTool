@@ -10,13 +10,13 @@ package easy.enums;
  */
 public enum WebSearchEnum {
 
-    BAIDU("Baidu Search", "http://www.baidu.com/s?wd=%s", "百度搜索"),
-    BING("Bing Search", "http://www.bing.com/search?q=%s", "必应搜索"),
-    GOOGLE("Google Search", "http://www.google.com/search?q=%s", "谷歌搜索"),
-    STACK_OVERFLOW("Stack Overflow Search", "https://www.google.com/search?q=site%3Astackoverflow.com%20", "Stack OVERFLOW 搜索"),
-    SO("360 Search", "https://www.so.com/s?q=%s", "360搜索"),
-    SO_GOU("Sogou Search", "https://www.sogou.com/web?q=%s", "搜狗搜索"),
-    DUCK_DUCK_GO("Duck Search", "https://duckduckgo.com/?q=%s", "Duck搜索");
+    BAIDU("Baidu", "http://www.baidu.com/s?wd=%s", "百度搜索"),
+    BING("Bing", "http://www.bing.com/search?q=%s", "必应搜索"),
+    GOOGLE("Google", "http://www.google.com/search?q=%s", "谷歌搜索"),
+    STACK_OVERFLOW("StackOverflow", "https://www.google.com/search?q=site%3Astackoverflow.com%20", "Stack OVERFLOW 搜索"),
+    SO("360", "https://www.so.com/s?q=%s", "360搜索"),
+    SO_GOU("Sogou", "https://www.sogou.com/web?q=%s", "搜狗搜索"),
+    DUCK_DUCK_GO("DuckDuckGo", "https://duckduckgo.com/?q=%s", "Duck搜索");
 
     public final String title;
     public final String templateUrl;
