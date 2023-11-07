@@ -32,6 +32,7 @@ public class EasyIcons {
         Icon WECHAT_OFFICIAL = IconLoader.getIcon("icons/wechat-official.svg", EasyIcons.class);
         Icon SETTING = IconLoader.getIcon("icons/setting.svg", EasyIcons.class);
         Icon STATISTICS = IconLoader.getIcon("icons/statistics.svg", EasyIcons.class);
+        Icon COPY = IconLoader.getIcon("icons/copy.svg", EasyIcons.class);
     }
 
 }

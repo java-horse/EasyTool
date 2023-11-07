@@ -169,6 +169,10 @@
         <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="GenSwagger"
                 description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
         </action>
+        <!--自动复制完整接口URL-->
+        <action id="EasyCharCopyFullAction" class="easy.action.CopyFullUrlAction" text="CopyUrl"
+                description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY">
+        </action>
 
 
         <!--工具栏快捷菜单-->
@@ -185,8 +189,9 @@
             <group id="EasyCharEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyCharTranslateAction"/>
-            <reference ref="EasyCharCamelCaseAction"/>
             <reference ref="EasyCharSwaggerToolAction"/>
+            <reference ref="EasyCharCopyFullAction"/>
+            <reference ref="EasyCharCamelCaseAction"/>
             <reference ref="EasyCharSerialAction"/>
             <reference ref="EasyCharWebSearchDynamicActions"/>
         </group>

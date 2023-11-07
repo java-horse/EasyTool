@@ -7,7 +7,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import easy.base.Constants;
 import easy.enums.BaseTypeEnum;
+import easy.enums.RequestAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
@@ -33,19 +35,6 @@ public class SwaggerGenerateHandler {
 
     private static final Logger log = Logger.getInstance(SwaggerGenerateHandler.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
-
-    private static final String REQUEST_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.RequestMapping";
-    private static final String POST_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.PostMapping";
-    private static final String GET_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.GetMapping";
-    private static final String DELETE_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.DeleteMapping";
-    private static final String PATCH_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.PatchMapping";
-    private static final String PUT_MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.PutMapping";
-    private static final String REQUEST_PARAM_TEXT = "org.springframework.web.bind.annotation.RequestParam";
-    private static final String REQUEST_HEADER_TEXT = "org.springframework.web.bind.annotation.RequestHeader";
-    private static final String PATH_VARIABLE_TEXT = "org.springframework.web.bind.annotation.PathVariable";
-    private static final String REQUEST_BODY_TEXT = "org.springframework.web.bind.annotation.RequestBody";
-    private static final String CONTROLLER_ANNOTATION = "org.springframework.stereotype.Controller";
-    private static final String REST_CONTROLLER_ANNOTATION = "org.springframework.web.bind.annotation.RestController";
 
     private final Project project;
     private final PsiFile psiFile;
@@ -233,16 +222,16 @@ public class SwaggerGenerateHandler {
                     break;
                 }
                 switch (psiAnnotation.getQualifiedName()) {
-                    case REQUEST_HEADER_TEXT:
+                    case Constants.SPRING_ANNOTATION.REQUEST_HEADER_TEXT:
                         paramType = "header";
                         break;
-                    case REQUEST_PARAM_TEXT:
+                    case Constants.SPRING_ANNOTATION.REQUEST_PARAM_TEXT:
                         paramType = "query";
                         break;
-                    case PATH_VARIABLE_TEXT:
+                    case Constants.SPRING_ANNOTATION.PATH_VARIABLE_TEXT:
                         paramType = "path";
                         break;
-                    case REQUEST_BODY_TEXT:
+                    case Constants.SPRING_ANNOTATION.REQUEST_BODY_TEXT:
                         paramType = "body";
                         break;
                     default:
@@ -419,7 +408,8 @@ public class SwaggerGenerateHandler {
     private boolean isController(PsiClass psiClass) {
         PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
-            if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), CONTROLLER_ANNOTATION, REST_CONTROLLER_ANNOTATION)) {
+            if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), Constants.SPRING_ANNOTATION.CONTROLLER_ANNOTATION,
+                    Constants.SPRING_ANNOTATION.REST_CONTROLLER_ANNOTATION)) {
                 return true;
             }
         }
@@ -435,28 +425,32 @@ public class SwaggerGenerateHandler {
      */
     private String getMappingAttribute(PsiAnnotation[] psiAnnotations, String attributeName) {
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
-            switch (Objects.requireNonNull(psiAnnotation.getQualifiedName())) {
-                case REQUEST_MAPPING_ANNOTATION:
-                    String attribute = getAttribute(psiAnnotation, attributeName, "");
-                    if (Objects.equals("\"\"", attribute)) {
+            RequestAnnotationEnum requestAnnotationEnum = RequestAnnotationEnum.getEnumByQualifiedName(psiAnnotation.getQualifiedName());
+            if (Objects.isNull(requestAnnotationEnum)) {
+                return StringUtils.EMPTY;
+            }
+            switch (requestAnnotationEnum) {
+                case REQUEST_MAPPING:
+                    String attribute = getAttribute(psiAnnotation, attributeName, RequestAnnotationEnum.REQUEST_MAPPING.getMethodName());
+                    if (StringUtils.equals("\"\"", attribute)) {
                         return StringUtils.EMPTY;
                     }
                     return attribute;
-                case POST_MAPPING_ANNOTATION:
-                    return "POST";
-                case GET_MAPPING_ANNOTATION:
-                    return "GET";
-                case DELETE_MAPPING_ANNOTATION:
-                    return "DELETE";
-                case PATCH_MAPPING_ANNOTATION:
-                    return "PATCH";
-                case PUT_MAPPING_ANNOTATION:
-                    return "PUT";
+                case POST_MAPPING:
+                    return RequestAnnotationEnum.POST_MAPPING.getMethodName();
+                case GET_MAPPING:
+                    return RequestAnnotationEnum.GET_MAPPING.getMethodName();
+                case DELETE_MAPPING:
+                    return RequestAnnotationEnum.DELETE_MAPPING.getMethodName();
+                case PATCH_MAPPING:
+                    return RequestAnnotationEnum.PATCH_MAPPING.getMethodName();
+                case PUT_MAPPING:
+                    return RequestAnnotationEnum.PUT_MAPPING.getMethodName();
                 default:
                     break;
             }
         }
-        return "";
+        return StringUtils.EMPTY;
     }
 
     /**

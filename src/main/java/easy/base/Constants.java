@@ -26,4 +26,17 @@ public class Constants {
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-char-plugin";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easychar/reviews";
     public static final Set<String> STOP_WORDS = Sets.newHashSet("the");
+
+    /**
+     * Spring注解
+     */
+    public interface SPRING_ANNOTATION {
+        String REQUEST_PARAM_TEXT = "org.springframework.web.bind.annotation.RequestParam";
+        String REQUEST_HEADER_TEXT = "org.springframework.web.bind.annotation.RequestHeader";
+        String PATH_VARIABLE_TEXT = "org.springframework.web.bind.annotation.PathVariable";
+        String REQUEST_BODY_TEXT = "org.springframework.web.bind.annotation.RequestBody";
+        String CONTROLLER_ANNOTATION = "org.springframework.stereotype.Controller";
+        String REST_CONTROLLER_ANNOTATION = "org.springframework.web.bind.annotation.RestController";
+        String FEIGN_CLIENT_ANNOTATION = "org.springframework.cloud.openfeign.FeignClient";
+    }
 }
