@@ -1,6 +1,7 @@
 package easy.action;
 
 import com.google.common.base.CaseFormat;
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -29,6 +30,8 @@ public class CamelCaseAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(CamelCaseAction.class);
 
+    private static HintManager HINT_MANAGER = HintManager.getInstance();
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
@@ -49,6 +52,7 @@ public class CamelCaseAction extends AnAction {
         } else if (selectedText.indexOf('_') >= 0) {
             convertText = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, selectedText);
         } else {
+            HINT_MANAGER.showErrorHint(editor, "Cannot CamelCase format convert");
             return;
         }
         try {

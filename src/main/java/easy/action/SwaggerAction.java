@@ -6,9 +6,9 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtilBase;
 import easy.handler.SwaggerGenerateHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +28,10 @@ public class SwaggerAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(project) || Objects.isNull(editor)) {
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile)) {
             return;
         }
-        PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
         String selectedText = editor.getSelectionModel().getSelectedText();
         new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
@@ -41,7 +41,10 @@ public class SwaggerAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass));
     }
 
     @Override

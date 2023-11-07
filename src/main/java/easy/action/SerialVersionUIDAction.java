@@ -7,11 +7,15 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.*;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,19 +34,25 @@ public class SerialVersionUIDAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        if (Objects.isNull(project)) {
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        if (ObjectUtils.anyNull(project, editor, psiFile)) {
             return;
         }
-        Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(editor)) {
+        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
+        if (Objects.isNull(psiClass)) {
             return;
         }
         try {
             WriteCommandAction.writeCommandAction(project).run((ThrowableRunnable<Throwable>) () -> {
-                        String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
-                        EditorModificationUtilEx.insertStringAtCaret(editor, insertStr);
-                    }
-            );
+                String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
+                PsiElementFactory elementFactory = PsiElementFactory.getInstance(psiClass.getProject());
+                PsiStatement psiStatement = elementFactory.createStatementFromText(insertStr, null);
+                PsiElement lBrace = psiClass.getLBrace();
+                if (Objects.nonNull(lBrace)) {
+                    psiClass.addBefore(psiStatement, lBrace.getNextSibling());
+                }
+            });
         } catch (Throwable ex) {
             log.error("serialVersionUID写入编辑器异常", ex);
         }
@@ -52,8 +62,22 @@ public class SerialVersionUIDAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && !editor.getSelectionModel().hasSelection());
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        if (ObjectUtils.anyNull(project, editor, psiFile)) {
+            e.getPresentation().setEnabledAndVisible(false);
+            return;
+        }
+        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
+        if (Objects.isNull(psiClass)) {
+            e.getPresentation().setEnabledAndVisible(false);
+            return;
+        }
+        PsiClassType[] implementsListTypes = psiClass.getImplementsListTypes();
+        boolean serializable = Arrays.stream(implementsListTypes)
+                .anyMatch(type -> StringUtils.equalsAny(type.getClassName(), "Serializable", "java.io.Serializable"));
+        PsiField[] fields = psiClass.getFields();
+        boolean serialVersionUID = Arrays.stream(fields).anyMatch(field -> StringUtils.equalsAny(field.getName(), "serialVersionUID"));
+        e.getPresentation().setEnabledAndVisible(serializable && !serialVersionUID);
     }
 
     @Override

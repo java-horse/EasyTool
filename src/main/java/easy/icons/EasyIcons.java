@@ -21,6 +21,7 @@ public class EasyIcons {
         Icon TEXT = IconLoader.getIcon("icons/text.svg", EasyIcons.class);
         Icon WEB = IconLoader.getIcon("icons/web.svg", EasyIcons.class);
         Icon LOGO = IconLoader.getIcon("icons/pluginIcon.svg", EasyIcons.class);
+        Icon TOOL_LOGO = IconLoader.getIcon("icons/pluginToolIcon.svg", EasyIcons.class);
         Icon EDGE = IconLoader.getIcon("icons/edge.svg", EasyIcons.class);
         Icon CHROME = IconLoader.getIcon("icons/chrome.svg", EasyIcons.class);
         Icon OVERFLOW = IconLoader.getIcon("icons/stack-overflow.svg", EasyIcons.class);
