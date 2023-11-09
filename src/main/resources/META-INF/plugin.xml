@@ -16,6 +16,7 @@
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
         <li>Support for quick generation of serialVersionUID</li>
+        <li>Supports automatic copying of interface complete URL</li>
       </ul>
 	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
@@ -37,6 +38,7 @@
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
         <li>支持选中文本右键快捷Web搜索</li>
         <li>支持快捷生成 serialVersionUID, 快捷键: CTRL + SHIFT + ALT + \ </li>
+        <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择CopyUrl</li>
       </ul>
       <h3>Source</h3>
       <ul>
@@ -52,6 +54,7 @@
       <ul>
         <li>Optimize the generation rules for serialVersionUID (only allowed when the current class must implement the Serializable interface and there is no serialVersionUID field present)</li>
         <li>Optimize toolbar icon size to 13px</li>
+        <li>Add a complete URL for the automatic replication interface</li>
       </ul>
       <h3>v1.0.9</h3>
       <ul>
