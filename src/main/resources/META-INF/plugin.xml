@@ -50,6 +50,10 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.1.1</h3>
+      <ul>
+          <li>Support converting toString strings of instances to JSON strings</li>
+      </ul>
       <h3>v1.1.0</h3>
       <ul>
         <li>Optimize the generation rules for serialVersionUID (only allowed when the current class must implement the Serializable interface and there is no serialVersionUID field present)</li>
@@ -176,7 +180,6 @@
         <action id="EasyCharCopyFullAction" class="easy.action.CopyFullUrlAction" text="CopyUrl"
                 description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY">
         </action>
-
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"

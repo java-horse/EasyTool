@@ -1,6 +1,7 @@
 package easy.form;
 
 import com.intellij.openapi.ui.DialogWrapper;
+import easy.icons.EasyIcons;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -20,6 +21,10 @@ public class TranslateResultView extends DialogWrapper {
         super(false);
         init();
         setTitle(translate);
+        setOKButtonText("Copy");
+        setOKButtonIcon(EasyIcons.ICON.COPY);
+        setOKButtonTooltip("Copy Translate Result");
+        setAutoAdjustable(true);
         resultTextArea.setText(result);
         resultTextArea.setSize(600, 600);
     }

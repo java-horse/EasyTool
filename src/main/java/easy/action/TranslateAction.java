@@ -9,6 +9,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtilEx;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ThrowableRunnable;
 import easy.config.translate.TranslateConfig;
@@ -21,6 +22,7 @@ import easy.util.NotificationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.datatransfer.StringSelection;
 import java.util.Objects;
 
 /**
@@ -40,11 +42,8 @@ public class TranslateAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        if (Objects.isNull(project)) {
-            return;
-        }
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(editor) || !editor.getSelectionModel().hasSelection()) {
+        if (Objects.isNull(project) || Objects.isNull(editor) || !editor.getSelectionModel().hasSelection()) {
             return;
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
@@ -67,7 +66,9 @@ public class TranslateAction extends AnAction {
                 log.error("中英互译写入编辑器异常", ex);
             }
         } else {
-            new TranslateResultView(translateConfig.getTranslateChannel(), translateResult).show();
+            if (new TranslateResultView(translateConfig.getTranslateChannel(), translateResult).showAndGet()) {
+                CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
+            }
         }
     }
 

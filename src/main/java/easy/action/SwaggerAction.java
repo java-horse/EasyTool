@@ -9,6 +9,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import easy.base.Constants;
+import easy.dialog.SwaggerConfirmDialog;
 import easy.handler.SwaggerGenerateHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +36,10 @@ public class SwaggerAction extends AnAction {
         }
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
         String selectedText = editor.getSelectionModel().getSelectedText();
-        new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
+        // 二次弹窗确认
+        if (new SwaggerConfirmDialog(Constants.PLUGIN_NAME, "Confirm Swagger Generation?").showAndGet()) {
+            new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
+        }
     }
 
     @Override
