@@ -6,12 +6,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageConstants;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
-import easy.dialog.SwaggerConfirmDialog;
 import easy.handler.SwaggerGenerateHandler;
+import easy.icons.EasyIcons;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -36,8 +38,10 @@ public class SwaggerAction extends AnAction {
         }
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
         String selectedText = editor.getSelectionModel().getSelectedText();
+
         // 二次弹窗确认
-        if (new SwaggerConfirmDialog(Constants.PLUGIN_NAME, "Confirm Swagger Generation?").showAndGet()) {
+        int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, EasyIcons.ICON.SWAGGER);
+        if (MessageConstants.YES == confirmResult) {
             new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
         }
     }
