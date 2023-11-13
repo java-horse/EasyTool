@@ -255,7 +255,7 @@ public class SwaggerGenerateHandler {
             if (StringUtils.isBlank(paramDesc)) {
                 paramDesc = translateService.translate(paramName);
             }
-            if (StringUtils.isNotBlank(paramDesc) && LanguageUtil.isAllChinese(paramDesc)) {
+            if (StringUtils.isNotBlank(paramDesc) && LanguageUtil.isContainsChinese(paramDesc)) {
                 apiImplicitParamText.append(", value = ").append("\"").append(paramDesc).append("\"");
             }
             if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(dataType)) || StringUtils.equalsAny(dataType, "file")) {

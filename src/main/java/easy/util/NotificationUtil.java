@@ -43,7 +43,7 @@ public class NotificationUtil {
      * @date 2023/9/17 16:26
      */
     public static void notify(String title, String content, AnAction... actions) {
-        NotificationGroup group = new NotificationGroup("EasyChar", NotificationDisplayType.BALLOON, true, null, EasyIcons.ICON.LOGO);
+        NotificationGroup group = new NotificationGroup(Constants.PLUGIN_NAME, NotificationDisplayType.BALLOON, true, null, EasyIcons.ICON.LOGO);
         Notification notification = group.createNotification(title, content, NotificationType.INFORMATION, NotificationListener.URL_OPENING_LISTENER);
         if (ArrayUtils.isNotEmpty(actions)) {
             for (AnAction action : actions) {

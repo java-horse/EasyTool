@@ -114,6 +114,28 @@ public class TranslateService {
             }
             return builder.toString();
         }
+        // 尝试分割分词, 翻译拼接处理
+        if (LanguageUtil.isAllEnglish(source) || LanguageUtil.isCamelCase(source) || LanguageUtil.isSnakeCase(source)) {
+            StringBuilder builder = new StringBuilder();
+            String[] splitSources = new String[]{};
+            if (LanguageUtil.isCamelCase(source)) {
+                splitSources = LanguageUtil.splitCamelCase(source);
+            } else if (LanguageUtil.isSnakeCase(source)) {
+                splitSources = StringUtils.split(source, "_");
+            } else if (StringUtils.contains(source, " ")) {
+                splitSources = StringUtils.split(source, " ");
+            }
+            for (String split : splitSources) {
+                String en2Ch = translate.en2Ch(split);
+                if (StringUtils.isNotBlank(en2Ch)) {
+                    builder.append(en2Ch);
+                }
+            }
+            if (StringUtils.isBlank(builder.toString())) {
+                builder.append(translate.en2Ch(source.replace(StringUtils.LF, StringUtils.SPACE)));
+            }
+            return builder.toString();
+        }
         return translate.en2Ch(source.replace(StringUtils.LF, StringUtils.SPACE));
     }
 

@@ -40,13 +40,13 @@ public class ConvertConfigurable implements SearchableConfigurable {
     @Nls
     @Override
     public String getDisplayName() {
-        return "EasyChar";
+        return Constants.PLUGIN_NAME;
     }
 
     @Nullable
     @Override
     public String getHelpTopic() {
-        return "EasyChar Chinese and English character settings";
+        return Constants.PLUGIN_NAME + " Chinese and English character settings";
     }
 
     @Nullable

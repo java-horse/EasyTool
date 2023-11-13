@@ -22,7 +22,7 @@ public class SupportView extends DialogWrapper {
     public SupportView() {
         super(false);
         init();
-        setTitle("感谢赞赏");
+        setTitle("感谢支持开发者");
     }
 
     @Nullable

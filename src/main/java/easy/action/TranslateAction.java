@@ -11,11 +11,12 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.util.ThrowableRunnable;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
-import easy.form.TranslateResultView;
+import easy.icons.EasyIcons;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
@@ -66,7 +67,8 @@ public class TranslateAction extends AnAction {
                 log.error("中英互译写入编辑器异常", ex);
             }
         } else {
-            if (new TranslateResultView(translateConfig.getTranslateChannel(), translateResult).showAndGet()) {
+            int dialogResult = Messages.showOkCancelDialog(translateResult, translateConfig.getTranslateChannel(), "Copy", "Cancel", EasyIcons.ICON.TRANSLATE);
+            if (dialogResult == Messages.YES) {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }
         }
@@ -115,7 +117,7 @@ public class TranslateAction extends AnAction {
             isRemind = StringUtils.isBlank(translateConfig.getMicrosoftKey());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.NIU.getTranslate())) {
             isRemind = StringUtils.isBlank(translateConfig.getNiuApiKey());
-        }else if (StringUtils.equals(translateChannel, TranslateEnum.CAIYUN.getTranslate())) {
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.CAIYUN.getTranslate())) {
             isRemind = StringUtils.isBlank(translateConfig.getCaiyunToken());
         }
         if (isRemind) {

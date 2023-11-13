@@ -1,5 +1,7 @@
 package easy.util;
 
+import java.util.regex.Pattern;
+
 /**
  * 语言处理工具
  *
@@ -9,6 +11,12 @@ package easy.util;
  **/
 
 public class LanguageUtil {
+
+    private static final Pattern SPLIT_CAMEL_CASE_PATTERN = Pattern.compile("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
+    private static final Pattern IS_CAMEL_CASE_PATTERN = Pattern.compile("^[a-z]+([A-Z][a-z0-9]*)*$");
+    private static final Pattern IS_SNAKE_CASE_PATTERN = Pattern.compile("^[a-z]+(_[a-z0-9]+)*$");
+    private static final Pattern IS_ALL_ENGLISH_PATTERN = Pattern.compile("^[A-Za-z ]+$");
+
 
     private LanguageUtil() {
 
@@ -67,6 +75,54 @@ public class LanguageUtil {
             }
         }
         return true;
+    }
+
+    /**
+     * 是否全是英文字母和空格
+     *
+     * @param str
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/13 9:25
+     */
+    public static boolean isAllEnglish(String str) {
+        return IS_ALL_ENGLISH_PATTERN.matcher(str).matches();
+    }
+
+    /**
+     * 是否驼峰命名
+     *
+     * @param str
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/13 9:30
+     */
+    public static boolean isCamelCase(String str) {
+        return IS_CAMEL_CASE_PATTERN.matcher(str).matches();
+    }
+
+    /**
+     * 是否为蛇形命名
+     *
+     * @param str
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/13 9:52
+     */
+    public static boolean isSnakeCase(String str) {
+        return IS_SNAKE_CASE_PATTERN.matcher(str).matches();
+    }
+
+    /**
+     * 分割驼峰命名字符串
+     *
+     * @param str
+     * @return java.lang.String[]
+     * @author mabin
+     * @date 2023/11/13 9:37
+     */
+    public static String[] splitCamelCase(String str) {
+        return SPLIT_CAMEL_CASE_PATTERN.matcher(str).replaceAll(" ").split(" ");
     }
 
 }

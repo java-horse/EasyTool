@@ -46,8 +46,7 @@ public class ToolWindowAction extends AnAction {
             }
             toolWindow.show();
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
-            ActionManager actionManager = ActionManager.getInstance();
-            AnAction action = actionManager.getAction("ShowSettings");
+            AnAction action = ActionManager.getInstance().getAction("ShowSettings");
             if (Objects.isNull(action)) {
                 return;
             }
