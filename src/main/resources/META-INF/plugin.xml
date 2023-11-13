@@ -52,7 +52,11 @@
         <![CDATA[
       <h3>v1.1.1</h3>
       <ul>
-          <li>Support converting toString strings of instances to JSON strings</li>
+          <li>Optimize the pop-up display effect of translation results</li>
+          <li>Optimize translation processing logic and support word segmentation translation in camel and snake naming formats</li>
+          <li>---------------------------------</li>
+          <li>优化翻译结果弹窗显示效果</li>
+          <li>优化翻译处理逻辑,支持驼峰、蛇形命名格式分词翻译</li>
       </ul>
       <h3>v1.1.0</h3>
       <ul>
