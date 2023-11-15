@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,18 +48,22 @@ public class SerialVersionUIDAction extends AnAction {
         PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
         PsiClass caretPsiClass = PsiTreeUtil.getContextOfType(psiElement, PsiClass.class);
         try {
+            boolean dingNotify = false;
             if (Objects.nonNull(caretPsiClass)) {
                 if (StringUtils.equals(psiClass.getQualifiedName(), caretPsiClass.getQualifiedName())) {
-                    genUID(caretPsiClass);
+                    dingNotify = genUID(caretPsiClass);
                     PsiClass[] innerClasses = psiClass.getInnerClasses();
                     for (PsiClass innerClass : innerClasses) {
-                        genUID(innerClass);
+                        dingNotify = dingNotify || genUID(innerClass);
                     }
                 } else {
                     if (Arrays.stream(psiClass.getInnerClasses()).anyMatch(innerItem -> StringUtils.equals(innerItem.getQualifiedName(), caretPsiClass.getQualifiedName()))) {
-                        genUID(caretPsiClass);
+                        dingNotify = genUID(caretPsiClass);
                     }
                 }
+            }
+            if (dingNotify) {
+                MessageUtil.sendActionDingMessage(e);
             }
         } catch (Throwable ex) {
             log.error("serialVersionUID写入编辑器异常", ex);
@@ -107,14 +112,14 @@ public class SerialVersionUIDAction extends AnAction {
      * 生成UID
      *
      * @param psiClass
-     * @return void
+     * @return boolean
      * @author mabin
-     * @date 2023/11/15 13:48
+     * @date 2023/11/15 15:02
      */
-    private void genUID(PsiClass psiClass) throws Throwable {
+    private boolean genUID(PsiClass psiClass) throws Throwable {
         if (Objects.isNull(psiClass) || Arrays.stream(psiClass.getFields()).anyMatch(field ->
                 StringUtils.equalsAny(field.getName(), UID))) {
-            return;
+            return false;
         }
         WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
             String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
@@ -125,6 +130,7 @@ public class SerialVersionUIDAction extends AnAction {
                 psiClass.addBefore(psiStatement, lBrace.getNextSibling());
             }
         });
+        return true;
     }
 
 }
