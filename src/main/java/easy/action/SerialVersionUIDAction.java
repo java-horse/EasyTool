@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +29,9 @@ import java.util.UUID;
  * @date: 2023/10/14 15:11:50
  */
 public class SerialVersionUIDAction extends AnAction {
-
     private static final Logger log = Logger.getInstance(SerialVersionUIDAction.class);
+
+    private static final String UID = "serialVersionUID";
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -43,16 +45,26 @@ public class SerialVersionUIDAction extends AnAction {
         if (Objects.isNull(psiClass)) {
             return;
         }
+        PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
+        PsiClass caretPsiClass = PsiTreeUtil.getContextOfType(psiElement, PsiClass.class);
         try {
-            WriteCommandAction.writeCommandAction(project).run((ThrowableRunnable<Throwable>) () -> {
-                String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
-                PsiElementFactory elementFactory = PsiElementFactory.getInstance(psiClass.getProject());
-                PsiStatement psiStatement = elementFactory.createStatementFromText(insertStr, null);
-                PsiElement lBrace = psiClass.getLBrace();
-                if (Objects.nonNull(lBrace)) {
-                    psiClass.addBefore(psiStatement, lBrace.getNextSibling());
+            boolean dingNotify = false;
+            if (Objects.nonNull(caretPsiClass)) {
+                if (StringUtils.equals(psiClass.getQualifiedName(), caretPsiClass.getQualifiedName())) {
+                    dingNotify = genUID(caretPsiClass);
+                    PsiClass[] innerClasses = psiClass.getInnerClasses();
+                    for (PsiClass innerClass : innerClasses) {
+                        dingNotify = dingNotify || genUID(innerClass);
+                    }
+                } else {
+                    if (Arrays.stream(psiClass.getInnerClasses()).anyMatch(innerItem -> StringUtils.equals(innerItem.getQualifiedName(), caretPsiClass.getQualifiedName()))) {
+                        dingNotify = genUID(caretPsiClass);
+                    }
                 }
-            });
+            }
+            if (dingNotify) {
+                MessageUtil.sendActionDingMessage(e);
+            }
         } catch (Throwable ex) {
             log.error("serialVersionUID写入编辑器异常", ex);
         }
@@ -75,13 +87,50 @@ public class SerialVersionUIDAction extends AnAction {
         PsiClassType[] implementsListTypes = psiClass.getImplementsListTypes();
         boolean serializable = Arrays.stream(implementsListTypes)
                 .anyMatch(type -> StringUtils.equalsAny(type.getClassName(), "Serializable", "java.io.Serializable"));
-        PsiField[] fields = psiClass.getFields();
-        boolean serialVersionUID = Arrays.stream(fields).anyMatch(field -> StringUtils.equalsAny(field.getName(), "serialVersionUID"));
-        e.getPresentation().setEnabledAndVisible(serializable && !serialVersionUID);
+        boolean serialResult = Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), UID));
+        PsiClass[] innerClasses = psiClass.getInnerClasses();
+        boolean innerSerialResult = false;
+        if (innerClasses.length == 0) {
+            innerSerialResult = true;
+        } else {
+            for (PsiClass innerClass : innerClasses) {
+                if (Arrays.stream(innerClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), UID))) {
+                    innerSerialResult = true;
+                    break;
+                }
+            }
+        }
+        e.getPresentation().setEnabledAndVisible(serializable && (serialResult || innerSerialResult));
     }
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
         return super.getActionUpdateThread();
     }
+
+    /**
+     * 生成UID
+     *
+     * @param psiClass
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/15 15:02
+     */
+    private boolean genUID(PsiClass psiClass) throws Throwable {
+        if (Objects.isNull(psiClass) || Arrays.stream(psiClass.getFields()).anyMatch(field ->
+                StringUtils.equalsAny(field.getName(), UID))) {
+            return false;
+        }
+        WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
+            String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
+            PsiElementFactory elementFactory = PsiElementFactory.getInstance(psiClass.getProject());
+            PsiStatement psiStatement = elementFactory.createStatementFromText(insertStr, null);
+            PsiElement lBrace = psiClass.getLBrace();
+            if (Objects.nonNull(lBrace)) {
+                psiClass.addBefore(psiStatement, lBrace.getNextSibling());
+            }
+        });
+        return true;
+    }
+
 }

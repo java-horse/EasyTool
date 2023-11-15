@@ -14,6 +14,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.handler.SwaggerGenerateHandler;
 import easy.icons.EasyIcons;
+import easy.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -43,6 +44,7 @@ public class SwaggerAction extends AnAction {
         int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, EasyIcons.ICON.SWAGGER);
         if (MessageConstants.YES == confirmResult) {
             new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
+            MessageUtil.sendActionDingMessage(e);
         }
     }
 

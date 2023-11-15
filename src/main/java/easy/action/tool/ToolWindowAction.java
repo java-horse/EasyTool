@@ -7,6 +7,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import easy.base.Constants;
 import easy.enums.ToolWindowEnum;
 import easy.form.WeChatOfficialView;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +39,7 @@ public class ToolWindowAction extends AnAction {
         String actionText = presentation.getText();
         if (StringUtils.equals(ToolWindowEnum.WECHAT_OFFICIAL.title, actionText)) {
             new WeChatOfficialView().show();
+            MessageUtil.sendActionDingMessage(e);
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_STATISTICS.title, actionText)) {
             ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(e.getProject());
             ToolWindow toolWindow = toolWindowManager.getToolWindow(Constants.PLUGIN_NAME);
