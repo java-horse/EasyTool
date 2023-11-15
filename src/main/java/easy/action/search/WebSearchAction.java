@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import easy.enums.WebSearchEnum;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,6 +72,7 @@ public class WebSearchAction extends AnAction {
             Desktop dp = Desktop.getDesktop();
             if (dp.isSupported(Desktop.Action.BROWSE)) {
                 dp.browse(URI.create(searchUrl));
+                MessageUtil.sendActionDingMessage(e);
             }
         } catch (Exception ex) {
             log.error("打开链接失败: " + searchUrl, ex);

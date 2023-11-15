@@ -19,6 +19,7 @@ import easy.enums.TranslateEnum;
 import easy.icons.EasyIcons;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
+import easy.util.MessageUtil;
 import easy.util.NotificationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -72,6 +73,7 @@ public class TranslateAction extends AnAction {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }
         }
+        MessageUtil.sendActionDingMessage(e);
     }
 
 

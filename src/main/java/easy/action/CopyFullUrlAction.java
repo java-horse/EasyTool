@@ -14,6 +14,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.handler.CopyFullUrlHandler;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,7 @@ public class CopyFullUrlAction extends AnAction {
         }
         PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
         new CopyFullUrlHandler().doCopyFullUrl(psiElement);
+        MessageUtil.sendActionDingMessage(e);
     }
 
     @Override
