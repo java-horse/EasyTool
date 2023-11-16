@@ -11,7 +11,9 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.NlsSafe;
 import com.intellij.util.ThrowableRunnable;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
@@ -58,10 +60,24 @@ public class TranslateAction extends AnAction {
         }
         if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
             try {
+                String inputResult = Messages.showInputDialog(StringUtils.EMPTY, translateConfig.getTranslateChannel(), EasyIcons.ICON.TRANSLATE, translateResult, new InputValidator() {
+                    @Override
+                    public boolean checkInput(@NlsSafe String inputString) {
+                        return StringUtils.isNotBlank(inputString) && inputString.length() <= 255;
+                    }
+
+                    @Override
+                    public boolean canClose(@NlsSafe String inputString) {
+                        return StringUtils.isNotBlank(inputString);
+                    }
+                });
+                if (StringUtils.isBlank(inputResult)) {
+                    return;
+                }
                 WriteCommandAction.writeCommandAction(project).run((ThrowableRunnable<Throwable>) () -> {
                             int start = editor.getSelectionModel().getSelectionStart();
-                            EditorModificationUtilEx.insertStringAtCaret(editor, translateResult);
-                            editor.getSelectionModel().setSelection(start, start + translateResult.length());
+                            EditorModificationUtilEx.insertStringAtCaret(editor, inputResult);
+                            editor.getSelectionModel().setSelection(start, start + inputResult.length());
                         }
                 );
             } catch (Throwable ex) {
