@@ -64,7 +64,7 @@ public class MessageUtil {
             DingBotParam dingBotParam = new DingBotParam();
             dingBotParam.setMsgtype("actionCard");
             DingBotParam.ActionCardVO actionCardVO = new DingBotParam.ActionCardVO();
-            actionCardVO.setTitle(Constants.PLUGIN_NAME + "通知");
+            actionCardVO.setTitle(Constants.PLUGIN_NAME + " 通知");
             actionCardVO.setBtnOrientation("1");
             DingBotParam.ActionCardVO.BtnsVO btnsVO = new DingBotParam.ActionCardVO.BtnsVO();
             btnsVO.setTitle(Constants.PLUGIN_NAME + " Plugin");
@@ -74,9 +74,9 @@ public class MessageUtil {
             String text = String.format("![1](https://z1.ax1x.com/2023/11/15/piY8VCn.jpg) \n" +
                             "#### **%s** \n" +
                             "---  \n" +
-                            "**运行系统：** %s \n\n" +
-                            "**运行软件：** %s (%s) \n\n" +
-                            "**主机IP：** %s \n\n" +
+                            "**主机系统：** %s \n\n" +
+                            "**软件版本：** %s (%s) \n\n" +
+                            "**网络IP：** %s \n\n" +
                             "**触发Action：** %s \n\n" +
                             "**触发时间：** %s \n\n", Constants.PLUGIN_NAME + " 动态", SystemInfo.getOsNameAndVersion(), applicationInfo.getFullApplicationName(),
                     applicationInfo.getBuild().asString(), NetUtil.getIp(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -99,7 +99,7 @@ public class MessageUtil {
     private static String sign(long timestamp, String secret) {
         String sign = StringUtils.EMPTY;
         try {
-            String stringToSign = timestamp + String.valueOf(StringUtils.LF) + secret;
+            String stringToSign = timestamp + StringUtils.LF + secret;
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
             byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
