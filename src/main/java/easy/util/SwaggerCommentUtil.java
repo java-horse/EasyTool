@@ -2,6 +2,7 @@ package easy.util;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiType;
+import easy.base.Constants;
 import easy.enums.BaseTypeEnum;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -154,7 +155,7 @@ public class SwaggerCommentUtil {
      */
     private static void appendComment(String string, StringBuilder stringBuilder, int index) {
         String lowerCaseStr = string.toLowerCase();
-        int descIndex = StringUtils.ordinalIndexOf(lowerCaseStr, "@", 1);
+        int descIndex = StringUtils.ordinalIndexOf(lowerCaseStr, Constants.AT, 1);
         descIndex += index;
         String desc = string.substring(descIndex);
         stringBuilder.append(desc);

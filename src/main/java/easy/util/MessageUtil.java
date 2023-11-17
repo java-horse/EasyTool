@@ -1,5 +1,6 @@
 package easy.util;
 
+import com.google.gson.JsonObject;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
@@ -76,14 +77,52 @@ public class MessageUtil {
                             "---  \n" +
                             "**主机系统：** %s \n\n" +
                             "**软件版本：** %s (%s) \n\n" +
-                            "**网络IP：** %s \n\n" +
+                            "**地理位置：** %s \n\n" +
                             "**触发Action：** %s \n\n" +
                             "**触发时间：** %s \n\n", Constants.PLUGIN_NAME + " 动态", SystemInfo.getOsNameAndVersion(), applicationInfo.getFullApplicationName(),
-                    applicationInfo.getBuild().asString(), NetUtil.getIp(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    applicationInfo.getBuild().asString(), getIpRegion(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             actionCardVO.setText(text);
             dingBotParam.setActionCard(actionCardVO);
             sendDingMessage(JsonUtil.toJson(dingBotParam));
         });
+    }
+
+    /**
+     * 返回ip区域相关信息
+     * 格式: IP 国家-地区-城市 (经度-纬度)
+     *
+     * @param
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/11/17 17:23
+     */
+    private static String getIpRegion() {
+        String ip = NetUtil.getIp();
+        if (StringUtils.isBlank(ip)) {
+            return null;
+        }
+        String regionJson = NetUtil.getIpRegion(ip);
+        if (StringUtils.isBlank(regionJson)) {
+            return ip;
+        }
+        JsonObject resObject = JsonUtil.fromObject(regionJson);
+        String country = resObject.get("country").getAsString();
+        String regionName = resObject.get("regionName").getAsString();
+        String city = resObject.get("city").getAsString();
+        double lon = resObject.get("lon").getAsDouble();
+        double lat = resObject.get("lat").getAsDouble();
+        StringBuilder builder = new StringBuilder(ip);
+        if (StringUtils.isNotBlank(country)) {
+            builder.append(" ").append(country);
+        }
+        if (StringUtils.isNotBlank(regionName)) {
+            builder.append("-").append(regionName);
+        }
+        if (StringUtils.isNotBlank(city)) {
+            builder.append("-").append(city);
+        }
+        builder.append(" (").append(lon).append("-").append(lat).append(")");
+        return builder.toString();
     }
 
 

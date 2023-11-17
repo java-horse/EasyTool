@@ -93,12 +93,13 @@ public class SwaggerGenerateHandler {
      * @return boolean
      */
     private void generateSelection(PsiClass psiClass, String selectionText, boolean isController) {
-        if (StringUtils.equals(selectionText, psiClass.getName())) {
+        if (StringUtils.equals(selectionText, psiClass.getNameIdentifier().getText())) {
             this.generateClassAnnotation(psiClass, isController);
+            return;
         }
         PsiMethod[] methods = psiClass.getMethods();
         for (PsiMethod psiMethod : methods) {
-            if (StringUtils.equals(selectionText, psiMethod.getName())) {
+            if (StringUtils.equals(selectionText, psiMethod.getNameIdentifier().getText())) {
                 this.generateMethodAnnotation(psiMethod);
                 return;
             }
@@ -129,35 +130,17 @@ public class SwaggerGenerateHandler {
                 classComment = (PsiComment) tmpEle;
                 String tmpText = classComment.getText();
                 String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                String annotationFromText;
-                String annotation;
-                String qualifiedName;
-                if (isController) {
-                    annotation = SwaggerAnnotationEnum.API.getClassName();
-                    qualifiedName = SwaggerAnnotationEnum.API.getClassPackage();
-                    annotationFromText = String.format("@%s(tags = {\"%s\"})", annotation, commentDesc);
-                } else {
-                    annotation = SwaggerAnnotationEnum.API_MODEL.getClassName();
-                    qualifiedName = SwaggerAnnotationEnum.API_MODEL.getClassPackage();
-                    annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
-                }
+                String annotation = isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName();
+                String qualifiedName = isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage();
+                String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", annotation, commentDesc) : String.format("@%s(description = \"%s\")", annotation, commentDesc);
                 this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
             }
         }
         if (Objects.isNull(classComment)) {
-            String annotationFromText;
-            String annotation;
-            String qualifiedName;
             String commentDesc = translateService.translate(psiClass.getNameIdentifier().getText());
-            if (isController) {
-                annotation = SwaggerAnnotationEnum.API.getClassName();
-                qualifiedName = SwaggerAnnotationEnum.API.getClassPackage();
-                annotationFromText = String.format("@%s(tags = {\"%s\"})", annotation, commentDesc);
-            } else {
-                annotation = SwaggerAnnotationEnum.API_MODEL.getClassName();
-                qualifiedName = SwaggerAnnotationEnum.API_MODEL.getClassPackage();
-                annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
-            }
+            String annotation = isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName();
+            String qualifiedName = isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage();
+            String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", annotation, commentDesc) : String.format("@%s(description = \"%s\")", annotation, commentDesc);
             this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
         }
     }
@@ -196,14 +179,14 @@ public class SwaggerGenerateHandler {
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         if (StringUtils.isNotBlank(methodValue)) {
             methodValue = methodValue.substring(methodValue.indexOf(".") + 1);
-            apiOperationAnnotationText.append("@").append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
+            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
                     .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
                 apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
             }
             apiOperationAnnotationText.append(", ").append("httpMethod = ").append("\"").append(methodValue).append("\"").append(")");
         } else {
-            apiOperationAnnotationText.append("@").append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
+            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
                     .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
                 apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
@@ -249,7 +232,7 @@ public class SwaggerGenerateHandler {
                 paramDesc = methodParamCommentDesc.get(paramName);
             }
             StringBuilder apiImplicitParamText = new StringBuilder();
-            apiImplicitParamText.append("@").append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName())
+            apiImplicitParamText.append(Constants.AT).append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName())
                     .append("(paramType = ").append("\"").append(paramType).append("\"")
                     .append(", name = ").append("\"").append(paramName).append("\"");
             if (StringUtils.isBlank(paramDesc)) {
@@ -282,7 +265,7 @@ public class SwaggerGenerateHandler {
         if (CollectionUtils.isNotEmpty(apiImplicitParamList) && apiImplicitParamList.size() == 1) {
             apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
         } else {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", "@" + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
+            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
             complex = true;
         }
 
@@ -314,10 +297,10 @@ public class SwaggerGenerateHandler {
                 String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
                 StringBuilder apiModelPropertyText = new StringBuilder();
                 if (validate) {
-                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
                             .append(commentDesc).append("\"").append(", required=true)");
                 } else {
-                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
                             .append(commentDesc).append("\")");
                 }
                 this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
@@ -327,19 +310,19 @@ public class SwaggerGenerateHandler {
             String fieldName = psiField.getNameIdentifier().getText();
             StringBuilder apiModelPropertyText = new StringBuilder();
             if (StringUtils.equals(fieldName, "serialVersionUID")) {
-                apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+                apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
             } else {
                 String commentDesc = translateService.translate(fieldName);
                 if (StringUtils.isNotBlank(commentDesc)) {
                     if (validate) {
-                        apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                        apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
                                 .append(commentDesc).append("\"").append(", required=true)");
                     } else {
-                        apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
+                        apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
                                 .append(commentDesc).append("\")");
                     }
                 } else {
-                    apiModelPropertyText.append("@").append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
                 }
             }
             this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
