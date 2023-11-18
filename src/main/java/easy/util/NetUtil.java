@@ -53,7 +53,7 @@ public class NetUtil {
      */
     public static String getIpRegion(String ip) {
         try {
-            if (ipRegionMap.containsKey(ip)) {
+            if (ipRegionMap.containsKey(ip) && !StringUtils.equals(ipRegionMap.get(ip), ip)) {
                 return ipRegionMap.get(ip);
             }
             String response = HttpUtil.doGet("http://ip-api.com/json/" + ip);
