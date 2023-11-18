@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 网络相关处理
@@ -18,6 +20,8 @@ import java.util.Enumeration;
 public class NetUtil {
 
     private static final Logger log = Logger.getInstance(NetUtil.class);
+
+    private static Map<String, String> ipRegionMap = new ConcurrentHashMap<>(16);
 
     private NetUtil() {
     }
@@ -34,7 +38,7 @@ public class NetUtil {
         try {
             return HttpUtil.doGet("https://api.ipify.org");
         } catch (Exception e) {
-            log.error("获取网络ip异常: " + e.getMessage());
+            log.warn("获取网络ip异常: " + e.getMessage());
         }
         return null;
     }
@@ -49,13 +53,17 @@ public class NetUtil {
      */
     public static String getIpRegion(String ip) {
         try {
+            if (ipRegionMap.containsKey(ip)) {
+                return ipRegionMap.get(ip);
+            }
             String response = HttpUtil.doGet("http://ip-api.com/json/" + ip);
             if (StringUtils.isBlank(response)) {
                 return null;
             }
+            ipRegionMap.put(ip, response);
             return response;
         } catch (Exception e) {
-            log.error("获取ip区域信息异常: " + e.getMessage());
+            log.warn("获取ip区域信息异常: " + e.getMessage());
         }
         return null;
     }
@@ -82,7 +90,7 @@ public class NetUtil {
                 }
             }
         } catch (Exception e) {
-            log.error("获取本机IP异常" + e.getMessage());
+            log.warn("获取本机IP异常" + e.getMessage());
         }
         return null;
     }

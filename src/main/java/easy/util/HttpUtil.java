@@ -79,7 +79,7 @@ public class HttpUtil {
             response = httpClient.execute(httpGet);
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            log.error("HttpUtil.doGet execute exception!", e);
+            log.warn("HttpUtil.doGet execute exception: " + e.getMessage());
         } finally {
             HttpClientUtils.closeQuietly(response);
             HttpClientUtils.closeQuietly(httpClient);
@@ -134,7 +134,7 @@ public class HttpUtil {
             response = httpClient.execute(httpPost);
             return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            log.error("HttpUtil.doPost execute exception!", e);
+            log.warn("HttpUtil.doPost execute exception: " + e.getMessage());
         } finally {
             HttpClientUtils.closeQuietly(response);
             HttpClientUtils.closeQuietly(httpClient);

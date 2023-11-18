@@ -1,5 +1,8 @@
 # EasyChar
 
+> ![JetBrains](https://img.shields.io/jetbrains/plugin/v/21589)
+> [![star](https://gitee.com/milubin/easy-char-plugin/badge/star.svg?theme=dark)](https://gitee.com/milubin/easy-char-plugin/stargazers)
+
 #### 插件说明
 > * 支持中文字符自动转为英文字符
 > * 支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理(自动翻译可能会有点慢, 请耐心等待)。支持选中类名、字段名、方法名生成指定Swagger注解
@@ -8,12 +11,14 @@
 >   * 阿里翻译
 >   * 有道翻译
 >   * 腾讯翻译
+>   * 华为翻译
 >   * 火山翻译
 >   * 讯飞翻译
->   * 谷歌翻译 (VPN)
->   * 微软翻译
 >   * 小牛翻译
 >   * 彩云翻译
+>   * 微软翻译
+>   * 谷歌翻译(API)
+>   * 谷歌翻译(Free)
 > * 支持蛇形格式变量转驼峰格式
 > * 支持选中文本右键快捷Web搜索
 > * 支持快捷生成 serialVersionUID, 快捷键: CTRL + SHIFT + ALT + \

@@ -102,6 +102,21 @@ public class TranslateConfig {
      */
     private String caiyunToken;
 
+    /**
+     * 华为翻译项目ID
+     */
+    private String hwProjectId;
+
+    /**
+     * 华为翻译应用ID
+     */
+    private String hwAppId;
+
+    /**
+     * 华为翻译应用密钥
+     */
+    private String hwAppSecret;
+
 
     /**
      * 重置翻译配置
@@ -130,6 +145,9 @@ public class TranslateConfig {
         microsoftKey = null;
         niuApiKey = null;
         caiyunToken = null;
+        hwProjectId = null;
+        hwAppId = null;
+        hwAppSecret = null;
     }
 
     public String getTranslateChannel() {
@@ -276,6 +294,30 @@ public class TranslateConfig {
         this.caiyunToken = caiyunToken;
     }
 
+    public String getHwProjectId() {
+        return hwProjectId;
+    }
+
+    public void setHwProjectId(String hwProjectId) {
+        this.hwProjectId = hwProjectId;
+    }
+
+    public String getHwAppId() {
+        return hwAppId;
+    }
+
+    public void setHwAppId(String hwAppId) {
+        this.hwAppId = hwAppId;
+    }
+
+    public String getHwAppSecret() {
+        return hwAppSecret;
+    }
+
+    public void setHwAppSecret(String hwAppSecret) {
+        this.hwAppSecret = hwAppSecret;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -297,6 +339,10 @@ public class TranslateConfig {
                 ", microsoftKey='" + microsoftKey + '\'' +
                 ", niuApiKey='" + niuApiKey + '\'' +
                 ", caiyunToken='" + caiyunToken + '\'' +
+                ", hwProjectId='" + hwProjectId + '\'' +
+                ", hwAppId='" + hwAppId + '\'' +
+                ", hwAppSecret='" + hwAppSecret + '\'' +
                 '}';
     }
+
 }

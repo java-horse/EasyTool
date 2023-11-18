@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "1.1.2"
+version = "1.1.3"
 
 repositories {
     maven {
@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
+    implementation("cn.hutool:hutool-http:5.8.16")
 }
 
 intellij {

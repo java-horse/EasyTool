@@ -144,7 +144,7 @@ public class MessageUtil {
             byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
             sign = URLEncoder.encode(Base64.toBase64String(signData), StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
-            log.error("钉钉机器人发送消息，签名异常: " + e.getMessage());
+            log.warn("钉钉机器人发送消息，签名异常: " + e.getMessage());
         }
         return sign;
     }

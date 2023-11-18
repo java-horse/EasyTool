@@ -245,10 +245,14 @@ public class SwaggerGenerateHandler {
                 apiImplicitParamText.append(", dataType = ").append("\"").append(dataType).append("\"");
             } else {
                 if (StringUtils.containsAny(dataType, "<", ">")) {
+                    apiImplicitParamText.append(", dataTypeClass = ");
                     if (!StringUtils.containsAnyIgnoreCase(dataType, "map")) {
                         String collDataType = StringUtils.substringBetween(dataType, "<", ">");
-                        apiImplicitParamText.append(", dataTypeClass = ").append(collDataType).append(".class");
+                        apiImplicitParamText.append(collDataType).append(".class");
+                    } else {
+                        apiImplicitParamText.append("Map.class");
                     }
+                    apiImplicitParamText.append(", allowMultiple = true");
                 } else {
                     apiImplicitParamText.append(", dataTypeClass = ").append(dataType).append(".class");
                 }
@@ -289,41 +293,43 @@ public class SwaggerGenerateHandler {
      */
     private void generateFieldAnnotation(PsiField psiField) {
         PsiComment classComment = null;
-        boolean validate = isValidate(psiField.getAnnotations());
+        PsiAnnotation[] psiAnnotations = psiField.getAnnotations();
+        boolean validate = isValidate(psiAnnotations);
+        String validatorText = getValidatorText(psiAnnotations);
+        String fieldName = psiField.getNameIdentifier().getText();
         for (PsiElement tmpEle : psiField.getChildren()) {
+            if (StringUtils.equals(fieldName, "serialVersionUID")) {
+                continue;
+            }
             if (tmpEle instanceof PsiComment) {
                 classComment = (PsiComment) tmpEle;
                 String tmpText = classComment.getText();
                 String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                StringBuilder apiModelPropertyText = new StringBuilder();
-                if (validate) {
-                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
-                            .append(commentDesc).append("\"").append(", required=true)");
-                } else {
-                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
-                            .append(commentDesc).append("\")");
+                StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName())
+                        .append("(value=\"").append(commentDesc).append("\"");
+                if (StringUtils.isNotBlank(validatorText)) {
+                    apiModelPropertyText.append(", notes=\"").append(validatorText).append("\"");
                 }
+                apiModelPropertyText.append(validate ? ", required=true)" : "\")");
                 this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
             }
         }
         if (Objects.isNull(classComment)) {
-            String fieldName = psiField.getNameIdentifier().getText();
-            StringBuilder apiModelPropertyText = new StringBuilder();
+            StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName());
             if (StringUtils.equals(fieldName, "serialVersionUID")) {
-                apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+                apiModelPropertyText.append("(hidden = true)");
             } else {
                 String commentDesc = translateService.translate(fieldName);
                 if (StringUtils.isNotBlank(commentDesc)) {
-                    if (validate) {
-                        apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
-                                .append(commentDesc).append("\"").append(", required=true)");
-                    } else {
-                        apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(value=\"")
-                                .append(commentDesc).append("\")");
-                    }
+                    apiModelPropertyText.append("(value=\"").append(commentDesc).append("\"");
                 } else {
-                    apiModelPropertyText.append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName()).append("(hidden = true)");
+                    // 如果没有注解且翻译结果也为空, 则使用字段名
+                    apiModelPropertyText.append("(value=\"").append(fieldName).append("\"");
                 }
+                if (StringUtils.isNotBlank(validatorText)) {
+                    apiModelPropertyText.append(", notes=\"").append(validatorText).append("\"");
+                }
+                apiModelPropertyText.append(validate ? ", required=true)" : "\")");
             }
             this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
         }
@@ -349,6 +355,36 @@ public class SwaggerGenerateHandler {
             }
         }
         return false;
+    }
+
+    /**
+     * 尝试获取属性上的@Size和@Length校验注解限制信息
+     *
+     * @param psiAnnotations
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/11/18 16:54
+     */
+    private String getValidatorText(PsiAnnotation[] psiAnnotations) {
+        if (Objects.isNull(psiAnnotations)) {
+            return StringUtils.EMPTY;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            String qualifiedName = psiAnnotation.getQualifiedName();
+            if (StringUtils.equalsAny(qualifiedName, "javax.validation.constraints.Size", "org.hibernate.validator.constraints.Length")) {
+                String validatorText = StringUtils.EMPTY;
+                PsiAnnotationMemberValue minMember = psiAnnotation.findAttributeValue("min");
+                if (Objects.nonNull(minMember)) {
+                    validatorText = "min=" + minMember.getText();
+                }
+                PsiAnnotationMemberValue maxMember = psiAnnotation.findAttributeValue("max");
+                if (Objects.nonNull(maxMember)) {
+                    validatorText += ", max=" + maxMember.getText();
+                }
+                return "长度限制: " + validatorText;
+            }
+        }
+        return StringUtils.EMPTY;
     }
 
     /**

@@ -3,14 +3,14 @@
   <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="732" height="716"/>
+      <xy x="20" y="20" width="732" height="821"/>
     </constraints>
     <properties>
       <toolTipText value=""/>
     </properties>
     <border type="none"/>
     <children>
-      <grid id="653ad" binding="commonPanel" layout-manager="GridLayoutManager" row-count="20" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="653ad" binding="commonPanel" layout-manager="GridLayoutManager" row-count="23" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -37,15 +37,17 @@
             <properties>
               <model>
                 <item value="百度翻译"/>
+                <item value="有道翻译"/>
                 <item value="阿里翻译"/>
                 <item value="腾讯翻译"/>
-                <item value="有道翻译"/>
-                <item value="火山翻译"/>
+                <item value="华为翻译"/>
                 <item value="讯飞翻译"/>
-                <item value="谷歌翻译"/>
-                <item value="微软翻译"/>
+                <item value="火山翻译"/>
                 <item value="小牛翻译"/>
                 <item value="彩云翻译"/>
+                <item value="微软翻译"/>
+                <item value="谷歌翻译(API)"/>
+                <item value="谷歌翻译(Free)"/>
               </model>
             </properties>
           </component>
@@ -160,12 +162,12 @@
           </component>
           <vspacer id="ee393">
             <constraints>
-              <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <grid row="22" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
           <component id="615ea" class="javax.swing.JLabel">
             <constraints>
-              <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="21" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="快捷操作"/>
@@ -174,7 +176,7 @@
           <grid id="27250" binding="supportPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="21" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -417,6 +419,59 @@
             </constraints>
             <properties>
               <toolTipText value="请输入caiyunToken"/>
+            </properties>
+          </component>
+          <component id="494df" class="javax.swing.JLabel" binding="hwProjectIdLabel">
+            <constraints>
+              <grid row="18" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="hwProjectId"/>
+            </properties>
+          </component>
+          <component id="81cda" class="javax.swing.JTextField" binding="hwProjectIdTextField">
+            <constraints>
+              <grid row="18" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="d04d" class="javax.swing.JLabel" binding="hwAppIdLabel">
+            <constraints>
+              <grid row="19" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="hwAppId"/>
+            </properties>
+          </component>
+          <component id="a316b" class="javax.swing.JTextField" binding="hwAppIdTextField">
+            <constraints>
+              <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText value="请输入hwAppId"/>
+            </properties>
+          </component>
+          <component id="91e85" class="javax.swing.JLabel" binding="hwAppSecretLabel">
+            <constraints>
+              <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="hwAppSecret"/>
+              <toolTipText value=""/>
+            </properties>
+          </component>
+          <component id="d40f6" class="javax.swing.JTextField" binding="hwAppSecretTextField">
+            <constraints>
+              <grid row="20" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText value="请输入hwAppSecret"/>
             </properties>
           </component>
         </children>

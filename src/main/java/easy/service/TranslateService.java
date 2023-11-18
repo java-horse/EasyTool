@@ -12,9 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +32,8 @@ public class TranslateService {
     private Map<String, Translate> translateMap;
 
     private static final Object LOCK = new Object();
+
+    private static final List<String> INVALID_CHARACTERS_LIST = Collections.unmodifiableList(Arrays.asList("/\\*\\*", "\\*", "\n", "\t", "\r"));
 
     /**
      * 翻译引擎初始化
@@ -62,6 +62,8 @@ public class TranslateService {
                     .put(TranslateEnum.MICROSOFT.getTranslate(), new MicrosoftTranslate().init(translateConfig))
                     .put(TranslateEnum.NIU.getTranslate(), new NiuTranslate().init(translateConfig))
                     .put(TranslateEnum.CAIYUN.getTranslate(), new CaiYunTranslate().init(translateConfig))
+                    .put(TranslateEnum.HUAWEI.getTranslate(), new HuaWeiTranslate().init(translateConfig))
+                    .put(TranslateEnum.GOOGLE_FREE.getTranslate(), new GoogleFreeTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }
@@ -76,12 +78,13 @@ public class TranslateService {
      * @date 2023/9/4 20:59
      **/
     public String translate(String source) {
-        if (StringUtils.isBlank(source)) {
+        Translate translate = translateMap.get(translateConfig.getTranslateChannel());
+        if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
             return StringUtils.EMPTY;
         }
-        Translate translate = translateMap.get(translateConfig.getTranslateChannel());
-        if (Objects.isNull(translate)) {
-            return StringUtils.EMPTY;
+        // 过滤无效字符
+        for (String invalidChar : INVALID_CHARACTERS_LIST) {
+            source = source.replaceAll(invalidChar, StringUtils.EMPTY);
         }
         if (LanguageUtil.isAllChinese(source)) {
             String enStr = translate.ch2En(source);
@@ -122,8 +125,8 @@ public class TranslateService {
                 splitSources = LanguageUtil.splitCamelCase(source);
             } else if (LanguageUtil.isSnakeCase(source)) {
                 splitSources = StringUtils.split(source, "_");
-            } else if (StringUtils.contains(source, " ")) {
-                splitSources = StringUtils.split(source, " ");
+            } else if (StringUtils.contains(source, StringUtils.SPACE)) {
+                splitSources = StringUtils.split(source, StringUtils.SPACE);
             }
             for (String split : splitSources) {
                 String en2Ch = translate.en2Ch(split);
@@ -132,11 +135,11 @@ public class TranslateService {
                 }
             }
             if (StringUtils.isBlank(builder.toString())) {
-                builder.append(translate.en2Ch(source.replace(StringUtils.LF, StringUtils.SPACE)));
+                builder.append(translate.en2Ch(source));
             }
             return builder.toString();
         }
-        return translate.en2Ch(source.replace(StringUtils.LF, StringUtils.SPACE));
+        return translate.en2Ch(source);
     }
 
     /**

@@ -88,6 +88,9 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setMicrosoftKey(translateSettingView.getMicrosoftKeyTextField().getText());
         translateConfig.setNiuApiKey(translateSettingView.getNiuApiKeyTextField().getText());
         translateConfig.setCaiyunToken(translateSettingView.getCaiyunTokenTextField().getText());
+        translateConfig.setHwProjectId(translateSettingView.getHwProjectIdTextField().getText());
+        translateConfig.setHwAppId(translateSettingView.getHwAppIdTextField().getText());
+        translateConfig.setHwAppSecret(translateSettingView.getHwAppSecretTextField().getText());
 
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
@@ -119,6 +122,9 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.CAIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getCaiyunToken()), TranslateEnum.CAIYUN.getTranslate() + "Token不能为空");
+        }
+        if (TranslateEnum.HUAWEI.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret()), TranslateEnum.HUAWEI.getTranslate() + "密钥不能为空");
         }
     }
 
