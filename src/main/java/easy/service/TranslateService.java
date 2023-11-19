@@ -64,6 +64,7 @@ public class TranslateService {
                     .put(TranslateEnum.CAIYUN.getTranslate(), new CaiYunTranslate().init(translateConfig))
                     .put(TranslateEnum.HUAWEI.getTranslate(), new HuaWeiTranslate().init(translateConfig))
                     .put(TranslateEnum.GOOGLE_FREE.getTranslate(), new GoogleFreeTranslate().init(translateConfig))
+                    .put(TranslateEnum.KING_SOFT.getTranslate(), new KingSoftTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }

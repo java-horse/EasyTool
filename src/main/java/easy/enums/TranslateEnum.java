@@ -25,7 +25,8 @@ public enum TranslateEnum {
     NIU("小牛翻译", "http://api.niutrans.com/NiuTransServer/translation?from=%s&to=%s&apikey=%s&src_text=%s"),
     CAIYUN("彩云翻译", "http://api.interpreter.caiyunai.com/v1/translator"),
     HUAWEI("华为翻译", "https://nlp-ext.cn-north-4.myhuaweicloud.com/v1/%s/machine-translation/text-translation"),
-    GOOGLE_FREE("谷歌翻译(Free)", "http://translate.google.com/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=%s&tl=%s&q=%s");
+    GOOGLE_FREE("谷歌翻译(Free)", "http://translate.google.com/translate_a/single?client=gtx&dt=t&dj=1&ie=UTF-8&sl=%s&tl=%s&q=%s"),
+    KING_SOFT("金山翻译", "https://ifanyi.iciba.com/index.php?c=trans");
 
     private final String translate;
     private final String url;
