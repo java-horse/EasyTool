@@ -1,9 +1,12 @@
 package easy.util;
 
 import com.google.gson.JsonObject;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.util.SystemInfo;
 import easy.base.Constants;
 import easy.base.DingBotParam;
@@ -71,6 +74,7 @@ public class MessageUtil {
             btnsVO.setTitle(Constants.PLUGIN_NAME + " Plugin");
             btnsVO.setActionURL(Constants.JETBRAINS_URL);
             actionCardVO.setBtns(Collections.singletonList(btnsVO));
+            IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.getId("easy.char"));
             ApplicationInfo applicationInfo = ApplicationInfo.getInstance();
             String text = String.format("![1](https://z1.ax1x.com/2023/11/15/piY8VCn.jpg) \n" +
                             "#### **%s** \n" +
@@ -78,9 +82,9 @@ public class MessageUtil {
                             "**主机系统：** %s \n\n" +
                             "**软件版本：** %s (%s) \n\n" +
                             "**地理位置：** %s \n\n" +
-                            "**触发Action：** %s \n\n" +
+                            "**运行插件：** %s v%s (%s) \n\n" +
                             "**触发时间：** %s \n\n", Constants.PLUGIN_NAME + " 动态", SystemInfo.getOsNameAndVersion(), applicationInfo.getFullApplicationName(),
-                    applicationInfo.getBuild().asString(), getIpRegion(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    applicationInfo.getBuild().asString(), getIpRegion(), plugin.getName(), plugin.getVersion(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             actionCardVO.setText(text);
             dingBotParam.setActionCard(actionCardVO);
             sendDingMessage(JsonUtil.toJson(dingBotParam));
