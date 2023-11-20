@@ -8,7 +8,7 @@
 
     <description>
         <![CDATA[
-      <h3>EasyChar is a set of development assistance tools for converting and translating Chinese and English characters</h3>
+      <h3><em>EasyChar</em> is a set of development assistance tools for converting and translating Chinese and English characters</h3>
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support generating Swagger2.x related annotations based on Javadoc</li>
@@ -18,7 +18,7 @@
         <li>Support for quick generation of serialVersionUID</li>
         <li>Supports automatic copying of interface complete URL</li>
       </ul>
-	  <h3>EasyChar是一个中英字符互转、互译的开发辅助工具集</h3>
+	  <h3><em>EasyChar</em>是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理(自动翻译可能会有点慢, 请耐心等待)。支持选中类名、字段名、方法名生成指定Swagger注解</li>
@@ -47,9 +47,9 @@
       <ul>
         <li>1. Install IDEA or any JetBrains IDE, such as Clion, PyCharm...</li>
         <li>2. Launch the IDE and open plugin settings</li>
-        <li>3. Search for the plugin <em>'EasyChar'</em> and click on install</li>
+        <li>3. Search for the plugin <em>EasyChar</em> and click on install</li>
         <li>4. Set Chinese and English character mappings, translation engine keys</li>
-        <li>5. Now you can enjoy using the EasyChar plugin function</li>
+        <li>5. Now you can enjoy using the <em>EasyChar</em> plugin function</li>
       </ul>
       <h3>Source</h3>
       <ul>
