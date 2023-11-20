@@ -46,7 +46,8 @@
                 <item value="火山翻译"/>
                 <item value="小牛翻译"/>
                 <item value="彩云翻译"/>
-                <item value="微软翻译"/>
+                <item value="微软翻译(API)"/>
+                <item value="微软翻译(Free)"/>
                 <item value="谷歌翻译(API)"/>
                 <item value="谷歌翻译(Free)"/>
               </model>
