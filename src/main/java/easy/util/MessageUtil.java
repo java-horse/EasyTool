@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * 消息发送处理
@@ -64,7 +63,8 @@ public class MessageUtil {
      * @date 2023/11/15 10:43
      */
     public static void sendActionDingMessage(AnActionEvent e) {
-        CompletableFuture.runAsync(() -> {
+        ExecutorUtil.getInstance().getExecutorService().submit(() -> {
+            log.warn("current thread: " + Thread.currentThread().getName());
             DingBotParam dingBotParam = new DingBotParam();
             dingBotParam.setMsgtype("actionCard");
             DingBotParam.ActionCardVO actionCardVO = new DingBotParam.ActionCardVO();

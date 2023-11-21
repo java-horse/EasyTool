@@ -344,17 +344,27 @@ public class SwaggerGenerateHandler {
      * @date 2023/11/4 15:51
      */
     private boolean isValidate(PsiAnnotation[] psiAnnotation) {
-        if (Objects.isNull(psiAnnotation) || psiAnnotation.length == 0) {
-            return false;
+        boolean valid = false;
+        if (Objects.isNull(psiAnnotation)) {
+            return valid;
         }
-        String a = "javax.validation.constraints";
         for (PsiAnnotation annotation : psiAnnotation) {
             String qualifiedName = annotation.getQualifiedName();
-            if (StringUtils.startsWith(qualifiedName, a) && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Null")) {
-                return true;
+            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints")
+                    && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Null")
+                    && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Size")) {
+                valid = true;
+                break;
+            }
+            if (StringUtils.equalsAny(qualifiedName, "javax.validation.constraints.Size", "org.hibernate.validator.constraints.Length")) {
+                PsiAnnotationMemberValue minMember = annotation.findAttributeValue("min");
+                if (Objects.nonNull(minMember) && Integer.parseInt(minMember.getText()) > 0) {
+                    valid = true;
+                    break;
+                }
             }
         }
-        return false;
+        return valid;
     }
 
     /**
@@ -400,7 +410,7 @@ public class SwaggerGenerateHandler {
         }
         final PsiJavaFile javaFile = (PsiJavaFile) file;
         final PsiImportList importList = javaFile.getImportList();
-        if (importList == null) {
+        if (Objects.isNull(importList)) {
             return;
         }
         PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));

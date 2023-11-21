@@ -16,12 +16,12 @@
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
         <li>Support for quick generation of serialVersionUID</li>
-        <li>Supports automatic copying of interface complete URL</li>
+        <li>Support automatic copying of interface complete URL</li>
       </ul>
 	  <h3><em>EasyChar</em>是一个中英字符互转、互译的开发辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
-        <li>支持根据 javadoc 生成 Swagger2.x 相关注解，如果没有 javadoc 会自动尝试自动翻译处理(自动翻译可能会有点慢, 请耐心等待)。支持选中类名、字段名、方法名生成指定Swagger注解</li>
+        <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
             <li>--百度翻译</li>
@@ -34,7 +34,8 @@
             <li>--华为翻译</li>
             <li>--小牛翻译</li>
             <li>--彩云翻译</li>
-            <li>--微软翻译</li>
+            <li>--微软翻译(API)</li>
+            <li>--微软翻译(Free)</li>
             <li>--谷歌翻译(API)</li>
             <li>--谷歌翻译(Free)</li>
         </ul>
@@ -55,9 +56,6 @@
       <ul>
         <li><a href="https://gitee.com/milubin/easy-char-plugin">Gitee</a></li>
         <li><a href="https://gitee.com/milubin/easy-char-plugin">Github</a></li>
-        <images>
-            <image url="https://img.shields.io/jetbrains/plugin/v/21589"/>
-        </images>
       </ul>
     ]]>
     </description>
