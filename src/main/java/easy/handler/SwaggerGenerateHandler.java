@@ -168,8 +168,10 @@ public class SwaggerGenerateHandler {
         PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
         String apiOperationAttrValue = this.getAttribute(apiOperationExist, "value", commentDesc);
         apiOperationAttrValue = StringUtils.equals(apiOperationAttrValue, "\"\"") ? StringUtils.EMPTY : apiOperationAttrValue;
+        apiOperationAttrValue = StringUtils.contains(apiOperationAttrValue, "\"") ? StringUtils.replace(apiOperationAttrValue, "\"", StringUtils.EMPTY) : apiOperationAttrValue;
         String apiOperationAttrNotes = this.getAttribute(apiOperationExist, "notes", commentDesc);
         apiOperationAttrNotes = StringUtils.equals(apiOperationAttrNotes, "\"\"") ? StringUtils.EMPTY : apiOperationAttrNotes;
+        apiOperationAttrNotes = StringUtils.contains(apiOperationAttrNotes, "\"") ? StringUtils.replace(apiOperationAttrNotes, "\"", StringUtils.EMPTY) : apiOperationAttrNotes;
         // 如果注解和注释都不存在, 尝试自动翻译方法名作为value值
         if (StringUtils.isBlank(apiOperationAttrValue)) {
             apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
@@ -178,7 +180,6 @@ public class SwaggerGenerateHandler {
         String methodValue = this.getMappingAttribute(psiAnnotations, "method");
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         if (StringUtils.isNotBlank(methodValue)) {
-            methodValue = methodValue.substring(methodValue.indexOf(".") + 1);
             apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
                     .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
@@ -244,8 +245,8 @@ public class SwaggerGenerateHandler {
             if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(dataType)) || StringUtils.equalsAny(dataType, "file")) {
                 apiImplicitParamText.append(", dataType = ").append("\"").append(dataType).append("\"");
             } else {
+                apiImplicitParamText.append(", dataTypeClass = ");
                 if (StringUtils.containsAny(dataType, "<", ">")) {
-                    apiImplicitParamText.append(", dataTypeClass = ");
                     if (!StringUtils.containsAnyIgnoreCase(dataType, "map")) {
                         String collDataType = StringUtils.substringBetween(dataType, "<", ">");
                         apiImplicitParamText.append(collDataType).append(".class");
@@ -253,8 +254,11 @@ public class SwaggerGenerateHandler {
                         apiImplicitParamText.append("Map.class");
                     }
                     apiImplicitParamText.append(", allowMultiple = true");
+                } else if (StringUtils.containsAny(dataType, "[", "]")) {
+                    String collDataType = StringUtils.substringBefore(dataType, "[");
+                    apiImplicitParamText.append(collDataType).append(".class").append(", allowMultiple = true");
                 } else {
-                    apiImplicitParamText.append(", dataTypeClass = ").append(dataType).append(".class");
+                    apiImplicitParamText.append(dataType).append(".class");
                 }
             }
             if (StringUtils.equals(required, "true")) {
@@ -456,15 +460,11 @@ public class SwaggerGenerateHandler {
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
             RequestAnnotationEnum requestAnnotationEnum = RequestAnnotationEnum.getEnumByQualifiedName(psiAnnotation.getQualifiedName());
             if (Objects.isNull(requestAnnotationEnum)) {
-                return StringUtils.EMPTY;
+                continue;
             }
             switch (requestAnnotationEnum) {
                 case REQUEST_MAPPING:
-                    String attribute = getAttribute(psiAnnotation, attributeName, RequestAnnotationEnum.REQUEST_MAPPING.getMethodName());
-                    if (StringUtils.equals("\"\"", attribute)) {
-                        return StringUtils.EMPTY;
-                    }
-                    return attribute;
+                    return getAttribute(psiAnnotation, attributeName, RequestAnnotationEnum.REQUEST_MAPPING.getMethodName());
                 case POST_MAPPING:
                     return RequestAnnotationEnum.POST_MAPPING.getMethodName();
                 case GET_MAPPING:
@@ -491,10 +491,10 @@ public class SwaggerGenerateHandler {
      */
     private String getAttribute(PsiAnnotation psiAnnotation, String attributeName, String comment) {
         if (Objects.isNull(psiAnnotation)) {
-            return "\"" + comment + "\"";
+            return comment;
         }
         PsiAnnotationMemberValue psiAnnotationMemberValue = psiAnnotation.findAttributeValue(attributeName);
-        return Objects.isNull(psiAnnotationMemberValue) ? "\"" + comment + "\"" : psiAnnotationMemberValue.getText();
+        return Objects.isNull(psiAnnotationMemberValue) ? comment : psiAnnotationMemberValue.getText();
     }
 
     /**
