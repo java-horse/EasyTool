@@ -51,22 +51,13 @@ public class WebSearchAction extends AnAction {
         String searchUrl = null;
         try {
             selectedText = URLEncoder.encode(selectedText, StandardCharsets.UTF_8.name());
-            if (WebSearchEnum.BAIDU.title.equals(actionText)) {
+            if (StringUtils.equalsAny(actionText, WebSearchEnum.BAIDU.title, WebSearchEnum.BING.title, WebSearchEnum.GOOGLE.title,
+                    WebSearchEnum.SO.title, WebSearchEnum.SO_GOU.title, WebSearchEnum.DUCK_DUCK_GO.title, WebSearchEnum.YANDEX.title)) {
                 searchUrl = String.format(WebSearchEnum.BAIDU.templateUrl, selectedText);
-            } else if (WebSearchEnum.BING.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.BING.templateUrl, selectedText);
-            } else if (WebSearchEnum.GOOGLE.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.GOOGLE.templateUrl, selectedText);
-            } else if (WebSearchEnum.STACK_OVERFLOW.title.equals(actionText)) {
+            } else if (StringUtils.equals(actionText, WebSearchEnum.STACK_OVERFLOW.title)) {
                 searchUrl = WebSearchEnum.STACK_OVERFLOW.templateUrl + selectedText;
-            } else if (WebSearchEnum.SO.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.SO.templateUrl, selectedText);
-            } else if (WebSearchEnum.SO_GOU.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.SO_GOU.templateUrl, selectedText);
-            } else if (WebSearchEnum.DUCK_DUCK_GO.title.equals(actionText)) {
-                searchUrl = String.format(WebSearchEnum.DUCK_DUCK_GO.templateUrl, selectedText);
             }
-            if (Objects.isNull(searchUrl)) {
+            if (StringUtils.isBlank(searchUrl)) {
                 return;
             }
             Desktop dp = Desktop.getDesktop();

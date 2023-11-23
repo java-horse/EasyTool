@@ -33,12 +33,13 @@ public class DynamicWebSearchActionGroup extends DefaultActionGroup {
     public AnAction[] getChildren(@Nullable AnActionEvent e) {
         return new AnAction[]{
                 new WebSearchAction(WebSearchEnum.BING.title, WebSearchEnum.BING.remark, EasyIcons.ICON.EDGE),
-                new WebSearchAction(WebSearchEnum.GOOGLE.title, WebSearchEnum.GOOGLE.remark, EasyIcons.ICON.CHROME),
-                new WebSearchAction(WebSearchEnum.STACK_OVERFLOW.title, WebSearchEnum.STACK_OVERFLOW.remark, EasyIcons.ICON.OVERFLOW),
                 new WebSearchAction(WebSearchEnum.BAIDU.title, WebSearchEnum.BAIDU.remark, EasyIcons.ICON.BAIDU),
-                new WebSearchAction(WebSearchEnum.SO.title, WebSearchEnum.SO.remark, EasyIcons.ICON.SO),
                 new WebSearchAction(WebSearchEnum.SO_GOU.title, WebSearchEnum.SO_GOU.remark, EasyIcons.ICON.SOGOU),
+                new WebSearchAction(WebSearchEnum.SO.title, WebSearchEnum.SO.remark, EasyIcons.ICON.SO),
+                new WebSearchAction(WebSearchEnum.GOOGLE.title, WebSearchEnum.GOOGLE.remark, EasyIcons.ICON.CHROME),
+                new WebSearchAction(WebSearchEnum.YANDEX.title, WebSearchEnum.YANDEX.remark, EasyIcons.ICON.YANDEX),
                 new WebSearchAction(WebSearchEnum.DUCK_DUCK_GO.title, WebSearchEnum.DUCK_DUCK_GO.remark, EasyIcons.ICON.DUCK_DUCK_GO),
+                new WebSearchAction(WebSearchEnum.STACK_OVERFLOW.title, WebSearchEnum.STACK_OVERFLOW.remark, EasyIcons.ICON.OVERFLOW),
         };
     }
 

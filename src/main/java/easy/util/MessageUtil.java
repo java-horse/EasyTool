@@ -64,7 +64,6 @@ public class MessageUtil {
      */
     public static void sendActionDingMessage(AnActionEvent e) {
         ExecutorUtil.getInstance().getExecutorService().submit(() -> {
-            log.warn("current thread: " + Thread.currentThread().getName());
             DingBotParam dingBotParam = new DingBotParam();
             dingBotParam.setMsgtype("actionCard");
             DingBotParam.ActionCardVO actionCardVO = new DingBotParam.ActionCardVO();

@@ -16,11 +16,11 @@ public enum WebSearchEnum {
     STACK_OVERFLOW("StackOverflow", "https://www.google.com/search?q=site%3Astackoverflow.com%20", "Stack OVERFLOW 搜索"),
     SO("360", "https://www.so.com/s?q=%s", "360搜索"),
     SO_GOU("Sogou", "https://www.sogou.com/web?q=%s", "搜狗搜索"),
-    DUCK_DUCK_GO("DuckDuckGo", "https://duckduckgo.com/?q=%s", "Duck搜索");
+    DUCK_DUCK_GO("DuckDuckGo", "https://duckduckgo.com/?q=%s", "DuckDuckGo搜索"),
+    YANDEX("Yandex", "https://yandex.com/search/?text=%s", "Yandex搜索");
 
     public final String title;
     public final String templateUrl;
-
     public final String remark;
 
     WebSearchEnum(String title, String templateUrl, String remark) {

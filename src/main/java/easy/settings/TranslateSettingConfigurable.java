@@ -44,7 +44,7 @@ public class TranslateSettingConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         return !Objects.equals(translateConfig.getTranslateChannel(), translateSettingView.getTranslateChannelBox().getSelectedItem())
-                || !Objects.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getAppSecret(), translateSettingView.getAppSecretTextField().getText())
                 || !StringUtils.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())
@@ -60,7 +60,10 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText())
                 || !StringUtils.equals(translateConfig.getNiuApiKey(), translateSettingView.getNiuApiKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getCaiyunToken(), translateSettingView.getCaiyunTokenTextField().getText());
+                || !StringUtils.equals(translateConfig.getCaiyunToken(), translateSettingView.getCaiyunTokenTextField().getText())
+                || !StringUtils.equals(translateConfig.getHwAppId(), translateSettingView.getHwAppIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getHwAppSecret(), translateSettingView.getAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText());
     }
 
     @Override
