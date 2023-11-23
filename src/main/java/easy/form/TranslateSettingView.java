@@ -1,5 +1,7 @@
 package easy.form;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
@@ -7,10 +9,13 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -25,6 +30,8 @@ public class TranslateSettingView {
 
     private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private static Map<String, List<Pair<JLabel, JTextField>>> TRANSLATE_SETTING_MAP = Maps.newHashMap();
+
 
     private JPanel panel;
     private JPanel commonPanel;
@@ -81,6 +88,7 @@ public class TranslateSettingView {
      * 在{@link #createUIComponents()}之后调用
      */
     public TranslateSettingView() {
+        setTranslateSettingMap();
         setVisibleChannel(translateChannelBox.getSelectedItem());
         resetButton.addActionListener(event -> {
             int result = JOptionPane.showConfirmDialog(null, "确认删除所有配置数据?", "重置数据",
@@ -133,6 +141,28 @@ public class TranslateSettingView {
     }
 
     /**
+     * 设置翻译渠道属性值
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/11/22 18:21
+     */
+    private void setTranslateSettingMap() {
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.BAIDU.getTranslate(), Lists.newArrayList(Pair.of(appIdLabel, appIdTextField), Pair.of(appSecretLabel, appSecretTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.ALIYUN.getTranslate(), Lists.newArrayList(Pair.of(accessKeyIdLabel, accessKeyIdTextField), Pair.of(accessKeySecretLabel, accessKeySecretTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.TENCENT.getTranslate(), Lists.newArrayList(Pair.of(tencentSecretIdLabel, tencentSecretIdTextField), Pair.of(tencentSecretKeyLabel, tencentSecretKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.YOUDAO.getTranslate(), Lists.newArrayList(Pair.of(secretIdLabel, secretIdTextField), Pair.of(secretKeyLabel, secretKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.VOLCANO.getTranslate(), Lists.newArrayList(Pair.of(volcanoSecretIdLabel, volcanoSecretIdTextField), Pair.of(volcanoSecretKeyLabel, volcanoSecretKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.XFYUN.getTranslate(), Lists.newArrayList(Pair.of(xfAppIdLabel, xfAppIdTextField), Pair.of(xfApiSecretLabel, xfApiSecretTextField), Pair.of(xfApiKeyLabel, xfApiKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.GOOGLE.getTranslate(), Lists.newArrayList(Pair.of(googleSecretKeyLabel, googleSecretKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.MICROSOFT.getTranslate(), Lists.newArrayList(Pair.of(microsoftKeyLabel, microsoftKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.NIU.getTranslate(), Lists.newArrayList(Pair.of(niuApiKeyLabel, niuApiKeyTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.CAIYUN.getTranslate(), Lists.newArrayList(Pair.of(caiyunTokenLabel, caiyunTokenTextField)));
+        TRANSLATE_SETTING_MAP.putIfAbsent(TranslateEnum.HUAWEI.getTranslate(), Lists.newArrayList(Pair.of(hwProjectIdLabel, hwProjectIdTextField), Pair.of(hwAppIdLabel, hwAppIdTextField), Pair.of(hwAppSecretLabel, hwAppSecretTextField)));
+    }
+
+    /**
      * 设置翻译渠道
      *
      * @param selectedItem
@@ -141,498 +171,18 @@ public class TranslateSettingView {
      * @date 2023/9/3 15:29
      **/
     private void setVisibleChannel(Object selectedItem) {
-        if (Objects.equals(TranslateEnum.BAIDU.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(true);
-            appIdTextField.setVisible(true);
-            appSecretLabel.setVisible(true);
-            appSecretTextField.setVisible(true);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(true);
-            accessKeyIdTextField.setVisible(true);
-            accessKeySecretLabel.setVisible(true);
-            accessKeySecretTextField.setVisible(true);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(true);
-            secretIdTextField.setVisible(true);
-            secretKeyLabel.setVisible(true);
-            secretKeyTextField.setVisible(true);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(true);
-            tencentSecretIdTextField.setVisible(true);
-            tencentSecretKeyLabel.setVisible(true);
-            tencentSecretKeyTextField.setVisible(true);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(true);
-            volcanoSecretKeyLabel.setVisible(true);
-            volcanoSecretIdTextField.setVisible(true);
-            volcanoSecretKeyTextField.setVisible(true);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(true);
-            xfAppIdTextField.setVisible(true);
-            xfApiSecretLabel.setVisible(true);
-            xfApiSecretTextField.setVisible(true);
-            xfApiKeyLabel.setVisible(true);
-            xfApiKeyTextField.setVisible(true);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(true);
-            googleSecretKeyTextField.setVisible(true);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(true);
-            microsoftKeyTextField.setVisible(true);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(true);
-            niuApiKeyTextField.setVisible(true);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(true);
-            caiyunTokenTextField.setVisible(true);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
-        } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(true);
-            hwProjectIdTextField.setVisible(true);
-            hwAppIdLabel.setVisible(true);
-            hwAppIdTextField.setVisible(true);
-            hwAppSecretLabel.setVisible(true);
-            hwAppSecretTextField.setVisible(true);
-        } else {
-            appIdLabel.setVisible(false);
-            appIdTextField.setVisible(false);
-            appSecretLabel.setVisible(false);
-            appSecretTextField.setVisible(false);
-            secretIdLabel.setVisible(false);
-            secretIdTextField.setVisible(false);
-            secretKeyLabel.setVisible(false);
-            secretKeyTextField.setVisible(false);
-            accessKeyIdLabel.setVisible(false);
-            accessKeyIdTextField.setVisible(false);
-            accessKeySecretLabel.setVisible(false);
-            accessKeySecretTextField.setVisible(false);
-            tencentSecretIdLabel.setVisible(false);
-            tencentSecretIdTextField.setVisible(false);
-            tencentSecretKeyLabel.setVisible(false);
-            tencentSecretKeyTextField.setVisible(false);
-            volcanoSecretIdLabel.setVisible(false);
-            volcanoSecretKeyLabel.setVisible(false);
-            volcanoSecretIdTextField.setVisible(false);
-            volcanoSecretKeyTextField.setVisible(false);
-            xfAppIdLabel.setVisible(false);
-            xfAppIdTextField.setVisible(false);
-            xfApiSecretLabel.setVisible(false);
-            xfApiSecretTextField.setVisible(false);
-            xfApiKeyLabel.setVisible(false);
-            xfApiKeyTextField.setVisible(false);
-            googleSecretKeyLabel.setVisible(false);
-            googleSecretKeyTextField.setVisible(false);
-            microsoftKeyLabel.setVisible(false);
-            microsoftKeyTextField.setVisible(false);
-            niuApiKeyLabel.setVisible(false);
-            niuApiKeyTextField.setVisible(false);
-            caiyunTokenLabel.setVisible(false);
-            caiyunTokenTextField.setVisible(false);
-            hwProjectIdLabel.setVisible(false);
-            hwProjectIdTextField.setVisible(false);
-            hwAppIdLabel.setVisible(false);
-            hwAppIdTextField.setVisible(false);
-            hwAppSecretLabel.setVisible(false);
-            hwAppSecretTextField.setVisible(false);
+        for (Map.Entry<String, List<Pair<JLabel, JTextField>>> entry : TRANSLATE_SETTING_MAP.entrySet()) {
+            if (Objects.equals(selectedItem, entry.getKey())) {
+                for (Pair<JLabel, JTextField> settingPair : entry.getValue()) {
+                    settingPair.getLeft().setVisible(true);
+                    settingPair.getRight().setVisible(true);
+                }
+            } else {
+                for (Pair<JLabel, JTextField> settingPair : entry.getValue()) {
+                    settingPair.getLeft().setVisible(false);
+                    settingPair.getRight().setVisible(false);
+                }
+            }
         }
     }
 

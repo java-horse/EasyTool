@@ -24,20 +24,20 @@
         <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
         <ul>
-            <li>--百度翻译</li>
-            <li>--有道翻译</li>
-            <li>--金山翻译</li>
-            <li>--阿里翻译</li>
-            <li>--腾讯翻译</li>
-            <li>--火山翻译</li>
-            <li>--讯飞翻译</li>
-            <li>--华为翻译</li>
-            <li>--小牛翻译</li>
-            <li>--彩云翻译</li>
-            <li>--微软翻译(API)</li>
-            <li>--微软翻译(Free)</li>
-            <li>--谷歌翻译(API)</li>
-            <li>--谷歌翻译(Free)</li>
+            <li>--<em>百度翻译</em></li>
+            <li>--<em>有道翻译</em></li>
+            <li>--<em>金山翻译</em></li>
+            <li>--<em>阿里翻译</em></li>
+            <li>--<em>腾讯翻译</em></li>
+            <li>--<em>火山翻译</em></li>
+            <li>--<em>讯飞翻译</em></li>
+            <li>--<em>华为翻译</em></li>
+            <li>--<em>小牛翻译</em></li>
+            <li>--<em>彩云翻译</em></li>
+            <li>--<em>微软翻译(API)</em></li>
+            <li>--<em>微软翻译(Free)</em></li>
+            <li>--<em>谷歌翻译(API)</em></li>
+            <li>--<em>谷歌翻译(Free)</em></li>
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
         <li>支持选中文本右键快捷Web搜索</li>
@@ -62,6 +62,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.1.5</h3>
+      <ul>
+        <li>Optimize the functional logic of translation configuration items to improve execution efficiency</li>
+        <li>-------------------------------</li>
+        <li>优化翻译配置项功能逻辑，提升执行效率</li>
+      </ul>
       <h3>v1.1.4</h3>
       <ul>
         <li>Add KingSoft Word Booster free translation engine</li>
