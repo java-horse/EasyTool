@@ -124,8 +124,8 @@ public class SwaggerCommentUtil {
             }
             if (StringUtils.startsWithIgnoreCase(row, "*@param")) {
                 int paramIndex = StringUtils.ordinalIndexOf(comment, "m", 1);
-                comment = comment.substring(paramIndex + 1).trim().replaceAll("\\s+", " ");
-                String[] s = comment.split(" ");
+                comment = comment.substring(paramIndex + 1).trim().replaceAll("\\s+", StringUtils.SPACE);
+                String[] s = comment.split(StringUtils.SPACE);
                 if (s.length < 2) {
                     continue;
                 }
@@ -135,7 +135,7 @@ public class SwaggerCommentUtil {
                     if (i == s.length - 1) {
                         break;
                     }
-                    paramDesc.append(" ");
+                    paramDesc.append(StringUtils.SPACE);
                 }
                 resultMap.put(s[0], paramDesc.toString());
             }
