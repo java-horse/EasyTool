@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
+import easy.base.Constants;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +31,6 @@ import java.util.UUID;
  */
 public class SerialVersionUIDAction extends AnAction {
     private static final Logger log = Logger.getInstance(SerialVersionUIDAction.class);
-
-    private static final String UID = "serialVersionUID";
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -87,14 +86,14 @@ public class SerialVersionUIDAction extends AnAction {
         PsiClassType[] implementsListTypes = psiClass.getImplementsListTypes();
         boolean serializable = Arrays.stream(implementsListTypes)
                 .anyMatch(type -> StringUtils.equalsAny(type.getClassName(), "Serializable", "java.io.Serializable"));
-        boolean serialResult = Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), UID));
+        boolean serialResult = Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), Constants.UID));
         PsiClass[] innerClasses = psiClass.getInnerClasses();
         boolean innerSerialResult = false;
         if (innerClasses.length == 0) {
             innerSerialResult = true;
         } else {
             for (PsiClass innerClass : innerClasses) {
-                if (Arrays.stream(innerClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), UID))) {
+                if (Arrays.stream(innerClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), Constants.UID))) {
                     innerSerialResult = true;
                     break;
                 }
@@ -118,7 +117,7 @@ public class SerialVersionUIDAction extends AnAction {
      */
     private boolean genUID(PsiClass psiClass) throws Throwable {
         if (Objects.isNull(psiClass) || Arrays.stream(psiClass.getFields()).anyMatch(field ->
-                StringUtils.equalsAny(field.getName(), UID))) {
+                StringUtils.equalsAny(field.getName(), Constants.UID))) {
             return false;
         }
         WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {

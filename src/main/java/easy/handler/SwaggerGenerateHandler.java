@@ -120,29 +120,39 @@ public class SwaggerGenerateHandler {
      * @param isController
      * @return void
      * @author mabin
-     * @date 2023/11/4 16:47
+     * @date 2023/11/24 10:14
      */
     private void generateClassAnnotation(PsiClass psiClass, boolean isController) {
-        PsiComment classComment = null;
-        PsiElement[] psiElements = psiClass.getChildren();
-        for (PsiElement tmpEle : psiElements) {
+        String commentDesc = null;
+        for (PsiElement tmpEle : psiClass.getChildren()) {
             if (tmpEle instanceof PsiComment) {
-                classComment = (PsiComment) tmpEle;
-                String tmpText = classComment.getText();
-                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                String annotation = isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName();
-                String qualifiedName = isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage();
-                String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", annotation, commentDesc) : String.format("@%s(description = \"%s\")", annotation, commentDesc);
-                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+                commentDesc = SwaggerCommentUtil.getCommentDesc(tmpEle.getText());
             }
         }
-        if (Objects.isNull(classComment)) {
-            String commentDesc = translateService.translate(psiClass.getNameIdentifier().getText());
-            String annotation = isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName();
-            String qualifiedName = isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage();
-            String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", annotation, commentDesc) : String.format("@%s(description = \"%s\")", annotation, commentDesc);
-            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+        String attrValue;
+        if (isController) {
+            PsiAnnotation apiExist = psiClass.getModifierList().findAnnotation(SwaggerAnnotationEnum.API.getClassPackage());
+            attrValue = this.getAttribute(apiExist, "tags", commentDesc);
+            if (StringUtils.isNotBlank(attrValue) && StringUtils.containsAny(attrValue, "{", "}")) {
+                attrValue = StringUtils.substringBetween(attrValue, "{", "}");
+            }
+        } else {
+            PsiAnnotation apiModelExist = psiClass.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_MODEL.getClassPackage());
+            attrValue = this.getAttribute(apiModelExist, "description", commentDesc);
         }
+        attrValue = washSpecialChar(attrValue);
+        if (StringUtils.isBlank(attrValue)) {
+            String className = psiClass.getNameIdentifier().getText();
+            attrValue = translateService.translate(className);
+            if (StringUtils.isBlank(attrValue)) {
+                attrValue = isController ? className + SwaggerAnnotationEnum.API.getClassName() : className + SwaggerAnnotationEnum.API_MODEL.getClassName();
+            }
+        }
+        String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", SwaggerAnnotationEnum.API.getClassName(), attrValue)
+                : String.format("@%s(description = \"%s\")", SwaggerAnnotationEnum.API_MODEL.getClassName(), attrValue);
+        this.doWrite(isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName(),
+                isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage(),
+                annotationFromText, psiClass);
     }
 
     /**
@@ -167,11 +177,9 @@ public class SwaggerGenerateHandler {
         // 如果存在注解，获取注解原本的value和notes内容
         PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
         String apiOperationAttrValue = this.getAttribute(apiOperationExist, "value", commentDesc);
-        apiOperationAttrValue = StringUtils.equals(apiOperationAttrValue, "\"\"") ? StringUtils.EMPTY : apiOperationAttrValue;
-        apiOperationAttrValue = StringUtils.contains(apiOperationAttrValue, "\"") ? StringUtils.replace(apiOperationAttrValue, "\"", StringUtils.EMPTY) : apiOperationAttrValue;
+        apiOperationAttrValue = washSpecialChar(apiOperationAttrValue);
         String apiOperationAttrNotes = this.getAttribute(apiOperationExist, "notes", commentDesc);
-        apiOperationAttrNotes = StringUtils.equals(apiOperationAttrNotes, "\"\"") ? StringUtils.EMPTY : apiOperationAttrNotes;
-        apiOperationAttrNotes = StringUtils.contains(apiOperationAttrNotes, "\"") ? StringUtils.replace(apiOperationAttrNotes, "\"", StringUtils.EMPTY) : apiOperationAttrNotes;
+        apiOperationAttrNotes = washSpecialChar(apiOperationAttrNotes);
         // 如果注解和注释都不存在, 尝试自动翻译方法名作为value值
         if (StringUtils.isBlank(apiOperationAttrValue)) {
             apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
@@ -293,50 +301,47 @@ public class SwaggerGenerateHandler {
      * @param psiField
      * @return void
      * @author mabin
-     * @date 2023/11/4 15:57
+     * @date 2023/11/24 9:24
      */
     private void generateFieldAnnotation(PsiField psiField) {
-        PsiComment classComment = null;
         PsiAnnotation[] psiAnnotations = psiField.getAnnotations();
-        boolean validate = isValidate(psiAnnotations);
-        String validatorText = getValidatorText(psiAnnotations);
         String fieldName = psiField.getNameIdentifier().getText();
-        for (PsiElement tmpEle : psiField.getChildren()) {
-            if (StringUtils.equals(fieldName, "serialVersionUID")) {
-                continue;
+        StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName());
+        if (StringUtils.equals(fieldName, Constants.UID)) {
+            apiModelPropertyText.append("(hidden = true)");
+        } else {
+            String validatorText = getValidatorText(psiAnnotations);
+            String commentDesc = null;
+            for (PsiElement tmpEle : psiField.getChildren()) {
+                if (tmpEle instanceof PsiComment) {
+                    commentDesc = SwaggerCommentUtil.getCommentDesc(tmpEle.getText());
+                }
             }
-            if (tmpEle instanceof PsiComment) {
-                classComment = (PsiComment) tmpEle;
-                String tmpText = classComment.getText();
-                String commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
-                StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName())
-                        .append("(value=\"").append(commentDesc).append("\"");
+            PsiAnnotation apiModelPropertyExist = psiField.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage());
+            String apiModelPropertyAttrValue = this.getAttribute(apiModelPropertyExist, "value", commentDesc);
+            apiModelPropertyAttrValue = washSpecialChar(apiModelPropertyAttrValue);
+            String apiModelPropertyAttrNotes = this.getAttribute(apiModelPropertyExist, "notes", StringUtils.EMPTY);
+            apiModelPropertyAttrNotes = washSpecialChar(apiModelPropertyAttrNotes);
+            if (StringUtils.isBlank(apiModelPropertyAttrValue)) {
+                apiModelPropertyAttrValue = translateService.translate(fieldName);
+                if (StringUtils.isBlank(apiModelPropertyAttrValue)) {
+                    apiModelPropertyAttrValue = fieldName;
+                }
+            }
+            if (StringUtils.isBlank(apiModelPropertyAttrNotes)) {
                 if (StringUtils.isNotBlank(validatorText)) {
-                    apiModelPropertyText.append(", notes=\"").append(validatorText).append("\"");
+                    apiModelPropertyAttrNotes = validatorText;
                 }
-                apiModelPropertyText.append(validate ? ", required=true)" : "\")");
-                this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
+            } else if (StringUtils.isNotBlank(validatorText) && !StringUtils.contains(apiModelPropertyAttrNotes, validatorText)) {
+                apiModelPropertyAttrNotes += ", " + validatorText;
             }
-        }
-        if (Objects.isNull(classComment)) {
-            StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName());
-            if (StringUtils.equals(fieldName, "serialVersionUID")) {
-                apiModelPropertyText.append("(hidden = true)");
-            } else {
-                String commentDesc = translateService.translate(fieldName);
-                if (StringUtils.isNotBlank(commentDesc)) {
-                    apiModelPropertyText.append("(value=\"").append(commentDesc).append("\"");
-                } else {
-                    // 如果没有注解且翻译结果也为空, 则使用字段名
-                    apiModelPropertyText.append("(value=\"").append(fieldName).append("\"");
-                }
-                if (StringUtils.isNotBlank(validatorText)) {
-                    apiModelPropertyText.append(", notes=\"").append(validatorText).append("\"");
-                }
-                apiModelPropertyText.append(validate ? ", required=true)" : "\")");
+            apiModelPropertyText.append("(value=\"").append(apiModelPropertyAttrValue).append("\"");
+            if (StringUtils.isNotBlank(apiModelPropertyAttrNotes)) {
+                apiModelPropertyText.append(", notes=\"").append(apiModelPropertyAttrNotes).append("\"");
             }
-            this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
+            apiModelPropertyText.append(isValidate(psiAnnotations) ? ", required=true)" : ")");
         }
+        this.doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
     }
 
     /**
@@ -518,6 +523,22 @@ public class SwaggerGenerateHandler {
         for (PsiNameValuePair pair : attributes) {
             psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
         }
+    }
+
+    /**
+     * 清洗特殊字符
+     *
+     * @param value
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/11/24 10:39
+     */
+    private String washSpecialChar(String value) {
+        if (StringUtils.isBlank(value)) {
+            return StringUtils.EMPTY;
+        }
+        value = StringUtils.equals(value, "\"\"") ? StringUtils.EMPTY : value;
+        return StringUtils.contains(value, "\"") ? StringUtils.replace(value, "\"", StringUtils.EMPTY) : value;
     }
 
 }

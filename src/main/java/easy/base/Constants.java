@@ -27,6 +27,7 @@ public class Constants {
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-char-plugin";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easychar/reviews";
     public static final Set<String> STOP_WORDS = Sets.newHashSet("the");
+    public static final String UID = "serialVersionUID";
 
     /**
      * Spring注解
