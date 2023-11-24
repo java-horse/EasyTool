@@ -67,10 +67,12 @@
         <li>Optimize the functional logic of translation configuration items to improve execution efficiency</li>
         <li>Fix the issue of Huawei translation engine key not being able to be reconfigured twice</li>
         <li>Add Yandex search engine shortcut options</li>
+        <li>Support for selecting entity internal classes to generate class Swagger annotations</li>
         <li>-------------------------------</li>
         <li>优化翻译配置项功能逻辑，提升执行效率</li>
         <li>修复华为翻译引擎密钥无法二次配置问题</li>
         <li>新增 Yandex 搜索引擎 快捷选项</li>
+        <li>支持选择实体内部类生成类Swagger注解</li>
       </ul>
       <h3>v1.1.4</h3>
       <ul>
