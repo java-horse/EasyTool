@@ -1,5 +1,6 @@
 package easy.handler;
 
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
@@ -93,8 +94,15 @@ public class SwaggerGenerateHandler {
      * @return boolean
      */
     private void generateSelection(PsiClass psiClass, String selectionText, boolean isController) {
-        if (StringUtils.equals(selectionText, psiClass.getNameIdentifier().getText())) {
-            this.generateClassAnnotation(psiClass, isController);
+        Map<String, PsiClass> psiClassMap = Maps.newHashMap();
+        psiClassMap.put(psiClass.getNameIdentifier().getText(), psiClass);
+        if (!isController) {
+            for (PsiClass innerClass : psiClass.getInnerClasses()) {
+                psiClassMap.put(innerClass.getNameIdentifier().getText(), innerClass);
+            }
+        }
+        if (psiClassMap.containsKey(selectionText)) {
+            this.generateClassAnnotation(psiClassMap.get(selectionText), isController);
             return;
         }
         PsiMethod[] methods = psiClass.getMethods();
