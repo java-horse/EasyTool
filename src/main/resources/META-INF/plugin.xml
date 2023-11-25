@@ -62,6 +62,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.1.6</h3>
+      <ul>
+        <li>Add translation engine automatic switching logic: Automatically switch to free translation engines when the current translation engine key is not configured</li>
+        <li>-------------------------------</li>
+        <li>新增翻译引擎自动切换逻辑: 当前翻译引擎密钥未配置时，自动切换免费翻译引擎</li>
+      </ul>
       <h3>v1.1.5</h3>
       <ul>
         <li>Optimize the functional logic of translation configuration items to improve execution efficiency</li>

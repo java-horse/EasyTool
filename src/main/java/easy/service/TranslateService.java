@@ -8,6 +8,7 @@ import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
 import easy.service.impl.*;
 import easy.util.LanguageUtil;
+import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +81,8 @@ public class TranslateService {
      * @date 2023/9/4 20:59
      **/
     public String translate(String source) {
-        Translate translate = translateMap.get(translateConfig.getTranslateChannel());
+        String translateChannel = Boolean.TRUE.equals(keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate() : translateConfig.getTranslateChannel();
+        Translate translate = translateMap.get(translateChannel);
         if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
             return StringUtils.EMPTY;
         }
@@ -154,6 +156,46 @@ public class TranslateService {
      **/
     public void clearCache() {
         translateMap.values().forEach(Translate::clearCache);
+    }
+
+    /**
+     * 翻译渠道密钥配置提醒
+     *
+     * @param
+     * @return java.lang.Boolean
+     * @author mabin
+     * @date 2023/9/17 16:35
+     */
+    public Boolean keyConfigurationReminder() {
+        String translateChannel = translateConfig.getTranslateChannel();
+        boolean isRemind = false;
+        if (StringUtils.equals(translateChannel, TranslateEnum.BAIDU.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getAppId(), translateConfig.getAppSecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.ALIYUN.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.YOUDAO.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getSecretId(), translateConfig.getSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.TENCENT.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.VOLCANO.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.XFYUN.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getXfAppId(), translateConfig.getXfApiKey(), translateConfig.getXfApiSecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.GOOGLE.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getGoogleSecretKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.MICROSOFT.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getMicrosoftKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.NIU.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getNiuApiKey());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.CAIYUN.getTranslate())) {
+            isRemind = StringUtils.isBlank(translateConfig.getCaiyunToken());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.HUAWEI.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret());
+        }
+        if (isRemind) {
+            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎密钥!");
+        }
+        return isRemind;
     }
 
 
