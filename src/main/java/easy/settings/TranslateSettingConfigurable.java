@@ -63,7 +63,9 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getCaiyunToken(), translateSettingView.getCaiyunTokenTextField().getText())
                 || !StringUtils.equals(translateConfig.getHwAppId(), translateSettingView.getHwAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getHwAppSecret(), translateSettingView.getAppSecretTextField().getText())
-                || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText());
+                || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getThsAppId(), translateSettingView.getThsAppIdTextField().getText())
+                || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText());
     }
 
     @Override
@@ -94,6 +96,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setHwProjectId(translateSettingView.getHwProjectIdTextField().getText());
         translateConfig.setHwAppId(translateSettingView.getHwAppIdTextField().getText());
         translateConfig.setHwAppSecret(translateSettingView.getHwAppSecretTextField().getText());
+        translateConfig.setThsAppId(translateSettingView.getThsAppIdTextField().getText());
+        translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
 
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
@@ -128,6 +132,9 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.HUAWEI.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret()), TranslateEnum.HUAWEI.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.THS_SOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getThsAppId(), translateConfig.getThsAppSecret()), TranslateEnum.THS_SOFT.getTranslate() + "密钥不能为空");
         }
     }
 

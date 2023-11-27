@@ -67,7 +67,7 @@ public class KingSoftTranslate extends AbstractTranslate {
             String body = httpResponse.body();
             return JsonUtil.fromObject(Objects.requireNonNull(body)).get("out").getAsString();
         } catch (HttpException e) {
-            log.error(TranslateEnum.HUAWEI.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
+            log.error(TranslateEnum.KING_SOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

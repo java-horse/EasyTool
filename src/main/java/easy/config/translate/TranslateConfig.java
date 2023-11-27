@@ -117,6 +117,16 @@ public class TranslateConfig {
      */
     private String hwAppSecret;
 
+    /**
+     * 同花顺appId
+     */
+    private String thsAppId;
+
+    /**
+     * 同花顺appSecret
+     */
+    private String thsAppSecret;
+
 
     /**
      * 重置翻译配置
@@ -318,6 +328,22 @@ public class TranslateConfig {
         this.hwAppSecret = hwAppSecret;
     }
 
+    public String getThsAppId() {
+        return thsAppId;
+    }
+
+    public void setThsAppId(String thsAppId) {
+        this.thsAppId = thsAppId;
+    }
+
+    public String getThsAppSecret() {
+        return thsAppSecret;
+    }
+
+    public void setThsAppSecret(String thsAppSecret) {
+        this.thsAppSecret = thsAppSecret;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -342,7 +368,8 @@ public class TranslateConfig {
                 ", hwProjectId='" + hwProjectId + '\'' +
                 ", hwAppId='" + hwAppId + '\'' +
                 ", hwAppSecret='" + hwAppSecret + '\'' +
+                ", thsAppId='" + thsAppId + '\'' +
+                ", thsAppSecret='" + thsAppSecret + '\'' +
                 '}';
     }
-
 }

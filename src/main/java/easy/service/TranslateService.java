@@ -68,6 +68,7 @@ public class TranslateService {
                     .put(TranslateEnum.GOOGLE_FREE.getTranslate(), new GoogleFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.KING_SOFT.getTranslate(), new KingSoftTranslate().init(translateConfig))
                     .put(TranslateEnum.MICROSOFT_FREE.getTranslate(), new MicrosoftFreeTranslate().init(translateConfig))
+                    .put(TranslateEnum.THS_SOFT.getTranslate(), new THSTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }
@@ -196,6 +197,8 @@ public class TranslateService {
             isRemind = StringUtils.isBlank(translateConfig.getCaiyunToken());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.HUAWEI.getTranslate())) {
             isRemind = StringUtils.isAnyBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.THS_SOFT.getTranslate())) {
+            isRemind = StringUtils.isAnyBlank(translateConfig.getThsAppId(), translateConfig.getThsAppSecret());
         }
         return isRemind;
     }

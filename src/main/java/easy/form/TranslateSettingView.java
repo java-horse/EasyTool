@@ -1,6 +1,5 @@
 package easy.form;
 
-import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
@@ -8,13 +7,10 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -80,6 +76,10 @@ public class TranslateSettingView {
     private JTextField hwAppIdTextField;
     private JLabel hwAppSecretLabel;
     private JTextField hwAppSecretTextField;
+    private JTextField thsAppIdTextField;
+    private JLabel thsAppIdLabel;
+    private JTextField thsAppSecretTextField;
+    private JLabel thsAppSecretLabel;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -186,6 +186,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -227,6 +231,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -268,6 +276,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -309,6 +321,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -350,6 +366,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -391,6 +411,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -432,6 +456,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -473,6 +501,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -514,6 +546,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -555,6 +591,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -596,6 +636,55 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(true);
             hwAppSecretLabel.setVisible(true);
             hwAppSecretTextField.setVisible(true);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.THS_SOFT.getTranslate(), selectedItem)) {
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+            microsoftKeyLabel.setVisible(false);
+            microsoftKeyTextField.setVisible(false);
+            niuApiKeyLabel.setVisible(false);
+            niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
+            hwProjectIdLabel.setVisible(false);
+            hwProjectIdTextField.setVisible(false);
+            hwAppIdLabel.setVisible(false);
+            hwAppIdTextField.setVisible(false);
+            hwAppSecretLabel.setVisible(false);
+            hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(true);
+            thsAppIdTextField.setVisible(true);
+            thsAppSecretLabel.setVisible(true);
+            thsAppSecretTextField.setVisible(true);
         } else {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -637,6 +726,10 @@ public class TranslateSettingView {
             hwAppIdTextField.setVisible(false);
             hwAppSecretLabel.setVisible(false);
             hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
         }
     }
 
@@ -670,6 +763,8 @@ public class TranslateSettingView {
         setHwProjectIdTextField(translateConfig.getHwProjectId());
         setHwAppIdTextField(translateConfig.getHwAppId());
         setHwAppSecretTextField(translateConfig.getHwAppSecret());
+        setThsAppIdTextField(translateConfig.getThsAppId());
+        setThsAppSecretTextField(translateConfig.getThsAppSecret());
     }
 
 
@@ -1013,4 +1108,35 @@ public class TranslateSettingView {
         this.hwAppSecretTextField.setText(hwAppSecretTextField);
     }
 
+    public JTextField getThsAppIdTextField() {
+        return thsAppIdTextField;
+    }
+
+    public void setThsAppIdTextField(String thsAppIdTextField) {
+        this.thsAppIdTextField.setText(thsAppIdTextField);
+    }
+
+    public JLabel getThsAppIdLabel() {
+        return thsAppIdLabel;
+    }
+
+    public void setThsAppIdLabel(JLabel thsAppIdLabel) {
+        this.thsAppIdLabel = thsAppIdLabel;
+    }
+
+    public JTextField getThsAppSecretTextField() {
+        return thsAppSecretTextField;
+    }
+
+    public void setThsAppSecretTextField(String thsAppSecretTextField) {
+        this.thsAppSecretTextField.setText(thsAppSecretTextField);
+    }
+
+    public JLabel getThsAppSecretLabel() {
+        return thsAppSecretLabel;
+    }
+
+    public void setThsAppSecretLabel(JLabel thsAppSecretLabel) {
+        this.thsAppSecretLabel = thsAppSecretLabel;
+    }
 }

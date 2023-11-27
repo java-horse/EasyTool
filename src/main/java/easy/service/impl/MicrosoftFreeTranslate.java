@@ -27,7 +27,7 @@ public class MicrosoftFreeTranslate extends AbstractTranslate {
 
     private static final String TOKEN_URL = "https://edge.microsoft.com/translate/auth";
 
-    private static Cache<String, String> CACHE_TOKEN = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).maximumSize(5).build();
+    private static Cache<String, String> CACHE_TOKEN = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).maximumSize(3).build();
 
     private static final String TOKEN = "MICROSOFT_TOKEN";
 
