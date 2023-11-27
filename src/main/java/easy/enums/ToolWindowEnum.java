@@ -10,9 +10,9 @@ package easy.enums;
  */
 public enum ToolWindowEnum {
 
-    PLUGIN_STATISTICS("使用统计", "EasyChar插件使用统计"),
-    WECHAT_OFFICIAL("微信公众号", "EasyChar微信公众号"),
-    PLUGIN_SETTING("插件设置", "EasyChar插件设置");
+    PLUGIN_STATISTICS("使用统计", "插件使用统计"),
+    WECHAT_OFFICIAL("微信公众号", "微信公众号"),
+    PLUGIN_SETTING("插件设置", "插件设置");
 
     ToolWindowEnum(String title, String desc) {
         this.title = title;

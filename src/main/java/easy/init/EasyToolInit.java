@@ -14,7 +14,7 @@ import easy.base.Constants;
  * @date 2023/04/24 18:27
  **/
 
-public class EasyCharInit implements ApplicationComponent {
+public class EasyToolInit implements ApplicationComponent {
 
     @Override
     public void initComponent() {

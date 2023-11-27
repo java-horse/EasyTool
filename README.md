@@ -1,7 +1,7 @@
-# EasyChar
+# EasyTool
 
 > ![JetBrains](https://img.shields.io/jetbrains/plugin/v/21589)
-> [![star](https://gitee.com/milubin/easy-char-plugin/badge/star.svg?theme=dark)](https://gitee.com/milubin/easy-char-plugin/stargazers)
+> [![star](https://gitee.com/milubin/easy-tool-plugin/badge/star.svg?theme=dark)](https://gitee.com/milubin/easy-tool-plugin/stargazers)
 
 #### 插件说明
 > * 支持中文字符自动转为英文字符，可自定义字符映射关系
@@ -26,10 +26,10 @@
 > * 支持自动复制接口完整URL
 
 #### 使用说明
-> * 在 JetBrains IED 的插件市场收索 `EasyChar` 并安装成功
+> * 在 JetBrains IED 的插件市场收索 `EasyTool` 并安装成功
 > * 输入以下常用中文字符 `( ，。；！（）「」《》)` 将自动转换成对应的英文字符
 > * 如果想输入中文字符，则需要先输入 `/` 字符，然后再输入想要的中文字符即可
-> * 点击 `View` -> `Tool Windows` -> `EasyChar` 可以查看中英文字符转换次数统计
+> * 点击 `View` -> `Tool Windows` -> `EasyTool` 可以查看中英文字符转换次数统计
 > * 选中中文字符串，快捷键 `CTRL + \ ` 右键选择 Translate 选项即可翻译或自动替换 (需先配置翻译渠道密钥)
 > * 选中变量, 快捷键 `CTRL + ALT + \ ` 即可自动转换蛇形命名或者驼峰命名
 > * 选中文本, 右键选择 `WebSearch`后, 选择对应搜索引擎进行快捷Web搜索

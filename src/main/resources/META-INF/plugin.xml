@@ -1,14 +1,14 @@
 <idea-plugin>
-    <id>easy.char</id>
-    <name>EasyChar</name>
-    <vendor email="3468449362@qq.com" url="https://gitee.com/milubin/easy-char-plugin">mabin</vendor>
+    <id>easy.tool</id>
+    <name>EasyTool</name>
+    <vendor email="3468449362@qq.com" url="https://gitee.com/milubin/easy-tool-plugin">mabin</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
 
     <description>
         <![CDATA[
-      <h3><em>EasyChar</em> is a set of development assistance tools for converting and translating Chinese and English characters</h3>
+      <h3><em>EasyTool</em> is a set of auxiliary tools that support the conversion and translation of Chinese and English characters, as well as the generation of Swagger2.x annotations, making it easy to develop</h3>
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support generating Swagger2.x related annotations based on Javadoc</li>
@@ -18,7 +18,7 @@
         <li>Support for quick generation of serialVersionUID</li>
         <li>Support automatic copying of interface complete URL</li>
       </ul>
-	  <h3><em>EasyChar</em>是一个中英字符互转、互译的开发辅助工具集</h3>
+	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
@@ -39,23 +39,23 @@
             <li>--<em>谷歌翻译(API)</em></li>
             <li>--<em>谷歌翻译(Free)</em></li>
         </ul>
-        <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: CTRL + ALT + \ </li>
+        <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: <em>CTRL + ALT + \</em> </li>
         <li>支持选中文本右键快捷Web搜索</li>
-        <li>支持快捷生成 serialVersionUID, 快捷键: CTRL + SHIFT + ALT + \ </li>
-        <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择CopyUrl</li>
+        <li>支持快捷生成<em>serialVersionUID</em>, 快捷键: <em>CTRL + SHIFT + ALT + \</em> </li>
+        <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择<em>CopyUrl</em></li>
       </ul>
       <h3>Getting started</h3>
       <ul>
         <li>1. Install IDEA or any JetBrains IDE, such as Clion, PyCharm...</li>
         <li>2. Launch the IDE and open plugin settings</li>
-        <li>3. Search for the plugin <em>EasyChar</em> and click on install</li>
+        <li>3. Search for the plugin <em>EasyTool</em> and click on install</li>
         <li>4. Set Chinese and English character mappings, translation engine keys</li>
-        <li>5. Now you can enjoy using the <em>EasyChar</em> plugin function</li>
+        <li>5. Now you can enjoy using the <em>EasyTool</em> plugin function</li>
       </ul>
       <h3>Source</h3>
       <ul>
-        <li><a href="https://gitee.com/milubin/easy-char-plugin">Gitee</a></li>
-        <li><a href="https://gitee.com/milubin/easy-char-plugin">Github</a></li>
+        <li><a href="https://gitee.com/milubin/easy-tool-plugin">Gitee</a></li>
+        <li><a href="https://gitee.com/milubin/easy-tool-plugin">Github</a></li>
       </ul>
     ]]>
     </description>
@@ -183,28 +183,28 @@
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent" order="first"/>
         <applicationService serviceImplementation="easy.service.TranslateService"/>
 
-        <applicationConfigurable id="easy.char.settings" displayName="EasyChar"
+        <applicationConfigurable id="easy.tool.settings" displayName="EasyTool"
                                  instance="easy.settings.ConvertConfigurable"/>
-        <applicationConfigurable parentId="easy.char.settings" id="easy.char.translate.settings" displayName="Translate"
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
 
-        <toolWindow id="EasyChar" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.TOOL_LOGO"
+        <toolWindow id="EasyTool" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.TOOL_LOGO"
                     canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
     </extensions>
 
     <application-components>
         <component>
-            <implementation-class>easy.init.EasyCharInit</implementation-class>
+            <implementation-class>easy.init.EasyToolInit</implementation-class>
         </component>
     </application-components>
 
     <actions>
         <!--中英字符互转-->
-        <action id="EasyCharCoreAction" class="easy.action.ConvertAction" text="EasyCharCore"
-                description="EasyCharCore">
+        <action id="EasyToolCoreAction" class="easy.action.ConvertAction" text="EasyToolCore"
+                description="EasyTool development assistance tools">
         </action>
         <!--中英互译-->
-        <action id="EasyCharTranslateAction" class="easy.action.TranslateAction" text="Translate"
+        <action id="EasyToolTranslateAction" class="easy.action.TranslateAction" text="Translate"
                 description="Translation between Chinese and English" icon="easy.icons.EasyIcons.ICON.TRANSLATE">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta BACK_SLASH"/>
@@ -213,7 +213,7 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl BACK_SLASH"/>
         </action>
         <!--驼峰命名-->
-        <action id="EasyCharCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
+        <action id="EasyToolCamelCaseAction" class="easy.action.CamelCaseAction" text="CamelCase"
                 description="SnakeCase to CamelCase" icon="easy.icons.EasyIcons.ICON.TEXT">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta alt BACK_SLASH"/>
@@ -222,12 +222,12 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt BACK_SLASH"/>
         </action>
         <!--WebSearch在线搜索-->
-        <group id="EasyCharWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
-               text="WebSearch" description="EasyChar development assistance tools"
+        <group id="EasyToolWebSearchDynamicActions" class="easy.action.search.DynamicWebSearchActionGroup"
+               text="WebSearch" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.WEB" popup="true" compact="true"/>
         <!--快捷生成serialVersionUID-->
-        <action id="EasyCharSerialAction" class="easy.action.SerialVersionUIDAction" text="GenUID"
-                description="generate UID" icon="easy.icons.EasyIcons.ICON.COMMON">
+        <action id="EasyToolSerialAction" class="easy.action.SerialVersionUIDAction" text="GenUID"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.COMMON">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta shift alt BACK_SLASH"/>
@@ -235,42 +235,42 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
         </action>
         <!--自动生成 Swagger2.x 注解-->
-        <action id="EasyCharSwaggerToolAction" class="easy.action.SwaggerAction" text="GenSwagger"
-                description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
+        <action id="EasyToolSwaggerToolAction" class="easy.action.SwaggerAction" text="GenSwagger"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
         </action>
         <!--自动复制完整接口URL-->
-        <action id="EasyCharCopyFullAction" class="easy.action.CopyFullUrlAction" text="CopyUrl"
-                description="EasyChar development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY">
+        <action id="EasyToolCopyFullAction" class="easy.action.CopyFullUrlAction" text="CopyUrl"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY">
         </action>
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
-               text="EasyChar" icon="easy.icons.EasyIcons.ICON.LOGO" description="EasyChar development assistance tools"
+               text="EasyTool" icon="easy.icons.EasyIcons.ICON.LOGO" description="EasyTool development assistance tools"
                popup="true" compact="true">
-            <group id="EasyCharToolSubGroup"/>
+            <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
         <!--编辑器右键菜单-->
-        <group id="easy.char.editor.actions" text="EasyChar" description="EasyChar development assistance tools"
+        <group id="easy.char.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
-            <group id="EasyCharEditorSubGroup"/>
+            <group id="EasyToolEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-            <reference ref="EasyCharTranslateAction"/>
-            <reference ref="EasyCharSwaggerToolAction"/>
-            <reference ref="EasyCharCopyFullAction"/>
-            <reference ref="EasyCharCamelCaseAction"/>
-            <reference ref="EasyCharSerialAction"/>
-            <reference ref="EasyCharWebSearchDynamicActions"/>
+            <reference ref="EasyToolTranslateAction"/>
+            <reference ref="EasyToolSwaggerToolAction"/>
+            <reference ref="EasyToolCopyFullAction"/>
+            <reference ref="EasyToolCamelCaseAction"/>
+            <reference ref="EasyToolSerialAction"/>
+            <reference ref="EasyToolWebSearchDynamicActions"/>
         </group>
         <!--控制台右键菜单-->
-        <group id="easy.char.console.actions" text="EasyChar" description="EasyChar development assistance tools"
+        <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
-            <group id="EasyCharConsoleSubGroup"/>
+            <group id="EasyToolConsoleSubGroup"/>
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
-            <reference ref="EasyCharTranslateAction"/>
-            <reference ref="EasyCharWebSearchDynamicActions"/>
+            <reference ref="EasyToolTranslateAction"/>
+            <reference ref="EasyToolWebSearchDynamicActions"/>
         </group>
 
     </actions>

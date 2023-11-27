@@ -73,7 +73,7 @@ public class MessageUtil {
             btnsVO.setTitle(Constants.PLUGIN_NAME + " Plugin");
             btnsVO.setActionURL(Constants.JETBRAINS_URL);
             actionCardVO.setBtns(Collections.singletonList(btnsVO));
-            IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.getId("easy.char"));
+            IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.getId("easy.tool"));
             ApplicationInfo applicationInfo = ApplicationInfo.getInstance();
             String text = String.format("![1](https://z1.ax1x.com/2023/11/15/piY8VCn.jpg) \n" +
                             "#### **%s** \n" +
