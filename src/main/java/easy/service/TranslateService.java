@@ -2,6 +2,7 @@ package easy.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
@@ -81,7 +82,11 @@ public class TranslateService {
      * @date 2023/9/4 20:59
      **/
     public String translate(String source) {
-        String translateChannel = Boolean.TRUE.equals(keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate() : translateConfig.getTranslateChannel();
+        String translateChannel = translateConfig.getTranslateChannel();
+        if (Boolean.TRUE.equals(keyConfigurationReminder())) {
+            translateChannel = TranslateEnum.KING_SOFT.getTranslate();
+            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎【" + translateConfig.getTranslateChannel() + "】密钥", NotificationType.WARNING);
+        }
         Translate translate = translateMap.get(translateChannel);
         if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
             return StringUtils.EMPTY;
@@ -191,9 +196,6 @@ public class TranslateService {
             isRemind = StringUtils.isBlank(translateConfig.getCaiyunToken());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.HUAWEI.getTranslate())) {
             isRemind = StringUtils.isAnyBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret());
-        }
-        if (isRemind) {
-            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎密钥!");
         }
         return isRemind;
     }

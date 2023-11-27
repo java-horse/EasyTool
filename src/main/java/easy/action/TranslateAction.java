@@ -22,7 +22,6 @@ import easy.icons.EasyIcons;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
 import easy.util.MessageUtil;
-import easy.util.NotificationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,9 +57,10 @@ public class TranslateAction extends AnAction {
         if (StringUtils.isBlank(translateResult)) {
             return;
         }
+        String title = Boolean.TRUE.equals(translateService.keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate() : translateConfig.getTranslateChannel();
         if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
             try {
-                String inputResult = Messages.showInputDialog(StringUtils.EMPTY, translateConfig.getTranslateChannel(), EasyIcons.ICON.TRANSLATE, translateResult, new InputValidator() {
+                String inputResult = Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult, new InputValidator() {
                     @Override
                     public boolean checkInput(@NlsSafe String inputString) {
                         return StringUtils.isNotBlank(inputString) && inputString.length() <= 255;
@@ -84,7 +84,7 @@ public class TranslateAction extends AnAction {
                 log.error("中英互译写入编辑器异常", ex);
             }
         } else {
-            int dialogResult = Messages.showOkCancelDialog(translateResult, translateConfig.getTranslateChannel(), "Copy", "Cancel", EasyIcons.ICON.TRANSLATE);
+            int dialogResult = Messages.showOkCancelDialog(translateResult, title, "Copy", "Cancel", EasyIcons.ICON.TRANSLATE);
             if (dialogResult == Messages.YES) {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }
