@@ -88,6 +88,8 @@ public class TranslateSettingView {
     private JTextField tyKeyTextField;
     private JLabel wxKeyLabel;
     private JTextField wxKeyTextField;
+    private JLabel tyModelLabel;
+    private JComboBox tyModelComboBox;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -124,16 +126,22 @@ public class TranslateSettingView {
      */
     private void setOpenModelVisible(Object selectedItem) {
         if (Objects.equals(OpenModelTranslateEnum.TONG_YI.getModel(), selectedItem)) {
+            tyModelLabel.setVisible(true);
+            tyModelComboBox.setVisible(true);
             tyKeyLabel.setVisible(true);
             tyKeyTextField.setVisible(true);
             wxKeyLabel.setVisible(false);
             wxKeyTextField.setVisible(false);
         } else if (Objects.equals(OpenModelTranslateEnum.WEN_XIN.getModel(), selectedItem)) {
+            tyModelLabel.setVisible(false);
+            tyModelComboBox.setVisible(false);
             tyKeyLabel.setVisible(false);
             tyKeyTextField.setVisible(false);
             wxKeyLabel.setVisible(true);
             wxKeyTextField.setVisible(true);
         } else {
+            tyModelLabel.setVisible(false);
+            tyModelComboBox.setVisible(false);
             tyKeyLabel.setVisible(false);
             tyKeyTextField.setVisible(false);
             wxKeyLabel.setVisible(false);
@@ -141,7 +149,17 @@ public class TranslateSettingView {
         }
     }
 
+    /**
+     * 设置通用表单隐藏项
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/11/28 17:22
+     */
     private void setCommonVisible() {
+        tyModelLabel.setVisible(false);
+        tyModelComboBox.setVisible(false);
         tyKeyLabel.setVisible(false);
         tyKeyTextField.setVisible(false);
         wxKeyLabel.setVisible(false);
@@ -869,6 +887,7 @@ public class TranslateSettingView {
         setHwAppSecretTextField(translateConfig.getHwAppSecret());
         setThsAppIdTextField(translateConfig.getThsAppId());
         setThsAppSecretTextField(translateConfig.getThsAppSecret());
+        setTyModelComboBox(translateConfig.getTyModel());
         setTyKeyTextField(translateConfig.getTyKey());
         setWxKeyTextField(translateConfig.getWxKey());
     }
@@ -1260,6 +1279,22 @@ public class TranslateSettingView {
 
     public void setOpenModelComboBox(String modelComboBox) {
         this.openModelComboBox.setSelectedItem(modelComboBox);
+    }
+
+    public JLabel getTyModelLabel() {
+        return tyModelLabel;
+    }
+
+    public void setTyModelLabel(JLabel tyModelLabel) {
+        this.tyModelLabel = tyModelLabel;
+    }
+
+    public JComboBox getTyModelComboBox() {
+        return tyModelComboBox;
+    }
+
+    public void setTyModelComboBox(String tyModelComboBox) {
+        this.tyModelComboBox.setSelectedItem(tyModelComboBox);
     }
 
     public JLabel getTyKeyLabel() {

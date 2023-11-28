@@ -45,7 +45,7 @@ public class TongYiModelTranslate extends AbstractTranslate {
      */
     private String translate(String text, String target) {
         JsonObject bodyObject = new JsonObject();
-        bodyObject.addProperty("model", "qwen-max");
+        bodyObject.addProperty("model", getTranslateConfig().getTyModel());
         JsonObject promptObject = new JsonObject();
         promptObject.addProperty("prompt", String.format(Constants.PROMPT_TEMPLATE, text, target));
         bodyObject.add("input", promptObject);

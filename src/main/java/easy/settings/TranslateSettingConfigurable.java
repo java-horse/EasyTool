@@ -68,6 +68,7 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getThsAppId(), translateSettingView.getThsAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
                 || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
+                || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getWxKey(), translateSettingView.getWxKeyTextField().getText());
     }
@@ -103,6 +104,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setThsAppId(translateSettingView.getThsAppIdTextField().getText());
         translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
+        translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
         translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
         translateConfig.setWxKey(translateSettingView.getWxKeyTextField().getText());
 
@@ -145,7 +147,7 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.OPEN_BIG_MODEL.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (OpenModelTranslateEnum.TONG_YI.getModel().equals(translateConfig.getOpenModelChannel())) {
-                ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getTyKey()), OpenModelTranslateEnum.TONG_YI.getModel() + "密钥不能为空");
+                ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getTyKey(), translateConfig.getTyModel()), OpenModelTranslateEnum.TONG_YI.getModel() + "配置不能为空");
             } else if (OpenModelTranslateEnum.WEN_XIN.getModel().equals(translateConfig.getOpenModelChannel())) {
                 ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getWxKey()), OpenModelTranslateEnum.WEN_XIN.getModel() + "密钥不能为空");
             }

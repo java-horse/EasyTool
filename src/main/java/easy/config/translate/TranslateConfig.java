@@ -1,5 +1,6 @@
 package easy.config.translate;
 
+import easy.base.ModelConstants;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 
@@ -134,6 +135,11 @@ public class TranslateConfig {
     private String openModelChannel;
 
     /**
+     * 通义千问model
+     */
+    private String tyModel;
+
+    /**
      * 通义千问key
      */
     private String tyKey;
@@ -175,6 +181,7 @@ public class TranslateConfig {
         hwAppId = null;
         hwAppSecret = null;
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
+        tyModel = ModelConstants.TONG_YI.MAX.getModel();
         tyKey = null;
         wxKey = null;
     }
@@ -387,6 +394,14 @@ public class TranslateConfig {
         this.wxKey = wxKey;
     }
 
+    public String getTyModel() {
+        return tyModel;
+    }
+
+    public void setTyModel(String tyModel) {
+        this.tyModel = tyModel;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -414,9 +429,9 @@ public class TranslateConfig {
                 ", thsAppId='" + thsAppId + '\'' +
                 ", thsAppSecret='" + thsAppSecret + '\'' +
                 ", openModelChannel='" + openModelChannel + '\'' +
+                ", tyModel='" + tyModel + '\'' +
                 ", tyKey='" + tyKey + '\'' +
                 ", wxKey='" + wxKey + '\'' +
                 '}';
     }
-
 }
