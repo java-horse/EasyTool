@@ -57,7 +57,8 @@ public class TranslateAction extends AnAction {
         if (StringUtils.isBlank(translateResult)) {
             return;
         }
-        String title = Boolean.TRUE.equals(translateService.keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate() : translateConfig.getTranslateChannel();
+        String title = Boolean.TRUE.equals(translateService.keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate()
+                : StringUtils.equals(translateConfig.getTranslateChannel(), TranslateEnum.OPEN_BIG_MODEL.getTranslate()) ? translateConfig.getOpenModelChannel() : translateConfig.getTranslateChannel();
         if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
             try {
                 String inputResult = Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult, new InputValidator() {

@@ -6,8 +6,10 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
+import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
-import easy.service.impl.*;
+import easy.service.model.TongYiModelTranslate;
+import easy.service.translate.*;
 import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -69,6 +71,7 @@ public class TranslateService {
                     .put(TranslateEnum.KING_SOFT.getTranslate(), new KingSoftTranslate().init(translateConfig))
                     .put(TranslateEnum.MICROSOFT_FREE.getTranslate(), new MicrosoftFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.THS_SOFT.getTranslate(), new THSTranslate().init(translateConfig))
+                    .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }
@@ -84,9 +87,12 @@ public class TranslateService {
      **/
     public String translate(String source) {
         String translateChannel = translateConfig.getTranslateChannel();
+        if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
+            translateChannel = translateConfig.getOpenModelChannel();
+        }
         if (Boolean.TRUE.equals(keyConfigurationReminder())) {
             translateChannel = TranslateEnum.KING_SOFT.getTranslate();
-            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎【" + translateConfig.getTranslateChannel() + "】密钥", NotificationType.WARNING);
+            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎【" + translateChannel + "】密钥", NotificationType.WARNING);
         }
         Translate translate = translateMap.get(translateChannel);
         if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
@@ -199,6 +205,13 @@ public class TranslateService {
             isRemind = StringUtils.isAnyBlank(translateConfig.getHwProjectId(), translateConfig.getHwAppId(), translateConfig.getHwAppSecret());
         } else if (StringUtils.equals(translateChannel, TranslateEnum.THS_SOFT.getTranslate())) {
             isRemind = StringUtils.isAnyBlank(translateConfig.getThsAppId(), translateConfig.getThsAppSecret());
+        } else if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
+            String openModelChannel = translateConfig.getOpenModelChannel();
+            if (StringUtils.equals(openModelChannel, OpenModelTranslateEnum.TONG_YI.getModel())) {
+                isRemind = StringUtils.isBlank(translateConfig.getTyKey());
+            } else if (StringUtils.equals(openModelChannel, OpenModelTranslateEnum.WEN_XIN.getModel())) {
+                isRemind = StringUtils.isBlank(translateConfig.getWxKey());
+            }
         }
         return isRemind;
     }

@@ -5,6 +5,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.form.TranslateSettingView;
 import easy.util.ValidatorUtil;
@@ -65,7 +66,10 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getHwAppSecret(), translateSettingView.getAppSecretTextField().getText())
                 || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getThsAppId(), translateSettingView.getThsAppIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText());
+                || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
+                || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
+                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getWxKey(), translateSettingView.getWxKeyTextField().getText());
     }
 
     @Override
@@ -98,6 +102,9 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setHwAppSecret(translateSettingView.getHwAppSecretTextField().getText());
         translateConfig.setThsAppId(translateSettingView.getThsAppIdTextField().getText());
         translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
+        translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
+        translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
+        translateConfig.setWxKey(translateSettingView.getWxKeyTextField().getText());
 
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
@@ -135,6 +142,13 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.THS_SOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getThsAppId(), translateConfig.getThsAppSecret()), TranslateEnum.THS_SOFT.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.OPEN_BIG_MODEL.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            if (OpenModelTranslateEnum.TONG_YI.getModel().equals(translateConfig.getOpenModelChannel())) {
+                ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getTyKey()), OpenModelTranslateEnum.TONG_YI.getModel() + "密钥不能为空");
+            } else if (OpenModelTranslateEnum.WEN_XIN.getModel().equals(translateConfig.getOpenModelChannel())) {
+                ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getWxKey()), OpenModelTranslateEnum.WEN_XIN.getModel() + "密钥不能为空");
+            }
         }
     }
 

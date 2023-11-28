@@ -1,8 +1,9 @@
-package easy.service.impl;
+package easy.service.translate;
 
 import cn.hutool.http.*;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
+import easy.service.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 

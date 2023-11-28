@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +30,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
         if (Objects.isNull(translateConfig)) {
             translateConfig = new TranslateConfig();
             translateConfig.setTranslateChannel(TranslateEnum.BAIDU.getTranslate());
+            translateConfig.setOpenModelChannel(OpenModelTranslateEnum.TONG_YI.getModel());
         }
         return translateConfig;
     }

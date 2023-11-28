@@ -41,7 +41,7 @@ public class SwaggerAction extends AnAction {
         String selectedText = editor.getSelectionModel().getSelectedText();
 
         // 二次弹窗确认
-        int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, EasyIcons.ICON.SWAGGER);
+        int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
         if (MessageConstants.YES == confirmResult) {
             new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
             MessageUtil.sendActionDingMessage(e);

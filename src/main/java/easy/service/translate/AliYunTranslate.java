@@ -1,9 +1,10 @@
-package easy.service.impl;
+package easy.service.translate;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.service.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
 import org.apache.commons.codec.digest.DigestUtils;

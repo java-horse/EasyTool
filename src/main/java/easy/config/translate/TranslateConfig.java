@@ -1,5 +1,6 @@
 package easy.config.translate;
 
+import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 
 /**
@@ -127,6 +128,21 @@ public class TranslateConfig {
      */
     private String thsAppSecret;
 
+    /**
+     * 开源模型渠道
+     */
+    private String openModelChannel;
+
+    /**
+     * 通义千问key
+     */
+    private String tyKey;
+
+    /**
+     * 文心一言key
+     */
+    private String wxKey;
+
 
     /**
      * 重置翻译配置
@@ -158,6 +174,9 @@ public class TranslateConfig {
         hwProjectId = null;
         hwAppId = null;
         hwAppSecret = null;
+        openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
+        tyKey = null;
+        wxKey = null;
     }
 
     public String getTranslateChannel() {
@@ -344,6 +363,30 @@ public class TranslateConfig {
         this.thsAppSecret = thsAppSecret;
     }
 
+    public String getOpenModelChannel() {
+        return openModelChannel;
+    }
+
+    public void setOpenModelChannel(String openModelChannel) {
+        this.openModelChannel = openModelChannel;
+    }
+
+    public String getTyKey() {
+        return tyKey;
+    }
+
+    public void setTyKey(String tyKey) {
+        this.tyKey = tyKey;
+    }
+
+    public String getWxKey() {
+        return wxKey;
+    }
+
+    public void setWxKey(String wxKey) {
+        this.wxKey = wxKey;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -370,6 +413,10 @@ public class TranslateConfig {
                 ", hwAppSecret='" + hwAppSecret + '\'' +
                 ", thsAppId='" + thsAppId + '\'' +
                 ", thsAppSecret='" + thsAppSecret + '\'' +
+                ", openModelChannel='" + openModelChannel + '\'' +
+                ", tyKey='" + tyKey + '\'' +
+                ", wxKey='" + wxKey + '\'' +
                 '}';
     }
+
 }

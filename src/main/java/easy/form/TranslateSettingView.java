@@ -2,15 +2,17 @@ package easy.form;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ui.MessageConstants;
+import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
-import java.awt.*;
-import java.net.URI;
 import java.util.Objects;
 
 /**
@@ -80,61 +82,76 @@ public class TranslateSettingView {
     private JLabel thsAppIdLabel;
     private JTextField thsAppSecretTextField;
     private JLabel thsAppSecretLabel;
+    private JLabel openModelLabel;
+    private JComboBox openModelComboBox;
+    private JLabel tyKeyLabel;
+    private JTextField tyKeyTextField;
+    private JLabel wxKeyLabel;
+    private JTextField wxKeyTextField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
      */
     public TranslateSettingView() {
-        setVisibleChannel(translateChannelBox.getSelectedItem());
+        setTranslateVisible(translateChannelBox.getSelectedItem());
         resetButton.addActionListener(event -> {
-            int result = JOptionPane.showConfirmDialog(null, "确认删除所有配置数据?", "重置数据",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if (result == JOptionPane.OK_OPTION) {
+            int result = Messages.showYesNoDialog("确认删除所有配置数据?", "重置数据", Messages.getWarningIcon());
+            if (result == MessageConstants.YES) {
                 translateConfig.reset();
                 refresh();
             }
         });
         clearButton.addActionListener(event -> {
-            int result = JOptionPane.showConfirmDialog(null, "确认清空所有翻译缓存?", "清空缓存", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE);
-            if (result == JOptionPane.OK_OPTION) {
+            int result = Messages.showYesNoDialog("确认清空所有翻译缓存?", "清空缓存", Messages.getWarningIcon());
+            if (result == MessageConstants.YES) {
                 translateService.clearCache();
             }
         });
-        startButton.addActionListener(event -> {
-            try {
-                Desktop dp = Desktop.getDesktop();
-                if (dp.isSupported(Desktop.Action.BROWSE)) {
-                    dp.browse(URI.create(Constants.GITEE_URL));
-                }
-            } catch (Exception ex) {
-                log.error("打开链接失败: " + Constants.GITEE_URL, ex);
-            }
-        });
-        reviewButton.addActionListener(event -> {
-            try {
-                Desktop dp = Desktop.getDesktop();
-                if (dp.isSupported(Desktop.Action.BROWSE)) {
-                    dp.browse(URI.create(Constants.JETBRAINS_URL));
-                }
-            } catch (Exception ex) {
-                log.error("打开链接失败: " + Constants.JETBRAINS_URL, ex);
-            }
-        });
-        payButton.addActionListener(event -> {
-            SupportView supportView = new SupportView();
-            supportView.show();
-        });
+        startButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.GITEE_URL));
+        reviewButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL));
+        payButton.addActionListener(event -> new SupportView().show());
+        translateChannelBox.addItemListener(e -> setTranslateVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
+        openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
+    }
 
-        translateChannelBox.addItemListener(e -> {
-            JComboBox<?> jComboBox = (JComboBox<?>) e.getSource();
-            setVisibleChannel(jComboBox.getSelectedItem());
-        });
+    /**
+     * 设置翻译开源模型
+     *
+     * @param selectedItem
+     * @return void
+     * @author mabin
+     * @date 2023/11/28 11:47
+     */
+    private void setOpenModelVisible(Object selectedItem) {
+        if (Objects.equals(OpenModelTranslateEnum.TONG_YI.getModel(), selectedItem)) {
+            tyKeyLabel.setVisible(true);
+            tyKeyTextField.setVisible(true);
+            wxKeyLabel.setVisible(false);
+            wxKeyTextField.setVisible(false);
+        } else if (Objects.equals(OpenModelTranslateEnum.WEN_XIN.getModel(), selectedItem)) {
+            tyKeyLabel.setVisible(false);
+            tyKeyTextField.setVisible(false);
+            wxKeyLabel.setVisible(true);
+            wxKeyTextField.setVisible(true);
+        } else {
+            tyKeyLabel.setVisible(false);
+            tyKeyTextField.setVisible(false);
+            wxKeyLabel.setVisible(false);
+            wxKeyTextField.setVisible(false);
+        }
+    }
+
+    private void setCommonVisible() {
+        tyKeyLabel.setVisible(false);
+        tyKeyTextField.setVisible(false);
+        wxKeyLabel.setVisible(false);
+        wxKeyTextField.setVisible(false);
     }
 
     private void createUIComponents() {
         translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
     }
+
 
     /**
      * 设置翻译渠道
@@ -144,8 +161,9 @@ public class TranslateSettingView {
      * @author mabin
      * @date 2023/9/3 15:29
      **/
-    private void setVisibleChannel(Object selectedItem) {
+    private void setTranslateVisible(Object selectedItem) {
         if (Objects.equals(TranslateEnum.BAIDU.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(true);
             appIdTextField.setVisible(true);
             appSecretLabel.setVisible(true);
@@ -190,7 +208,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -235,7 +256,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -280,7 +304,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -325,7 +352,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -370,7 +400,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -415,7 +448,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -460,7 +496,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -505,7 +544,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -550,7 +592,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -595,7 +640,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -640,7 +688,10 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.THS_SOFT.getTranslate(), selectedItem)) {
+            setCommonVisible();
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -685,7 +736,9 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(true);
             thsAppSecretLabel.setVisible(true);
             thsAppSecretTextField.setVisible(true);
-        } else {
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.OPEN_BIG_MODEL.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
@@ -730,6 +783,57 @@ public class TranslateSettingView {
             thsAppIdTextField.setVisible(false);
             thsAppSecretLabel.setVisible(false);
             thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(true);
+            openModelComboBox.setVisible(true);
+            setOpenModelVisible(openModelComboBox.getSelectedItem());
+        } else {
+            setCommonVisible();
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+            microsoftKeyLabel.setVisible(false);
+            microsoftKeyTextField.setVisible(false);
+            niuApiKeyLabel.setVisible(false);
+            niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
+            hwProjectIdLabel.setVisible(false);
+            hwProjectIdTextField.setVisible(false);
+            hwAppIdLabel.setVisible(false);
+            hwAppIdTextField.setVisible(false);
+            hwAppSecretLabel.setVisible(false);
+            hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
         }
     }
 
@@ -765,6 +869,8 @@ public class TranslateSettingView {
         setHwAppSecretTextField(translateConfig.getHwAppSecret());
         setThsAppIdTextField(translateConfig.getThsAppId());
         setThsAppSecretTextField(translateConfig.getThsAppSecret());
+        setTyKeyTextField(translateConfig.getTyKey());
+        setWxKeyTextField(translateConfig.getWxKey());
     }
 
 
@@ -1139,4 +1245,53 @@ public class TranslateSettingView {
     public void setThsAppSecretLabel(JLabel thsAppSecretLabel) {
         this.thsAppSecretLabel = thsAppSecretLabel;
     }
+
+    public JLabel getOpenModelLabel() {
+        return openModelLabel;
+    }
+
+    public void setOpenModelLabel(JLabel openModelLabel) {
+        this.openModelLabel = openModelLabel;
+    }
+
+    public JComboBox getOpenModelComboBox() {
+        return openModelComboBox;
+    }
+
+    public void setOpenModelComboBox(String modelComboBox) {
+        this.openModelComboBox.setSelectedItem(modelComboBox);
+    }
+
+    public JLabel getTyKeyLabel() {
+        return tyKeyLabel;
+    }
+
+    public void setTyKeyLabel(JLabel tyKeyLabel) {
+        this.tyKeyLabel = tyKeyLabel;
+    }
+
+    public JTextField getTyKeyTextField() {
+        return tyKeyTextField;
+    }
+
+    public void setTyKeyTextField(String tyKeyTextField) {
+        this.tyKeyTextField.setText(tyKeyTextField);
+    }
+
+    public JLabel getWxKeyLabel() {
+        return wxKeyLabel;
+    }
+
+    public void setWxKeyLabel(JLabel wxKeyLabel) {
+        this.wxKeyLabel = wxKeyLabel;
+    }
+
+    public JTextField getWxKeyTextField() {
+        return wxKeyTextField;
+    }
+
+    public void setWxKeyTextField(String wxKeyTextField) {
+        this.wxKeyTextField.setText(wxKeyTextField);
+    }
+
 }

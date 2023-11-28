@@ -14,11 +14,9 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.form.SupportView;
 import easy.service.TranslateService;
+import easy.util.EasyCommonUtil;
 import easy.util.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
-
-import java.awt.*;
-import java.net.URI;
 
 /**
  * IDEA启动监听
@@ -35,8 +33,8 @@ public class AppActiveListener implements ApplicationActivationListener {
     // 上次通知时间
     private volatile long lastNoticeTime = 0L;
 
-    // 通知时间间隔 (7天之内打开项目只弹窗一次提示)
-    private static final long INTERVAL = 7 * 24 * 60 * 60 * 1000L;
+    // 通知时间间隔 (15天之内打开项目只弹窗一次提示)
+    private static final long INTERVAL = 15 * 24 * 60 * 60 * 1000L;
 
     @Override
     public synchronized void applicationActivated(@NotNull IdeFrame ideFrame) {
@@ -72,36 +70,20 @@ public class AppActiveListener implements ApplicationActivationListener {
         AnAction starAction = new NotificationAction("\uD83C\uDF1F 点个star") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                try {
-                    Desktop dp = Desktop.getDesktop();
-                    if (dp.isSupported(Desktop.Action.BROWSE)) {
-                        dp.browse(URI.create(Constants.GITEE_URL));
-                    }
-                } catch (Exception ex) {
-                    log.error("打开链接失败: " + Constants.GITEE_URL, ex);
-                }
+                EasyCommonUtil.confirmOpenLink(Constants.GITEE_URL);
             }
         };
         AnAction reviewsAction = new NotificationAction("\uD83D\uDC4D 五星好评") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                try {
-                    Desktop dp = Desktop.getDesktop();
-                    if (dp.isSupported(Desktop.Action.BROWSE)) {
-                        dp.browse(URI.create(Constants.JETBRAINS_URL));
-                    }
-                } catch (Exception ex) {
-                    log.error("打开链接失败: " + Constants.JETBRAINS_URL, ex);
-                }
+                EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL);
             }
         };
         AnAction payAction = new NotificationAction("☕ 喝个咖啡") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                SupportView supportView = new SupportView();
-                supportView.show();
+                new SupportView().show();
             }
-
         };
         NotificationUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
         lastNoticeTime = System.currentTimeMillis();

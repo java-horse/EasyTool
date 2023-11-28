@@ -22,7 +22,7 @@
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: CTRL + \ </li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
@@ -34,10 +34,15 @@
             <li>--<em>华为翻译</em></li>
             <li>--<em>小牛翻译</em></li>
             <li>--<em>彩云翻译</em></li>
+            <li>--<em>同花顺翻译</em></li>
             <li>--<em>微软翻译(API)</em></li>
             <li>--<em>微软翻译(Free)</em></li>
             <li>--<em>谷歌翻译(API)</em></li>
             <li>--<em>谷歌翻译(Free)</em></li>
+        </ul>
+        <li>支持并接入多种开源大模型翻译引擎, 快捷键: <em>CTRL + \</em> </li>
+        <ul>
+            <li>--<em>通义千问</em></li>
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: <em>CTRL + ALT + \</em> </li>
         <li>支持选中文本右键快捷Web搜索</li>
@@ -62,6 +67,14 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.1.7</h3>
+      <ul>
+        <li>Add software internal link redirection, add secondary confirmation pop-up window</li>
+        <li>Add open source big model Alibaba TongYiQianWen translation service</li>
+        <li>-------------------------------</li>
+        <li>新增软件内链接跳转新增二次确认弹窗</li>
+        <li>新增开源大模型 阿里通义千问 翻译服务</li>
+      </ul>
       <h3>v1.1.6</h3>
       <ul>
         <li>Add translation engine automatic switching logic: Automatically switch to free translation engines when the current translation engine key is not configured</li>
