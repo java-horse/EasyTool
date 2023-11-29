@@ -144,11 +144,6 @@ public class TranslateConfig {
      */
     private String tyKey;
 
-    /**
-     * 文心一言key
-     */
-    private String wxKey;
-
 
     /**
      * 重置翻译配置
@@ -183,7 +178,6 @@ public class TranslateConfig {
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
         tyModel = ModelConstants.TONG_YI.MAX.getModel();
         tyKey = null;
-        wxKey = null;
     }
 
     public String getTranslateChannel() {
@@ -386,14 +380,6 @@ public class TranslateConfig {
         this.tyKey = tyKey;
     }
 
-    public String getWxKey() {
-        return wxKey;
-    }
-
-    public void setWxKey(String wxKey) {
-        this.wxKey = wxKey;
-    }
-
     public String getTyModel() {
         return tyModel;
     }
@@ -431,7 +417,6 @@ public class TranslateConfig {
                 ", openModelChannel='" + openModelChannel + '\'' +
                 ", tyModel='" + tyModel + '\'' +
                 ", tyKey='" + tyKey + '\'' +
-                ", wxKey='" + wxKey + '\'' +
                 '}';
     }
 }

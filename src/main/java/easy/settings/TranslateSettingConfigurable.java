@@ -69,8 +69,7 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
                 || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
                 || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
-                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getWxKey(), translateSettingView.getWxKeyTextField().getText());
+                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText());
     }
 
     @Override
@@ -106,7 +105,6 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
         translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
         translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
-        translateConfig.setWxKey(translateSettingView.getWxKeyTextField().getText());
 
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
@@ -148,8 +146,6 @@ public class TranslateSettingConfigurable implements Configurable {
         if (TranslateEnum.OPEN_BIG_MODEL.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (OpenModelTranslateEnum.TONG_YI.getModel().equals(translateConfig.getOpenModelChannel())) {
                 ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getTyKey(), translateConfig.getTyModel()), OpenModelTranslateEnum.TONG_YI.getModel() + "配置不能为空");
-            } else if (OpenModelTranslateEnum.WEN_XIN.getModel().equals(translateConfig.getOpenModelChannel())) {
-                ValidatorUtil.isTrue(StringUtils.isNotBlank(translateConfig.getWxKey()), OpenModelTranslateEnum.WEN_XIN.getModel() + "密钥不能为空");
             }
         }
     }

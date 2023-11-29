@@ -209,8 +209,6 @@ public class TranslateService {
             String openModelChannel = translateConfig.getOpenModelChannel();
             if (StringUtils.equals(openModelChannel, OpenModelTranslateEnum.TONG_YI.getModel())) {
                 isRemind = StringUtils.isBlank(translateConfig.getTyKey());
-            } else if (StringUtils.equals(openModelChannel, OpenModelTranslateEnum.WEN_XIN.getModel())) {
-                isRemind = StringUtils.isBlank(translateConfig.getWxKey());
             }
         }
         return isRemind;

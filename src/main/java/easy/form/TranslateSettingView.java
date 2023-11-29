@@ -86,8 +86,6 @@ public class TranslateSettingView {
     private JComboBox openModelComboBox;
     private JLabel tyKeyLabel;
     private JTextField tyKeyTextField;
-    private JLabel wxKeyLabel;
-    private JTextField wxKeyTextField;
     private JLabel tyModelLabel;
     private JComboBox tyModelComboBox;
 
@@ -130,22 +128,11 @@ public class TranslateSettingView {
             tyModelComboBox.setVisible(true);
             tyKeyLabel.setVisible(true);
             tyKeyTextField.setVisible(true);
-            wxKeyLabel.setVisible(false);
-            wxKeyTextField.setVisible(false);
-        } else if (Objects.equals(OpenModelTranslateEnum.WEN_XIN.getModel(), selectedItem)) {
-            tyModelLabel.setVisible(false);
-            tyModelComboBox.setVisible(false);
-            tyKeyLabel.setVisible(false);
-            tyKeyTextField.setVisible(false);
-            wxKeyLabel.setVisible(true);
-            wxKeyTextField.setVisible(true);
         } else {
             tyModelLabel.setVisible(false);
             tyModelComboBox.setVisible(false);
             tyKeyLabel.setVisible(false);
             tyKeyTextField.setVisible(false);
-            wxKeyLabel.setVisible(false);
-            wxKeyTextField.setVisible(false);
         }
     }
 
@@ -162,8 +149,6 @@ public class TranslateSettingView {
         tyModelComboBox.setVisible(false);
         tyKeyLabel.setVisible(false);
         tyKeyTextField.setVisible(false);
-        wxKeyLabel.setVisible(false);
-        wxKeyTextField.setVisible(false);
     }
 
     private void createUIComponents() {
@@ -889,7 +874,6 @@ public class TranslateSettingView {
         setThsAppSecretTextField(translateConfig.getThsAppSecret());
         setTyModelComboBox(translateConfig.getTyModel());
         setTyKeyTextField(translateConfig.getTyKey());
-        setWxKeyTextField(translateConfig.getWxKey());
     }
 
 
@@ -1311,22 +1295,6 @@ public class TranslateSettingView {
 
     public void setTyKeyTextField(String tyKeyTextField) {
         this.tyKeyTextField.setText(tyKeyTextField);
-    }
-
-    public JLabel getWxKeyLabel() {
-        return wxKeyLabel;
-    }
-
-    public void setWxKeyLabel(JLabel wxKeyLabel) {
-        this.wxKeyLabel = wxKeyLabel;
-    }
-
-    public JTextField getWxKeyTextField() {
-        return wxKeyTextField;
-    }
-
-    public void setWxKeyTextField(String wxKeyTextField) {
-        this.wxKeyTextField.setText(wxKeyTextField);
     }
 
 }

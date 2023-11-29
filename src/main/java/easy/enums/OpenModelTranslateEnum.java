@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public enum OpenModelTranslateEnum {
 
     TONG_YI("通义千问", "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"),
-    WEN_XIN("文心一言", "xxx"),
     ;
 
     private final String model;
