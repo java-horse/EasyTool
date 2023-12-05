@@ -2,6 +2,8 @@ package easy.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.ui.MessageConstants;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.handler.ConvertHandler;
@@ -90,8 +92,8 @@ public class ConvertConfigurable implements SearchableConfigurable {
         btnDefault.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int response = JOptionPane.showConfirmDialog(settingPanel, "Confirm Reset Relation?", "重置映射", JOptionPane.OK_CANCEL_OPTION);
-                if (response == JOptionPane.OK_OPTION) {
+                int result = Messages.showYesNoDialog("Confirm Reset Relation?", "重置映射", Messages.getQuestionIcon());
+                if (result == MessageConstants.YES) {
                     PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
                     ConvertHandler.reload();
                     reset();
