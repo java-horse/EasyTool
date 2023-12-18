@@ -29,7 +29,7 @@ public class TranslateSettingView {
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
 
     private JPanel panel;
-    private JPanel commonPanel;
+    private JPanel translatePanel;
     private JLabel translateChannelLabel;
     private JComboBox translateChannelBox;
     private JLabel appIdLabel;

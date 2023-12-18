@@ -28,6 +28,7 @@
 > * 支持选中文本右键快捷Web搜索
 > * 支持快捷生成 `serialVersionUID`, 快捷键: `CTRL + SHIFT + ALT + \`
 > * 支持自动复制接口完整URL
+> * 支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: `CTRL + ALT + /`
 
 #### 使用说明
 > * 在 JetBrains IED 的插件市场收索 `EasyTool` 并安装成功

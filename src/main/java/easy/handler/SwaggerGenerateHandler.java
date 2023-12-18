@@ -1,5 +1,6 @@
 package easy.handler;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -18,10 +19,7 @@ import easy.util.SwaggerCommentUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -112,8 +110,9 @@ public class SwaggerGenerateHandler {
                 return;
             }
         }
-        PsiField[] fields = psiClass.getAllFields();
-        for (PsiField psiField : fields) {
+        List<PsiField> psiFieldList = Lists.newArrayList(psiClass.getAllFields());
+        Arrays.stream(psiClass.getInnerClasses()).forEach(innerClass -> psiFieldList.addAll(Arrays.asList(innerClass.getAllFields())));
+        for (PsiField psiField : psiFieldList) {
             if (StringUtils.equals(selectionText, psiField.getNameIdentifier().getText())) {
                 this.generateFieldAnnotation(psiField);
                 return;

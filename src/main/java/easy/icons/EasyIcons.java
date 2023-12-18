@@ -22,18 +22,20 @@ public class EasyIcons {
         Icon WEB = IconLoader.getIcon("icons/web.svg", EasyIcons.class);
         Icon LOGO = IconLoader.getIcon("icons/pluginIcon.svg", EasyIcons.class);
         Icon TOOL_LOGO = IconLoader.getIcon("icons/pluginToolIcon.svg", EasyIcons.class);
-        Icon EDGE = IconLoader.getIcon("icons/edge.svg", EasyIcons.class);
-        Icon CHROME = IconLoader.getIcon("icons/chrome.svg", EasyIcons.class);
-        Icon OVERFLOW = IconLoader.getIcon("icons/stack-overflow.svg", EasyIcons.class);
-        Icon BAIDU = IconLoader.getIcon("icons/baidu.svg", EasyIcons.class);
-        Icon SO = IconLoader.getIcon("icons/360.svg", EasyIcons.class);
-        Icon SOGOU = IconLoader.getIcon("icons/sogou.svg", EasyIcons.class);
-        Icon DUCK_DUCK_GO = IconLoader.getIcon("icons/duckduckgo.svg", EasyIcons.class);
+        Icon EDGE = IconLoader.getIcon("icons/search/edge.svg", EasyIcons.class);
+        Icon CHROME = IconLoader.getIcon("icons/search/chrome.svg", EasyIcons.class);
+        Icon OVERFLOW = IconLoader.getIcon("icons/search/stack-overflow.svg", EasyIcons.class);
+        Icon BAIDU = IconLoader.getIcon("icons/search/baidu.svg", EasyIcons.class);
+        Icon SO = IconLoader.getIcon("icons/search/360.svg", EasyIcons.class);
+        Icon SOGOU = IconLoader.getIcon("icons/search/sogou.svg", EasyIcons.class);
+        Icon DUCK_DUCK_GO = IconLoader.getIcon("icons/search/duckduckgo.svg", EasyIcons.class);
         Icon WECHAT_OFFICIAL = IconLoader.getIcon("icons/wechat-official.svg", EasyIcons.class);
         Icon SETTING = IconLoader.getIcon("icons/setting.svg", EasyIcons.class);
         Icon STATISTICS = IconLoader.getIcon("icons/statistics.svg", EasyIcons.class);
         Icon COPY = IconLoader.getIcon("icons/copy.svg", EasyIcons.class);
-        Icon YANDEX = IconLoader.getIcon("icons/yandex.svg", EasyIcons.class);
+        Icon API = IconLoader.getIcon("icons/api.svg", EasyIcons.class);
+        Icon YANDEX = IconLoader.getIcon("icons/search/yandex.svg", EasyIcons.class);
+        Icon DOUBT = IconLoader.getIcon("icons/doubt.png", EasyIcons.class);
     }
 
 }

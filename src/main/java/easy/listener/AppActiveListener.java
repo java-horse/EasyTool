@@ -7,7 +7,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
@@ -27,8 +26,6 @@ import org.jetbrains.annotations.NotNull;
  **/
 
 public class AppActiveListener implements ApplicationActivationListener {
-
-    private static final Logger log = Logger.getInstance(AppActiveListener.class);
 
     // 上次通知时间
     private volatile long lastNoticeTime = 0L;

@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
@@ -12,8 +13,11 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
+import easy.config.translate.TranslateConfig;
+import easy.config.translate.TranslateConfigComponent;
 import easy.handler.SwaggerGenerateHandler;
-import easy.icons.EasyIcons;
 import easy.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +33,8 @@ import java.util.Objects;
  */
 public class SwaggerAction extends AnAction {
 
+    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
@@ -41,11 +47,31 @@ public class SwaggerAction extends AnAction {
         String selectedText = editor.getSelectionModel().getSelectedText();
 
         // 二次弹窗确认
-        int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
-        if (MessageConstants.YES == confirmResult) {
-            new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
-            MessageUtil.sendActionDingMessage(e);
+        if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
+            int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
+            if (MessageConstants.YES == confirmResult) {
+                execSwagger(e, project, psiFile, psiClass, selectedText);
+            }
+        } else if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmNoCheckBox())) {
+            execSwagger(e, project, psiFile, psiClass, selectedText);
         }
+    }
+
+    /**
+     * 执行swagger处理
+     *
+     * @param e
+     * @param project
+     * @param psiFile
+     * @param psiClass
+     * @param selectedText
+     * @return void
+     * @author mabin
+     * @date 2023/12/16 17:39
+     */
+    private static void execSwagger(@NotNull AnActionEvent e, Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
+        new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
+        MessageUtil.sendActionDingMessage(e);
     }
 
     @Override

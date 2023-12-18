@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.handler.ConvertHandler;
+import easy.util.BundleUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -85,39 +87,19 @@ public class ConvertConfigurable implements SearchableConfigurable {
             settingPanel.add(labels2[i]);
         }
         btnDefault = new JLabel();
-        btnDefault.setText("Reset");
+        btnDefault.setText(BundleUtil.getI18n("convert.reset.button.text"));
         btnDefault.setForeground(JBColor.BLUE);
-        btnDefault.setBounds(30, 32 * 15, 60, 32);
+        btnDefault.setBounds(30, 32 * 15, 90, 32);
         btnDefault.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnDefault.addMouseListener(new MouseListener() {
+        btnDefault.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int result = Messages.showYesNoDialog("Confirm Reset Relation?", "重置映射", Messages.getQuestionIcon());
+                int result = Messages.showYesNoDialog(BundleUtil.getI18n("convert.reset.message"), BundleUtil.getI18n("convert.reset.button.text"), Messages.getQuestionIcon());
                 if (result == MessageConstants.YES) {
                     PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
                     ConvertHandler.reload();
                     reset();
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnDefault.setText("<html><u>Reset</u></html>");
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnDefault.setText("<html>Reset</html>");
             }
         });
         settingPanel.add(btnDefault);

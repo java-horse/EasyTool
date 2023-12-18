@@ -2,6 +2,7 @@ package easy.util;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +30,14 @@ public class JsonUtil {
         return GSON.toJson(object);
     }
 
-    public static <T> T fromJson(String json, Class<T> clazz) {
+    public static <T> T fromJson(@NotNull String json, Class<T> clazz) {
         if (json == null) {
             return null;
         }
         return GSON.fromJson(json, clazz);
     }
 
-    public static <T> List<T> fromList(String json, Class<T> clazz) {
-        if (json == null) {
-            return null;
-        }
-        JsonArray array = new JsonParser().parse(json).getAsJsonArray();
-        List<T> list = new ArrayList();
-        for (final JsonElement elem : array) {
-            list.add(GSON.fromJson(elem, clazz));
-        }
-        return list;
-    }
-
-    public static <T> Map<String, T> fromMap(String json) {
+    public static <T> Map<String, T> fromMap(@NotNull String json) {
         if (json == null) {
             return null;
         }
@@ -56,10 +45,7 @@ public class JsonUtil {
         }.getType());
     }
 
-    public static <T> List<Map<String, T>> fromListMap(String json) {
-        if (json == null) {
-            return null;
-        }
+    public static <T> List<Map<String, T>> fromListMap(@NotNull String json) {
         return GSON.fromJson(json, new TypeToken<List<Map<String, T>>>() {
         }.getType());
     }

@@ -12,7 +12,8 @@ public enum ToolWindowEnum {
 
     PLUGIN_STATISTICS("使用统计", "插件使用统计"),
     WECHAT_OFFICIAL("微信公众号", "微信公众号"),
-    PLUGIN_SETTING("插件设置", "插件设置");
+    PLUGIN_SETTING("插件设置", "插件设置"),
+    SEARCH_API("搜索API", "搜索API");
 
     ToolWindowEnum(String title, String desc) {
         this.title = title;

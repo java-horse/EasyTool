@@ -53,6 +53,12 @@ public class ToolWindowAction extends AnAction {
                 return;
             }
             action.actionPerformed(e);
+        } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {
+            AnAction action = ActionManager.getInstance().getAction("EasyToolRestfulSearchAction");
+            if (Objects.isNull(action)) {
+                return;
+            }
+            action.actionPerformed(e);
         }
     }
 
