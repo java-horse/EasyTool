@@ -29,6 +29,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig = new CommonConfig();
             commonConfig.setSwaggerConfirmYesCheckBox(Boolean.TRUE);
             commonConfig.setSearchApiDefaultIconRadioButton(Boolean.TRUE);
+            commonConfig.setTranslateConfirmInputModelYesCheckBox(Boolean.TRUE);
         }
         return commonConfig;
     }

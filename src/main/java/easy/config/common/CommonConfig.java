@@ -14,6 +14,8 @@ public class CommonConfig {
     private Boolean swaggerConfirmNoCheckBox;
     private Boolean searchApiDefaultIconRadioButton;
     private Boolean searchApiCuteIconRadioButton;
+    private Boolean translateConfirmInputModelYesCheckBox;
+    private Boolean translateConfirmInputModelNoCheckBox;
 
 
     public Boolean getSwaggerConfirmYesCheckBox() {
@@ -48,6 +50,22 @@ public class CommonConfig {
         this.searchApiCuteIconRadioButton = searchApiCuteIconRadioButton;
     }
 
+    public Boolean getTranslateConfirmInputModelYesCheckBox() {
+        return translateConfirmInputModelYesCheckBox;
+    }
+
+    public void setTranslateConfirmInputModelYesCheckBox(Boolean translateConfirmInputModelYesCheckBox) {
+        this.translateConfirmInputModelYesCheckBox = translateConfirmInputModelYesCheckBox;
+    }
+
+    public Boolean getTranslateConfirmInputModelNoCheckBox() {
+        return translateConfirmInputModelNoCheckBox;
+    }
+
+    public void setTranslateConfirmInputModelNoCheckBox(Boolean translateConfirmInputModelNoCheckBox) {
+        this.translateConfirmInputModelNoCheckBox = translateConfirmInputModelNoCheckBox;
+    }
+
     @Override
     public String toString() {
         return "CommonConfig{" +
@@ -55,6 +73,8 @@ public class CommonConfig {
                 ", swaggerConfirmNoCheckBox=" + swaggerConfirmNoCheckBox +
                 ", searchApiDefaultIconRadioButton=" + searchApiDefaultIconRadioButton +
                 ", searchApiCuteIconRadioButton=" + searchApiCuteIconRadioButton +
+                ", translateConfirmInputModelYesCheckBox=" + translateConfirmInputModelYesCheckBox +
+                ", translateConfirmInputModelNoCheckBox=" + translateConfirmInputModelNoCheckBox +
                 '}';
     }
 

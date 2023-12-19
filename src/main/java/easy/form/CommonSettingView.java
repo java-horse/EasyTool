@@ -34,22 +34,34 @@ public class CommonSettingView {
     private JLabel searchApiLabel;
     private JRadioButton searchApiDefaultIconRadioButton;
     private JRadioButton searchApiCuteIconRadioButton;
+    private JLabel translateConfirmInputModelTipsLabel;
+    private JLabel translateConfirmInputModelLabel;
+    private JCheckBox translateConfirmInputModelYesCheckBox;
+    private JCheckBox translateConfirmInputModelNoCheckBox;
 
     public CommonSettingView() {
         swaggerConfirmYesCheckBox.addChangeListener(e -> swaggerConfirmNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         swaggerConfirmNoCheckBox.addChangeListener(e -> swaggerConfirmYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         searchApiDefaultIconRadioButton.addChangeListener(e -> searchApiCuteIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
+        translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
+        translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         swaggerConfirmModelTipsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Messages.showMessageDialog("自动生成 Swagger 2.x 注解是否二次确认弹窗提示", BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
+                Messages.showMessageDialog(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
             }
         });
         searchApiTipsLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Messages.showMessageDialog("请选择 Restful Api 图标种类", BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
+                Messages.showMessageDialog(BundleUtil.getI18n("search.api.icon.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
+            }
+        });
+        translateConfirmInputModelTipsLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Messages.showMessageDialog(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
             }
         });
     }
@@ -80,6 +92,13 @@ public class CommonSettingView {
         } else {
             setSearchApiDefaultIconRadioButton(Boolean.FALSE);
             setSearchApiCuteIconRadioButton(Boolean.TRUE);
+        }
+        if (Boolean.TRUE.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox())) {
+            setTranslateConfirmInputModelYesCheckBox(Boolean.TRUE);
+            setTranslateConfirmInputModelNoCheckBox(Boolean.FALSE);
+        } else {
+            setTranslateConfirmInputModelYesCheckBox(Boolean.FALSE);
+            setTranslateConfirmInputModelNoCheckBox(Boolean.TRUE);
         }
     }
 
@@ -157,6 +176,38 @@ public class CommonSettingView {
 
     public void setSearchApiCuteIconRadioButton(Boolean searchApiCuteIconRadioButton) {
         this.searchApiCuteIconRadioButton.setSelected(searchApiCuteIconRadioButton);
+    }
+
+    public JLabel getTranslateConfirmInputModelTipsLabel() {
+        return translateConfirmInputModelTipsLabel;
+    }
+
+    public void setTranslateConfirmInputModelTipsLabel(JLabel translateConfirmInputModelTipsLabel) {
+        this.translateConfirmInputModelTipsLabel = translateConfirmInputModelTipsLabel;
+    }
+
+    public JLabel getTranslateConfirmInputModelLabel() {
+        return translateConfirmInputModelLabel;
+    }
+
+    public void setTranslateConfirmInputModelLabel(JLabel translateConfirmInputModelLabel) {
+        this.translateConfirmInputModelLabel = translateConfirmInputModelLabel;
+    }
+
+    public JCheckBox getTranslateConfirmInputModelYesCheckBox() {
+        return translateConfirmInputModelYesCheckBox;
+    }
+
+    public void setTranslateConfirmInputModelYesCheckBox(Boolean translateConfirmInputModelYesCheckBox) {
+        this.translateConfirmInputModelYesCheckBox.setSelected(translateConfirmInputModelYesCheckBox);
+    }
+
+    public JCheckBox getTranslateConfirmInputModelNoCheckBox() {
+        return translateConfirmInputModelNoCheckBox;
+    }
+
+    public void setTranslateConfirmInputModelNoCheckBox(Boolean translateConfirmInputModelNoCheckBox) {
+        this.translateConfirmInputModelNoCheckBox.setSelected(translateConfirmInputModelNoCheckBox);
     }
 
 }

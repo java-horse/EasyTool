@@ -65,6 +65,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v1.1.9</h3>
+      <ul>
+        <li>Universal settings support setting whether the translation secondary confirmation pop-up is displayed</li>
+        <li>-------------------------------</li>
+        <li>通用设置支持设置翻译二次确认弹窗是否显示</li>
+      </ul>
       <h3>v1.1.8</h3>
       <ul>
         <li>Support for 'Navigation -> Request Service' search mapping</li>

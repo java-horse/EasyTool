@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "1.1.8"
+version = "1.1.9"
 
 repositories {
     maven {

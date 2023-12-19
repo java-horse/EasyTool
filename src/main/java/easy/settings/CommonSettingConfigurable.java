@@ -40,7 +40,9 @@ public class CommonSettingConfigurable implements Configurable {
         return !Objects.equals(commonConfig.getSwaggerConfirmYesCheckBox(), commonSettingView.getSwaggerConfirmYesCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getSwaggerConfirmNoCheckBox(), commonSettingView.getSwaggerConfirmNoCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getSearchApiDefaultIconRadioButton(), commonSettingView.getSearchApiDefaultIconRadioButton().isSelected())
-                || !Objects.equals(commonConfig.getSearchApiCuteIconRadioButton(), commonSettingView.getSearchApiCuteIconRadioButton().isSelected());
+                || !Objects.equals(commonConfig.getSearchApiCuteIconRadioButton(), commonSettingView.getSearchApiCuteIconRadioButton().isSelected())
+                || !Objects.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox(), commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected())
+                || !Objects.equals(commonConfig.getTranslateConfirmInputModelNoCheckBox(), commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
     }
 
     @Override
@@ -54,6 +56,8 @@ public class CommonSettingConfigurable implements Configurable {
         commonConfig.setSwaggerConfirmNoCheckBox(commonSettingView.getSwaggerConfirmNoCheckBox().isSelected());
         commonConfig.setSearchApiDefaultIconRadioButton(commonSettingView.getSearchApiDefaultIconRadioButton().isSelected());
         commonConfig.setSearchApiCuteIconRadioButton(commonSettingView.getSearchApiCuteIconRadioButton().isSelected());
+        commonConfig.setTranslateConfirmInputModelYesCheckBox(commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected());
+        commonConfig.setTranslateConfirmInputModelNoCheckBox(commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
     }
 
 }

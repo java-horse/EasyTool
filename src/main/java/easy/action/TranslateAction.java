@@ -15,6 +15,8 @@ import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsSafe;
 import com.intellij.util.ThrowableRunnable;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
@@ -41,6 +43,7 @@ public class TranslateAction extends AnAction {
     private static final Logger log = Logger.getInstance(TranslateAction.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
+    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -61,17 +64,18 @@ public class TranslateAction extends AnAction {
                 : StringUtils.equals(translateConfig.getTranslateChannel(), TranslateEnum.OPEN_BIG_MODEL.getTranslate()) ? translateConfig.getOpenModelChannel() : translateConfig.getTranslateChannel();
         if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
             try {
-                String inputResult = Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult, new InputValidator() {
-                    @Override
-                    public boolean checkInput(@NlsSafe String inputString) {
-                        return StringUtils.isNotBlank(inputString) && inputString.length() <= 255;
-                    }
+                String inputResult = Boolean.TRUE.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult,
+                        new InputValidator() {
+                            @Override
+                            public boolean checkInput(@NlsSafe String inputString) {
+                                return StringUtils.isNotBlank(inputString) && inputString.length() <= 255;
+                            }
 
-                    @Override
-                    public boolean canClose(@NlsSafe String inputString) {
-                        return StringUtils.isNotBlank(inputString);
-                    }
-                });
+                            @Override
+                            public boolean canClose(@NlsSafe String inputString) {
+                                return StringUtils.isNotBlank(inputString);
+                            }
+                        }) : translateResult;
                 if (StringUtils.isBlank(inputResult)) {
                     return;
                 }
