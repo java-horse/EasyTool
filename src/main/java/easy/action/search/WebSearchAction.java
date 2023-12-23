@@ -29,8 +29,8 @@ public class WebSearchAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(WebSearchAction.class);
 
-    public WebSearchAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
-        super(text, description, icon);
+    public WebSearchAction(WebSearchEnum webSearchEnum) {
+        super(webSearchEnum.title, webSearchEnum.remark, webSearchEnum.icon);
     }
 
     @Override

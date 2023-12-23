@@ -30,6 +30,14 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setSwaggerConfirmYesCheckBox(Boolean.TRUE);
             commonConfig.setSearchApiDefaultIconRadioButton(Boolean.TRUE);
             commonConfig.setTranslateConfirmInputModelYesCheckBox(Boolean.TRUE);
+            commonConfig.setTabHighlightEnableCheckBox(Boolean.TRUE);
+            CommonConfig.PersistentColor persistentColor = new CommonConfig.PersistentColor();
+            persistentColor.setRed(174);
+            persistentColor.setGreen(80);
+            persistentColor.setBlue(250);
+            commonConfig.setPersistentColor(persistentColor);
+            commonConfig.setTabHighlightSizeComboBox(Integer.toString(Constants.NUM.ONE));
+            commonConfig.setTabHighlightGradientStepFormattedTextField(Integer.toString(Constants.NUM.TEN));
         }
         return commonConfig;
     }

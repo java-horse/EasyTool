@@ -7,7 +7,10 @@ import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.util.Objects;
 
@@ -67,6 +70,41 @@ public class EasyCommonUtil {
         if (result == MessageConstants.YES) {
             openLink(url);
         }
+    }
+
+    /**
+     * 鼠标监听处理
+     *
+     * @param label
+     * @param tipText
+     * @return void
+     * @author mabin
+     * @date 2023/12/21 16:19
+     */
+    public static void tipLabelMouseListener(JLabel label, String tipText) {
+        tipLabelMouseListener(label, tipText, Boolean.TRUE);
+    }
+
+    /**
+     * 鼠标监听处理
+     *
+     * @param label   监听组件
+     * @param tipText 提示语
+     * @param bundle  是否国际化 bundle=true时, tipText需要时国际化的key值
+     * @return void
+     * @author mabin
+     * @date 2023/12/21 14:59
+     */
+    public static void tipLabelMouseListener(JLabel label, String tipText, Boolean bundle) {
+        if (Objects.isNull(label) || StringUtils.isBlank(tipText)) {
+            return;
+        }
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Messages.showMessageDialog(Boolean.TRUE.equals(bundle) ? BundleUtil.getI18n(tipText) : tipText, BundleUtil.getI18n("common.doubt.tips"), Messages.getQuestionIcon());
+            }
+        });
     }
 
 }

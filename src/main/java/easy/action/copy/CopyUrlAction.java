@@ -1,25 +1,22 @@
-package easy.action;
+package easy.action.copy;
 
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import easy.base.Constants;
-import easy.handler.CopyFullUrlHandler;
+import easy.enums.CopyUrlEnum;
+import easy.handler.CopyUrlHandler;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.awt.datatransfer.StringSelection;
 import java.util.Objects;
 
 /**
@@ -30,9 +27,11 @@ import java.util.Objects;
  * @author: mabin
  * @date: 2023/11/07 13:33:14
  */
-public class CopyFullUrlAction extends AnAction {
+public class CopyUrlAction extends AnAction {
 
-    private static final Logger log = Logger.getInstance(CopyFullUrlAction.class);
+    public CopyUrlAction(CopyUrlEnum copyUrlEnum) {
+        super(copyUrlEnum.title, null, copyUrlEnum.icon);
+    }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -43,7 +42,24 @@ public class CopyFullUrlAction extends AnAction {
             return;
         }
         PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
-        new CopyFullUrlHandler().doCopyFullUrl(psiElement);
+        if (Objects.isNull(psiElement)) {
+            return;
+        }
+        String actionText = e.getPresentation().getText();
+        if (StringUtils.isBlank(actionText)) {
+            return;
+        }
+        String copyUrl = StringUtils.EMPTY;
+        CopyUrlHandler copyUrlHandler = new CopyUrlHandler();
+        if (StringUtils.equals(actionText, CopyUrlEnum.COPY_FULL_URL.title)) {
+            copyUrl = copyUrlHandler.doCopyFullUrl(psiElement);
+        } else if (StringUtils.equals(actionText, CopyUrlEnum.COPY_HTTP_URL.title)) {
+            copyUrl = copyUrlHandler.doCopyHttpUrl(project, psiElement);
+        }
+        if (StringUtils.isBlank(copyUrl)) {
+            return;
+        }
+        CopyPasteManager.getInstance().setContents(new StringSelection(copyUrl));
         MessageUtil.sendActionDingMessage(e);
     }
 
@@ -52,19 +68,7 @@ public class CopyFullUrlAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if (ObjectUtils.anyNull(project, editor, psiFile)) {
-            e.getPresentation().setEnabledAndVisible(false);
-            return;
-        }
-        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
-        if (Objects.isNull(psiClass) || Objects.isNull(psiClass.getModifierList())) {
-            e.getPresentation().setEnabledAndVisible(false);
-            return;
-        }
-        PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
-        e.getPresentation().setEnabledAndVisible(Arrays.stream(psiAnnotations)
-                .anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(),
-                        Constants.SPRING_ANNOTATION.CONTROLLER_ANNOTATION, Constants.SPRING_ANNOTATION.REST_CONTROLLER_ANNOTATION)));
+        e.getPresentation().setEnabledAndVisible(ObjectUtils.allNotNull(project, editor, psiFile));
     }
 
     @Override

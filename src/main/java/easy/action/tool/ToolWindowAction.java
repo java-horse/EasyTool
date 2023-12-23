@@ -25,8 +25,8 @@ import java.util.Objects;
  */
 public class ToolWindowAction extends AnAction {
 
-    public ToolWindowAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
-        super(text, description, icon);
+    public ToolWindowAction(ToolWindowEnum toolWindowEnum) {
+        super(toolWindowEnum.title, toolWindowEnum.desc, toolWindowEnum.icon);
     }
 
     @Override

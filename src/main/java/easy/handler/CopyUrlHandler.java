@@ -1,14 +1,14 @@
 package easy.handler;
 
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.enums.RequestAnnotationEnum;
+import easy.util.NetUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.awt.datatransfer.StringSelection;
 import java.util.Objects;
 
 /**
@@ -19,9 +19,9 @@ import java.util.Objects;
  * @author: mabin
  * @date: 2023/11/07 11:52:21
  */
-public class CopyFullUrlHandler {
+public class CopyUrlHandler {
 
-    private static final Logger log = Logger.getInstance(CopyFullUrlHandler.class);
+    private static final Logger log = Logger.getInstance(CopyUrlHandler.class);
 
     /**
      * 复制URL
@@ -31,7 +31,7 @@ public class CopyFullUrlHandler {
      * @author mabin
      * @date 2023/11/7 13:38
      */
-    public void doCopyFullUrl(PsiElement psiElement) {
+    public String doCopyFullUrl(PsiElement psiElement) {
         PsiClass psiClass = PsiTreeUtil.getParentOfType(psiElement, PsiClass.class);
         StringBuilder url = new StringBuilder();
         if (Objects.nonNull(psiClass)) {
@@ -50,7 +50,7 @@ public class CopyFullUrlHandler {
                 }
             }
         }
-        CopyPasteManager.getInstance().setContents(new StringSelection(url.toString()));
+        return url.toString();
     }
 
     /**
@@ -131,5 +131,23 @@ public class CopyFullUrlHandler {
                 .replace("}", StringUtils.EMPTY);
         return StringUtils.startsWith(replaceUrl, "/") ? replaceUrl : replaceUrl + "/";
     }
+
+    /**
+     * 复制Http Url
+     *
+     * @param project
+     * @param psiElement
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/12/23 11:46
+     */
+    public String doCopyHttpUrl(Project project, PsiElement psiElement) {
+        if (Objects.isNull(project) || Objects.isNull(psiElement)) {
+            return StringUtils.EMPTY;
+        }
+        String port = NetUtil.getPortByConfigFile(project, psiElement.getContainingFile());
+        return "http://localhost:" + (StringUtils.isBlank(port) ? "8080" : port) + doCopyFullUrl(psiElement);
+    }
+
 
 }

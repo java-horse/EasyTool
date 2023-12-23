@@ -33,9 +33,10 @@ public class EasyIcons {
         Icon SETTING = IconLoader.getIcon("icons/setting.svg", EasyIcons.class);
         Icon STATISTICS = IconLoader.getIcon("icons/statistics.svg", EasyIcons.class);
         Icon COPY = IconLoader.getIcon("icons/copy.svg", EasyIcons.class);
+        Icon COPY_FULL = IconLoader.getIcon("icons/copyFull.svg", EasyIcons.class);
+        Icon COPY_HTTP = IconLoader.getIcon("icons/copyHttp.svg", EasyIcons.class);
         Icon API = IconLoader.getIcon("icons/api.svg", EasyIcons.class);
         Icon YANDEX = IconLoader.getIcon("icons/search/yandex.svg", EasyIcons.class);
-        Icon DOUBT = IconLoader.getIcon("icons/doubt.png", EasyIcons.class);
     }
 
 }

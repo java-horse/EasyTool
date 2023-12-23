@@ -40,6 +40,7 @@
 > * 选中文本, 右键选择 `WebSearch`后, 选择对应搜索引擎进行快捷Web搜索
 > * 在代码编辑器区域, 快捷键 `CTRL + SHIFT + ALT + \ ` 即可自动从光标处开始生成 `serialVersionUID`
 > * 支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择CopyUrl
+> * 支持当前打开文件的Tab标签高亮显示, 可在通用设置页面自定义高亮颜色
 
 #### 版本说明
 > * 支持IDEA 2022.x~2023.x 全系列版本，适用于 `JetBrains IDE` 全家桶

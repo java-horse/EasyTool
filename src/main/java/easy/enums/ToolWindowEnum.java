@@ -1,5 +1,9 @@
 package easy.enums;
 
+import easy.icons.EasyIcons;
+
+import javax.swing.*;
+
 /**
  * 工具菜单栏Action名称枚举处理
  *
@@ -10,17 +14,19 @@ package easy.enums;
  */
 public enum ToolWindowEnum {
 
-    PLUGIN_STATISTICS("使用统计", "插件使用统计"),
-    WECHAT_OFFICIAL("微信公众号", "微信公众号"),
-    PLUGIN_SETTING("插件设置", "插件设置"),
-    SEARCH_API("搜索API", "搜索API");
+    PLUGIN_STATISTICS("使用统计", "插件使用统计", EasyIcons.ICON.STATISTICS),
+    WECHAT_OFFICIAL("微信公众号", "微信公众号", EasyIcons.ICON.WECHAT_OFFICIAL),
+    PLUGIN_SETTING("插件设置", "插件设置", EasyIcons.ICON.SETTING),
+    SEARCH_API("搜索API", "搜索API", EasyIcons.ICON.API);
 
-    ToolWindowEnum(String title, String desc) {
+    ToolWindowEnum(String title, String desc, Icon icon) {
         this.title = title;
         this.desc = desc;
+        this.icon = icon;
     }
 
     public final String title;
     public final String desc;
+    public final Icon icon;
 
 }

@@ -1,5 +1,9 @@
 package easy.config.common;
 
+import com.intellij.ui.JBColor;
+
+import java.awt.*;
+
 /**
  * 通用设置
  *
@@ -16,7 +20,10 @@ public class CommonConfig {
     private Boolean searchApiCuteIconRadioButton;
     private Boolean translateConfirmInputModelYesCheckBox;
     private Boolean translateConfirmInputModelNoCheckBox;
-
+    private PersistentColor persistentColor;
+    private String tabHighlightSizeComboBox;
+    private String tabHighlightGradientStepFormattedTextField;
+    private Boolean tabHighlightEnableCheckBox;
 
     public Boolean getSwaggerConfirmYesCheckBox() {
         return swaggerConfirmYesCheckBox;
@@ -66,6 +73,38 @@ public class CommonConfig {
         this.translateConfirmInputModelNoCheckBox = translateConfirmInputModelNoCheckBox;
     }
 
+    public PersistentColor getPersistentColor() {
+        return persistentColor;
+    }
+
+    public void setPersistentColor(PersistentColor persistentColor) {
+        this.persistentColor = persistentColor;
+    }
+
+    public String getTabHighlightSizeComboBox() {
+        return tabHighlightSizeComboBox;
+    }
+
+    public void setTabHighlightSizeComboBox(String tabHighlightSizeComboBox) {
+        this.tabHighlightSizeComboBox = tabHighlightSizeComboBox;
+    }
+
+    public String getTabHighlightGradientStepFormattedTextField() {
+        return tabHighlightGradientStepFormattedTextField;
+    }
+
+    public void setTabHighlightGradientStepFormattedTextField(String tabHighlightGradientStepFormattedTextField) {
+        this.tabHighlightGradientStepFormattedTextField = tabHighlightGradientStepFormattedTextField;
+    }
+
+    public Boolean getTabHighlightEnableCheckBox() {
+        return tabHighlightEnableCheckBox;
+    }
+
+    public void setTabHighlightEnableCheckBox(Boolean tabHighlightEnableCheckBox) {
+        this.tabHighlightEnableCheckBox = tabHighlightEnableCheckBox;
+    }
+
     @Override
     public String toString() {
         return "CommonConfig{" +
@@ -75,7 +114,61 @@ public class CommonConfig {
                 ", searchApiCuteIconRadioButton=" + searchApiCuteIconRadioButton +
                 ", translateConfirmInputModelYesCheckBox=" + translateConfirmInputModelYesCheckBox +
                 ", translateConfirmInputModelNoCheckBox=" + translateConfirmInputModelNoCheckBox +
+                ", persistentColor=" + persistentColor +
+                ", tabHighlightSizeComboBox='" + tabHighlightSizeComboBox + '\'' +
+                ", tabHighlightGradientStepFormattedTextField='" + tabHighlightGradientStepFormattedTextField + '\'' +
+                ", tabHighlightEnableCheckBox=" + tabHighlightEnableCheckBox +
                 '}';
+    }
+
+    /**
+     * tab标签颜色持久化
+     *
+     * @author mabin
+     * @return
+     * @date 2023/12/20 14:41
+     */
+    public static class PersistentColor {
+        private Integer red;
+        private Integer green;
+        private Integer blue;
+
+        public Color getColor() {
+            return new JBColor(Color.MAGENTA, new Color(red, green, blue));
+        }
+
+        public Integer getRed() {
+            return red;
+        }
+
+        public void setRed(Integer red) {
+            this.red = red;
+        }
+
+        public Integer getGreen() {
+            return green;
+        }
+
+        public void setGreen(Integer green) {
+            this.green = green;
+        }
+
+        public Integer getBlue() {
+            return blue;
+        }
+
+        public void setBlue(Integer blue) {
+            this.blue = blue;
+        }
+
+        @Override
+        public String toString() {
+            return "PersistentColor{" +
+                    "red=" + red +
+                    ", green=" + green +
+                    ", blue=" + blue +
+                    '}';
+        }
     }
 
 }

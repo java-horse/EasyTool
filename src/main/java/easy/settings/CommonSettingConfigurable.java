@@ -1,14 +1,22 @@
 package easy.settings;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.NumberUtil;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
+import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.form.CommonSettingView;
+import easy.util.ValidatorUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Objects;
 
 /**
@@ -20,6 +28,8 @@ import java.util.Objects;
  * @date: 2023/12/17 11:52:08
  */
 public class CommonSettingConfigurable implements Configurable {
+
+    private static final Logger log = Logger.getInstance(CommonSettingConfigurable.class);
 
     private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
     private CommonSettingView commonSettingView = new CommonSettingView();
@@ -42,7 +52,14 @@ public class CommonSettingConfigurable implements Configurable {
                 || !Objects.equals(commonConfig.getSearchApiDefaultIconRadioButton(), commonSettingView.getSearchApiDefaultIconRadioButton().isSelected())
                 || !Objects.equals(commonConfig.getSearchApiCuteIconRadioButton(), commonSettingView.getSearchApiCuteIconRadioButton().isSelected())
                 || !Objects.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox(), commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected())
-                || !Objects.equals(commonConfig.getTranslateConfirmInputModelNoCheckBox(), commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
+                || !Objects.equals(commonConfig.getTranslateConfirmInputModelNoCheckBox(), commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected())
+                || !Objects.equals(commonConfig.getTabHighlightEnableCheckBox(), commonSettingView.getTabHighlightEnableCheckBox().isSelected())
+                || (Objects.isNull(commonConfig.getPersistentColor()) || Objects.isNull(commonSettingView.getTabBackgroundColorPanel())
+                || !Objects.equals(commonConfig.getPersistentColor().getRed(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getRed())
+                || !Objects.equals(commonConfig.getPersistentColor().getGreen(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getGreen())
+                || !Objects.equals(commonConfig.getPersistentColor().getBlue(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getBlue()))
+                || !Objects.equals(commonConfig.getTabHighlightSizeComboBox(), commonSettingView.getTabHighlightSizeComboBox().getSelectedItem())
+                || !StringUtils.equals(commonConfig.getTabHighlightGradientStepFormattedTextField(), commonSettingView.getTabHighlightGradientStepFormattedTextField().getText());
     }
 
     @Override
@@ -51,13 +68,29 @@ public class CommonSettingConfigurable implements Configurable {
     }
 
     @Override
-    public void apply() {
+    public void apply() throws ConfigurationException {
         commonConfig.setSwaggerConfirmYesCheckBox(commonSettingView.getSwaggerConfirmYesCheckBox().isSelected());
         commonConfig.setSwaggerConfirmNoCheckBox(commonSettingView.getSwaggerConfirmNoCheckBox().isSelected());
         commonConfig.setSearchApiDefaultIconRadioButton(commonSettingView.getSearchApiDefaultIconRadioButton().isSelected());
         commonConfig.setSearchApiCuteIconRadioButton(commonSettingView.getSearchApiCuteIconRadioButton().isSelected());
         commonConfig.setTranslateConfirmInputModelYesCheckBox(commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected());
         commonConfig.setTranslateConfirmInputModelNoCheckBox(commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
+        commonConfig.setTabHighlightEnableCheckBox(commonSettingView.getTabHighlightEnableCheckBox().isSelected());
+        Color color = commonSettingView.getTabBackgroundColorPanel().getSelectedColor();
+        CommonConfig.PersistentColor persistentColor = new CommonConfig.PersistentColor();
+        persistentColor.setRed(color.getRed());
+        persistentColor.setGreen(color.getGreen());
+        persistentColor.setBlue(color.getBlue());
+        commonConfig.setPersistentColor(persistentColor);
+        commonConfig.setTabHighlightSizeComboBox(String.valueOf(commonSettingView.getTabHighlightSizeComboBox().getSelectedItem()));
+        String tabHighlightGradientStepFormattedTextField = commonSettingView.getTabHighlightGradientStepFormattedTextField().getText();
+        commonConfig.setTabHighlightGradientStepFormattedTextField(tabHighlightGradientStepFormattedTextField);
+        ValidatorUtil.isTrue(StringUtils.isNotBlank(tabHighlightGradientStepFormattedTextField)
+                        && NumberUtil.isInteger(tabHighlightGradientStepFormattedTextField)
+                        && Convert.toInt(tabHighlightGradientStepFormattedTextField) >= Constants.NUM.TEN
+                        && Convert.toInt(tabHighlightGradientStepFormattedTextField) <= Constants.NUM.EIGHTY,
+                String.format("属性: %s 请输入合法的整数(x>=%d && x<=%d)", "Tab Gradient Step", Constants.NUM.TEN, Constants.NUM.EIGHTY));
+
     }
 
 }

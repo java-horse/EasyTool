@@ -2,15 +2,15 @@ package easy.form;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.ColorPanel;
+import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.icons.EasyIcons;
-import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.util.Objects;
 
 /**
  * @project: EasyTool
@@ -38,6 +38,17 @@ public class CommonSettingView {
     private JLabel translateConfirmInputModelLabel;
     private JCheckBox translateConfirmInputModelYesCheckBox;
     private JCheckBox translateConfirmInputModelNoCheckBox;
+    private JCheckBox tabHighlightEnableCheckBox;
+    private JLabel tabBackgroundTipsLabel;
+    private JLabel tabBackgroundColorLabel;
+    private ColorPanel tabBackgroundColorPanel;
+    private JLabel tabSettingGroupLabel;
+    private JLabel tabHighlightSizeLabel;
+    private JLabel tabHighlightSizeTipsLabel;
+    private JComboBox tabHighlightSizeComboBox;
+    private JLabel tabHighlightGradientStepLabel;
+    private JLabel tabHighlightGradientStepTipsLabel;
+    private JFormattedTextField tabHighlightGradientStepFormattedTextField;
 
     public CommonSettingView() {
         swaggerConfirmYesCheckBox.addChangeListener(e -> swaggerConfirmNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
@@ -46,24 +57,19 @@ public class CommonSettingView {
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
-        swaggerConfirmModelTipsLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Messages.showMessageDialog(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
-            }
+        tabHighlightEnableCheckBox.addChangeListener(e -> {
+            boolean selected = ((JCheckBox) e.getSource()).isSelected();
+            tabBackgroundColorPanel.setEnabled(selected);
+            tabHighlightSizeComboBox.setEnabled(selected);
+            tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
-        searchApiTipsLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Messages.showMessageDialog(BundleUtil.getI18n("search.api.icon.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
-            }
-        });
-        translateConfirmInputModelTipsLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Messages.showMessageDialog(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"), BundleUtil.getI18n("common.doubt.tips"), EasyIcons.ICON.DOUBT);
-            }
-        });
+        // tips监听处理
+        EasyCommonUtil.tipLabelMouseListener(swaggerConfirmModelTipsLabel, "swagger.confirm.model.checkBox.tip.text");
+        EasyCommonUtil.tipLabelMouseListener(searchApiTipsLabel, "search.api.icon.tip.text");
+        EasyCommonUtil.tipLabelMouseListener(translateConfirmInputModelTipsLabel, "translate.confirm.model.checkBox.tip.text");
+        EasyCommonUtil.tipLabelMouseListener(tabBackgroundTipsLabel, "tab.background.checkBox.tip.text");
+        EasyCommonUtil.tipLabelMouseListener(tabHighlightSizeTipsLabel, "tab.highlight.size.tip.text");
+        EasyCommonUtil.tipLabelMouseListener(tabHighlightGradientStepTipsLabel, "tab.highlight.gradient.step.tip.text");
     }
 
     private void createUIComponents() {
@@ -100,6 +106,11 @@ public class CommonSettingView {
             setTranslateConfirmInputModelYesCheckBox(Boolean.FALSE);
             setTranslateConfirmInputModelNoCheckBox(Boolean.TRUE);
         }
+        setTabHighlightEnableCheckBox(commonConfig.getTabHighlightEnableCheckBox());
+        CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
+        setTabBackgroundColorPanel(Objects.isNull(persistentColor) ? new JBColor(Color.MAGENTA, new Color(174, 80, 250)) : persistentColor.getColor());
+        setTabHighlightSizeComboBox(commonConfig.getTabHighlightSizeComboBox());
+        setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
     }
 
     public JComponent getComponent() {
@@ -208,6 +219,86 @@ public class CommonSettingView {
 
     public void setTranslateConfirmInputModelNoCheckBox(Boolean translateConfirmInputModelNoCheckBox) {
         this.translateConfirmInputModelNoCheckBox.setSelected(translateConfirmInputModelNoCheckBox);
+    }
+
+    public JLabel getTabBackgroundColorLabel() {
+        return tabBackgroundColorLabel;
+    }
+
+    public void setTabBackgroundColorLabel(JLabel tabBackgroundColorLabel) {
+        this.tabBackgroundColorLabel = tabBackgroundColorLabel;
+    }
+
+    public ColorPanel getTabBackgroundColorPanel() {
+        return tabBackgroundColorPanel;
+    }
+
+    public void setTabBackgroundColorPanel(Color tabBackgroundColorPanel) {
+        this.tabBackgroundColorPanel.setSelectedColor(tabBackgroundColorPanel);
+    }
+
+    public JLabel getTabSettingGroupLabel() {
+        return tabSettingGroupLabel;
+    }
+
+    public void setTabSettingGroupLabel(JLabel tabSettingGroupLabel) {
+        this.tabSettingGroupLabel = tabSettingGroupLabel;
+    }
+
+    public JLabel getTabHighlightSizeLabel() {
+        return tabHighlightSizeLabel;
+    }
+
+    public void setTabHighlightSizeLabel(JLabel tabHighlightSizeLabel) {
+        this.tabHighlightSizeLabel = tabHighlightSizeLabel;
+    }
+
+    public JLabel getTabHighlightSizeTipsLabel() {
+        return tabHighlightSizeTipsLabel;
+    }
+
+    public void setTabHighlightSizeTipsLabel(JLabel tabHighlightSizeTipsLabel) {
+        this.tabHighlightSizeTipsLabel = tabHighlightSizeTipsLabel;
+    }
+
+    public JComboBox getTabHighlightSizeComboBox() {
+        return tabHighlightSizeComboBox;
+    }
+
+    public void setTabHighlightSizeComboBox(String tabHighlightSizeComboBox) {
+        this.tabHighlightSizeComboBox.setSelectedItem(tabHighlightSizeComboBox);
+    }
+
+    public JLabel getTabHighlightGradientStepLabel() {
+        return tabHighlightGradientStepLabel;
+    }
+
+    public void setTabHighlightGradientStepLabel(JLabel tabHighlightGradientStepLabel) {
+        this.tabHighlightGradientStepLabel = tabHighlightGradientStepLabel;
+    }
+
+    public JLabel getTabHighlightGradientStepTipsLabel() {
+        return tabHighlightGradientStepTipsLabel;
+    }
+
+    public void setTabHighlightGradientStepTipsLabel(JLabel tabHighlightGradientStepTipsLabel) {
+        this.tabHighlightGradientStepTipsLabel = tabHighlightGradientStepTipsLabel;
+    }
+
+    public JFormattedTextField getTabHighlightGradientStepFormattedTextField() {
+        return tabHighlightGradientStepFormattedTextField;
+    }
+
+    public void setTabHighlightGradientStepFormattedTextField(String tabHighlightGradientStepFormattedTextField) {
+        this.tabHighlightGradientStepFormattedTextField.setText(tabHighlightGradientStepFormattedTextField);
+    }
+
+    public JCheckBox getTabHighlightEnableCheckBox() {
+        return tabHighlightEnableCheckBox;
+    }
+
+    public void setTabHighlightEnableCheckBox(Boolean tabHighlightEnableCheckBox) {
+        this.tabHighlightEnableCheckBox.setSelected(tabHighlightEnableCheckBox);
     }
 
 }

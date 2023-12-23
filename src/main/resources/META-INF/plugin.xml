@@ -46,6 +46,7 @@
         <li>支持快捷生成<em>serialVersionUID</em>, 快捷键: <em>CTRL + SHIFT + ALT + \</em> </li>
         <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择<em>CopyUrl</em></li>
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
+        <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -68,8 +69,12 @@
       <h3>v1.1.9</h3>
       <ul>
         <li>Universal settings support setting whether the translation secondary confirmation pop-up is displayed</li>
+        <li>Add Highlight the Tab tag of the newly opened file</li>
+        <li>Upgrade CopyUrl Action one click copy interface path function</li>
         <li>-------------------------------</li>
         <li>通用设置支持设置翻译二次确认弹窗是否显示</li>
+        <li>新增当前打开文件的Tab标签高亮显示及相关设置项</li>
+        <li>升级 'CopyUrl' 一键复制接口路径功能</li>
       </ul>
       <h3>v1.1.8</h3>
       <ul>
@@ -211,8 +216,12 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent" order="first"/>
-        <applicationService serviceImplementation="easy.config.common.CommonConfigComponent" order="first"/>
+
+        <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
+        <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
+
+        <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.service.TranslateService"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
@@ -230,11 +239,6 @@
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
     </extensions>
 
-    <application-components>
-        <component>
-            <implementation-class>easy.init.EasyToolInit</implementation-class>
-        </component>
-    </application-components>
 
     <actions>
         <!--中英字符互转-->
@@ -277,9 +281,9 @@
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
         </action>
         <!--自动复制完整接口URL-->
-        <action id="EasyToolCopyFullAction" class="easy.action.CopyFullUrlAction" text="CopyUrl"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY">
-        </action>
+        <group id="EasyToolCopyUrlDynamicActions" class="easy.action.copy.DynamicCopyUrlActionGroup" text="CopyUrl"
+               description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY" popup="true"
+               compact="true"/>
         <!--RestfulApi 快捷搜索-->
         <action id="EasyToolRestfulSearchAction" class="easy.action.RestfulSearchAction" text="SearchAPI"
                 description="EasyTool development assistance tools"
@@ -306,7 +310,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolSwaggerToolAction"/>
-            <reference ref="EasyToolCopyFullAction"/>
+            <reference ref="EasyToolCopyUrlDynamicActions"/>
             <reference ref="EasyToolCamelCaseAction"/>
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
