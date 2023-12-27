@@ -1,5 +1,6 @@
 package easy.form;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.ColorPanel;
@@ -51,6 +52,9 @@ public class CommonSettingView {
     private JFormattedTextField tabHighlightGradientStepFormattedTextField;
 
     public CommonSettingView() {
+        // 设置提示小图标
+        setTipsLabelIcon();
+        // 设置监听器
         swaggerConfirmYesCheckBox.addChangeListener(e -> swaggerConfirmNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         swaggerConfirmNoCheckBox.addChangeListener(e -> swaggerConfirmYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         searchApiDefaultIconRadioButton.addChangeListener(e -> searchApiCuteIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
@@ -63,7 +67,6 @@ public class CommonSettingView {
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
-        // tips监听处理
         EasyCommonUtil.tipLabelMouseListener(swaggerConfirmModelTipsLabel, "swagger.confirm.model.checkBox.tip.text");
         EasyCommonUtil.tipLabelMouseListener(searchApiTipsLabel, "search.api.icon.tip.text");
         EasyCommonUtil.tipLabelMouseListener(translateConfirmInputModelTipsLabel, "translate.confirm.model.checkBox.tip.text");
@@ -74,6 +77,23 @@ public class CommonSettingView {
 
     private void createUIComponents() {
         commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    }
+
+    /**
+     * 设置提示小图标
+     *
+     * @param
+     * @return void
+     * @author mabin
+     * @date 2023/12/27 15:43
+     */
+    private void setTipsLabelIcon() {
+        swaggerConfirmModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        searchApiTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        translateConfirmInputModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        tabBackgroundTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        tabHighlightSizeTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        tabHighlightGradientStepTipsLabel.setIcon(AllIcons.General.ContextHelp);
     }
 
     /**
