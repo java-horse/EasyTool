@@ -61,7 +61,7 @@ public class HttpUtil {
         try {
             httpClient = HttpClients.custom().build();
             URIBuilder uriBuilder = new URIBuilder(url);
-            if (params != null) {
+            if (params != null && !params.isEmpty()) {
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     uriBuilder.setParameter(entry.getKey(), entry.getValue());
                 }
@@ -71,7 +71,7 @@ public class HttpUtil {
                     .setConnectTimeout(CONNECT_TIMEOUT)
                     .setSocketTimeout(SOCKET_TIMEOUT)
                     .build());
-            if (headers != null) {
+            if (headers != null && !headers.isEmpty()) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     httpGet.addHeader(entry.getKey(), entry.getValue());
                 }

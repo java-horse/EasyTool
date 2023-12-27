@@ -66,6 +66,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.0</h3>
+      <ul>
+        <li>Support one click submission of error reports to warehouse issue</li>
+        <li>-------------------------------</li>
+        <li>支持错误报告一键提交仓库issue</li>
+      </ul>
       <h3>v1.1.9</h3>
       <ul>
         <li>Universal settings support setting whether the translation secondary confirmation pop-up is displayed</li>
@@ -219,6 +225,8 @@
 
         <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
         <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
+
+        <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
 
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>

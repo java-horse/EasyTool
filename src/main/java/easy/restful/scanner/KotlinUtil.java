@@ -14,7 +14,10 @@ import org.jetbrains.kotlin.idea.stubindex.KotlinAnnotationsIndex;
 import org.jetbrains.kotlin.name.Name;
 import org.jetbrains.kotlin.psi.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class KotlinUtil {
 
@@ -240,22 +243,10 @@ public class KotlinUtil {
     @NotNull
     private Set<KtAnnotationEntry> findKtAnnotationEntryByName(@NotNull String name, boolean withLib) {
         String temp = name.contains(".") ? name.substring(name.lastIndexOf(".") + 1) : name;
-        Set<KtAnnotationEntry> collection = new HashSet<>(KotlinAnnotationsIndex.getInstance().get(
-                temp,
-                project,
-                module.getModuleScope()
-        ));
+        Set<KtAnnotationEntry> collection = new HashSet<>(KotlinAnnotationsIndex.INSTANCE.get(temp, project, module.getModuleScope()));
         if (withLib) {
-            collection.addAll(KotlinAnnotationsIndex.getInstance().get(
-                    name,
-                    project,
-                    module.getModuleWithLibrariesScope())
-            );
-            collection.addAll(KotlinAnnotationsIndex.getInstance().get(
-                    temp,
-                    project,
-                    module.getModuleWithLibrariesScope())
-            );
+            collection.addAll(KotlinAnnotationsIndex.INSTANCE.get(name, project, module.getModuleWithLibrariesScope()));
+            collection.addAll(KotlinAnnotationsIndex.INSTANCE.get(temp, project, module.getModuleWithLibrariesScope()));
         }
         return collection;
     }

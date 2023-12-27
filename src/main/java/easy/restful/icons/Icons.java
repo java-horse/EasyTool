@@ -1,7 +1,7 @@
 package easy.restful.icons;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.ui.IconManager;
+import com.intellij.openapi.util.IconLoader;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.restful.api.HttpMethod;
@@ -19,7 +19,7 @@ public class Icons {
 
     @NotNull
     public static Icon load(@NotNull String path) {
-        return IconManager.getInstance().getIcon(path, Icons.class);
+        return IconLoader.getIcon(path, Icons.class);
     }
 
     /**

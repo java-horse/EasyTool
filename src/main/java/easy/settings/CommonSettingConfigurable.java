@@ -89,7 +89,7 @@ public class CommonSettingConfigurable implements Configurable {
                         && NumberUtil.isInteger(tabHighlightGradientStepFormattedTextField)
                         && Convert.toInt(tabHighlightGradientStepFormattedTextField) >= Constants.NUM.TEN
                         && Convert.toInt(tabHighlightGradientStepFormattedTextField) <= Constants.NUM.EIGHTY,
-                String.format("属性: %s 请输入合法的整数(x>=%d && x<=%d)", "Tab Gradient Step", Constants.NUM.TEN, Constants.NUM.EIGHTY));
+                String.format("属性: %s 请输入合法的整数(x>=%d && x<=%d)", "Tab Highlight Gradient Step", Constants.NUM.TEN, Constants.NUM.EIGHTY));
 
     }
 

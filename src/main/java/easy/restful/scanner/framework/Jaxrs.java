@@ -4,6 +4,7 @@ import com.intellij.lang.jvm.annotation.JvmAnnotationAttribute;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.impl.scopes.ModuleWithDependenciesScope;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
 import com.intellij.psi.impl.java.stubs.index.JavaShortClassNameIndex;
@@ -206,10 +207,11 @@ public class Jaxrs implements IJavaFramework {
      */
     @Nullable
     private XmlFile findConfigXmlFile(@NotNull Project project, @NotNull Module module) {
-        PsiFile[] files = FilenameIndex.getFilesByName(project, "applicationContext.xml", module.getModuleScope());
-        for (PsiFile file : files) {
-            if (file instanceof XmlFile) {
-                return (XmlFile) file;
+        Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName("applicationContext.xml", module.getModuleScope());
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
+            if (psiFile instanceof XmlFile) {
+                return (XmlFile) psiFile;
             }
         }
         return null;
