@@ -59,7 +59,8 @@ public class CommonSettingConfigurable implements Configurable {
                 || !Objects.equals(commonConfig.getPersistentColor().getGreen(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getGreen())
                 || !Objects.equals(commonConfig.getPersistentColor().getBlue(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getBlue()))
                 || !Objects.equals(commonConfig.getTabHighlightSizeComboBox(), commonSettingView.getTabHighlightSizeComboBox().getSelectedItem())
-                || !StringUtils.equals(commonConfig.getTabHighlightGradientStepFormattedTextField(), commonSettingView.getTabHighlightGradientStepFormattedTextField().getText());
+                || !StringUtils.equals(commonConfig.getTabHighlightGradientStepFormattedTextField(), commonSettingView.getTabHighlightGradientStepFormattedTextField().getText())
+                || !Objects.equals(commonConfig.getConvertCharEnableCheckBox(), commonSettingView.getConvertCharEnableCheckBox().isSelected());
     }
 
     @Override
@@ -90,6 +91,7 @@ public class CommonSettingConfigurable implements Configurable {
                         && Convert.toInt(tabHighlightGradientStepFormattedTextField) >= Constants.NUM.TEN
                         && Convert.toInt(tabHighlightGradientStepFormattedTextField) <= Constants.NUM.EIGHTY,
                 String.format("属性: %s 请输入合法的整数(x>=%d && x<=%d)", "Tab Highlight Gradient Step", Constants.NUM.TEN, Constants.NUM.EIGHTY));
+        commonConfig.setConvertCharEnableCheckBox(commonSettingView.getConvertCharEnableCheckBox().isSelected());
 
     }
 

@@ -36,8 +36,8 @@ public class CopyUrlAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
-        PsiFile psiFile = e.getRequiredData(CommonDataKeys.PSI_FILE);
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         if (ObjectUtils.anyNull(project, editor, psiFile)) {
             return;
         }
@@ -66,7 +66,7 @@ public class CopyUrlAction extends AnAction {
     @Override
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         e.getPresentation().setEnabledAndVisible(ObjectUtils.allNotNull(project, editor, psiFile));
     }

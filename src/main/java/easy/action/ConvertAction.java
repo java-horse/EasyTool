@@ -39,19 +39,8 @@ public class ConvertAction extends AnAction {
      **/
     public ConvertAction() {
         super();
-
-        // 设置转换处理
         TypedAction typedAction = TypedAction.getInstance();
         typedAction.setupRawHandler(new ConvertHandler(typedAction.getRawHandler()));
-
-        // 设置消息监听
-        AppActiveListener appActiveListener = new AppActiveListener();
-        Application application = ApplicationManager.getApplication();
-        Disposable disposable = Disposer.newDisposable();
-        Disposer.register(application, disposable);
-        MessageBusConnection connect = application.getMessageBus().connect(disposable);
-        connect.subscribe(ApplicationActivationListener.TOPIC, appActiveListener);
-        appActiveListener.activate();
     }
 
     @Override

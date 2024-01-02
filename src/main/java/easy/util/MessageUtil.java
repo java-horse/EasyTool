@@ -10,6 +10,7 @@ import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.util.SystemInfo;
 import easy.base.Constants;
 import easy.base.DingBotParam;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -19,6 +20,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -62,7 +64,7 @@ public class MessageUtil {
      * @author mabin
      * @date 2023/11/15 10:43
      */
-    public static void sendActionDingMessage(AnActionEvent e) {
+    public static void sendActionDingMessage(AnActionEvent e, String... objs) {
         ExecutorUtil.getInstance().getExecutorService().submit(() -> {
             DingBotParam dingBotParam = new DingBotParam();
             dingBotParam.setMsgtype("actionCard");
@@ -83,7 +85,8 @@ public class MessageUtil {
                             "**地理位置：** %s \n\n" +
                             "**运行插件：** %s v%s (%s) \n\n" +
                             "**触发时间：** %s \n\n", Constants.PLUGIN_NAME + " 动态", SystemInfo.getOsNameAndVersion(), applicationInfo.getFullApplicationName(),
-                    applicationInfo.getBuild().asString(), getIpRegion(), plugin.getName(), plugin.getVersion(), e.getPresentation().getText(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    applicationInfo.getBuild().asString(), getIpRegion(), plugin.getName(), plugin.getVersion(), e.getPresentation().getText() + (ArrayUtils.isEmpty(objs) ? StringUtils.EMPTY : ("-" + objs[0])),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             actionCardVO.setText(text);
             dingBotParam.setActionCard(actionCardVO);
             sendDingMessage(JsonUtil.toJson(dingBotParam));

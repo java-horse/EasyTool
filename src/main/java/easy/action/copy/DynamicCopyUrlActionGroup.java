@@ -46,7 +46,7 @@ public class DynamicCopyUrlActionGroup extends DefaultActionGroup {
     @Override
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        Editor editor = e.getRequiredData(CommonDataKeys.EDITOR);
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         if (ObjectUtils.anyNull(project, editor, psiFile)) {
             e.getPresentation().setEnabledAndVisible(false);

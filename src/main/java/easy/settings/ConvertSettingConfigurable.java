@@ -1,7 +1,7 @@
 package easy.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.JBColor;
@@ -9,48 +9,32 @@ import easy.base.Constants;
 import easy.handler.ConvertHandler;
 import easy.util.BundleUtil;
 import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
- * EasyChar的中英文字符映射关系自定义配置
+ * EasyTool的中英文字符映射关系自定义配置
  *
  * @author mabin
- * @project EasyChar
+ * @project EasyTool
  * @date 2023/04/24 14:39
  **/
 
-public class ConvertConfigurable implements SearchableConfigurable {
+public class ConvertSettingConfigurable implements Configurable {
 
     private JPanel settingPanel;
     private JTextField[] text1;
     private JTextField[] text2;
     private JLabel btnDefault;
 
-    @NotNull
-    @NonNls
-    @Override
-    public String getId() {
-        return "easy.char.settings";
-    }
-
-    @Nls
+    @Nls(capitalization = Nls.Capitalization.Title)
     @Override
     public String getDisplayName() {
-        return Constants.PLUGIN_NAME;
-    }
-
-    @Nullable
-    @Override
-    public String getHelpTopic() {
-        return Constants.PLUGIN_NAME + " Chinese and English character settings";
+        return "Convert";
     }
 
     @Nullable
@@ -62,6 +46,7 @@ public class ConvertConfigurable implements SearchableConfigurable {
         }
         settingPanel = new JPanel();
         settingPanel.setLayout(null);
+
         text1 = new JTextField[Constants.TOTAL_LENGTH];
         text2 = new JTextField[Constants.TOTAL_LENGTH];
         JLabel[] labels1 = new JLabel[Constants.TOTAL_LENGTH];
@@ -89,14 +74,14 @@ public class ConvertConfigurable implements SearchableConfigurable {
         btnDefault = new JLabel();
         btnDefault.setText(BundleUtil.getI18n("convert.reset.button.text"));
         btnDefault.setForeground(JBColor.BLUE);
-        btnDefault.setBounds(30, 32 * 15, 90, 32);
+        btnDefault.setBounds(30, 32 * 15, 100, 32);
         btnDefault.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnDefault.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int result = Messages.showYesNoDialog(BundleUtil.getI18n("convert.reset.message"), BundleUtil.getI18n("convert.reset.button.text"), Messages.getQuestionIcon());
                 if (result == MessageConstants.YES) {
-                    PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+                    PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
                     ConvertHandler.reload();
                     reset();
                 }
@@ -106,46 +91,22 @@ public class ConvertConfigurable implements SearchableConfigurable {
         return settingPanel;
     }
 
-    /**
-     * 当用户修改配置参数后，在点击“OK”“Apply”按钮前，框架会自动调用该方法，判断是否有修改，进而控制按钮“OK”“Apply”的是否可用
-     *
-     * @param
-     * @return boolean
-     * @author mabin
-     * @date 2023/4/24 14:56
-     **/
     @Override
     public boolean isModified() {
-        String oldStr = PropertiesComponent.getInstance().getValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING).trim();
+        String oldStr = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING).trim();
         String newStr = getConfigString().trim();
         return !newStr.equals(oldStr);
     }
 
-    /**
-     * 用户点击“OK”或“Apply”按钮后会调用该方法，通常用于完成配置信息持久化
-     *
-     * @param
-     * @return void
-     * @author mabin
-     * @date 2023/4/24 14:56
-     **/
     @Override
     public void apply() {
-        PropertiesComponent.getInstance().setValue(Constants.EASY_CHAR_KEY, getConfigString());
+        PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.EASY_CHAR_KEY, getConfigString());
         ConvertHandler.reload();
     }
 
-    /**
-     * 点reset按钮,打开页面时调用
-     *
-     * @param
-     * @return void
-     * @author mabin
-     * @date 2023/4/24 14:57
-     **/
     @Override
     public void reset() {
-        String str = PropertiesComponent.getInstance().getValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+        String str = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
         String[] configString = str.split("\n");
         int length = configString.length;
         for (int i = 0; i < Constants.TOTAL_LENGTH; i++) {

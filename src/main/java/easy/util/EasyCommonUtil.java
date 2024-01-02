@@ -65,7 +65,7 @@ public class EasyCommonUtil {
             return;
         }
         ApplicationInfo applicationInfo = ApplicationInfo.getInstance();
-        int result = Messages.showYesNoDialog("即将离开【" + applicationInfo.getFullApplicationName() + "】请注意财产安全\n" + url + "\n",
+        int result = Messages.showYesNoDialog("即将离开【" + applicationInfo.getFullApplicationName() + "】是否继续访问\n" + url + "\n",
                 Constants.PLUGIN_NAME, "继续访问", "取消", Messages.getWarningIcon());
         if (result == MessageConstants.YES) {
             openLink(url);

@@ -25,6 +25,8 @@ public class CommonConfig {
     private String tabHighlightGradientStepFormattedTextField;
     private Boolean tabHighlightEnableCheckBox;
 
+    private Boolean convertCharEnableCheckBox;
+
     public Boolean getSwaggerConfirmYesCheckBox() {
         return swaggerConfirmYesCheckBox;
     }
@@ -105,6 +107,14 @@ public class CommonConfig {
         this.tabHighlightEnableCheckBox = tabHighlightEnableCheckBox;
     }
 
+    public Boolean getConvertCharEnableCheckBox() {
+        return convertCharEnableCheckBox;
+    }
+
+    public void setConvertCharEnableCheckBox(Boolean convertCharEnableCheckBox) {
+        this.convertCharEnableCheckBox = convertCharEnableCheckBox;
+    }
+
     @Override
     public String toString() {
         return "CommonConfig{" +
@@ -118,6 +128,7 @@ public class CommonConfig {
                 ", tabHighlightSizeComboBox='" + tabHighlightSizeComboBox + '\'' +
                 ", tabHighlightGradientStepFormattedTextField='" + tabHighlightGradientStepFormattedTextField + '\'' +
                 ", tabHighlightEnableCheckBox=" + tabHighlightEnableCheckBox +
+                ", convertCharEnableCheckBox=" + convertCharEnableCheckBox +
                 '}';
     }
 

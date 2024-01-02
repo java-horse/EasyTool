@@ -2,6 +2,7 @@ package easy.handler;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Caret;
@@ -10,6 +11,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.project.Project;
 import easy.base.Constants;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
 import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +33,7 @@ import java.util.Map;
 
 public class ConvertHandler implements TypedActionHandler {
     private static final Logger log = Logger.getInstance(ConvertHandler.class);
+    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
     private char lastChar = ' ';
@@ -52,7 +56,7 @@ public class ConvertHandler implements TypedActionHandler {
      **/
     public static void reload() {
         EN_ZH_CHAR_MAP.clear();
-        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
         if (StringUtils.isBlank(defaultStr)) {
             return;
         }
@@ -75,6 +79,10 @@ public class ConvertHandler implements TypedActionHandler {
      **/
     @Override
     public void execute(@NotNull Editor editor, char c, @NotNull DataContext dataContext) {
+        if (Boolean.FALSE.equals(commonConfig.getConvertCharEnableCheckBox())) {
+            orignTypedActionHandler.execute(editor, c, dataContext);
+            return;
+        }
         String cStr = String.valueOf(c);
         String enChar = EN_ZH_CHAR_MAP.get(cStr);
         if (lastChar == Constants.PREFIX_CHAR && enChar != null) {
@@ -105,7 +113,7 @@ public class ConvertHandler implements TypedActionHandler {
      * @date 2023/5/23 10:54
      **/
     private Long getTotalConvertCount() {
-        return PropertiesComponent.getInstance().getLong(Constants.TOTAL_CONVERT_COUNT, 0);
+        return PropertiesComponent.getInstance().getLong(Constants.STATE_VAR.TOTAL_CONVERT_COUNT, 0);
     }
 
     /**
@@ -132,8 +140,8 @@ public class ConvertHandler implements TypedActionHandler {
     private void updateStatisticsText() {
         try {
             PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-            propertiesComponent.setValue(Constants.TOTAL_CONVERT_COUNT, Long.toString(getTotalConvertCount() + 1));
-            String dayKeyName = Constants.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            propertiesComponent.setValue(Constants.STATE_VAR.TOTAL_CONVERT_COUNT, Long.toString(getTotalConvertCount() + 1));
+            String dayKeyName = Constants.STATE_VAR.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             propertiesComponent.setValue(dayKeyName, Long.toString(getDayConvertCount(dayKeyName) + 1));
 
             Statistics statistics = Statistics.getInstance();

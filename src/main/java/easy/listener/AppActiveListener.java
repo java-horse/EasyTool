@@ -1,5 +1,6 @@
 package easy.listener;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -27,9 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class AppActiveListener implements ApplicationActivationListener {
 
-    // 上次通知时间
-    private volatile long lastNoticeTime = 0L;
-
     // 通知时间间隔 (15天之内打开项目只弹窗一次提示)
     private static final long INTERVAL = 15 * 24 * 60 * 60 * 1000L;
 
@@ -49,7 +47,6 @@ public class AppActiveListener implements ApplicationActivationListener {
      **/
     public synchronized void activate() {
         this.support();
-        this.translateServiceInit();
     }
 
     /**
@@ -61,7 +58,9 @@ public class AppActiveListener implements ApplicationActivationListener {
      * @date 2023/9/4 21:21
      **/
     private void support() {
-        if (System.currentTimeMillis() - lastNoticeTime < INTERVAL) {
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.STATE_VAR.LAST_NOTIFY_TIME, 1700019828000L);
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastNoticeTime < INTERVAL && currentTimeMillis >= lastNoticeTime) {
             return;
         }
         AnAction starAction = new NotificationAction("\uD83C\uDF1F 点个star") {
@@ -83,22 +82,7 @@ public class AppActiveListener implements ApplicationActivationListener {
             }
         };
         NotificationUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
-        lastNoticeTime = System.currentTimeMillis();
-    }
-
-    /**
-     * 翻译引擎服务初始化
-     *
-     * @param
-     * @return void
-     * @author mabin
-     * @date 2023/9/4 21:21
-     **/
-    private void translateServiceInit() {
-        Application application = ApplicationManager.getApplication();
-        TranslateConfig translateConfig = application.getService(TranslateConfigComponent.class).getState();
-        TranslateService translateService = application.getService(TranslateService.class);
-        translateService.init(translateConfig);
+        PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
     }
 
     @Override

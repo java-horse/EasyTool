@@ -27,14 +27,17 @@ public class CommonSettingView {
 
     private JPanel panel;
     private JPanel commonPanel;
+    private JLabel swaggerGroupLabel;
     private JLabel swaggerConfirmModelTipsLabel;
     private JLabel swaggerConfirmModelLabel;
     private JCheckBox swaggerConfirmYesCheckBox;
     private JCheckBox swaggerConfirmNoCheckBox;
+    private JLabel restfulApiGroupLabel;
     private JLabel searchApiTipsLabel;
     private JLabel searchApiLabel;
     private JRadioButton searchApiDefaultIconRadioButton;
     private JRadioButton searchApiCuteIconRadioButton;
+    private JLabel translateGroupLabel;
     private JLabel translateConfirmInputModelTipsLabel;
     private JLabel translateConfirmInputModelLabel;
     private JCheckBox translateConfirmInputModelYesCheckBox;
@@ -50,6 +53,8 @@ public class CommonSettingView {
     private JLabel tabHighlightGradientStepLabel;
     private JLabel tabHighlightGradientStepTipsLabel;
     private JFormattedTextField tabHighlightGradientStepFormattedTextField;
+    private JLabel convertCharGroupLabel;
+    private JCheckBox convertCharEnableCheckBox;
 
     public CommonSettingView() {
         // 设置提示小图标
@@ -131,6 +136,7 @@ public class CommonSettingView {
         setTabBackgroundColorPanel(Objects.isNull(persistentColor) ? new JBColor(Color.MAGENTA, new Color(174, 80, 250)) : persistentColor.getColor());
         setTabHighlightSizeComboBox(commonConfig.getTabHighlightSizeComboBox());
         setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
+        setConvertCharEnableCheckBox(commonConfig.getConvertCharEnableCheckBox());
     }
 
     public JComponent getComponent() {
@@ -319,6 +325,46 @@ public class CommonSettingView {
 
     public void setTabHighlightEnableCheckBox(Boolean tabHighlightEnableCheckBox) {
         this.tabHighlightEnableCheckBox.setSelected(tabHighlightEnableCheckBox);
+    }
+
+    public JLabel getConvertCharGroupLabel() {
+        return convertCharGroupLabel;
+    }
+
+    public void setConvertCharGroupLabel(JLabel convertCharGroupLabel) {
+        this.convertCharGroupLabel = convertCharGroupLabel;
+    }
+
+    public JCheckBox getConvertCharEnableCheckBox() {
+        return convertCharEnableCheckBox;
+    }
+
+    public void setConvertCharEnableCheckBox(Boolean convertCharEnableCheckBox) {
+        this.convertCharEnableCheckBox.setSelected(convertCharEnableCheckBox);
+    }
+
+    public JLabel getSwaggerGroupLabel() {
+        return swaggerGroupLabel;
+    }
+
+    public void setSwaggerGroupLabel(JLabel swaggerGroupLabel) {
+        this.swaggerGroupLabel = swaggerGroupLabel;
+    }
+
+    public JLabel getRestfulApiGroupLabel() {
+        return restfulApiGroupLabel;
+    }
+
+    public void setRestfulApiGroupLabel(JLabel restfulApiGroupLabel) {
+        this.restfulApiGroupLabel = restfulApiGroupLabel;
+    }
+
+    public JLabel getTranslateGroupLabel() {
+        return translateGroupLabel;
+    }
+
+    public void setTranslateGroupLabel(JLabel translateGroupLabel) {
+        this.translateGroupLabel = translateGroupLabel;
     }
 
 }

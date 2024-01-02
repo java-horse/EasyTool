@@ -38,6 +38,27 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setPersistentColor(persistentColor);
             commonConfig.setTabHighlightSizeComboBox(Integer.toString(Constants.NUM.ONE));
             commonConfig.setTabHighlightGradientStepFormattedTextField(Integer.toString(Constants.NUM.TEN));
+            commonConfig.setConvertCharEnableCheckBox(Boolean.TRUE);
+        } else {
+            commonConfig.setSwaggerConfirmYesCheckBox(Objects.isNull(commonConfig.getSwaggerConfirmYesCheckBox()) ? Boolean.TRUE : commonConfig.getSwaggerConfirmYesCheckBox());
+            commonConfig.setSearchApiDefaultIconRadioButton(Objects.isNull(commonConfig.getSearchApiDefaultIconRadioButton()) ? Boolean.TRUE : commonConfig.getSearchApiDefaultIconRadioButton());
+            commonConfig.setSwaggerConfirmYesCheckBox(Objects.isNull(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Boolean.TRUE : commonConfig.getTranslateConfirmInputModelYesCheckBox());
+            commonConfig.setTabHighlightEnableCheckBox(Objects.isNull(commonConfig.getTabHighlightEnableCheckBox()) ? Boolean.TRUE : commonConfig.getTabHighlightEnableCheckBox());
+            CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
+            if (Objects.isNull(persistentColor)) {
+                persistentColor = new CommonConfig.PersistentColor();
+                persistentColor.setRed(174);
+                persistentColor.setGreen(80);
+                persistentColor.setBlue(250);
+            } else {
+                persistentColor.setRed(persistentColor.getRed());
+                persistentColor.setGreen(persistentColor.getGreen());
+                persistentColor.setBlue(persistentColor.getBlue());
+            }
+            commonConfig.setPersistentColor(persistentColor);
+            commonConfig.setTabHighlightSizeComboBox(Objects.isNull(commonConfig.getTabHighlightSizeComboBox()) ? Integer.toString(Constants.NUM.ONE) : commonConfig.getTabHighlightSizeComboBox());
+            commonConfig.setTabHighlightGradientStepFormattedTextField(Objects.isNull(commonConfig.getTabHighlightGradientStepFormattedTextField()) ? Integer.toString(Constants.NUM.TEN) : commonConfig.getTabHighlightGradientStepFormattedTextField());
+            commonConfig.setConvertCharEnableCheckBox(Objects.isNull(commonConfig.getConvertCharEnableCheckBox()) ? Boolean.TRUE : commonConfig.getConvertCharEnableCheckBox());
         }
         return commonConfig;
     }

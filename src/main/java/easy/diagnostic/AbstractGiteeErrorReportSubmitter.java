@@ -62,8 +62,8 @@ public abstract class AbstractGiteeErrorReportSubmitter extends AbstractErrorRep
         ApplicationInfoEx appInfo = ApplicationInfoEx.getInstanceEx();
         PluginDescriptor pluginDescriptor = getPluginDescriptor();
         Properties systemProperties = System.getProperties();
-        String title = "[Report From Idea] " + message;
-        String body = String.format(":warning:_`[Report From Idea]-=%s=-`_\n" +
+        String title = "[Report From IDEA] " + message;
+        String body = String.format(":warning:_`[Report From IDEA]-=%s=-`_\n" +
                         "\n" +
                         "**错误信息**\n" +
                         "%s\n" +

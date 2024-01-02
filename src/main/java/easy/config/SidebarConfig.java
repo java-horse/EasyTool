@@ -57,9 +57,9 @@ public class SidebarConfig implements ToolWindowFactory {
         JTextField dayTextField = statistics.getDayTextField();
         Document dayDocument = dayTextField.getDocument();
         dayDocument.remove(0, dayDocument.getLength());
-        String dayKeyName = Constants.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String dayKeyName = Constants.STATE_VAR.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已转换中英文字符 " + propertiesComponent.getValue(dayKeyName, "0") +
-                " 次 累计 " + propertiesComponent.getValue(Constants.TOTAL_CONVERT_COUNT, "0") + " 次", null);
+                " 次 累计 " + propertiesComponent.getValue(Constants.STATE_VAR.TOTAL_CONVERT_COUNT, "0") + " 次", null);
         dayTextField.setDocument(dayDocument);
         dayTextField.setHorizontalAlignment(SwingConstants.CENTER);
         dayTextField.setFont(new Font("微软雅黑", Font.BOLD, 18));

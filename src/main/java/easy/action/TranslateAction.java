@@ -94,7 +94,7 @@ public class TranslateAction extends AnAction {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }
         }
-        MessageUtil.sendActionDingMessage(e);
+        MessageUtil.sendActionDingMessage(e, title);
     }
 
 

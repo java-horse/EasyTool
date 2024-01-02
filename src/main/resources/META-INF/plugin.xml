@@ -59,13 +59,25 @@
       <h3>Source</h3>
       <ul>
         <li><a href="https://gitee.com/milubin/easy-tool-plugin">Gitee</a></li>
-        <li><a href="https://gitee.com/milubin/easy-tool-plugin">Github</a></li>
+        <li><a href="https://github.com/java-horse/EasyTool-Plugin">Github</a></li>
       </ul>
     ]]>
     </description>
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.1</h3>
+      <ul>
+        <li>Optimize plugin settings for page hierarchy</li>
+        <li>Referring to the GenerateAllSetter plugin, it supports IDEA Postfix syntax to automatically generate all Setters, Getters, and property conversions between POJOs for POJOs</li>
+        <li>Add Github source code link</li>
+        <li>New enable/disable switch for EasyTool ->Common on the Chinese and English character universal settings page</li>
+        <li>-------------------------------</li>
+        <li>优化插件设置页面层级结构</li>
+        <li>参考 GenerateAllSetter 插件，支持 IDEA Postfix 语法自动生成 POJO的所有Setter、Getter 以及 POJO 之间的属性转换</li>
+        <li>新增Github源码链接</li>
+        <li>新增中英文字符通用设置页面 EasyTool -> Common 的启用/关闭 开关</li>
+      </ul>
       <h3>v2.0.0</h3>
       <ul>
         <li>Support one click submission of error reports to warehouse issue</li>
@@ -217,7 +229,7 @@
     ]]>
     </change-notes>
 
-    <idea-version since-build="222.3345.118" until-build="232.*"/>
+    <idea-version since-build="222.3345.118" until-build="233.*"/>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
@@ -237,16 +249,21 @@
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
         <applicationConfigurable id="easy.tool.settings" displayName="EasyTool"
-                                 instance="easy.settings.ConvertConfigurable"/>
-        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
-                                 instance="easy.settings.TranslateSettingConfigurable"/>
+                                 instance="easy.settings.EasyToolConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.common" displayName="Common"
                                  instance="easy.settings.CommonSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
+                                 instance="easy.settings.TranslateSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
+                                 instance="easy.settings.ConvertSettingConfigurable"/>
 
         <toolWindow id="EasyTool" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.TOOL_LOGO"
                     canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
+
+        <codeInsight.template.postfixTemplateProvider language="JAVA"
+                                                      implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
     </extensions>
 
 

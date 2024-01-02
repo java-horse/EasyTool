@@ -29,10 +29,11 @@
 > * 支持快捷生成 `serialVersionUID`, 快捷键: `CTRL + SHIFT + ALT + \`
 > * 支持自动复制接口完整URL
 > * 支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: `CTRL + ALT + /`
+> * 参考 GenerateAllSetter 插件，支持 IDEA Postfix 语法自动生成 POJO的所有Setter、Getter 以及 POJO 之间的属性转换
 
 #### 使用说明
 > * 在 JetBrains IED 的插件市场收索 `EasyTool` 并安装成功
-> * 输入以下常用中文字符 `( ，。；！（）「」《》)` 将自动转换成对应的英文字符
+>   * 输入以下常用中文字符 `( ，。；！（）「」《》)` 将自动转换成对应的英文字符, 可在通用设置页面 `EasyTool -> Common` 启用/关闭
 > * 如果想输入中文字符，则需要先输入 `/` 字符，然后再输入想要的中文字符即可
 > * 点击 `View` -> `Tool Windows` -> `EasyTool` 可以查看中英文字符转换次数统计
 > * 选中中文字符串，快捷键 `CTRL + \ ` 右键选择 Translate 选项即可翻译或自动替换 (需先配置翻译渠道密钥)
@@ -41,6 +42,11 @@
 > * 在代码编辑器区域, 快捷键 `CTRL + SHIFT + ALT + \ ` 即可自动从光标处开始生成 `serialVersionUID`
 > * 支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择CopyUrl
 > * 支持当前打开文件的Tab标签高亮显示, 可在通用设置页面自定义高亮颜色
+> * 支持`IDEA Postfix`语法自动生成 `POJO` 的所有`Setter`、`Getter`、`Convert`
+>   * 在`POJO`变量后通过 `.allset` 自动生成所有Setter
+>   * 在`POJO`变量后通过 `.allget` 自动生成所有Getter
+>   * 在`POJO`变量后通过 `.allsetn` 自动生成所有Setter (未填充默认值)
+>   * 在`POJO`变量后通过 `.convert` 自动生成对象属性转换 (示例: target.setXxx(source.getXxx).convert)
 
 #### 版本说明
 > * 支持IDEA 2022.x~2023.x 全系列版本，适用于 `JetBrains IDE` 全家桶

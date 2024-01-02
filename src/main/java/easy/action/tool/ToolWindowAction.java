@@ -1,6 +1,7 @@
 package easy.action.tool;
 
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -48,11 +49,7 @@ public class ToolWindowAction extends AnAction {
             }
             toolWindow.show();
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
-            AnAction action = ActionManager.getInstance().getAction("ShowSettings");
-            if (Objects.isNull(action)) {
-                return;
-            }
-            action.actionPerformed(e);
+            ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
         } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {
             AnAction action = ActionManager.getInstance().getAction("EasyToolRestfulSearchAction");
             if (Objects.isNull(action)) {
