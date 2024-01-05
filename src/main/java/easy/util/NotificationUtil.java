@@ -53,6 +53,20 @@ public class NotificationUtil {
      *
      * @param title
      * @param content
+     * @param actions
+     * @return void
+     * @author mabin
+     * @date 2024/1/5 10:55
+     */
+    public static void notify(String title, String content, AnAction... actions) {
+        notify(title, content, NotificationType.INFORMATION, actions);
+    }
+
+    /**
+     * 全局消息通知
+     *
+     * @param title
+     * @param content
      * @param type
      * @param actions
      * @return void

@@ -19,11 +19,11 @@
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: <em>CTRL + \</em> </li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
-            <li>--<em>金山翻译</em></li>
+            <li>--<em>金山翻译(Free)</em></li>
             <li>--<em>阿里翻译</em></li>
             <li>--<em>腾讯翻译</em></li>
             <li>--<em>火山翻译</em></li>
@@ -66,6 +66,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.2</h3>
+      <ul>
+        <li>xxx</li>
+        <li>-------------------------------</li>
+        <li>xxx</li>
+      </ul>
       <h3>v2.0.1</h3>
       <ul>
         <li>Optimize plugin settings for page hierarchy</li>
