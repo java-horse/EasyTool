@@ -25,7 +25,6 @@ public class DynamicToolWindowActionGroup extends DefaultActionGroup {
         return new AnAction[]{
                 new ToolWindowAction(ToolWindowEnum.SEARCH_API),
                 new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
-                new ToolWindowAction(ToolWindowEnum.PLUGIN_STATISTICS),
                 new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING)
         };
     }

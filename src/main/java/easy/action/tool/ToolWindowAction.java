@@ -3,17 +3,13 @@ package easy.action.tool;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowManager;
 import easy.base.Constants;
 import easy.enums.ToolWindowEnum;
 import easy.form.WeChatOfficialView;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -41,13 +37,6 @@ public class ToolWindowAction extends AnAction {
         if (StringUtils.equals(ToolWindowEnum.WECHAT_OFFICIAL.title, actionText)) {
             new WeChatOfficialView().show();
             MessageUtil.sendActionDingMessage(e);
-        } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_STATISTICS.title, actionText)) {
-            ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(e.getProject());
-            ToolWindow toolWindow = toolWindowManager.getToolWindow(Constants.PLUGIN_NAME);
-            if (Objects.isNull(toolWindow)) {
-                return;
-            }
-            toolWindow.show();
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
             ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
         } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {

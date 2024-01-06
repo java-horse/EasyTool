@@ -263,9 +263,6 @@
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
 
-        <toolWindow id="EasyTool" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.TOOL_LOGO"
-                    canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
-
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
         <codeInsight.template.postfixTemplateProvider language="JAVA"

@@ -13,8 +13,6 @@ import javax.swing.*;
  * @date: 2023/10/14 13:52:55
  */
 public enum ToolWindowEnum {
-
-    PLUGIN_STATISTICS("使用统计", "插件使用统计", EasyIcons.ICON.STATISTICS),
     WECHAT_OFFICIAL("微信公众号", "微信公众号", EasyIcons.ICON.WECHAT_OFFICIAL),
     PLUGIN_SETTING("插件设置", "插件设置", EasyIcons.ICON.SETTING),
     SEARCH_API("搜索API", "搜索API", EasyIcons.ICON.API);

@@ -32,8 +32,6 @@ public class Constants {
     public interface STATE_VAR {
         String LAST_NOTIFY_TIME = "last_notify_time";
         String EASY_CHAR_KEY = "easy_char_key";
-        String TOTAL_CONVERT_COUNT = "total_convert_count";
-        String DAY_CONVERT_COUNT = "day_convert_count";
     }
 
     /**
