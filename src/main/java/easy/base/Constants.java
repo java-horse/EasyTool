@@ -27,11 +27,36 @@ public class Constants {
     public static final String BREAK_LINE = "&br;";
 
     /**
-     * 持久化数据变量名
+     * 插件持久化变量
      */
-    public interface STATE_VAR {
-        String LAST_NOTIFY_TIME = "last_notify_time";
-        String EASY_CHAR_KEY = "easy_char_key";
+    public static class Persistence {
+        /**
+         * 通用
+         */
+        public interface COMMON {
+            String LAST_NOTIFY_TIME = Constants.Persistence.COMMON.class.getName() + ".last_notify_time";
+        }
+
+        /**
+         * 中英文字符转换
+         */
+        public interface CONVERT {
+            String EASY_CHAR_KEY = Constants.Persistence.CONVERT.class.getName() + ".easy_char_key";
+        }
+
+        /**
+         * Mybatis Log
+         */
+        public interface MYBATIS_LOG {
+            String PREPARING_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Preparing";
+            String PARAMETERS_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Parameters";
+            String KEYWORDS_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Keywords";
+            String INSERT_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".InsertSQLColor";
+            String DELETE_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".DeleteSQLColor";
+            String UPDATE_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".UpdateSQLColor";
+            String SELECT_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".SelectSQLColor";
+        }
+
     }
 
     /**

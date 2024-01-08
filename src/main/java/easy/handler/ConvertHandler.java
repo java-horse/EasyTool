@@ -54,7 +54,7 @@ public class ConvertHandler implements TypedActionHandler {
      **/
     public static void reload() {
         EN_ZH_CHAR_MAP.clear();
-        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
         if (StringUtils.isBlank(defaultStr)) {
             return;
         }

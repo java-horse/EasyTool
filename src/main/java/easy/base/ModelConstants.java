@@ -11,7 +11,6 @@ package easy.base;
 public class ModelConstants {
 
     private ModelConstants() {
-
     }
 
     /**

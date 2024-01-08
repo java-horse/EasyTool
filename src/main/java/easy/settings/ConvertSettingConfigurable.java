@@ -81,7 +81,7 @@ public class ConvertSettingConfigurable implements Configurable {
             public void mouseClicked(MouseEvent e) {
                 int result = Messages.showYesNoDialog(BundleUtil.getI18n("convert.reset.message"), BundleUtil.getI18n("convert.reset.button.text"), Messages.getQuestionIcon());
                 if (result == MessageConstants.YES) {
-                    PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+                    PropertiesComponent.getInstance().setValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
                     ConvertHandler.reload();
                     reset();
                 }
@@ -93,20 +93,20 @@ public class ConvertSettingConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        String oldStr = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING).trim();
+        String oldStr = PropertiesComponent.getInstance().getValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, Constants.DEFAULT_STRING).trim();
         String newStr = getConfigString().trim();
         return !newStr.equals(oldStr);
     }
 
     @Override
     public void apply() {
-        PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.EASY_CHAR_KEY, getConfigString());
+        PropertiesComponent.getInstance().setValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, getConfigString());
         ConvertHandler.reload();
     }
 
     @Override
     public void reset() {
-        String str = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+        String str = PropertiesComponent.getInstance().getValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
         String[] configString = str.split("\n");
         int length = configString.length;
         for (int i = 0; i < Constants.TOTAL_LENGTH; i++) {

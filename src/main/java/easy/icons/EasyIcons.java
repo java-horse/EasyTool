@@ -37,6 +37,8 @@ public class EasyIcons {
         Icon COPY_HTTP = IconLoader.getIcon("icons/copyHttp.svg", EasyIcons.class);
         Icon API = IconLoader.getIcon("icons/api.svg", EasyIcons.class);
         Icon YANDEX = IconLoader.getIcon("icons/search/yandex.svg", EasyIcons.class);
+        Icon MYBATIS = IconLoader.getIcon("icons/mybatis.svg", EasyIcons.class);
+        Icon PRETTY_PRINT = IconLoader.getIcon("icons/prettyPrint.svg", EasyIcons.class);
     }
 
 }

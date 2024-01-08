@@ -58,7 +58,7 @@ public class AppActiveListener implements ApplicationActivationListener {
      * @date 2023/9/4 21:21
      **/
     private void support() {
-        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.STATE_VAR.LAST_NOTIFY_TIME, 1700019828000L);
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, 1700019828000L);
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - lastNoticeTime < INTERVAL && currentTimeMillis >= lastNoticeTime) {
             return;
@@ -82,7 +82,7 @@ public class AppActiveListener implements ApplicationActivationListener {
             }
         };
         NotificationUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
-        PropertiesComponent.getInstance().setValue(Constants.STATE_VAR.LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
+        PropertiesComponent.getInstance().setValue(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
     }
 
     @Override
