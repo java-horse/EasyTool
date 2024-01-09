@@ -34,27 +34,27 @@ public class Constants {
          * 通用
          */
         public interface COMMON {
-            String LAST_NOTIFY_TIME = Constants.Persistence.COMMON.class.getName() + ".last_notify_time";
+            String LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".last_notify_time";
         }
 
         /**
          * 中英文字符转换
          */
         public interface CONVERT {
-            String EASY_CHAR_KEY = Constants.Persistence.CONVERT.class.getName() + ".easy_char_key";
+            String EASY_CHAR_KEY = PLUGIN_NAME + "." + CONVERT.class.getSimpleName() + ".easy_char_key";
         }
 
         /**
          * Mybatis Log
          */
         public interface MYBATIS_LOG {
-            String PREPARING_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Preparing";
-            String PARAMETERS_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Parameters";
-            String KEYWORDS_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".Keywords";
-            String INSERT_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".InsertSQLColor";
-            String DELETE_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".DeleteSQLColor";
-            String UPDATE_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".UpdateSQLColor";
-            String SELECT_SQL_COLOR_KEY = Constants.Persistence.MYBATIS_LOG.class.getName() + ".SelectSQLColor";
+            String PREPARING_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".preparing";
+            String PARAMETERS_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".parameters";
+            String KEYWORDS_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".keywords";
+            String INSERT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".insert_sql_color";
+            String DELETE_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".delete_sql_color";
+            String UPDATE_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".update_sql_color";
+            String SELECT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".select_sql_color";
         }
 
     }

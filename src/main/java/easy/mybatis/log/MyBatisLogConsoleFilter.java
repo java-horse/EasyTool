@@ -84,7 +84,7 @@ public class MyBatisLogConsoleFilter implements Filter {
         } else {
             key = "unknown";
         }
-        manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance(project).getInt(key, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
+        manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance().getInt(key, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
         return null;
     }
 

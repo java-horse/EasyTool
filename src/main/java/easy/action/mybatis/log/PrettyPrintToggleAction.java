@@ -20,7 +20,7 @@ public class PrettyPrintToggleAction extends ToggleAction {
         if (Objects.isNull(e.getProject())) {
             return false;
         }
-        return PropertiesComponent.getInstance(e.getProject()).getBoolean(PrettyPrintToggleAction.class.getName());
+        return PropertiesComponent.getInstance().getBoolean(PrettyPrintToggleAction.class.getName());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class PrettyPrintToggleAction extends ToggleAction {
         if (Objects.isNull(e.getProject())) {
             return;
         }
-        PropertiesComponent.getInstance(e.getProject()).setValue(PrettyPrintToggleAction.class.getName(), state);
+        PropertiesComponent.getInstance().setValue(PrettyPrintToggleAction.class.getName(), state);
     }
 
     @Override

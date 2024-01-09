@@ -19,11 +19,10 @@ public class MyBatisLogAction extends DumbAwareAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        final Project project = e.getProject();
+        Project project = e.getProject();
         if (Objects.isNull(project)) {
             return;
         }
-
         if (!project.isOpen() || !project.isInitialized()) {
             return;
         }
@@ -37,12 +36,11 @@ public class MyBatisLogAction extends DumbAwareAction {
                 return;
             }
         }
-
         rerun(project);
     }
 
-    public void rerun(final Project project) {
-        final MyBatisLogManager manager = MyBatisLogManager.getInstance(project);
+    public void rerun(Project project) {
+        MyBatisLogManager manager = MyBatisLogManager.getInstance(project);
         if (Objects.nonNull(manager)) {
             Disposer.dispose(manager);
         }

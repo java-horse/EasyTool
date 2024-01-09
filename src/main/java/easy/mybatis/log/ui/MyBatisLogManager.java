@@ -82,9 +82,9 @@ public class MyBatisLogManager implements Disposable {
         Disposer.register(this, messageBusConnection);
         Disposer.register(project, this);
 
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
-        this.preparing = propertiesComponent.getValue(Constants.Persistence.MYBATIS_LOG.PREPARING_KEY, "Preparing: ");
-        this.parameters = propertiesComponent.getValue(Constants.Persistence.MYBATIS_LOG.PARAMETERS_KEY, "Parameters: ");
+        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+        this.preparing = propertiesComponent.getValue(Constants.Persistence.MYBATIS_LOG.PREPARING_KEY, "preparing: ");
+        this.parameters = propertiesComponent.getValue(Constants.Persistence.MYBATIS_LOG.PARAMETERS_KEY, "parameters: ");
         resetKeywords(propertiesComponent.getValue(Constants.Persistence.MYBATIS_LOG.KEYWORDS_KEY, StringUtils.EMPTY));
 
         messageBusConnection.subscribe(ToolWindowManagerListener.TOPIC, new ToolWindowManagerListener() {
@@ -182,7 +182,7 @@ public class MyBatisLogManager implements Disposable {
     }
 
     private boolean isFormat() {
-        return PropertiesComponent.getInstance(project).getBoolean(PrettyPrintToggleAction.class.getName());
+        return PropertiesComponent.getInstance().getBoolean(PrettyPrintToggleAction.class.getName());
     }
 
     public void run() {

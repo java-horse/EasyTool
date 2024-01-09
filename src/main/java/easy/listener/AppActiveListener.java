@@ -1,22 +1,20 @@
 package easy.listener;
 
+import cn.hutool.core.date.DateUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
-import easy.config.translate.TranslateConfig;
-import easy.config.translate.TranslateConfigComponent;
 import easy.form.SupportView;
-import easy.service.TranslateService;
 import easy.util.EasyCommonUtil;
 import easy.util.NotificationUtil;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
 
 /**
  * IDEA启动监听
@@ -58,7 +56,7 @@ public class AppActiveListener implements ApplicationActivationListener {
      * @date 2023/9/4 21:21
      **/
     private void support() {
-        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, 1700019828000L);
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -7).getTime());
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis - lastNoticeTime < INTERVAL && currentTimeMillis >= lastNoticeTime) {
             return;

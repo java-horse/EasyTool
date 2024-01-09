@@ -58,11 +58,11 @@ public class MybatisLogSettingView extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         rootPanel.setPreferredSize(new Dimension(600, 400));
-        final PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
-        final int insertColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.INSERT_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
-        final int deleteColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.DELETE_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
-        final int updateColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.UPDATE_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
-        final int selectColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.SELECT_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
+        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+        int insertColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.INSERT_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
+        int deleteColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.DELETE_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
+        int updateColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.UPDATE_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
+        int selectColorRGB = propertiesComponent.getInt(Constants.Persistence.MYBATIS_LOG.SELECT_SQL_COLOR_KEY, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
 
         insertColor.setBackground(new JBColor(insertColorRGB, insertColorRGB));
         deleteColor.setBackground(new JBColor(deleteColorRGB, deleteColorRGB));
@@ -86,7 +86,7 @@ public class MybatisLogSettingView extends DialogWrapper {
     }
 
     private void initColorEvent() {
-        final MouseAdapter listener = new MouseAdapter() {
+        MouseAdapter listener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!(e.getSource() instanceof JPanel)) {
@@ -118,20 +118,17 @@ public class MybatisLogSettingView extends DialogWrapper {
     }
 
     private void saveProperties() {
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
+        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         String preparing = getPreparing();
         String parameters = getParameters();
         String keywords = getKeywords();
-
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.PREPARING_KEY, getPreparing());
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.PARAMETERS_KEY, getParameters());
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.KEYWORDS_KEY, getKeywords());
-
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.INSERT_SQL_COLOR_KEY, getInsertColorRGB(), ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.DELETE_SQL_COLOR_KEY, getDeleteColorRGB(), ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.UPDATE_SQL_COLOR_KEY, getUpdateColorRGB(), ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
         propertiesComponent.setValue(Constants.Persistence.MYBATIS_LOG.SELECT_SQL_COLOR_KEY, getSelectColorRGB(), ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB());
-
         manager.setPreparing(preparing);
         manager.setParameters(parameters);
         manager.resetKeywords(keywords);
