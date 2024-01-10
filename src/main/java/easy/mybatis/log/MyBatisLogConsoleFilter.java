@@ -19,6 +19,8 @@ public class MyBatisLogConsoleFilter implements Filter {
     private static final Set<String> NEED_BRACKETS;
     private final Project project;
     private String sql = null;
+    private String total = StringUtils.EMPTY;
+    private Integer sqlOrder = 0;
 
     static {
         Set<String> types = new HashSet<>(8);
@@ -33,7 +35,7 @@ public class MyBatisLogConsoleFilter implements Filter {
         NEED_BRACKETS = Collections.unmodifiableSet(types);
     }
 
-    MyBatisLogConsoleFilter(Project project) {
+    public MyBatisLogConsoleFilter(Project project) {
         this.project = project;
     }
 
@@ -57,21 +59,21 @@ public class MyBatisLogConsoleFilter implements Filter {
                 }
             }
         }
-
         if (line.contains(preparing)) {
             sql = line;
             return null;
         }
-        if (StringUtils.isNotBlank(sql) && !line.contains(parameters)) {
+        if (line.contains("<==") && line.contains("Total")) {
+            total = StringUtils.trim(StringUtils.substringAfter(line, "<=="));
+        }
+        if (StringUtils.isNotBlank(sql) && !line.contains(parameters) && !line.contains("<==") && !line.contains("Total")) {
             return null;
         }
         if (StringUtils.isBlank(sql)) {
             return null;
         }
-
         String logPrefix = StringUtils.substringBefore(sql, preparing);
         String wholeSql = parseSql(StringUtils.substringAfter(sql, preparing), parseParams(StringUtils.substringAfter(line, parameters))).toString();
-
         String key;
         if (StringUtils.startsWithIgnoreCase(wholeSql, "insert")) {
             key = Constants.Persistence.MYBATIS_LOG.INSERT_SQL_COLOR_KEY;
@@ -84,7 +86,14 @@ public class MyBatisLogConsoleFilter implements Filter {
         } else {
             key = "unknown";
         }
-        manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance().getInt(key, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
+        if (StringUtils.isNotBlank(wholeSql) && StringUtils.isBlank(total)) {
+            this.sqlOrder = manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance().getInt(key,
+                    ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
+        }
+        if (StringUtils.isNotBlank(total)) {
+            manager.printlnTotal(total, sqlOrder);
+            this.total = StringUtils.EMPTY;
+        }
         return null;
     }
 

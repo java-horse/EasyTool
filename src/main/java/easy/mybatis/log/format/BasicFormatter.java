@@ -96,7 +96,6 @@ public class BasicFormatter {
                             t = tokens.nextToken();
                             token += t;
                         }
-                        // cannot handle single quotes
                         while (!"'".equals(t) && tokens.hasMoreTokens());
                         break;
                     }
