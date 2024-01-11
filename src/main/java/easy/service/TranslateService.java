@@ -2,8 +2,13 @@ package easy.service;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.OpenModelTranslateEnum;
@@ -15,8 +20,11 @@ import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +46,8 @@ public class TranslateService {
     private static final Object LOCK = new Object();
 
     private static final List<String> INVALID_CHARACTERS_LIST = Collections.unmodifiableList(Arrays.asList("/\\*\\*", "\\*", "\n", "\t", "\r"));
+    private static final Pattern SPLIT_CAMEL_CASE_PATTERN = Pattern.compile("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
+    private static final Pattern SPECIAL_CHAR_PATTERN = Pattern.compile("^\\W+");
 
     /**
      * 翻译引擎初始化
@@ -90,9 +100,11 @@ public class TranslateService {
         if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
             translateChannel = translateConfig.getOpenModelChannel();
         }
+        String initTranslateChannel = translateChannel;
         if (Boolean.TRUE.equals(keyConfigurationReminder())) {
             translateChannel = TranslateEnum.KING_SOFT.getTranslate();
-            NotificationUtil.notify("已自动切换免费翻译引擎，请及时配置当前翻译引擎【" + translateChannel + "】密钥", NotificationType.WARNING);
+            NotificationUtil.notify("已为您自动切换免费翻译引擎【"+ translateChannel +"】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
+                    NotificationType.WARNING, getTranslateChannelNotifyAction());
         }
         Translate translate = translateMap.get(translateChannel);
         if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
@@ -118,10 +130,7 @@ public class TranslateService {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < size; i++) {
                 String lowEn = chList.get(i);
-                if (StringUtils.isBlank(lowEn)) {
-                    continue;
-                }
-                if (Constants.STOP_WORDS.contains(lowEn.toLowerCase())) {
+                if (StringUtils.isBlank(lowEn) || Constants.STOP_WORDS.contains(lowEn.toLowerCase())) {
                     continue;
                 }
                 if (i == 0) {
@@ -133,29 +142,8 @@ public class TranslateService {
             }
             return builder.toString();
         }
-        // 尝试分割分词, 翻译拼接处理
-        if (LanguageUtil.isAllEnglish(source) || LanguageUtil.isCamelCase(source) || LanguageUtil.isSnakeCase(source)) {
-            StringBuilder builder = new StringBuilder();
-            String[] splitSources = new String[]{};
-            if (LanguageUtil.isCamelCase(source)) {
-                splitSources = LanguageUtil.splitCamelCase(source);
-            } else if (LanguageUtil.isSnakeCase(source)) {
-                splitSources = StringUtils.split(source, "_");
-            } else if (StringUtils.contains(source, StringUtils.SPACE)) {
-                splitSources = StringUtils.split(source, StringUtils.SPACE);
-            }
-            for (String split : splitSources) {
-                String en2Ch = translate.en2Ch(split);
-                if (StringUtils.isNotBlank(en2Ch)) {
-                    builder.append(en2Ch);
-                }
-            }
-            if (StringUtils.isBlank(builder.toString())) {
-                builder.append(translate.en2Ch(source));
-            }
-            return builder.toString();
-        }
-        return translate.en2Ch(source);
+        // 尝试分割分词&翻译拼接处理
+        return translate.en2Ch(analysisSource(source));
     }
 
     /**
@@ -214,5 +202,68 @@ public class TranslateService {
         return isRemind;
     }
 
+    /**
+     * 分析英文单词或其他信息
+     *
+     * @param text
+     * @return java.lang.String
+     * @author mabin
+     * @date 2024/1/11 14:31
+     */
+    private String analysisSource(String text) {
+        String resultText;
+        String appendText = StringUtils.EMPTY;
+        Matcher matcher = SPECIAL_CHAR_PATTERN.matcher(text);
+        if (matcher.find()) {
+            appendText = matcher.group(0);
+        }
+        text = text.replaceAll("^\\W+", StringUtils.EMPTY);
+        boolean isLower = StringUtils.equals(text, text.toLowerCase());
+        boolean isUpper = StringUtils.equals(text, text.toUpperCase());
+        if (isLower && text.contains("_")) {
+            // snake_case
+            resultText = text.replaceAll("_", StringUtils.SPACE);
+        } else if (isLower && text.contains(StringUtils.SPACE)) {
+            // snake case
+            resultText = text;
+        } else if (Character.isUpperCase(text.charAt(0)) && Character.isLowerCase(text.charAt(1)) && text.contains(StringUtils.SPACE)) {
+            // SNAKE CASE
+            resultText = text.toLowerCase();
+        } else if (isLower && text.contains("-") || (isLower && !text.contains(StringUtils.SPACE))) {
+            // snake-case
+            resultText = text.replaceAll("-", StringUtils.SPACE);
+        } else if ((isUpper && text.contains("_")) || (isLower && !text.contains("_") && !text.contains(StringUtils.SPACE))
+                || (isUpper && !text.contains(StringUtils.SPACE))) {
+            // SNAKE_CASE
+            resultText = text.replaceAll("_", StringUtils.SPACE).toLowerCase();
+        } else if (!isUpper && text.substring(0, 1).equals(text.substring(0, 1).toUpperCase()) && !text.contains("_")) {
+            // SnakeCase
+            String caseText = text.substring(0, 1).toLowerCase() + text.substring(1);
+            resultText = SPLIT_CAMEL_CASE_PATTERN.matcher(caseText).replaceAll(StringUtils.SPACE).toLowerCase();
+        } else {
+            // snakeCase
+            resultText = SPLIT_CAMEL_CASE_PATTERN.matcher(text).replaceAll(StringUtils.SPACE).toLowerCase();
+        }
+        return appendText + resultText.replaceAll("-", StringUtils.SPACE)
+                .replaceAll("_", StringUtils.SPACE)
+                .replaceAll("\\.", StringUtils.SPACE);
+    }
+
+    /**
+     * 获取翻译通知Action
+     *
+     * @param
+     * @return com.intellij.openapi.actionSystem.AnAction
+     * @author mabin
+     * @date 2024/1/11 13:39
+     */
+    private AnAction getTranslateChannelNotifyAction() {
+        return new NotificationAction(Constants.PLUGIN_NAME) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                ShowSettingsUtil.getInstance().showSettingsDialog(null, Constants.PLUGIN_NAME);
+            }
+        };
+    }
 
 }
