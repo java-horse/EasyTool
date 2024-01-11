@@ -56,9 +56,9 @@ public class AppActiveListener implements ApplicationActivationListener {
      * @date 2023/9/4 21:21
      **/
     private void support() {
-        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -7).getTime());
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -16).getTime());
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastNoticeTime < INTERVAL && currentTimeMillis >= lastNoticeTime) {
+        if (currentTimeMillis - lastNoticeTime < INTERVAL) {
             return;
         }
         AnAction starAction = new NotificationAction("\uD83C\uDF1F 点个star") {

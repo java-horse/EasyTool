@@ -35,6 +35,7 @@ public class Constants {
          */
         public interface COMMON {
             String LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".last_notify_time";
+            String TRANSLATE_CONFIG_LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".translate_config_last_notify_time";
         }
 
         /**

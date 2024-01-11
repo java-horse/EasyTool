@@ -1,7 +1,9 @@
 package easy.service;
 
+import cn.hutool.core.date.DateUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
@@ -48,6 +50,9 @@ public class TranslateService {
     private static final List<String> INVALID_CHARACTERS_LIST = Collections.unmodifiableList(Arrays.asList("/\\*\\*", "\\*", "\n", "\t", "\r"));
     private static final Pattern SPLIT_CAMEL_CASE_PATTERN = Pattern.compile("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
     private static final Pattern SPECIAL_CHAR_PATTERN = Pattern.compile("^\\W+");
+
+    // 通知时间间隔 (3天之内打开项目只弹窗一次提示)
+    private static final long INTERVAL = 3 * 24 * 60 * 60 * 1000L;
 
     /**
      * 翻译引擎初始化
@@ -103,8 +108,15 @@ public class TranslateService {
         String initTranslateChannel = translateChannel;
         if (Boolean.TRUE.equals(keyConfigurationReminder())) {
             translateChannel = TranslateEnum.KING_SOFT.getTranslate();
-            NotificationUtil.notify("已为您自动切换免费翻译引擎【"+ translateChannel +"】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
-                    NotificationType.WARNING, getTranslateChannelNotifyAction());
+            // 每3天检测一次是否弹窗通知
+            PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+            long lastNoticeTime = propertiesComponent.getLong(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -8).getTime());
+            long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - lastNoticeTime > INTERVAL) {
+                NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
+                        NotificationType.WARNING, getTranslateChannelNotifyAction());
+                propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
+            }
         }
         Translate translate = translateMap.get(translateChannel);
         if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
