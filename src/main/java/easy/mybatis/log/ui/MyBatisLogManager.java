@@ -175,18 +175,11 @@ public class MyBatisLogManager implements Disposable {
         return RunnerLayoutUi.Factory.getInstance(project).create(runnerName, runnerName, runnerName, project);
     }
 
-    public int println(String logPrefix, String sql, int rgb) {
+    public void println(String logPrefix, String sql, int rgb) {
         ConsoleViewContentType consoleViewContentType = consoleViewContentTypes.computeIfAbsent(rgb, k -> new ConsoleViewContentType(Integer.toString(rgb), new TextAttributes(new JBColor(rgb, rgb), null, null, null, Font.PLAIN)));
-        int andGet = counter.incrementAndGet();
-        consoleView.print(String.format("--> %s <-- ==> %s", andGet, logPrefix) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
-        consoleView.print(String.format("%s;", isFormat() ? FORMATTER.format(sql) : sql) + StringUtils.LF, consoleViewContentType);
-        return andGet;
+        consoleView.print(String.format("--> %s <-- ==> %s", counter.incrementAndGet(), logPrefix) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
+        consoleView.print(String.format("%s", isFormat() ? FORMATTER.format(sql) : sql) + ";" + StringUtils.LF, consoleViewContentType);
     }
-
-    public void printlnTotal(String total, int order) {
-        consoleView.print(String.format("--> %s <-- <== %s", order, total) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
-    }
-
     private boolean isFormat() {
         return PropertiesComponent.getInstance().getBoolean(PrettyPrintToggleAction.class.getName());
     }

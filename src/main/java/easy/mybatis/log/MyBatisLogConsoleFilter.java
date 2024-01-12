@@ -19,8 +19,6 @@ public class MyBatisLogConsoleFilter implements Filter {
     private static final Set<String> NEED_BRACKETS;
     private final Project project;
     private String sql = null;
-    private String total = StringUtils.EMPTY;
-    private Integer sqlOrder = 0;
 
     static {
         Set<String> types = new HashSet<>(8);
@@ -63,10 +61,7 @@ public class MyBatisLogConsoleFilter implements Filter {
             sql = line;
             return null;
         }
-        if (line.contains("<==") && line.contains("Total")) {
-            total = StringUtils.trim(StringUtils.substringAfter(line, "<=="));
-        }
-        if (StringUtils.isNotBlank(sql) && !line.contains(parameters) && !line.contains("<==") && !line.contains("Total")) {
+        if (StringUtils.isNotBlank(sql) && !line.contains(parameters)) {
             return null;
         }
         if (StringUtils.isBlank(sql)) {
@@ -86,13 +81,8 @@ public class MyBatisLogConsoleFilter implements Filter {
         } else {
             key = "unknown";
         }
-        if (StringUtils.isNotBlank(wholeSql) && StringUtils.isBlank(total)) {
-            this.sqlOrder = manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance().getInt(key,
-                    ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
-        }
-        if (StringUtils.isNotBlank(total)) {
-            manager.printlnTotal(total, sqlOrder);
-            this.total = StringUtils.EMPTY;
+        if (StringUtils.isNotBlank(wholeSql)) {
+            manager.println(logPrefix, wholeSql, PropertiesComponent.getInstance().getInt(key, ConsoleViewContentType.ERROR_OUTPUT.getAttributes().getForegroundColor().getRGB()));
         }
         return null;
     }
