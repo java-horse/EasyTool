@@ -47,6 +47,7 @@
         <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择<em>CopyUrl</em></li>
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
+        <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -68,9 +69,11 @@
         <![CDATA[
       <h3>v2.0.2</h3>
       <ul>
+        <li>Optimize the logic of English Chinese translation and improve translation accuracy</li>
         <li>Support for restoring mybatis SQL logs to their original, complete, and executable SQL</li>
         <li>-------------------------------</li>
-        <li>支持增将 Mybatis SQL 日志恢复为原始的完整可执行 SQL</li>
+        <li>优化翻译功能中的英译中逻辑，提高翻译准确率</li>
+        <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
       </ul>
       <h3>v2.0.1</h3>
       <ul>

@@ -19,14 +19,14 @@ public class NextSqlAction extends JumpSqlAction {
 
         super.actionPerformed(e);
 
-        final int offset = editor.getCaretModel().getPrimaryCaret().getOffset() + 2;
-        final int textLength = editor.getDocument().getTextLength();
+        int offset = editor.getCaretModel().getPrimaryCaret().getOffset() + 2;
+        int textLength = editor.getDocument().getTextLength();
 
         if (offset >= textLength) {
             return;
         }
 
-        final int movedOffset = jump(offset, textLength, true);
+        int movedOffset = jump(offset, textLength, true);
         if (movedOffset > -1 && (e.getInputEvent().isShiftDown())) {
                 editor.getSelectionModel().setSelection(offset - 2, movedOffset);
 
@@ -44,15 +44,15 @@ public class NextSqlAction extends JumpSqlAction {
     }
 
     private boolean hasNext() {
-        final int offset = editor.getCaretModel().getPrimaryCaret().getOffset() + 2;
-        final int textLength = editor.getDocument().getTextLength();
+        int offset = editor.getCaretModel().getPrimaryCaret().getOffset() + 2;
+        int textLength = editor.getDocument().getTextLength();
 
         if (offset >= textLength) {
             return false;
         }
 
-        final MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
-        final MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(offset, textLength);
+        MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
+        MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(offset, textLength);
         try {
             return iterator.hasNext() && isValid(iterator.next(), offset, textLength);
         } finally {

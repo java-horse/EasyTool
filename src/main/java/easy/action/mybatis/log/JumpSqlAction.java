@@ -36,14 +36,14 @@ public abstract class JumpSqlAction extends AnAction {
     }
 
     protected int jump(int startOffset, int endOffset, boolean canBreak) {
-        final MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
-        final MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(startOffset, endOffset);
+        MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
+        MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(startOffset, endOffset);
 
         int movedOffset = -1;
 
         try {
             while (iterator.hasNext()) {
-                final RangeHighlighterEx next = iterator.next();
+                RangeHighlighterEx next = iterator.next();
                 if (isValid(next, startOffset, endOffset)) {
                     editor.getCaretModel().getPrimaryCaret().moveToOffset(movedOffset = next.getStartOffset());
                     editor.getScrollingModel().scrollToCaret(ScrollType.MAKE_VISIBLE);

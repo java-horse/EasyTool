@@ -20,12 +20,12 @@ public class PreviousSqlAction extends JumpSqlAction {
 
         super.actionPerformed(e);
 
-        final int offset = editor.getCaretModel().getPrimaryCaret().getOffset();
+        int offset = editor.getCaretModel().getPrimaryCaret().getOffset();
         if (offset <= 1) {
             return;
         }
 
-        final int movedOffset = jump(0, offset - 1, false);
+        int movedOffset = jump(0, offset - 1, false);
 
         if (movedOffset > -1 && (e.getInputEvent().isShiftDown())) {
                 editor.getSelectionModel().setSelection(offset, movedOffset);
@@ -44,12 +44,12 @@ public class PreviousSqlAction extends JumpSqlAction {
     }
 
     private boolean hasPrev() {
-        final int offset = editor.getCaretModel().getPrimaryCaret().getOffset();
+        int offset = editor.getCaretModel().getPrimaryCaret().getOffset();
         if (offset <= 1) {
             return false;
         }
-        final MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
-        final MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(0, offset - 1);
+        MarkupModelEx model = (MarkupModelEx) editor.getMarkupModel();
+        MarkupIterator<RangeHighlighterEx> iterator = model.overlappingIterator(0, offset - 1);
         try {
             return iterator.hasNext() && isValid(iterator.next(), 0, offset - 1);
         } finally {
