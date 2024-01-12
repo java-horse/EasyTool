@@ -3,13 +3,19 @@ package easy.diagnostic;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationNamesInfo;
 import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.extensions.PluginDescriptor;
 import com.intellij.openapi.util.SystemInfo;
+import easy.util.EasyCommonUtil;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
+import easy.util.NotificationUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.ThreadUtils;
@@ -148,6 +154,28 @@ public abstract class AbstractGiteeErrorReportSubmitter extends AbstractErrorRep
         }
         String issueId = issueNumberMap.get(throwableMd5);
         return StringUtils.isBlank(issueId) ? StringUtils.EMPTY : issueId;
+    }
+
+    /**
+     * 提交成功通知
+     *
+     * @param issueId
+     * @return void
+     * @author mabin
+     * @date 2024/1/5 10:51
+     */
+    @Override
+    protected void submitNotify(String issueId) {
+        if (StringUtils.isBlank(issueId)) {
+            return;
+        }
+        AnAction issueAction = new NotificationAction(issueId) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                EasyCommonUtil.confirmOpenLink(generateUrlByIssueId(issueId));
+            }
+        };
+        NotificationUtil.notify("Submitted success. Thank you for your feedback!", issueAction);
     }
 
 }

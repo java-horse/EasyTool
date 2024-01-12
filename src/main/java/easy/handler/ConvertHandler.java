@@ -13,7 +13,6 @@ import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.form.Statistics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +31,6 @@ import java.util.Map;
  **/
 
 public class ConvertHandler implements TypedActionHandler {
-    private static final Logger log = Logger.getInstance(ConvertHandler.class);
     private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
@@ -56,7 +54,7 @@ public class ConvertHandler implements TypedActionHandler {
      **/
     public static void reload() {
         EN_ZH_CHAR_MAP.clear();
-        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.STATE_VAR.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
+        String defaultStr = PropertiesComponent.getInstance().getValue(Constants.Persistence.CONVERT.EASY_CHAR_KEY, Constants.DEFAULT_STRING);
         if (StringUtils.isBlank(defaultStr)) {
             return;
         }
@@ -97,63 +95,10 @@ public class ConvertHandler implements TypedActionHandler {
             });
         } else if (enChar != null) {
             orignTypedActionHandler.execute(editor, enChar.charAt(0), dataContext);
-            updateStatisticsText();
         } else {
             orignTypedActionHandler.execute(editor, c, dataContext);
         }
         this.lastChar = c;
-    }
-
-    /**
-     * 获取总转换次数
-     *
-     * @param
-     * @return java.lang.Long
-     * @author mabin
-     * @date 2023/5/23 10:54
-     **/
-    private Long getTotalConvertCount() {
-        return PropertiesComponent.getInstance().getLong(Constants.STATE_VAR.TOTAL_CONVERT_COUNT, 0);
-    }
-
-    /**
-     * 获取天转换次数
-     *
-     * @param
-     * @param dayKeyName
-     * @return java.lang.Long
-     * @author mabin
-     * @date 2023/10/14 9:51
-     */
-    private Long getDayConvertCount(String dayKeyName) {
-        return PropertiesComponent.getInstance().getLong(dayKeyName, 0);
-    }
-
-    /**
-     * 更新统计文本
-     *
-     * @param
-     * @return void
-     * @author mabin
-     * @date 2023/10/14 9:55
-     */
-    private void updateStatisticsText() {
-        try {
-            PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-            propertiesComponent.setValue(Constants.STATE_VAR.TOTAL_CONVERT_COUNT, Long.toString(getTotalConvertCount() + 1));
-            String dayKeyName = Constants.STATE_VAR.DAY_CONVERT_COUNT + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            propertiesComponent.setValue(dayKeyName, Long.toString(getDayConvertCount(dayKeyName) + 1));
-
-            Statistics statistics = Statistics.getInstance();
-            JTextField dayTextField = statistics.getDayTextField();
-            javax.swing.text.Document dayDocument = dayTextField.getDocument();
-            dayDocument.remove(0, dayDocument.getLength());
-            dayDocument.insertString(0, Constants.PLUGIN_NAME + " 今日已转换中英文字符 " + getDayConvertCount(dayKeyName) +
-                    " 次 累计 " + getTotalConvertCount() + " 次", null);
-            dayTextField.setDocument(dayDocument);
-        } catch (Exception e) {
-            log.error("更新工具栏统计选项卡文本数据异常", e);
-        }
     }
 
 }

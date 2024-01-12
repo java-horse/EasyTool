@@ -27,13 +27,37 @@ public class Constants {
     public static final String BREAK_LINE = "&br;";
 
     /**
-     * 持久化数据变量名
+     * 插件持久化变量
      */
-    public interface STATE_VAR {
-        String LAST_NOTIFY_TIME = "last_notify_time";
-        String EASY_CHAR_KEY = "easy_char_key";
-        String TOTAL_CONVERT_COUNT = "total_convert_count";
-        String DAY_CONVERT_COUNT = "day_convert_count";
+    public static class Persistence {
+        /**
+         * 通用
+         */
+        public interface COMMON {
+            String LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".last_notify_time";
+            String TRANSLATE_CONFIG_LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".translate_config_last_notify_time";
+        }
+
+        /**
+         * 中英文字符转换
+         */
+        public interface CONVERT {
+            String EASY_CHAR_KEY = PLUGIN_NAME + "." + CONVERT.class.getSimpleName() + ".easy_char_key";
+        }
+
+        /**
+         * Mybatis Log
+         */
+        public interface MYBATIS_LOG {
+            String PREPARING_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".preparing";
+            String PARAMETERS_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".parameters";
+            String KEYWORDS_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".keywords";
+            String INSERT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".insert_sql_color";
+            String DELETE_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".delete_sql_color";
+            String UPDATE_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".update_sql_color";
+            String SELECT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".select_sql_color";
+        }
+
     }
 
     /**

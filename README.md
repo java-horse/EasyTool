@@ -30,6 +30,7 @@
 > * 支持自动复制接口完整URL
 > * 支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: `CTRL + ALT + /`
 > * 参考 GenerateAllSetter 插件，支持 IDEA Postfix 语法自动生成 POJO的所有Setter、Getter 以及 POJO 之间的属性转换
+> * 支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL
 
 #### 使用说明
 > * 在 JetBrains IED 的插件市场收索 `EasyTool` 并安装成功

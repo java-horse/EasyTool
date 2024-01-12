@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import easy.action.mybatis.log.MyBatisLogAction;
 import easy.enums.ToolWindowEnum;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,8 +26,8 @@ public class DynamicToolWindowActionGroup extends DefaultActionGroup {
         return new AnAction[]{
                 new ToolWindowAction(ToolWindowEnum.SEARCH_API),
                 new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
-                new ToolWindowAction(ToolWindowEnum.PLUGIN_STATISTICS),
-                new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING)
+                new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING),
+                new MyBatisLogAction()
         };
     }
 

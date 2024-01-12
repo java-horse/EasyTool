@@ -19,11 +19,11 @@
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎, 快捷键: <em>CTRL + \</em> </li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
-            <li>--<em>金山翻译</em></li>
+            <li>--<em>金山翻译(Free)</em></li>
             <li>--<em>阿里翻译</em></li>
             <li>--<em>腾讯翻译</em></li>
             <li>--<em>火山翻译</em></li>
@@ -47,6 +47,7 @@
         <li>支持自动复制接口完整URL, 在@RequestMapping或Restful风格Mapping注解的接口上右键选择<em>CopyUrl</em></li>
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
+        <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -66,6 +67,14 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.2</h3>
+      <ul>
+        <li>Optimize the logic of English Chinese translation and improve translation accuracy</li>
+        <li>Support for restoring mybatis SQL logs to their original, complete, and executable SQL</li>
+        <li>-------------------------------</li>
+        <li>优化翻译功能中的英译中逻辑，提高翻译准确率</li>
+        <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
+      </ul>
       <h3>v2.0.1</h3>
       <ul>
         <li>Optimize plugin settings for page hierarchy</li>
@@ -240,6 +249,9 @@
         <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
         <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
 
+        <consoleFilterProvider implementation="easy.mybatis.log.MyBatisLogConsoleFilterProvider"/>
+        <executor implementation="easy.mybatis.log.ui.MyBatisLogExecutor"/>
+
         <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
 
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
@@ -256,9 +268,6 @@
                                  instance="easy.settings.TranslateSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
-
-        <toolWindow id="EasyTool" secondary="true" anchor="right" icon="easy.icons.EasyIcons.ICON.TOOL_LOGO"
-                    canCloseContents="true" factoryClass="easy.config.SidebarConfig"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
@@ -321,6 +330,9 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta alt SLASH"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt SLASH"/>
         </action>
+        <!--Mybatis Log 日志解析-->
+        <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction" text="Mybatis Log"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
@@ -342,6 +354,7 @@
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolMyBatisLogAction"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -352,6 +365,7 @@
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolMyBatisLogAction"/>
         </group>
 
     </actions>

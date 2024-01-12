@@ -52,6 +52,7 @@ public abstract class AbstractErrorReportSubmitter extends ErrorReportSubmitter 
                 reportInfo = new SubmittedReportInfo(generateUrlByIssueId(issueId), generateTextByIssueId(issueId), SubmittedReportInfo.SubmissionStatus.DUPLICATE);
             }
             consumer.consume(reportInfo);
+            submitNotify(issueId);
             return true;
         } catch (Exception e) {
             consumer.consume(new SubmittedReportInfo(StringUtils.EMPTY, "error: " + e.getMessage(), SubmittedReportInfo.SubmissionStatus.FAILED));
@@ -113,5 +114,15 @@ public abstract class AbstractErrorReportSubmitter extends ErrorReportSubmitter 
      */
     @NotNull
     protected abstract String generateUrlByIssueId(String issueId);
+
+    /**
+     * 提交成功通知
+     *
+     * @param issueId
+     * @return void
+     * @author mabin
+     * @date 2024/1/5 10:51
+     */
+    protected abstract void submitNotify(String issueId);
 
 }
