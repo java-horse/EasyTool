@@ -1,24 +1,19 @@
 package easy.git.emoji.convert;
 
 import com.intellij.ide.AppLifecycleListener;
-import com.intellij.ide.util.PropertiesComponent;
 import javassist.*;
 
 import java.util.List;
 
 public class EmojiCommitLogALL implements AppLifecycleListener {
-
-    // 定义配置键值，用于判断是否渲染带emoji的提交日志
-    public static final String CONFIG_RENDER_COMMIT_LOG = "config.render.commit.log";
+    // private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
 
     @Override
     public void appFrameCreated(List<String> commandLineArgs) {
-        // 获取项目全局属性实例
-        PropertiesComponent projectInstance = PropertiesComponent.getInstance();
         // 检查配置是否允许渲染带emoji的提交日志，若不允许则直接返回
-        if (!projectInstance.getBoolean(CONFIG_RENDER_COMMIT_LOG, true)) {
-            return;
-        }
+        // if (Boolean.FALSE.equals(gitEmojiConfig.getRenderCommitLogCheckBox())) {
+        //     return;
+        // }
         // 初始化ClassPool，用于操作字节码
         ClassPool classPool = ClassPool.getDefault();
         // 添加EmojiConverter类到ClassPool中以便查找和修改
@@ -30,7 +25,7 @@ public class EmojiCommitLogALL implements AppLifecycleListener {
             if (ctClass != null) {
                 ctClass.defrost();
                 // 获取EmojiConverter类中的convert方法的字节码表示
-                CtMethod converterMethod = classPool.get("com.h3110w0r1d.gitmoji.EmojiConverter").getDeclaredMethod("convert");
+                CtMethod converterMethod = classPool.get("easy.git.emoji.convert.EmojiConverter").getDeclaredMethod("convert");
                 // 将convert方法复制并添加到GraphCommitCell类中
                 ctClass.addMethod(CtNewMethod.copy(converterMethod, ctClass, null));
                 // 获取GraphCommitCell类的构造方法字节码表示
@@ -50,7 +45,6 @@ public class EmojiCommitLogALL implements AppLifecycleListener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

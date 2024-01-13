@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class EmojiConverter {
 
-    // 定义一个静态映射表，将emoji别名转换为对应的Unicode表情符号
-    private static final Map<String, String> CONVERTER_MAP = new HashMap<>();
+    private static final Map<String, String> CONVERTER_MAP = new HashMap<>(64);
+
     static {
         CONVERTER_MAP.put(":art:", "🎨");
         CONVERTER_MAP.put(":zap:", "⚡️");

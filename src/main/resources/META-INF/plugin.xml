@@ -274,12 +274,19 @@
                                  instance="easy.settings.TranslateSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
+                                 instance="easy.settings.GitEmojiSettingConfigurable"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
     </extensions>
+
+
+    <applicationListeners>
+        <listener class="easy.git.emoji.convert.EmojiCommitLogALL" topic="com.intellij.ide.AppLifecycleListener"/>
+    </applicationListeners>
 
 
     <actions>
@@ -339,6 +346,12 @@
         <!--Mybatis Log 日志解析-->
         <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction" text="Mybatis Log"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
+        <!--Git Commit Emoji-->
+        <action id="EasyToolGitCommitAction" class="easy.action.GitCommitAction" text="GitEmoji"
+                description="EasyTool development assistance tools" icon="AllIcons.Xml.Browsers.Canary">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"

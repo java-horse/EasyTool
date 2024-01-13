@@ -14,27 +14,41 @@ import java.util.List;
  */
 public class Gitmojis {
 
-    private List<Gitmoji> gitmojiList;
+    private List<Gitmoji> gitmojis;
 
-    public Gitmojis(List<Gitmoji> gitmojiList) {
-        this.gitmojiList = gitmojiList;
+    public Gitmojis(List<Gitmoji> gitmojis) {
+        this.gitmojis = gitmojis;
     }
 
-    /**
-     * 用于存储单个Gitmoji的信息
-     */
+    public List<Gitmoji> getGitmojis() {
+        return gitmojis;
+    }
+
+    public void setGitmojis(List<Gitmoji> gitmojis) {
+        this.gitmojis = gitmojis;
+    }
+
     public static class Gitmoji {
-        // 表情符
         private final String emoji;
-        // 编码
         private final String code;
-        // 描述信息
         private final String description;
 
         public Gitmoji(String emoji, String code, String description) {
             this.emoji = emoji;
             this.code = code;
             this.description = description;
+        }
+
+        public String getEmoji() {
+            return emoji;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public String getDescription() {
+            return description;
         }
     }
 

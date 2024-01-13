@@ -1,6 +1,7 @@
 package easy.git.emoji.base;
 
 import com.intellij.openapi.util.IconLoader;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 
@@ -16,10 +17,22 @@ public class GitmojiData {
         this.description = description;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public String getEmoji() {
+        return emoji;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public Icon getIcon() {
         if (icon == null) {
             try {
-                icon = IconLoader.findIcon("/emoji/images/" + code.replace(":", "") + ".png", GitmojiData.class, false, true);
+                icon = IconLoader.findIcon("/emoji/images/" + code.replace(":", StringUtils.EMPTY) + ".png", GitmojiData.class, false, true);
                 if (icon == null) {
                     icon = IconLoader.getIcon("/emoji/images/anguished.png", GitmojiData.class);
                 }
