@@ -93,9 +93,11 @@ public class EmojiConverter {
      * @return 替换后的真实Unicode表情符号字符串
      */
     public static String convert(String value) {
+        System.out.println("value=" + value);
         if (!value.contains(":")) {
             return value;
         }
+        System.out.println("value1=" + value);
         StringBuilder sb = new StringBuilder(value);
         for (Map.Entry<String, String> entry : CONVERTER_MAP.entrySet()) {
             int index = sb.indexOf(entry.getKey());

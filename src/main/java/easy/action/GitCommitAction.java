@@ -1,8 +1,6 @@
 package easy.action;
 
-import com.google.gson.Gson;
 import com.intellij.ide.TextCopyProvider;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -32,13 +30,11 @@ import com.intellij.ui.scale.JBUIScale;
 import com.intellij.ui.speedSearch.SpeedSearchUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile;
-import easy.base.Constants;
-import easy.config.enoji.GitEmojiConfig;
-import easy.config.enoji.GitEmojiConfigComponent;
+import easy.config.emoji.GitEmojiConfig;
+import easy.config.emoji.GitEmojiConfigComponent;
 import easy.git.emoji.base.GitmojiData;
 import easy.git.emoji.base.Gitmojis;
 import easy.util.JsonUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,10 +56,6 @@ public class GitCommitAction extends AnAction {
     private final Pattern regexPattern = Pattern.compile(":[a-z0-9_]+:");
     private final ArrayList<GitmojiData> gitmojis = new ArrayList<>();
 
-    {
-        loadLocalGitEmoji(gitEmojiConfig.getLanguageComboBox());
-    }
-
     @Override
     public boolean isDumbAware() {
         return true;
@@ -77,9 +69,8 @@ public class GitCommitAction extends AnAction {
         }
         CommitMessage commitMessage = (CommitMessage) actionEvent.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL);
         if (commitMessage != null) {
-            if (CollectionUtils.isEmpty(gitmojis)) {
-                loadLocalGitEmoji(gitEmojiConfig.getLanguageComboBox());
-            }
+            // todo 此处应该设置一个持久化变量值，比较是否相等而选择是否重新读取文件
+            loadLocalGitEmoji(gitEmojiConfig.getLanguageRealValue());
             JBPopup popup = createPopup(project, commitMessage, gitmojis);
             popup.showInBestPositionFor(actionEvent.getDataContext());
         }
@@ -98,11 +89,10 @@ public class GitCommitAction extends AnAction {
             model.addElement(data);
         }
         JBList<GitmojiData> jbList = new JBList<>(model);
-
         JBPopup jbPopup = JBPopupFactory.getInstance()
                 .createListPopupBuilder(jbList)
                 .setFont(commitMessage.getEditorField().getEditor().getColorsScheme().getFont(EditorFontType.PLAIN))
-                .setVisibleRowCount(7)
+                .setVisibleRowCount(8)
                 .setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
                 .setItemSelectedCallback(item -> {
                     selectedMessage[0] = item;
@@ -168,7 +158,7 @@ public class GitCommitAction extends AnAction {
             boolean insertInCursorPosition = gitEmojiConfig.getInsertInCursorPositionCheckBox();
             boolean includeGitmojiDescription = gitEmojiConfig.getIncludeEmojiDescCheckBox();
             int insertPosition = insertInCursorPosition ? currentOffset : 0;
-            String textAfterUnicode = gitEmojiConfig.getAfterEmojiComboBox();
+            String textAfterUnicode = gitEmojiConfig.getAfterEmojiRealValue();
             String selectedGitmoji = useUnicode ? gitmoji.getEmoji() + textAfterUnicode : gitmoji.getCode() + textAfterUnicode;
             boolean replaced = false;
             String message = currentCommitMessage;
@@ -184,7 +174,7 @@ public class GitCommitAction extends AnAction {
                 } else {
                     String actualRegex = regexPattern + Pattern.quote(textAfterUnicode);
                     if (message.matches("(?s).*" + actualRegex + ".*")) {
-                        message = actualRegex.replaceFirst(message, selectedGitmoji);
+                        message = actualRegex.replace(message, selectedGitmoji);
                         replaced = true;
                     }
                 }
@@ -218,6 +208,7 @@ public class GitCommitAction extends AnAction {
     }
 
     private void loadLocalGitEmoji(String language) {
+        System.out.println("languge=" + language);
         try (InputStream inputStream = getClass().getResourceAsStream("/emoji/json/" + language + ".json")) {
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -242,6 +233,7 @@ public class GitCommitAction extends AnAction {
         for (Gitmojis.Gitmoji gitmoji : gitmojisJson.getGitmojis()) {
             this.gitmojis.add(new GitmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription()));
         }
+        System.out.println(gitmojis);
     }
 
 }

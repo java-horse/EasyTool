@@ -2,8 +2,8 @@ package easy.form;
 
 
 import com.intellij.openapi.application.ApplicationManager;
-import easy.config.enoji.GitEmojiConfig;
-import easy.config.enoji.GitEmojiConfigComponent;
+import easy.config.emoji.GitEmojiConfig;
+import easy.config.emoji.GitEmojiConfigComponent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class GitEmojiSettingView {
         setDisplayEmojiCheckBox(gitEmojiConfig.getDisplayEmojiCheckBox());
         setInsertInCursorPositionCheckBox(gitEmojiConfig.getInsertInCursorPositionCheckBox());
         setIncludeEmojiDescCheckBox(gitEmojiConfig.getIncludeEmojiDescCheckBox());
-        String afterEmojiValue = gitEmojiConfig.getAfterEmojiComboBox();
+        String afterEmojiValue = gitEmojiConfig.getAfterEmojiRealValue();
         if (StringUtils.equals(afterEmojiValue, StringUtils.EMPTY)) {
             setAfterEmojiComboBox("<nothing>");
         } else if (StringUtils.equals(afterEmojiValue, StringUtils.SPACE)) {
@@ -51,8 +51,7 @@ public class GitEmojiSettingView {
         } else {
             setAfterEmojiComboBox(afterEmojiValue);
         }
-        String languageValue = gitEmojiConfig.getLanguageComboBox();
-        setLanguageComboBox(StringUtils.equals(languageValue, "en") ? "English" : "Chinese");
+        setLanguageComboBox(StringUtils.equals(gitEmojiConfig.getLanguageRealValue(), "en") ? "English" : "Chinese");
     }
 
     public JPanel getEmojiPanel() {

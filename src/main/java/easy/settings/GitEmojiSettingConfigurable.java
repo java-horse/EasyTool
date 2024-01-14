@@ -3,8 +3,8 @@ package easy.settings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import easy.config.enoji.GitEmojiConfig;
-import easy.config.enoji.GitEmojiConfigComponent;
+import easy.config.emoji.GitEmojiConfig;
+import easy.config.emoji.GitEmojiConfigComponent;
 import easy.form.GitEmojiSettingView;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -59,18 +59,20 @@ public class GitEmojiSettingConfigurable implements Configurable {
         gitEmojiConfig.setInsertInCursorPositionCheckBox(gitEmojiSettingView.getInsertInCursorPositionCheckBox().isSelected());
         gitEmojiConfig.setIncludeEmojiDescCheckBox(gitEmojiSettingView.getIncludeEmojiDescCheckBox().isSelected());
         String afterEmojiComboBox = String.valueOf(gitEmojiSettingView.getAfterEmojiComboBox().getSelectedItem());
+        gitEmojiConfig.setAfterEmojiComboBox(afterEmojiComboBox);
         if (StringUtils.equals(afterEmojiComboBox, "<nothing>")) {
-            gitEmojiConfig.setAfterEmojiComboBox(StringUtils.EMPTY);
+            gitEmojiConfig.setAfterEmojiRealValue(StringUtils.EMPTY);
         } else if (StringUtils.equals(afterEmojiComboBox, "<space>")) {
-            gitEmojiConfig.setAfterEmojiComboBox(StringUtils.SPACE);
+            gitEmojiConfig.setAfterEmojiRealValue(StringUtils.SPACE);
         } else {
-            gitEmojiConfig.setAfterEmojiComboBox(afterEmojiComboBox);
+            gitEmojiConfig.setAfterEmojiRealValue(afterEmojiComboBox);
         }
         String languageComboBox = String.valueOf(gitEmojiSettingView.getLanguageComboBox().getSelectedItem());
+        gitEmojiConfig.setLanguageComboBox(languageComboBox);
         if (StringUtils.equals(languageComboBox, "English")) {
-            gitEmojiConfig.setLanguageComboBox("en");
+            gitEmojiConfig.setLanguageRealValue("en");
         } else {
-            gitEmojiConfig.setLanguageComboBox("zh_CN");
+            gitEmojiConfig.setLanguageRealValue("zh-CN");
         }
     }
 

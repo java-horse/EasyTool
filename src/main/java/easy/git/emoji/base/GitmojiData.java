@@ -6,14 +6,26 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 
 public class GitmojiData {
-    private final String code;
-    private final String emoji;
-    private final String description;
+    private String code;
+    private String emoji;
+    private String description;
     private Icon icon;
 
     public GitmojiData(String code, String emoji, String description) {
         this.code = code;
         this.emoji = emoji;
+        this.description = description;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setEmoji(String emoji) {
+        this.emoji = emoji;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -43,6 +55,14 @@ public class GitmojiData {
         return icon;
     }
 
+    @Override
+    public String toString() {
+        return "GitmojiData{" +
+                "code='" + code + '\'' +
+                ", emoji='" + emoji + '\'' +
+                ", description='" + description +
+                '}';
+    }
 }
 
 

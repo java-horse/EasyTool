@@ -1,4 +1,4 @@
-package easy.config.enoji;
+package easy.config.emoji;
 
 /**
  * Git Emoji配置项
@@ -15,7 +15,9 @@ public class GitEmojiConfig {
     private Boolean insertInCursorPositionCheckBox;
     private Boolean includeEmojiDescCheckBox;
     private String afterEmojiComboBox;
+    private String afterEmojiRealValue;
     private String languageComboBox;
+    private String languageRealValue;
 
     public Boolean getRenderCommitLogCheckBox() {
         return renderCommitLogCheckBox;
@@ -73,6 +75,22 @@ public class GitEmojiConfig {
         this.languageComboBox = languageComboBox;
     }
 
+    public String getAfterEmojiRealValue() {
+        return afterEmojiRealValue;
+    }
+
+    public void setAfterEmojiRealValue(String afterEmojiRealValue) {
+        this.afterEmojiRealValue = afterEmojiRealValue;
+    }
+
+    public String getLanguageRealValue() {
+        return languageRealValue;
+    }
+
+    public void setLanguageRealValue(String languageRealValue) {
+        this.languageRealValue = languageRealValue;
+    }
+
     @Override
     public String toString() {
         return "GitEmojiConfig{" +
@@ -82,7 +100,9 @@ public class GitEmojiConfig {
                 ", insertInCursorPositionCheckBox=" + insertInCursorPositionCheckBox +
                 ", includeEmojiDescCheckBox=" + includeEmojiDescCheckBox +
                 ", afterEmojiComboBox='" + afterEmojiComboBox + '\'' +
+                ", afterEmojiRealValue='" + afterEmojiRealValue + '\'' +
                 ", languageComboBox='" + languageComboBox + '\'' +
+                ", languageRealValue='" + languageRealValue + '\'' +
                 '}';
     }
 

@@ -50,6 +50,15 @@ public class Gitmojis {
         public String getDescription() {
             return description;
         }
+
+        @Override
+        public String toString() {
+            return "Gitmoji{" +
+                    "emoji='" + emoji + '\'' +
+                    ", code='" + code + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
+        }
     }
 
     /**

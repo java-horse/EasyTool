@@ -262,12 +262,13 @@
 
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.service.TranslateService"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
         <applicationConfigurable id="easy.tool.settings" displayName="EasyTool"
-                                 instance="easy.settings.EasyToolConfigurable"/>
+                                 instance="easy.settings.EasyToolConfigurable" groupId="other"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.common" displayName="Common"
                                  instance="easy.settings.CommonSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
@@ -282,12 +283,6 @@
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
     </extensions>
-
-
-    <applicationListeners>
-        <listener class="easy.git.emoji.convert.EmojiCommitLogALL" topic="com.intellij.ide.AppLifecycleListener"/>
-    </applicationListeners>
-
 
     <actions>
         <!--中英字符互转-->
