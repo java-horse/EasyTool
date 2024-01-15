@@ -8,16 +8,14 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.command.UndoConfirmationPolicy;
 import com.intellij.openapi.command.undo.UndoManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actions.ContentChooser;
 import com.intellij.openapi.editor.colors.EditorFontType;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.impl.text.TextEditorProvider;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.ui.popup.JBPopupListener;
-import com.intellij.openapi.ui.popup.LightweightWindowEvent;
+import com.intellij.openapi.ui.popup.*;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.ui.CommitMessage;
@@ -25,16 +23,18 @@ import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.ui.ColoredListCellRenderer;
 import com.intellij.ui.SimpleTextAttributes;
 import com.intellij.ui.awt.RelativePoint;
-import com.intellij.ui.components.JBList;
 import com.intellij.ui.scale.JBUIScale;
 import com.intellij.ui.speedSearch.SpeedSearchUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile;
+import easy.base.Constants;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
-import easy.git.emoji.base.GitmojiData;
+import easy.git.emoji.base.GitEmojiData;
 import easy.git.emoji.base.Gitmojis;
 import easy.util.JsonUtil;
+import easy.util.LanguageUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,11 +50,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class GitCommitAction extends AnAction {
+    private static final Logger log = Logger.getInstance(GitCommitAction.class);
 
     private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
-
     private final Pattern regexPattern = Pattern.compile(":[a-z0-9_]+:");
-    private final ArrayList<GitmojiData> gitmojis = new ArrayList<>();
+    private final List<GitEmojiData> gitmojis = new ArrayList<>();
 
     @Override
     public boolean isDumbAware() {
@@ -68,30 +68,35 @@ public class GitCommitAction extends AnAction {
             return;
         }
         CommitMessage commitMessage = (CommitMessage) actionEvent.getData(VcsDataKeys.COMMIT_MESSAGE_CONTROL);
-        if (commitMessage != null) {
-            // todo 此处应该设置一个持久化变量值，比较是否相等而选择是否重新读取文件
-            loadLocalGitEmoji(gitEmojiConfig.getLanguageRealValue());
-            JBPopup popup = createPopup(project, commitMessage, gitmojis);
-            popup.showInBestPositionFor(actionEvent.getDataContext());
+        if (Objects.isNull(commitMessage)) {
+            return;
         }
+        loadLocalGitEmoji(gitEmojiConfig.getLanguageRealValue());
+        JBPopup popup = createPopup(project, commitMessage, gitmojis);
+        popup.showInBestPositionFor(actionEvent.getDataContext());
     }
 
-    private JBPopup createPopup(Project project, CommitMessage commitMessage, List<GitmojiData> gitmojis) {
-        final GitmojiData[] chosenMessage = {null};
-        final GitmojiData[] selectedMessage = {null};
-        int rightMargin = CommitMessageInspectionProfile.getSubjectRightMargin(project);
+    /**
+     * 创建 git emoji 弹窗面板
+     *
+     * @param project
+     * @param commitMessage
+     * @param gitmojis
+     * @return com.intellij.openapi.ui.popup.JBPopup
+     * @author mabin
+     * @date 2024/1/15 10:06
+     */
+    private JBPopup createPopup(Project project, CommitMessage commitMessage, List<GitEmojiData> gitmojis) {
+        final GitEmojiData[] chosenMessage = {null};
+        final GitEmojiData[] selectedMessage = {null};
         Object previewCommandGroup = ObjectUtils.sentinel("Preview Commit Message");
         String currentCommitMessage = commitMessage.getEditorField().getText();
         int currentOffset = commitMessage.getEditorField().getCaretModel().getOffset();
 
-        DefaultListModel<GitmojiData> model = new DefaultListModel<>();
-        for (GitmojiData data : gitmojis) {
-            model.addElement(data);
-        }
-        JBList<GitmojiData> jbList = new JBList<>(model);
-        JBPopup jbPopup = JBPopupFactory.getInstance()
-                .createListPopupBuilder(jbList)
-                .setFont(commitMessage.getEditorField().getEditor().getColorsScheme().getFont(EditorFontType.PLAIN))
+        IPopupChooserBuilder<GitEmojiData> popupChooserBuilder = JBPopupFactory.getInstance().createPopupChooserBuilder(gitmojis);
+        Editor editor = commitMessage.getEditorField().getEditor();
+        JBPopup jbPopup = popupChooserBuilder
+                .setFont(Objects.nonNull(editor) ? editor.getColorsScheme().getFont(EditorFontType.PLAIN) : EditorFontType.getGlobalPlainFont())
                 .setVisibleRowCount(8)
                 .setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
                 .setItemSelectedCallback(item -> {
@@ -101,17 +106,18 @@ public class GitCommitAction extends AnAction {
                     }
                 })
                 .setItemChosenCallback(chosenItem -> chosenMessage[0] = chosenItem)
-                .setRenderer(new ColoredListCellRenderer<GitmojiData>() {
+                .setRenderer(new ColoredListCellRenderer<GitEmojiData>() {
                     @Override
-                    protected void customizeCellRenderer(@NotNull JList<? extends GitmojiData> list, GitmojiData value, int index, boolean selected, boolean hasFocus) {
-                        if (gitEmojiConfig.getDisplayEmojiCheckBox()) {
+                    protected void customizeCellRenderer(@NotNull JList<? extends GitEmojiData> list, GitEmojiData value, int index, boolean selected, boolean hasFocus) {
+                        if (Boolean.TRUE.equals(gitEmojiConfig.getDisplayEmojiCheckBox())) {
                             append(StringUtils.SPACE + value.getEmoji());
                         } else {
                             setIcon(value.getIcon());
                         }
                         append("\t" + value.getCode(), SimpleTextAttributes.GRAY_ITALIC_ATTRIBUTES);
                         appendTextPadding(5);
-                        append(StringUtil.first(StringUtil.convertLineSeparators(value.getDescription(), ContentChooser.RETURN_SYMBOL), rightMargin, false));
+                        append(StringUtil.first(StringUtil.convertLineSeparators(value.getDescription(), ContentChooser.RETURN_SYMBOL),
+                                CommitMessageInspectionProfile.getSubjectRightMargin(project), false));
                         SpeedSearchUtil.applySpeedSearchHighlighting(list, this, true, selected);
                     }
                 })
@@ -143,7 +149,7 @@ public class GitCommitAction extends AnAction {
                 return new TextCopyProvider() {
                     @Override
                     public Collection<String> getTextLinesToCopy() {
-                        return Arrays.stream(selectedMessage).map(GitmojiData::getCode).filter(Objects::nonNull).collect(Collectors.toList());
+                        return Arrays.stream(selectedMessage).map(GitEmojiData::getCode).filter(Objects::nonNull).collect(Collectors.toList());
                     }
                 };
             }
@@ -152,7 +158,20 @@ public class GitCommitAction extends AnAction {
         return jbPopup;
     }
 
-    private void preview(Project project, CommitMessage commitMessage, GitmojiData gitmoji, String currentCommitMessage, int currentOffset, Object groupId) {
+    /**
+     * git emoji 预览处理
+     *
+     * @param project
+     * @param commitMessage
+     * @param gitmoji
+     * @param currentCommitMessage
+     * @param currentOffset
+     * @param groupId
+     * @return void
+     * @author mabin
+     * @date 2024/1/15 10:26
+     */
+    private void preview(Project project, CommitMessage commitMessage, GitEmojiData gitmoji, String currentCommitMessage, int currentOffset, Object groupId) {
         CommandProcessor.getInstance().executeCommand(project, () -> {
             boolean useUnicode = gitEmojiConfig.getUseUnicodeCheckBox();
             boolean insertInCursorPosition = gitEmojiConfig.getInsertInCursorPositionCheckBox();
@@ -164,7 +183,7 @@ public class GitCommitAction extends AnAction {
             String message = currentCommitMessage;
             if (!insertInCursorPosition) {
                 if (useUnicode) {
-                    for (GitmojiData emoji : gitmojis) {
+                    for (GitEmojiData emoji : gitmojis) {
                         if (message.contains(emoji.getEmoji() + textAfterUnicode)) {
                             message = message.replaceFirst(emoji.getEmoji() + textAfterUnicode, selectedGitmoji);
                             replaced = true;
@@ -187,17 +206,28 @@ public class GitCommitAction extends AnAction {
                 message = message.substring(0, startPosition) + gitmoji.getDescription();
             }
             commitMessage.setCommitMessage(message);
+            Editor editor = commitMessage.getEditorField().getEditor();
+            if (Objects.isNull(editor)) {
+                return;
+            }
             if (!insertInCursorPosition) {
-                Editor editor = commitMessage.getEditorField().getEditor();
                 editor.getSelectionModel().setSelection(insertPosition, editor.getDocument().getTextLength());
                 editor.getCaretModel().moveToOffset(startPosition);
             } else if (currentOffset < startPosition) {
-                Editor editor = commitMessage.getEditorField().getEditor();
                 editor.getCaretModel().moveToOffset(startPosition);
             }
         }, StringUtils.EMPTY, groupId, UndoConfirmationPolicy.DEFAULT, commitMessage.getEditorField().getDocument());
     }
 
+    /**
+     * 取消 git emoji 预览处理
+     *
+     * @param project
+     * @param commitMessage
+     * @return void
+     * @author mabin
+     * @date 2024/1/15 10:27
+     */
     private void cancelPreview(Project project, CommitMessage commitMessage) {
         UndoManager manager = UndoManager.getInstance(project);
         Editor editor = commitMessage.getEditorField().getEditor();
@@ -207,8 +237,24 @@ public class GitCommitAction extends AnAction {
         }
     }
 
+    /**
+     * 加载本地emoji源信息: 语种相同则不再重新加载
+     *
+     * @param language
+     * @return void
+     * @author mabin
+     * @date 2024/1/15 9:57
+     */
     private void loadLocalGitEmoji(String language) {
-        System.out.println("languge=" + language);
+        if (CollectionUtils.isNotEmpty(gitmojis)) {
+            GitEmojiData emojiData = gitmojis.get(Constants.NUM.ZERO);
+            boolean containsChinese = LanguageUtil.isContainsChinese(emojiData.getDescription());
+            if (StringUtils.equals(language, "en") && !containsChinese) {
+                return;
+            } else if (StringUtils.equals(language, "zh-CN") && containsChinese) {
+                return;
+            }
+        }
         try (InputStream inputStream = getClass().getResourceAsStream("/emoji/json/" + language + ".json")) {
             if (inputStream != null) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -217,23 +263,20 @@ public class GitCommitAction extends AnAction {
                 while ((line = reader.readLine()) != null) {
                     content.append(line);
                 }
-                loadGitEmoji(content.toString());
+                Gitmojis gitmojisJson = JsonUtil.fromJson(content.toString(), Gitmojis.class);
+                if (Objects.isNull(gitmojisJson)) {
+                    return;
+                }
+                gitmojis.clear();
+                GitEmojiData emojiData;
+                for (Gitmojis.Gitmoji gitmoji : gitmojisJson.getGitmojis()) {
+                    emojiData = new GitEmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription());
+                    gitmojis.add(emojiData);
+                }
             }
         } catch (IOException e) {
-            // Handle exception
+            log.error("Loading emoji resource exception", e);
         }
-    }
-
-    private void loadGitEmoji(String text) {
-        gitmojis.clear();
-        Gitmojis gitmojisJson = JsonUtil.fromJson(text, Gitmojis.class);
-        if (Objects.isNull(gitmojisJson)) {
-            return;
-        }
-        for (Gitmojis.Gitmoji gitmoji : gitmojisJson.getGitmojis()) {
-            this.gitmojis.add(new GitmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription()));
-        }
-        System.out.println(gitmojis);
     }
 
 }
