@@ -36,10 +36,11 @@ public class BundleUtil extends AbstractBundle {
     }
 
     @Override
+    @NotNull
     protected ResourceBundle findBundle(@NotNull @NonNls String pathToBundle,
                                         @NotNull ClassLoader loader,
                                         @NotNull ResourceBundle.Control control) {
-        final String chineseLanguagePlugin = "com.intellij.zh";
+        String chineseLanguagePlugin = "com.intellij.zh";
         if (!PluginManager.isPluginInstalled(PluginId.getId(chineseLanguagePlugin))) {
             return ResourceBundle.getBundle(pathToBundle, Locale.ROOT, loader, control);
         }
