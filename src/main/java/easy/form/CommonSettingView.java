@@ -7,7 +7,7 @@ import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.util.EasyCommonUtil;
+import easy.util.BundleUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,8 +57,8 @@ public class CommonSettingView {
     private JCheckBox convertCharEnableCheckBox;
 
     public CommonSettingView() {
-        // 设置提示小图标
-        setTipsLabelIcon();
+        // 设置提示小图标和提示信息
+        setTipsLabel();
         // 设置监听器
         swaggerConfirmYesCheckBox.addChangeListener(e -> swaggerConfirmNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         swaggerConfirmNoCheckBox.addChangeListener(e -> swaggerConfirmYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
@@ -72,12 +72,6 @@ public class CommonSettingView {
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
-        EasyCommonUtil.tipLabelMouseListener(swaggerConfirmModelTipsLabel, "swagger.confirm.model.checkBox.tip.text");
-        EasyCommonUtil.tipLabelMouseListener(searchApiTipsLabel, "search.api.icon.tip.text");
-        EasyCommonUtil.tipLabelMouseListener(translateConfirmInputModelTipsLabel, "translate.confirm.model.checkBox.tip.text");
-        EasyCommonUtil.tipLabelMouseListener(tabBackgroundTipsLabel, "tab.background.checkBox.tip.text");
-        EasyCommonUtil.tipLabelMouseListener(tabHighlightSizeTipsLabel, "tab.highlight.size.tip.text");
-        EasyCommonUtil.tipLabelMouseListener(tabHighlightGradientStepTipsLabel, "tab.highlight.gradient.step.tip.text");
     }
 
     private void createUIComponents() {
@@ -85,20 +79,27 @@ public class CommonSettingView {
     }
 
     /**
-     * 设置提示小图标
+     * 设置提示小图标和提示信息
      *
      * @param
      * @return void
      * @author mabin
      * @date 2023/12/27 15:43
      */
-    private void setTipsLabelIcon() {
+    private void setTipsLabel() {
         swaggerConfirmModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
         searchApiTipsLabel.setIcon(AllIcons.General.ContextHelp);
         translateConfirmInputModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
         tabBackgroundTipsLabel.setIcon(AllIcons.General.ContextHelp);
         tabHighlightSizeTipsLabel.setIcon(AllIcons.General.ContextHelp);
         tabHighlightGradientStepTipsLabel.setIcon(AllIcons.General.ContextHelp);
+
+        swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
+        searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
+        translateConfirmInputModelLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
+        tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
+        tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
+        tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
     }
 
     /**

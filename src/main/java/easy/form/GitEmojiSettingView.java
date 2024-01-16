@@ -4,6 +4,7 @@ package easy.form;
 import com.intellij.openapi.application.ApplicationManager;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
+import easy.util.BundleUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -29,7 +30,13 @@ public class GitEmojiSettingView {
     }
 
     public GitEmojiSettingView() {
-
+        renderCommitLogCheckBox.setText(BundleUtil.getI18n("git.emoji.render.commit.log.text"));
+        useUnicodeCheckBox.setText(BundleUtil.getI18n("git.emoji.use.unicode.text"));
+        displayEmojiCheckBox.setText(BundleUtil.getI18n("git.emoji.display.emoji.text"));
+        insertInCursorPositionCheckBox.setText(BundleUtil.getI18n("git.emoji.insert.in.cursor.position.text"));
+        includeEmojiDescCheckBox.setText(BundleUtil.getI18n("git.emoji.include.git.emoji.description.text"));
+        afterEmojiLabel.setText(BundleUtil.getI18n("git.emoji.after.emoji.text"));
+        languageLabel.setText(BundleUtil.getI18n("git.emoji.language.text"));
     }
 
 
