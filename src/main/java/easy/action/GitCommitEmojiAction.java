@@ -30,8 +30,8 @@ import com.intellij.vcs.commit.message.CommitMessageInspectionProfile;
 import easy.base.Constants;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
-import easy.git.emoji.base.GitEmojiData;
-import easy.git.emoji.base.Gitmojis;
+import easy.git.emoji.GitEmojiData;
+import easy.git.emoji.Gitmojis;
 import easy.util.JsonUtil;
 import easy.util.LanguageUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -49,8 +49,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class GitCommitAction extends AnAction {
-    private static final Logger log = Logger.getInstance(GitCommitAction.class);
+public class GitCommitEmojiAction extends AnAction {
+    private static final Logger log = Logger.getInstance(GitCommitEmojiAction.class);
 
     private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
     private final Pattern regexPattern = Pattern.compile(":[a-z0-9_]+:");

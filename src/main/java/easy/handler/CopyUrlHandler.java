@@ -118,7 +118,7 @@ public class CopyUrlHandler {
     }
 
     /**
-     * 删除引号、大括号，没有/开头自动添加
+     * 删除引号、没有/开头自动添加
      *
      * @param url
      * @return java.lang.String
@@ -126,9 +126,7 @@ public class CopyUrlHandler {
      * @date 2023/11/7 13:59
      */
     private String removeQuotation(String url) {
-        String replaceUrl = StringUtils.replace(url, "\"", StringUtils.EMPTY)
-                .replace("{", StringUtils.EMPTY)
-                .replace("}", StringUtils.EMPTY);
+        String replaceUrl = StringUtils.replace(url, "\"", StringUtils.EMPTY);
         return StringUtils.startsWith(replaceUrl, "/") ? replaceUrl : replaceUrl + "/";
     }
 

@@ -344,7 +344,7 @@
         <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction" text="Mybatis Log"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
         <!--Git Commit Emoji-->
-        <action id="EasyToolGitCommitAction" class="easy.action.GitCommitAction" text="GitEmoji"
+        <action id="EasyToolGitCommitEmojiAction" class="easy.action.GitCommitEmojiAction" text="GitEmoji"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT_EMOJI">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>

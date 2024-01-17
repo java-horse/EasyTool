@@ -1,4 +1,4 @@
-package easy.git.emoji.base;
+package easy.git.emoji;
 
 import com.intellij.openapi.util.IconLoader;
 import org.apache.commons.lang3.StringUtils;
