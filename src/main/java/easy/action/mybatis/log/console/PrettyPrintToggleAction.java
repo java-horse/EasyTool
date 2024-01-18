@@ -1,4 +1,4 @@
-package easy.action.mybatis.log;
+package easy.action.mybatis.log.console;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
@@ -12,7 +12,7 @@ import java.util.Objects;
 public class PrettyPrintToggleAction extends ToggleAction {
 
     public PrettyPrintToggleAction() {
-    super("Pretty SQL", "Pretty SQL", EasyIcons.ICON.PRETTY_PRINT);
+        super("Pretty SQL", "Pretty SQL", EasyIcons.ICON.MAGIC);
     }
 
     @Override

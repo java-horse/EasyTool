@@ -341,13 +341,17 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt SLASH"/>
         </action>
         <!--Mybatis Log 日志解析-->
-        <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction" text="Mybatis Log"
+        <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.console.MyBatisLogAction"
+                text="Mybatis Log"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
         <!--Git Commit Emoji-->
         <action id="EasyToolGitCommitEmojiAction" class="easy.action.GitCommitEmojiAction" text="GitEmoji"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT_EMOJI">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
+        <!--Format SQL-->
+        <action id="EasyToolFormatSqlAction" class="easy.action.mybatis.log.wrapper.FormatSqlAction" text="FormatSQL"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.SQL"/>
 
 
         <!--工具栏快捷菜单-->
@@ -370,6 +374,7 @@
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolFormatSqlAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
         </group>
         <!--控制台右键菜单-->
@@ -381,6 +386,7 @@
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolFormatSqlAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
         </group>
 

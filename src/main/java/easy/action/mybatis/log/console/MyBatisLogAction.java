@@ -1,4 +1,4 @@
-package easy.action.mybatis.log;
+package easy.action.mybatis.log.console;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -61,7 +61,7 @@ public class MyBatisLogAction extends DumbAwareAction {
         if (StringUtils.isBlank(selectedText) || Objects.isNull(manager)) {
             return;
         }
-        if (!StringUtils.contains(selectedText, manager.getPreparing()) || !StringUtils.contains(selectedText, manager.getParameters())) {
+        if (!StringUtils.containsIgnoreCase(selectedText, manager.getPreparing()) || !StringUtils.containsIgnoreCase(selectedText, manager.getParameters())) {
             return;
         }
         String[] selectedRowText = StringUtils.split(selectedText, StringUtils.LF);

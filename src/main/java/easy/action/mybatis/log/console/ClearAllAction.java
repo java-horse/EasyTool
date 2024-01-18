@@ -1,4 +1,4 @@
-package easy.action.mybatis.log;
+package easy.action.mybatis.log.console;
 
 import com.intellij.execution.ExecutionBundle;
 import com.intellij.execution.impl.ConsoleViewImpl;

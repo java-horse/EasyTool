@@ -12,6 +12,7 @@ import com.intellij.execution.ui.*;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.editor.Document;
@@ -33,7 +34,8 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.util.messages.MessageBusConnection;
-import easy.action.mybatis.log.*;
+import easy.action.mybatis.log.console.*;
+import easy.action.mybatis.log.wrapper.FormatSqlAction;
 import easy.base.Constants;
 import easy.icons.EasyIcons;
 import easy.mybatis.log.format.BasicFormatter;
@@ -129,9 +131,14 @@ public class MyBatisLogManager implements Disposable {
             protected Editor getEditor(@NotNull AnActionEvent e) {
                 return consoleView.getEditor();
             }
+            @Override
+            public @NotNull ActionUpdateThread getActionUpdateThread() {
+                return super.getActionUpdateThread();
+            }
         });
         actionGroup.add(new ScrollToTheEndToolbarAction(consoleView.getEditor()));
         actionGroup.add(new PrettyPrintToggleAction());
+        actionGroup.add(new FormatSqlAction());
         actionGroup.addSeparator();
         actionGroup.add(new ClearAllAction(consoleView));
         actionGroup.addSeparator();
