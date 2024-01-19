@@ -1,4 +1,4 @@
-package easy.action.mybatis.log.console;
+package easy.action.mybatis.log;
 
 import com.intellij.execution.impl.ConsoleViewImpl;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;

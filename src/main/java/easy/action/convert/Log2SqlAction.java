@@ -1,4 +1,4 @@
-package easy.action.mybatis.log.wrapper;
+package easy.action.convert;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import easy.icons.EasyIcons;
 import easy.mybatis.log.ui.MyBatisLogFormatWrapper;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,10 +21,10 @@ import java.util.Objects;
  * @author: mabin
  * @date: 2024/01/18 10:45:28
  */
-public class FormatSqlAction extends AnAction {
+public class Log2SqlAction extends AnAction {
 
-    public FormatSqlAction() {
-        super("Format SQL", "Format SQL", AllIcons.Actions.PrettyPrint);
+    public Log2SqlAction() {
+        super("Log2Sql", "Log2Sql", EasyIcons.ICON.SQL);
     }
 
     @Override

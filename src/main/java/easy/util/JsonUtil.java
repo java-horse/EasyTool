@@ -18,7 +18,11 @@ import java.util.Map;
 
 public class JsonUtil {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .serializeNulls()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .setPrettyPrinting()
+            .create();
 
     private JsonUtil() {
     }

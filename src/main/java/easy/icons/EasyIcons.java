@@ -41,6 +41,8 @@ public class EasyIcons {
         Icon MAGIC = IconLoader.getIcon("icons/magic.svg", EasyIcons.class);
         Icon SQL = IconLoader.getIcon("icons/sql.svg", EasyIcons.class);
         Icon GIT_EMOJI = IconLoader.getIcon("icons/emoji.svg", EasyIcons.class);
+        Icon JSON = IconLoader.getIcon("icons/json.svg", EasyIcons.class);
+        Icon CONVERT = IconLoader.getIcon("icons/convert.svg", EasyIcons.class);
     }
 
 }

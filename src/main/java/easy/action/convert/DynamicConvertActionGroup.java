@@ -1,33 +1,29 @@
-package easy.action.tool;
+package easy.action.convert;
 
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import easy.action.mybatis.log.MyBatisLogAction;
-import easy.enums.ToolWindowEnum;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 /**
- * 动态菜单侧边栏生成
+ * Json转换Action组
  *
- * @project: EasyChar
- * @package: easy.action.tool
+ * @project: EasyTool
+ * @package: easy.action.json
  * @author: mabin
- * @date: 2023/10/14 11:50:59
+ * @date: 2024/01/19 11:45:46
  */
-public class DynamicToolWindowActionGroup extends DefaultActionGroup {
+public class DynamicConvertActionGroup extends DefaultActionGroup {
 
     @Override
     public AnAction @NotNull [] getChildren(@Nullable AnActionEvent e) {
         return new AnAction[]{
-                new ToolWindowAction(ToolWindowEnum.SEARCH_API),
-                new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
-                new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING),
-                new MyBatisLogAction()
+                new Log2SqlAction(),
+                new Str2JsonAction()
         };
     }
 

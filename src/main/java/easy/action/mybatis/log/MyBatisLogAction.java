@@ -1,4 +1,4 @@
-package easy.action.mybatis.log.console;
+package easy.action.mybatis.log;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

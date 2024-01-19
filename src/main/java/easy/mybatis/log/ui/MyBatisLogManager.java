@@ -34,8 +34,8 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.util.messages.MessageBusConnection;
-import easy.action.mybatis.log.console.*;
-import easy.action.mybatis.log.wrapper.FormatSqlAction;
+import easy.action.convert.Log2SqlAction;
+import easy.action.mybatis.log.*;
 import easy.base.Constants;
 import easy.icons.EasyIcons;
 import easy.mybatis.log.format.BasicFormatter;
@@ -131,6 +131,7 @@ public class MyBatisLogManager implements Disposable {
             protected Editor getEditor(@NotNull AnActionEvent e) {
                 return consoleView.getEditor();
             }
+
             @Override
             public @NotNull ActionUpdateThread getActionUpdateThread() {
                 return super.getActionUpdateThread();
@@ -138,7 +139,7 @@ public class MyBatisLogManager implements Disposable {
         });
         actionGroup.add(new ScrollToTheEndToolbarAction(consoleView.getEditor()));
         actionGroup.add(new PrettyPrintToggleAction());
-        actionGroup.add(new FormatSqlAction());
+        actionGroup.add(new Log2SqlAction());
         actionGroup.addSeparator();
         actionGroup.add(new ClearAllAction(consoleView));
         actionGroup.addSeparator();
@@ -187,6 +188,7 @@ public class MyBatisLogManager implements Disposable {
         consoleView.print(String.format("--> %s <-- ==> %s", counter.incrementAndGet(), logPrefix) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
         consoleView.print(String.format("%s", isFormat() ? FORMATTER.format(sql) : sql) + ";" + StringUtils.LF, consoleViewContentType);
     }
+
     private boolean isFormat() {
         return PropertiesComponent.getInstance().getBoolean(PrettyPrintToggleAction.class.getName());
     }

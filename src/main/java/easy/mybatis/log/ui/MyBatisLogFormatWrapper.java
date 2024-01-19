@@ -2,7 +2,10 @@ package easy.mybatis.log.ui;
 
 import com.intellij.execution.impl.ConsoleViewImpl;
 import com.intellij.ide.CommonActionsManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -18,19 +21,19 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.ui.JBUI;
-import easy.action.mybatis.log.wrapper.ClearLogAction;
-import easy.action.mybatis.log.wrapper.ClearSqlAction;
-import easy.action.mybatis.log.wrapper.CopyLogAction;
-import easy.action.mybatis.log.wrapper.CopySqlAction;
+import easy.action.base.ClearConsoleAction;
+import easy.action.base.ClearEditAction;
+import easy.action.base.CopyConsoleAction;
+import easy.action.base.CopyEditAction;
 import easy.base.Constants;
 import easy.mybatis.log.format.SqlHelper;
+import easy.util.BundleUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -49,13 +52,12 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
     private JPanel logToolBar;
     private JButton formatButton;
     private JButton clearAllButton;
-    private static final String SIZE_KEY = "#easy.mybatis.log.ui.MyBatisLogFormatWrapper";
 
-    public MyBatisLogFormatWrapper(@Nullable Project project) {
+    public MyBatisLogFormatWrapper(@NotNull Project project) {
         super(project);
         setupUI();
         init();
-        setTitle(Constants.PLUGIN_NAME + " Format SQL");
+        setTitle(Constants.PLUGIN_NAME + " Log To SQL");
         EditorFactory factory = EditorFactory.getInstance();
         Editor logEditor = factory.createEditor(factory.createDocument(StringUtils.EMPTY), project, PlainTextLanguage.INSTANCE.getAssociatedFileType(), false);
         // 配置日志编辑器
@@ -64,7 +66,7 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         ConsoleViewImpl consoleView = new ConsoleViewImpl(project, true);
         configureSqlPanel(consoleView);
 
-        Dimension size = DimensionService.getInstance().getSize(SIZE_KEY, project);
+        Dimension size = DimensionService.getInstance().getSize("#" + this.getClass().getName(), project);
         if (Objects.nonNull(size)) {
             rootPanel.setPreferredSize(size);
         } else {
@@ -96,13 +98,14 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
      */
     private void configureLogEditor(Editor logEditor, Project project) {
         EditorSettings settings = logEditor.getSettings();
-        settings.setLineNumbersShown(false);
+        settings.setLineNumbersShown(true);
         settings.setRefrainFromScrolling(false);
-        settings.setLineMarkerAreaShown(false);
-        ArrayList<AnAction> logActionList = new ArrayList<>();
-        logActionList.add(new ClearLogAction("Clear", logEditor, project));
-        logActionList.add(new CopyLogAction("Copy", logEditor));
-        ActionToolbar actionToolbar = createActionToolbar("sql-log-actions", new DefaultActionGroup(logActionList), true);
+        settings.setLineMarkerAreaShown(true);
+        settings.setUseSoftWraps(true);
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(new ClearEditAction(logEditor, project));
+        actionGroup.add(new CopyEditAction(logEditor));
+        ActionToolbar actionToolbar = createActionToolbar(this.getClass().getSimpleName() + "-sql-log-actions", actionGroup, true);
         actionToolbar.setTargetComponent(logEditor.getComponent());
         logToolBar.add(actionToolbar.getComponent());
         JBScrollPane logScrollPane = new JBScrollPane(logEditor.getComponent());
@@ -124,25 +127,17 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         AnAction nextAction = actionsManager.createNextOccurenceAction(consoleView);
         nextAction.getTemplatePresentation().setText(consoleView.getNextOccurenceActionName());
 
-        ArrayList<AnAction> consoleActionList = new ArrayList<>();
-        consoleActionList.add(new ClearSqlAction("Clear", consoleView));
-        consoleActionList.add(new CopySqlAction("Copy", consoleView));
-        consoleActionList.add(prevAction);
-        consoleActionList.add(nextAction);
-        ToggleUseSoftWrapsToolbarAction toggleUseSoftWrapsToolbarAction = new ToggleUseSoftWrapsToolbarAction(SoftWrapAppliancePlaces.CONSOLE) {
-            @Override
-            protected @Nullable Editor getEditor(@NotNull AnActionEvent e) {
-                return consoleView.getEditor();
-            }
-
-            @Override
-            public @NotNull ActionUpdateThread getActionUpdateThread() {
-                return super.getActionUpdateThread();
-            }
-        };
-        consoleActionList.add(toggleUseSoftWrapsToolbarAction);
-        consoleActionList.add(ActionManager.getInstance().getAction("Print"));
-        ActionToolbar sqlConsoleToolBar = createActionToolbar("sql-console-actions", new DefaultActionGroup(consoleActionList), true);
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(new ClearConsoleAction(consoleView));
+        actionGroup.add(new CopyConsoleAction(consoleView));
+        actionGroup.addSeparator();
+        actionGroup.add(prevAction);
+        actionGroup.add(nextAction);
+        ToggleUseSoftWrapsToolbarAction toggleUseSoftWrapsToolbarAction = new ToggleUseSoftWrapsToolbarAction(SoftWrapAppliancePlaces.CONSOLE);
+        toggleUseSoftWrapsToolbarAction.getTemplatePresentation().putClientProperty(ToggleUseSoftWrapsToolbarAction.SELECTED_PROPERTY, true);
+        actionGroup.add(toggleUseSoftWrapsToolbarAction);
+        actionGroup.add(ActionManager.getInstance().getAction("Print"));
+        ActionToolbar sqlConsoleToolBar = createActionToolbar(this.getClass().getSimpleName() + "-sql-console-actions", actionGroup, true);
         sqlConsoleToolBar.setTargetComponent(consoleView);
         sqlPanelBar.add(sqlConsoleToolBar.getComponent());
         sqlPanel.add(consoleView.getComponent(), BorderLayout.CENTER);
@@ -185,7 +180,7 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         JPanel var6 = new JPanel();
         this.logToolBar = var6;
         var6.setLayout(new BorderLayout(0, 0));
-        var5.add(var6, "North");
+        var5.add(var6, SpringLayout.NORTH);
         JPanel var7 = new JPanel();
         var7.setLayout(new GridLayoutManager(1, 1, JBUI.emptyInsets(), -1, -1, false, false));
         var2.add(var7, new GridConstraints(0, 2, 1, 1, 0, 3, 3, 3, null, null, null));
@@ -200,7 +195,7 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         JPanel var10 = new JPanel();
         this.sqlPanelBar = var10;
         var10.setLayout(new BorderLayout(0, 0));
-        var9.add(var10, "North");
+        var9.add(var10, SpringLayout.NORTH);
         JPanel var11 = new JPanel();
         var11.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         var11.setAutoscrolls(false);
@@ -211,12 +206,10 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         var12.setMaximumSize(new Dimension(58, 38));
         var12.setMinimumSize(new Dimension(58, 38));
         var12.setPreferredSize(new Dimension(58, 38));
-        var12.setText("Format");
-        var12.setToolTipText("Format SQL");
+        var12.setText(BundleUtil.getI18n("global.button.format.text"));
         var11.add(var12);
         JButton var13 = new JButton();
         this.clearAllButton = var13;
-        var13.setActionCommand("");
         var13.setHideActionText(false);
         var13.setHorizontalTextPosition(0);
         var13.setInheritsPopupMenu(false);
@@ -226,8 +219,7 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         var13.setPreferredSize(new Dimension(58, 38));
         var13.setRequestFocusEnabled(true);
         var13.setRolloverEnabled(true);
-        var13.setText("Clear");
-        var13.setToolTipText("Clear All");
+        var13.setText(BundleUtil.getI18n("global.button.clear.text"));
         var13.setVerifyInputWhenFocusTarget(true);
         var13.setVerticalTextPosition(0);
         var11.add(var13);

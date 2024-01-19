@@ -1,5 +1,6 @@
 package easy.handler;
 
+import com.intellij.openapi.diagnostic.Logger;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,9 +18,11 @@ import java.util.regex.Pattern;
  * @author: mabin
  * @date: 2023/11/09 11:48:40
  */
-public class AutoToJsonHandler {
+public class Str2JsonHandler {
 
-    private AutoToJsonHandler() {
+    private static final Logger log = Logger.getInstance(Str2JsonHandler.class);
+
+    private Str2JsonHandler() {
     }
 
     private static final Pattern DATE_PATTERN = Pattern.compile("^[a-zA-Z]{3} [a-zA-Z]{3} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} CST ((19|20)\\d{2})$");
@@ -36,8 +39,13 @@ public class AutoToJsonHandler {
         tokenMap.put(']', '[');
     }
 
-    public static String toJSON(String toString) throws ParseException {
-        return JsonUtil.toJson(toMap(toString));
+    public static String toJSON(String toString) {
+        try {
+            return JsonUtil.toJson(toMap(toString));
+        } catch (ParseException e) {
+            log.error("Str2JsonHandler.toJSON is error", e);
+        }
+        return null;
     }
 
     private static Map<String, Object> toMap(String toString) throws ParseException {
