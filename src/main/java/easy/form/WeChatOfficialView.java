@@ -1,6 +1,7 @@
 package easy.form;
 
 import com.intellij.openapi.ui.DialogWrapper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -35,6 +36,11 @@ public class WeChatOfficialView extends DialogWrapper {
         wechatIcon.setImage(wechatIcon.getImage().getScaledInstance((int) (wechatIcon.getIconWidth() * (400d / wechatIcon.getIconHeight())), 400, Image.SCALE_DEFAULT));
         weChatOfficialLabel = new JLabel(wechatIcon);
         weChatOfficialLabel.setVisible(true);
+    }
+
+    @Override
+    protected Action @NotNull [] createActions() {
+        return new Action[]{};
     }
 
 }

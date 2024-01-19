@@ -10,6 +10,7 @@ import com.intellij.ui.components.JBTextArea;
 import easy.base.Constants;
 import easy.mybatis.log.ui.MyBatisLogManager;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -161,4 +162,10 @@ public class MybatisLogSettingView extends DialogWrapper {
     public String getKeywords() {
         return txtKeywords.getText();
     }
+
+    @Override
+    protected Action @NotNull [] createActions() {
+        return new Action[]{};
+    }
+
 }

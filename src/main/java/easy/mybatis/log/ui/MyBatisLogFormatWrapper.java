@@ -7,16 +7,18 @@ import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.EditorSettings;
+import com.intellij.openapi.editor.*;
 import com.intellij.openapi.editor.actions.ToggleUseSoftWrapsToolbarAction;
+import com.intellij.openapi.editor.event.CaretEvent;
+import com.intellij.openapi.editor.event.CaretListener;
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.impl.softwrap.SoftWrapAppliancePlaces;
 import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.DimensionService;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -52,6 +54,10 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
     private JPanel logToolBar;
     private JButton formatButton;
     private JButton clearAllButton;
+    private JBLabel lengthLabel;
+    private JBLabel lineLabel;
+    private JBLabel cursorLabel;
+    private JBLabel selectLabel;
 
     public MyBatisLogFormatWrapper(@NotNull Project project) {
         super(project);
@@ -110,6 +116,36 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         logToolBar.add(actionToolbar.getComponent());
         JBScrollPane logScrollPane = new JBScrollPane(logEditor.getComponent());
         logPanel.add(logScrollPane, BorderLayout.CENTER);
+
+        // 设置编辑器文本监听器
+        Document document = logEditor.getDocument();
+        document.addDocumentListener(new DocumentListener() {
+            @Override
+            public void documentChanged(@NotNull DocumentEvent event) {
+                lengthLabel.setText("length: " + document.getTextLength() + StringUtils.SPACE);
+                lineLabel.setText("line: " + document.getLineCount() + StringUtils.SPACE);
+            }
+        });
+        CaretModel caretModel = logEditor.getCaretModel();
+        caretModel.addCaretListener(new CaretListener() {
+            @Override
+            public void caretPositionChanged(@NotNull CaretEvent event) {
+                Caret primaryCaret = caretModel.getPrimaryCaret();
+                int cursorPosition = primaryCaret.getOffset();
+                int cursorLine = document.getLineNumber(cursorPosition);
+                int cursorCol = cursorPosition - document.getLineStartOffset(cursorLine);
+                cursorLabel.setText("Ln: " + (cursorLine + 1) + StringUtils.SPACE + "Col: " + cursorCol + StringUtils.SPACE);
+
+                SelectionModel selectionModel = logEditor.getSelectionModel();
+                String selectedText = selectionModel.getSelectedText();
+                if (StringUtils.isBlank(selectedText)) {
+                    selectLabel.setText(StringUtils.EMPTY);
+                    return;
+                }
+                int selectLine = document.getLineNumber(primaryCaret.getSelectionEnd()) - document.getLineNumber(primaryCaret.getSelectionStart()) + 1;
+                selectLabel.setText("sel: " + selectedText.length() + StringUtils.SPACE + "|" + StringUtils.SPACE + selectLine);
+            }
+        });
     }
 
     /**
@@ -181,6 +217,16 @@ public class MyBatisLogFormatWrapper extends DialogWrapper {
         this.logToolBar = var6;
         var6.setLayout(new BorderLayout(0, 0));
         var5.add(var6, SpringLayout.NORTH);
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        lengthLabel = new JBLabel();
+        statusPanel.add(lengthLabel, BorderLayout.WEST);
+        lineLabel = new JBLabel();
+        statusPanel.add(lineLabel, BorderLayout.WEST);
+        cursorLabel = new JBLabel();
+        statusPanel.add(cursorLabel, BorderLayout.WEST);
+        selectLabel = new JBLabel();
+        statusPanel.add(selectLabel, BorderLayout.WEST);
+        logPanel.add(statusPanel, BorderLayout.SOUTH);
         JPanel var7 = new JPanel();
         var7.setLayout(new GridLayoutManager(1, 1, JBUI.emptyInsets(), -1, -1, false, false));
         var2.add(var7, new GridConstraints(0, 2, 1, 1, 0, 3, 3, 3, null, null, null));

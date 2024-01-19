@@ -1,6 +1,7 @@
 package easy.form;
 
 import com.intellij.openapi.ui.DialogWrapper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -41,6 +42,11 @@ public class SupportView extends DialogWrapper {
         alipayIcon.setImage(alipayIcon.getImage().getScaledInstance((int) (alipayIcon.getIconWidth() * (400d / alipayIcon.getIconHeight())), 400, Image.SCALE_DEFAULT));
         alipayLabel = new JLabel(alipayIcon);
         alipayLabel.setVisible(true);
+    }
+
+    @Override
+    protected Action @NotNull [] createActions() {
+        return new Action[]{};
     }
 
 }

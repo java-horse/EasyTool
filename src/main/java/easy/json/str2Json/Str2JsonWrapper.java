@@ -174,12 +174,12 @@ public class Str2JsonWrapper extends DialogWrapper {
             @Override
             public void caretPositionChanged(@NotNull CaretEvent event) {
                 Caret primaryCaret = caretModel.getPrimaryCaret();
-                // 光标位置统计
+
                 int cursorPosition = primaryCaret.getOffset();
                 int cursorLine = document.getLineNumber(cursorPosition);
                 int cursorCol = cursorPosition - document.getLineStartOffset(cursorLine);
                 cursorLabel.setText("Ln: " + (cursorLine + 1) + StringUtils.SPACE + "Col: " + cursorCol + StringUtils.SPACE);
-                // 选中文本统计
+
                 SelectionModel selectionModel = strEditor.getSelectionModel();
                 String selectedText = selectionModel.getSelectedText();
                 if (StringUtils.isBlank(selectedText)) {
@@ -243,7 +243,7 @@ public class Str2JsonWrapper extends DialogWrapper {
         strToolBar.setLayout(new BorderLayout(Constants.NUM.ZERO, Constants.NUM.ZERO));
         strPanel.add(strToolBar, SpringLayout.NORTH);
         // 设置左侧尾部统计标签
-        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         lengthLabel = new JBLabel();
         statusPanel.add(lengthLabel, BorderLayout.WEST);
         lineLabel = new JBLabel();
