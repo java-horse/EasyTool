@@ -43,6 +43,7 @@ public class EasyIcons {
         Icon GIT_EMOJI = IconLoader.getIcon("icons/emoji.svg", EasyIcons.class);
         Icon JSON = IconLoader.getIcon("icons/json.svg", EasyIcons.class);
         Icon CONVERT = IconLoader.getIcon("icons/convert.svg", EasyIcons.class);
+        Icon CLOCK = IconLoader.getIcon("icons/clock.svg", EasyIcons.class);
     }
 
 }

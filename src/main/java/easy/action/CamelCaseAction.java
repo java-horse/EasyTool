@@ -31,8 +31,6 @@ public class CamelCaseAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(CamelCaseAction.class);
 
-    private static HintManager HINT_MANAGER = HintManager.getInstance();
-
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
@@ -53,7 +51,7 @@ public class CamelCaseAction extends AnAction {
         } else if (selectedText.indexOf('_') >= 0) {
             convertText = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, selectedText);
         } else {
-            HINT_MANAGER.showErrorHint(editor, "Cannot CamelCase format convert");
+            HintManager.getInstance().showErrorHint(editor, "Cannot CamelCase format convert");
             return;
         }
         try {
