@@ -1,6 +1,6 @@
 package easy.postfix.setter.action;
 
-import easy.base.Constants;
+import easy.enums.PostfixShortCutEnum;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,13 +14,13 @@ public class GenerateAllSetterWithDefaultValAction extends GenerateAllSetterActi
     @NotNull
     @Override
     public String getFamilyName() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_SETTER;
+        return PostfixShortCutEnum.GENERATE_SETTER.getName();
     }
 
     @NotNull
     @Override
     public String getText() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_SETTER;
+        return PostfixShortCutEnum.GENERATE_SETTER.getName();
     }
 
 }

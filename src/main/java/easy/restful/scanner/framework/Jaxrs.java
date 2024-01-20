@@ -243,7 +243,7 @@ public class Jaxrs implements IJavaFramework {
     }
 
     @Override
-    public boolean isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
+    public boolean  isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
         try {
             JavaAnnotationIndex instance = JavaAnnotationIndex.getInstance();
             Collection<PsiAnnotation> collection = instance.get(Control.Path.getName(), project, module.getModuleScope());

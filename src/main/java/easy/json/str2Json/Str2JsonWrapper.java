@@ -169,7 +169,6 @@ public class Str2JsonWrapper extends DialogWrapper {
             }
         });
         CaretModel caretModel = strEditor.getCaretModel();
-
         caretModel.addCaretListener(new CaretListener() {
             @Override
             public void caretPositionChanged(@NotNull CaretEvent event) {

@@ -91,11 +91,11 @@ public class MyBatisLogManager implements Disposable {
 
         messageBusConnection.subscribe(ToolWindowManagerListener.TOPIC, new ToolWindowManagerListener() {
             @Override
-            public void toolWindowRegistered(@NotNull String id) {
+            public void toolWindowsRegistered(@NotNull List<String> ids, @NotNull ToolWindowManager toolWindowManager) {
             }
 
             @Override
-            public void stateChanged() {
+            public void stateChanged(@NotNull ToolWindowManager toolWindowManager) {
                 if (!getToolWindow().isAvailable()) {
                     Disposer.dispose(MyBatisLogManager.this);
                 }

@@ -12,6 +12,7 @@ import com.intellij.psi.search.PsiShortNamesCache;
 import easy.base.Constants;
 import easy.enums.BaseTypeEnum;
 import easy.enums.RequestAnnotationEnum;
+import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.service.TranslateService;
 import easy.util.LanguageUtil;
@@ -220,21 +221,24 @@ public class SwaggerGenerateHandler {
                 if (StringUtils.isBlank(psiAnnotation.getQualifiedName())) {
                     break;
                 }
-                switch (psiAnnotation.getQualifiedName()) {
-                    case Constants.SPRING_ANNOTATION.REQUEST_HEADER_TEXT:
-                        paramType = "header";
-                        break;
-                    case Constants.SPRING_ANNOTATION.REQUEST_PARAM_TEXT:
-                        paramType = "query";
-                        break;
-                    case Constants.SPRING_ANNOTATION.PATH_VARIABLE_TEXT:
-                        paramType = "path";
-                        break;
-                    case Constants.SPRING_ANNOTATION.REQUEST_BODY_TEXT:
-                        paramType = "body";
-                        break;
-                    default:
-                        break;
+                SpringAnnotationEnum annotationEnum = SpringAnnotationEnum.getEnum(psiAnnotation.getQualifiedName());
+                if (Objects.nonNull(annotationEnum)) {
+                    switch (annotationEnum) {
+                        case REQUEST_HEADER_TEXT:
+                            paramType = "header";
+                            break;
+                        case REQUEST_PARAM_TEXT:
+                            paramType = "query";
+                            break;
+                        case PATH_VARIABLE_TEXT:
+                            paramType = "path";
+                            break;
+                        case REQUEST_BODY_TEXT:
+                            paramType = "body";
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 required = this.getAttribute(psiAnnotation, "required", StringUtils.EMPTY);
             }
@@ -453,8 +457,8 @@ public class SwaggerGenerateHandler {
     private boolean isController(PsiClass psiClass) {
         PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
-            if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), Constants.SPRING_ANNOTATION.CONTROLLER_ANNOTATION,
-                    Constants.SPRING_ANNOTATION.REST_CONTROLLER_ANNOTATION)) {
+            if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName(),
+                    SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName())) {
                 return true;
             }
         }

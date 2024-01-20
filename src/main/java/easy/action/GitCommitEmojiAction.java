@@ -53,7 +53,6 @@ public class GitCommitEmojiAction extends AnAction {
     private static final Logger log = Logger.getInstance(GitCommitEmojiAction.class);
 
     private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
-    private final Pattern regexPattern = Pattern.compile(":[a-z0-9_]+:");
     private final List<GitEmojiData> gitmojis = new ArrayList<>();
 
     @Override
@@ -181,20 +180,12 @@ public class GitCommitEmojiAction extends AnAction {
             String selectedGitmoji = useUnicode ? gitmoji.getEmoji() + textAfterUnicode : gitmoji.getCode() + textAfterUnicode;
             boolean replaced = false;
             String message = currentCommitMessage;
-            if (!insertInCursorPosition) {
-                if (useUnicode) {
-                    for (GitEmojiData emoji : gitmojis) {
-                        if (message.contains(emoji.getEmoji() + textAfterUnicode)) {
-                            message = message.replaceFirst(emoji.getEmoji() + textAfterUnicode, selectedGitmoji);
-                            replaced = true;
-                            break;
-                        }
-                    }
-                } else {
-                    String actualRegex = regexPattern + Pattern.quote(textAfterUnicode);
-                    if (message.matches("(?s).*" + actualRegex + ".*")) {
-                        message = actualRegex.replace(message, selectedGitmoji);
+            if (!insertInCursorPosition && (useUnicode)) {
+                for (GitEmojiData emoji : gitmojis) {
+                    if (message.contains(emoji.getEmoji() + textAfterUnicode)) {
+                        message = message.replaceFirst(emoji.getEmoji() + textAfterUnicode, selectedGitmoji);
                         replaced = true;
+                        break;
                     }
                 }
             }

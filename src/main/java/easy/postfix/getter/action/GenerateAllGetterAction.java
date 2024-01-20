@@ -1,10 +1,10 @@
 package easy.postfix.getter.action;
 
 import com.intellij.psi.PsiClass;
-import easy.base.Constants;
+import easy.enums.PostfixShortCutEnum;
+import easy.postfix.action.GenerateBaseAction;
 import easy.postfix.base.BaseVar;
 import easy.postfix.base.GenerateBase;
-import easy.postfix.action.GenerateBaseAction;
 import easy.postfix.getter.GenerateGetter;
 import easy.postfix.util.PsiMethodUtil;
 import org.jetbrains.annotations.Nls;
@@ -26,13 +26,13 @@ public class GenerateAllGetterAction extends GenerateBaseAction {
     @NotNull
     @Override
     public String getFamilyName() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_GETTER;
+        return PostfixShortCutEnum.GENERATE_GETTER.getName();
     }
 
     @NotNull
     @Override
     public String getText() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_GETTER;
+        return PostfixShortCutEnum.GENERATE_GETTER.getName();
     }
 
 }

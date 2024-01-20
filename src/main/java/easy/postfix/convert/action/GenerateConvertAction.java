@@ -6,10 +6,10 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.tree.IElementType;
-import easy.base.Constants;
+import easy.enums.PostfixShortCutEnum;
+import easy.postfix.action.GenerateBaseAction;
 import easy.postfix.base.BaseVar;
 import easy.postfix.base.GenerateBase;
-import easy.postfix.action.GenerateBaseAction;
 import easy.postfix.convert.GenerateConvertForMethod;
 import easy.postfix.util.PsiClassUtil;
 import easy.postfix.util.PsiMethodUtil;
@@ -38,8 +38,8 @@ public class GenerateConvertAction extends GenerateBaseAction {
             if ("LPARENTH".equals(tokenTypeName)) {
                 PsiElement parent = psiElement.getParent();
                 if (parent != null && (parent.getParent() instanceof PsiMethod)) {
-                        PsiMethod psiMethod = (PsiMethod) parent.getParent();
-                        return isAvailableByPsiMethod(psiMethod);
+                    PsiMethod psiMethod = (PsiMethod) parent.getParent();
+                    return isAvailableByPsiMethod(psiMethod);
                 }
             }
         }
@@ -62,8 +62,8 @@ public class GenerateConvertAction extends GenerateBaseAction {
             if ("LPARENTH".equals(tokenTypeName)) {
                 PsiElement parent = psiElement.getParent();
                 if (parent != null && (parent.getParent() instanceof PsiMethod)) {
-                        PsiMethod psiMethod = (PsiMethod) parent.getParent();
-                        return buildGenerateByPsiMethod(psiMethod);
+                    PsiMethod psiMethod = (PsiMethod) parent.getParent();
+                    return buildGenerateByPsiMethod(psiMethod);
                 }
             }
         }
@@ -88,8 +88,8 @@ public class GenerateConvertAction extends GenerateBaseAction {
             if ("LPARENTH".equals(tokenTypeName)) {
                 PsiElement parent = psiElement.getParent();
                 if (parent != null && (parent.getParent() instanceof PsiMethod)) {
-                        PsiMethod psiMethod = (PsiMethod) parent.getParent();
-                        invokeByPsiMethod(generateBase, psiDocumentManager, containingFile, document, psiMethod);
+                    PsiMethod psiMethod = (PsiMethod) parent.getParent();
+                    invokeByPsiMethod(generateBase, psiDocumentManager, containingFile, document, psiMethod);
                 }
             }
         }
@@ -107,13 +107,13 @@ public class GenerateConvertAction extends GenerateBaseAction {
     @NotNull
     @Override
     public String getFamilyName() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_CONVERT;
+        return PostfixShortCutEnum.GENERATE_CONVERT.getName();
     }
 
     @NotNull
     @Override
     public String getText() {
-        return Constants.POSTFIX_SHORTCUT_NAME.GENERATE_CONVERT;
+        return PostfixShortCutEnum.GENERATE_CONVERT.getName();
     }
 
     private boolean isAvailableByPsiMethod(PsiMethod psiMethod) {
