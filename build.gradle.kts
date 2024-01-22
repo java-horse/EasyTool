@@ -16,7 +16,9 @@ repositories {
 dependencies {
     // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
     implementation("cn.hutool:hutool-http:5.8.16")
-    implementation("com.cronutils:cron-utils:9.2.1")
+    implementation("com.cronutils:cron-utils:9.2.1") {
+        exclude(group = "org.slf4j")
+    }
 }
 
 intellij {
