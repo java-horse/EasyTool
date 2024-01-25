@@ -32,6 +32,8 @@
 > * 参考 GenerateAllSetter 插件，支持 IDEA Postfix 语法自动生成 POJO的所有Setter、Getter 以及 POJO 之间的属性转换
 > * 支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL
 > * 支持选中`Cron`表达式动态解析、自动识别`@Scheduled`注解并在右侧添加小图标按钮
+> * 支持 Git Commit 时按照模板进行提交信息填写并自动组装
+> * 支持 Git Commit 时添加 Emoji 标识
 
 #### 使用说明
 > * 在 JetBrains IED 的插件市场收索 `EasyTool` 并安装成功

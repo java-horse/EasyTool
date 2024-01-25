@@ -34,14 +34,14 @@ public class JsonUtil {
         return GSON.toJson(object);
     }
 
-    public static <T> T fromJson(@NotNull String json, Class<T> clazz) {
+    public static <T> T fromJson(String json, Class<T> clazz) {
         if (json == null) {
             return null;
         }
         return GSON.fromJson(json, clazz);
     }
 
-    public static <T> Map<String, T> fromMap(@NotNull String json) {
+    public static <T> Map<String, T> fromMap( String json) {
         if (json == null) {
             return null;
         }
@@ -49,7 +49,7 @@ public class JsonUtil {
         }.getType());
     }
 
-    public static <T> List<Map<String, T>> fromListMap(@NotNull String json) {
+    public static <T> List<Map<String, T>> fromListMap(String json) {
         return GSON.fromJson(json, new TypeToken<List<Map<String, T>>>() {
         }.getType());
     }

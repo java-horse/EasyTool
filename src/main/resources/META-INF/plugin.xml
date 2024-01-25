@@ -74,10 +74,12 @@
         <li>Add Emoji identifier when supporting Git commit</li>
         <li>Add a pop-up window for character swapping and various JSON conversions</li>
         <li>Support dynamic parsing of selected Cron expressions, automatic recognition of @Scheduled annotations, and addition of parsing icons on the right side</li>
+        <li>Support Git commit, submit information according to the template and automatically assemble it</li>
         <li>-------------------------------</li>
         <li>支持 Git Commit 时添加 Emoji 标识</li>
         <li>新增针对于字符串和JSON相关转换的功能弹窗</li>
         <li>支持选中Cron表达式动态解析、自动识别@Scheduled注解并在右侧添加小图标按钮</li>
+        <li>支持 Git Commit 时按照模板进行提交信息填写并自动组装</li>
       </ul>
       <h3>v2.0.2</h3>
       <ul>
@@ -289,7 +291,8 @@
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
 
-        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA" implementationClass="easy.provider.CronMarkerProvider"/>
+        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
+                                        implementationClass="easy.provider.CronMarkerProvider"/>
     </extensions>
 
     <actions>
@@ -351,8 +354,14 @@
                 text="Mybatis Log"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
         <!--Git Commit Emoji-->
-        <action id="EasyToolGitCommitEmojiAction" class="easy.action.GitCommitEmojiAction" text="GitEmoji"
+        <action id="EasyToolGitCommitEmojiAction" class="easy.action.GitCommitEmojiAction" text="Git Commit Emoji"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT_EMOJI">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+        <!--Git Commit Message-->
+        <action id="EasyToolGitCommitMessageAction" class="easy.action.GitCommitMessageAction"
+                text="Git Commit Message Template"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
         <!--Convert动态转换-->

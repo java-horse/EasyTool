@@ -58,6 +58,13 @@ public class Constants {
             String SELECT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".select_sql_color";
         }
 
+        /**
+         * Git Commit Message
+         */
+        public interface GIT_COMMIT_MESSAGE {
+            String LAST_COMMIT_MESSAGE = PLUGIN_NAME + "." + GIT_COMMIT_MESSAGE.class.getSimpleName() + ".last_commit_message";
+        }
+
     }
 
     /**
