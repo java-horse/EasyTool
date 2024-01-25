@@ -25,10 +25,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.util.ui.JBInsets;
 import com.intellij.util.ui.JBUI;
-import easy.action.base.ClearConsoleAction;
-import easy.action.base.ClearEditAction;
-import easy.action.base.CopyConsoleAction;
-import easy.action.base.CopyEditAction;
+import easy.action.base.*;
 import easy.base.Constants;
 import easy.handler.Str2JsonHandler;
 import easy.util.BundleUtil;
@@ -92,6 +89,7 @@ public class Str2JsonWrapper extends DialogWrapper {
             if (StringUtils.isBlank(json)) {
                 return;
             }
+            consoleView.clear();
             consoleView.print(json, ConsoleViewContentType.USER_INPUT);
         });
         clearButton.addActionListener(e -> {
@@ -119,6 +117,8 @@ public class Str2JsonWrapper extends DialogWrapper {
         DefaultActionGroup actionGroup = new DefaultActionGroup();
         actionGroup.add(new ClearConsoleAction(consoleView));
         actionGroup.add(new CopyConsoleAction(consoleView));
+        actionGroup.add(new CompressJsonConsoleAction(consoleView));
+        actionGroup.add(new DecompressionJsonConsoleAction(consoleView));
         actionGroup.addSeparator();
         actionGroup.add(prevAction);
         actionGroup.add(nextAction);

@@ -41,7 +41,7 @@ public class Str2JsonHandler {
 
     public static String toJSON(String toString) {
         try {
-            return JsonUtil.toJson(toMap(toString));
+            return JsonUtil.toPrettyJson(toMap(toString));
         } catch (ParseException e) {
             log.error("Str2JsonHandler.toJSON is error", e);
         }
