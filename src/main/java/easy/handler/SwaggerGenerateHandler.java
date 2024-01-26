@@ -192,8 +192,8 @@ public class SwaggerGenerateHandler {
         if (StringUtils.isBlank(apiOperationAttrValue)) {
             apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
         }
-        PsiAnnotation[] psiAnnotations = psiMethod.getModifierList().getAnnotations();
-        String methodValue = this.getMappingAttribute(psiAnnotations, "method");
+        PsiAnnotation[] psiMethodAnnotations = psiMethod.getModifierList().getAnnotations();
+        String methodValue = this.getMappingAttribute(psiMethodAnnotations, "method");
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         if (StringUtils.isNotBlank(methodValue)) {
             apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
@@ -217,11 +217,17 @@ public class SwaggerGenerateHandler {
             PsiType psiType = psiParameter.getType();
             String paramType = "query";
             String required = null;
-            for (PsiAnnotation psiAnnotation : psiParameter.getModifierList().getAnnotations()) {
-                if (StringUtils.isBlank(psiAnnotation.getQualifiedName())) {
+            // 忽略生成 @ApiIgnore 注解的参数
+            PsiAnnotation[] psiParameterAnnotations = psiParameter.getModifierList().getAnnotations();
+            if (Arrays.stream(psiParameterAnnotations).anyMatch(psiAnnotation -> StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_IGNORE.getClassPackage()))) {
+                continue;
+            }
+            for (PsiAnnotation psiAnnotation : psiParameterAnnotations) {
+                String qualifiedName = psiAnnotation.getQualifiedName();
+                if (StringUtils.isBlank(qualifiedName)) {
                     break;
                 }
-                SpringAnnotationEnum annotationEnum = SpringAnnotationEnum.getEnum(psiAnnotation.getQualifiedName());
+                SpringAnnotationEnum annotationEnum = SpringAnnotationEnum.getEnum(qualifiedName);
                 if (Objects.nonNull(annotationEnum)) {
                     switch (annotationEnum) {
                         case REQUEST_HEADER_TEXT:
