@@ -96,7 +96,7 @@ public class CommonSettingView {
 
         swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
         searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
-        translateConfirmInputModelLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
+        translateConfirmInputModelTipsLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
         tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
         tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
         tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));

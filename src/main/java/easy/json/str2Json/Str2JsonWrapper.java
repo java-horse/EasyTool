@@ -119,6 +119,7 @@ public class Str2JsonWrapper extends DialogWrapper {
         actionGroup.add(new CopyConsoleAction(consoleView));
         actionGroup.add(new CompressJsonConsoleAction(consoleView));
         actionGroup.add(new DecompressionJsonConsoleAction(consoleView));
+        actionGroup.add(new DownloadJsonConsoleAction(consoleView));
         actionGroup.addSeparator();
         actionGroup.add(prevAction);
         actionGroup.add(nextAction);
