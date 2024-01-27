@@ -47,6 +47,8 @@ public class TranslateSettingConfigurable implements Configurable {
         return !Objects.equals(translateConfig.getTranslateChannel(), translateSettingView.getTranslateChannelBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getAppSecret(), translateSettingView.getAppSecretTextField().getText())
+                || !Objects.equals(translateConfig.getBaiduDomainCheckBox(), translateSettingView.getBaiduDomainCheckBox().isSelected())
+                || !Objects.equals(translateConfig.getBaiduDomainComboBox(), translateSettingView.getBaiduDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getAccessKeyId(), translateSettingView.getAccessKeyIdTextField().getText())
@@ -82,6 +84,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setTranslateChannel(String.valueOf(translateSettingView.getTranslateChannelBox().getSelectedItem()));
         translateConfig.setAppId(translateSettingView.getAppIdTextField().getText());
         translateConfig.setAppSecret(translateSettingView.getAppSecretTextField().getText());
+        translateConfig.setBaiduDomainCheckBox(translateSettingView.getBaiduDomainCheckBox().isSelected());
+        translateConfig.setBaiduDomainComboBox(String.valueOf(translateSettingView.getBaiduDomainComboBox().getSelectedItem()));
         translateConfig.setSecretId(translateSettingView.getSecretIdTextField().getText());
         translateConfig.setSecretKey(translateSettingView.getSecretKeyTextField().getText());
         translateConfig.setAccessKeyId(translateSettingView.getAccessKeyIdTextField().getText());
@@ -109,6 +113,9 @@ public class TranslateSettingConfigurable implements Configurable {
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getAppId(), translateConfig.getAppSecret()), TranslateEnum.BAIDU.getTranslate() + "密钥不能为空");
+            if (Boolean.TRUE.equals(translateConfig.getBaiduDomainCheckBox())) {
+                ValidatorUtil.notBlank(translateConfig.getBaiduDomainComboBox(), TranslateEnum.BAIDU.getTranslate() + "领域不能为空");
+            }
         }
         if (TranslateEnum.ALIYUN.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret()), TranslateEnum.ALIYUN.getTranslate() + "密钥不能为空");

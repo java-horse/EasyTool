@@ -30,6 +30,16 @@ public class TranslateConfig {
     private String appSecret;
 
     /**
+     * 是否开启百度翻译领域模型
+     */
+    private Boolean baiduDomainCheckBox;
+
+    /**
+     * 百度翻译领域模型名称
+     */
+    private String baiduDomainComboBox;
+
+    /**
      * 有道secretId
      */
     private String secretId;
@@ -202,6 +212,22 @@ public class TranslateConfig {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public Boolean getBaiduDomainCheckBox() {
+        return baiduDomainCheckBox;
+    }
+
+    public void setBaiduDomainCheckBox(Boolean baiduDomainCheckBox) {
+        this.baiduDomainCheckBox = baiduDomainCheckBox;
+    }
+
+    public String getBaiduDomainComboBox() {
+        return baiduDomainComboBox;
+    }
+
+    public void setBaiduDomainComboBox(String baiduDomainComboBox) {
+        this.baiduDomainComboBox = baiduDomainComboBox;
     }
 
     public String getSecretId() {
@@ -394,6 +420,8 @@ public class TranslateConfig {
                 "translateChannel='" + translateChannel + '\'' +
                 ", appId='" + appId + '\'' +
                 ", appSecret='" + appSecret + '\'' +
+                ", baiduDomainCheckBox=" + baiduDomainCheckBox +
+                ", baiduDomainComboBox='" + baiduDomainComboBox + '\'' +
                 ", secretId='" + secretId + '\'' +
                 ", secretKey='" + secretKey + '\'' +
                 ", accessKeyId='" + accessKeyId + '\'' +
@@ -419,4 +447,5 @@ public class TranslateConfig {
                 ", tyKey='" + tyKey + '\'' +
                 '}';
     }
+
 }

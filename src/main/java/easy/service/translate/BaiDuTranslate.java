@@ -2,6 +2,8 @@ package easy.service.translate;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
+import easy.config.translate.TranslateConfig;
+import easy.enums.BaiDuTranslateDomainEnum;
 import easy.enums.TranslateEnum;
 import easy.service.AbstractTranslate;
 import easy.util.HttpUtil;
@@ -73,14 +75,25 @@ public class BaiDuTranslate extends AbstractTranslate {
                 paramsMap.put("q", text);
                 paramsMap.put("from", source);
                 paramsMap.put("to", target);
-                String appId = getTranslateConfig().getAppId();
+                TranslateConfig translateConfig = getTranslateConfig();
+                String appId = translateConfig.getAppId();
                 paramsMap.put("appid", appId);
                 String salt = Long.toString(System.currentTimeMillis());
                 paramsMap.put("salt", salt);
-                paramsMap.put("sign", DigestUtils.md5Hex(appId + text + salt + getTranslateConfig().getAppSecret()));
+                // 是否领域翻译
+                String url = TranslateEnum.BAIDU.getUrl();
+                if (Boolean.TRUE.equals(translateConfig.getBaiduDomainCheckBox()) && StringUtils.isNotBlank(translateConfig.getBaiduDomainComboBox())) {
+                    String domain = BaiDuTranslateDomainEnum.getDomain(translateConfig.getBaiduDomainComboBox());
+                    if (StringUtils.isNotBlank(domain)) {
+                        paramsMap.put("domain", domain);
+                        url = TranslateEnum.BAIDU.getDomainUrl();
+                    }
+                }
+                Object domainStr = paramsMap.get("domain");
+                paramsMap.put("sign", DigestUtils.md5Hex(appId + text + salt + (Objects.isNull(domainStr) ? StringUtils.EMPTY : domainStr) + translateConfig.getAppSecret()));
                 Map<String, String> headersMap = new HashMap<>(3);
                 headersMap.put("Content-Type", "application/x-www-form-urlencoded");
-                String res = HttpUtil.doPost(TranslateEnum.BAIDU.getUrl(), headersMap, paramsMap);
+                String res = HttpUtil.doPost(url, headersMap, paramsMap);
                 if (StringUtils.isBlank(res)) {
                     return StringUtils.EMPTY;
                 }

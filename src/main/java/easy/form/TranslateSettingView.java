@@ -1,7 +1,6 @@
 package easy.form;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
@@ -22,8 +21,6 @@ import java.util.Objects;
  **/
 
 public class TranslateSettingView {
-
-    private static final Logger log = Logger.getInstance(TranslateSettingView.class);
 
     private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
@@ -88,6 +85,9 @@ public class TranslateSettingView {
     private JTextField tyKeyTextField;
     private JLabel tyModelLabel;
     private JComboBox tyModelComboBox;
+    private JLabel baiduDomainLabel;
+    private JCheckBox baiduDomainCheckBox;
+    private JComboBox baiduDomainComboBox;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -112,6 +112,7 @@ public class TranslateSettingView {
         payButton.addActionListener(event -> new SupportView().show());
         translateChannelBox.addItemListener(e -> setTranslateVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
+        baiduDomainCheckBox.addActionListener(e -> baiduDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
     }
 
     /**
@@ -171,6 +172,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(true);
             appSecretLabel.setVisible(true);
             appSecretTextField.setVisible(true);
+            baiduDomainLabel.setVisible(true);
+            baiduDomainCheckBox.setVisible(true);
+            baiduDomainComboBox.setVisible(true);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -219,6 +223,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -267,6 +274,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(true);
             secretIdTextField.setVisible(true);
             secretKeyLabel.setVisible(true);
@@ -315,6 +325,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -363,6 +376,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -411,6 +427,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -459,6 +478,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -507,6 +529,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -555,6 +580,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -603,6 +631,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -651,6 +682,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -699,6 +733,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -746,6 +783,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -795,6 +835,9 @@ public class TranslateSettingView {
             appIdTextField.setVisible(false);
             appSecretLabel.setVisible(false);
             appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -852,6 +895,8 @@ public class TranslateSettingView {
         setTranslateChannelBox(translateConfig.getTranslateChannel());
         setAppIdTextField(translateConfig.getAppId());
         setAppSecretTextField(translateConfig.getAppSecret());
+        setBaiduDomainCheckBox(translateConfig.getBaiduDomainCheckBox());
+        setBaiduDomainComboBox(translateConfig.getBaiduDomainComboBox());
         setSecretIdTextField(translateConfig.getSecretId());
         setSecretKeyTextField(translateConfig.getSecretKey());
         setAccessKeyIdTextField(translateConfig.getAccessKeyId());
@@ -927,6 +972,22 @@ public class TranslateSettingView {
 
     public void setAppSecretTextField(String appSecrt) {
         this.appSecretTextField.setText(appSecrt);
+    }
+
+    public JCheckBox getBaiduDomainCheckBox() {
+        return baiduDomainCheckBox;
+    }
+
+    public void setBaiduDomainCheckBox(Boolean baiduDomainCheckBox) {
+        this.baiduDomainCheckBox.setSelected(baiduDomainCheckBox);
+    }
+
+    public JComboBox getBaiduDomainComboBox() {
+        return baiduDomainComboBox;
+    }
+
+    public void setBaiduDomainComboBox(String baiduDomainComboBox) {
+        this.baiduDomainComboBox.setSelectedItem(baiduDomainComboBox);
     }
 
     public JLabel getSecretIdLabel() {

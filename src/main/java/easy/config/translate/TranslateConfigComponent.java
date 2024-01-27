@@ -5,6 +5,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import easy.base.ModelConstants;
+import easy.enums.BaiDuTranslateDomainEnum;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +32,16 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
         if (Objects.isNull(translateConfig)) {
             translateConfig = new TranslateConfig();
             translateConfig.setTranslateChannel(TranslateEnum.BAIDU.getTranslate());
+            translateConfig.setBaiduDomainCheckBox(Boolean.FALSE);
+            translateConfig.setBaiduDomainComboBox(BaiDuTranslateDomainEnum.IT.getName());
             translateConfig.setOpenModelChannel(OpenModelTranslateEnum.TONG_YI.getModel());
             translateConfig.setTyModel(ModelConstants.TONG_YI.MAX.getModel());
+        } else {
+            translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
+            translateConfig.setBaiduDomainCheckBox(Objects.isNull(translateConfig.getBaiduDomainCheckBox()) ? Boolean.FALSE : translateConfig.getBaiduDomainCheckBox());
+            translateConfig.setBaiduDomainComboBox(Objects.isNull(translateConfig.getBaiduDomainComboBox()) ? BaiDuTranslateDomainEnum.IT.getName() : translateConfig.getBaiduDomainComboBox());
+            translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
+            translateConfig.setTyModel(Objects.isNull(translateConfig.getTyModel()) ? ModelConstants.TONG_YI.MAX.getModel() : translateConfig.getTyModel());
         }
         return translateConfig;
     }

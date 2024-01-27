@@ -76,12 +76,14 @@
         <li>Support dynamic parsing of selected Cron expressions, automatic recognition of @Scheduled annotations, and addition of parsing icons on the right side</li>
         <li>Support Git commit, submit information according to the template and automatically assemble it</li>
         <li>Ignore generating parameters annotated by @ApiIgnore and no longer generate Swagger related annotations</li>
+        <li>Baidu Translation Channel supports setting new features for domain translation</li>
         <li>-------------------------------</li>
         <li>支持 Git Commit 时添加 Emoji 标识</li>
         <li>新增针对于字符串和JSON相关转换的功能弹窗</li>
         <li>支持选中Cron表达式动态解析、自动识别@Scheduled注解并在右侧添加小图标按钮</li>
         <li>支持 Git Commit 时按照模板进行提交信息填写并自动组装</li>
         <li>忽略生成被 @ApiIgnore 注解的参数，不再生成Swagger相关注解</li>
+        <li>百度翻译渠道支持设置领域翻译新特性</li>
       </ul>
       <h3>v2.0.2</h3>
       <ul>
