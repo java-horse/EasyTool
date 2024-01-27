@@ -3,6 +3,7 @@ package easy.service.translate;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
+import easy.enums.AliYunTranslateDomainEnum;
 import easy.enums.TranslateEnum;
 import easy.service.AbstractTranslate;
 import easy.util.HttpUtil;
@@ -71,9 +72,18 @@ public class AliYunTranslate extends AbstractTranslate {
             paramsMap.put("SourceLanguage", source);
             paramsMap.put("TargetLanguage", target);
             paramsMap.put("FormatType", "text");
-            paramsMap.put("Scene", "general");
+            paramsMap.put("Scene", AliYunTranslateDomainEnum.GENERAL.getDomain());
             TranslateConfig translateConfig = getTranslateConfig();
-            String res = sendPost(TranslateEnum.ALIYUN.getUrl(), paramsMap, translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
+            String url = TranslateEnum.ALIYUN.getUrl();
+            // 是否专业版领域翻译
+            if (Boolean.TRUE.equals(translateConfig.getAliyunDomainCheckBox()) && StringUtils.isNotBlank(translateConfig.getAliyunDomainComboBox())) {
+                String domain = AliYunTranslateDomainEnum.getDomain(translateConfig.getAliyunDomainComboBox());
+                if (StringUtils.isNotBlank(domain)) {
+                    paramsMap.put("Scene", domain);
+                    url = TranslateEnum.ALIYUN.getDomainUrl();
+                }
+            }
+            String res = sendPost(url, paramsMap, translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
             AliYunResponseVO responseVO = JsonUtil.fromJson(res, AliYunResponseVO.class);
             return Objects.requireNonNull(responseVO).getData().getTranslated();
         } catch (Exception e) {

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public enum TranslateEnum {
 
     BAIDU("百度翻译", "http://api.fanyi.baidu.com/api/trans/vip/translate", "https://fanyi-api.baidu.com/api/trans/vip/fieldtranslate"),
-    ALIYUN("阿里翻译", "http://mt.cn-hangzhou.aliyuncs.com/api/translate/web/general", ""),
+    ALIYUN("阿里翻译", "http://mt.cn-hangzhou.aliyuncs.com/api/translate/web/general", "http://mt.cn-hangzhou.aliyuncs.com/api/translate/web/ecommerce"),
     YOUDAO("有道翻译", "https://openapi.youdao.com/api", ""),
     TENCENT("腾讯翻译", "https://tmt.tencentcloudapi.com", ""),
     VOLCANO("火山翻译", "https://translate.volcengineapi.com", ""),

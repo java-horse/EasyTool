@@ -88,6 +88,9 @@ public class TranslateSettingView {
     private JLabel baiduDomainLabel;
     private JCheckBox baiduDomainCheckBox;
     private JComboBox baiduDomainComboBox;
+    private JLabel aliyunDomainLabel;
+    private JCheckBox aliyunDomainCheckBox;
+    private JComboBox aliyunDomainComboBox;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -113,6 +116,7 @@ public class TranslateSettingView {
         translateChannelBox.addItemListener(e -> setTranslateVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         baiduDomainCheckBox.addActionListener(e -> baiduDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        aliyunDomainCheckBox.addActionListener(e -> aliyunDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
     }
 
     /**
@@ -175,6 +179,7 @@ public class TranslateSettingView {
             baiduDomainLabel.setVisible(true);
             baiduDomainCheckBox.setVisible(true);
             baiduDomainComboBox.setVisible(true);
+            baiduDomainComboBox.setEnabled(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
@@ -183,6 +188,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -234,6 +242,10 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(true);
             accessKeySecretLabel.setVisible(true);
             accessKeySecretTextField.setVisible(true);
+            aliyunDomainLabel.setVisible(true);
+            aliyunDomainCheckBox.setVisible(true);
+            aliyunDomainComboBox.setVisible(true);
+            aliyunDomainComboBox.setEnabled(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -285,6 +297,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -336,6 +351,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(true);
             tencentSecretIdTextField.setVisible(true);
             tencentSecretKeyLabel.setVisible(true);
@@ -387,6 +405,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -438,6 +459,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -489,6 +513,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -540,6 +567,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -591,6 +621,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -642,6 +675,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -693,6 +729,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -744,6 +783,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -794,6 +836,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -846,6 +891,9 @@ public class TranslateSettingView {
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
             accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -901,6 +949,8 @@ public class TranslateSettingView {
         setSecretKeyTextField(translateConfig.getSecretKey());
         setAccessKeyIdTextField(translateConfig.getAccessKeyId());
         setAccessKeySecretTextField(translateConfig.getAccessKeySecret());
+        setAliyunDomainCheckBox(translateConfig.getAliyunDomainCheckBox());
+        setAliyunDomainComboBox(translateConfig.getAliyunDomainComboBox());
         setTencentSecretIdTextField(translateConfig.getTencentSecretId());
         setTencentSecretKeyTextField(translateConfig.getTencentSecretKey());
         setVolcanoSecretIdTextField(translateConfig.getVolcanoSecretId());
@@ -1356,6 +1406,30 @@ public class TranslateSettingView {
 
     public void setTyKeyTextField(String tyKeyTextField) {
         this.tyKeyTextField.setText(tyKeyTextField);
+    }
+
+    public JLabel getAliyunDomainLabel() {
+        return aliyunDomainLabel;
+    }
+
+    public void setAliyunDomainLabel(JLabel aliyunDomainLabel) {
+        this.aliyunDomainLabel = aliyunDomainLabel;
+    }
+
+    public JCheckBox getAliyunDomainCheckBox() {
+        return aliyunDomainCheckBox;
+    }
+
+    public void setAliyunDomainCheckBox(Boolean aliyunDomainCheckBox) {
+        this.aliyunDomainCheckBox.setSelected(aliyunDomainCheckBox);
+    }
+
+    public JComboBox getAliyunDomainComboBox() {
+        return aliyunDomainComboBox;
+    }
+
+    public void setAliyunDomainComboBox(String aliyunDomainComboBox) {
+        this.aliyunDomainComboBox.setSelectedItem(aliyunDomainComboBox);
     }
 
 }

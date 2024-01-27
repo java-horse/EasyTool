@@ -1,6 +1,7 @@
 package easy.config.translate;
 
 import easy.base.ModelConstants;
+import easy.enums.BaiDuTranslateDomainEnum;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 
@@ -58,6 +59,15 @@ public class TranslateConfig {
      * 阿里accessKeySecret
      */
     private String accessKeySecret;
+
+    /**
+     * 是否开启阿里翻译专业版领域模型
+     */
+    private Boolean aliyunDomainCheckBox;
+    /**
+     * 专业版领域模型
+     */
+    private String aliyunDomainComboBox;
 
     /**
      * 腾讯secretId
@@ -167,6 +177,8 @@ public class TranslateConfig {
         translateChannel = TranslateEnum.BAIDU.getTranslate();
         appId = null;
         appSecret = null;
+        baiduDomainCheckBox = Boolean.FALSE;
+        baiduDomainComboBox = BaiDuTranslateDomainEnum.IT.getName();
         secretId = null;
         secretKey = null;
         accessKeyId = null;
@@ -414,6 +426,22 @@ public class TranslateConfig {
         this.tyModel = tyModel;
     }
 
+    public Boolean getAliyunDomainCheckBox() {
+        return aliyunDomainCheckBox;
+    }
+
+    public void setAliyunDomainCheckBox(Boolean aliyunDomainCheckBox) {
+        this.aliyunDomainCheckBox = aliyunDomainCheckBox;
+    }
+
+    public String getAliyunDomainComboBox() {
+        return aliyunDomainComboBox;
+    }
+
+    public void setAliyunDomainComboBox(String aliyunDomainComboBox) {
+        this.aliyunDomainComboBox = aliyunDomainComboBox;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -426,6 +454,8 @@ public class TranslateConfig {
                 ", secretKey='" + secretKey + '\'' +
                 ", accessKeyId='" + accessKeyId + '\'' +
                 ", accessKeySecret='" + accessKeySecret + '\'' +
+                ", aliyunDomainCheckBox=" + aliyunDomainCheckBox +
+                ", aliyunDomainComboBox='" + aliyunDomainComboBox + '\'' +
                 ", tencentSecretId='" + tencentSecretId + '\'' +
                 ", tencentSecretKey='" + tencentSecretKey + '\'' +
                 ", volcanoSecretId='" + volcanoSecretId + '\'' +
@@ -447,5 +477,4 @@ public class TranslateConfig {
                 ", tyKey='" + tyKey + '\'' +
                 '}';
     }
-
 }
