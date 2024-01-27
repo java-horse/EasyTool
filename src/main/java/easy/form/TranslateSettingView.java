@@ -91,6 +91,9 @@ public class TranslateSettingView {
     private JLabel aliyunDomainLabel;
     private JCheckBox aliyunDomainCheckBox;
     private JComboBox aliyunDomainComboBox;
+    private JLabel youdaoDomainLabel;
+    private JCheckBox youdaoDomainCheckBox;
+    private JComboBox youdaoDomainComboBox;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -179,11 +182,13 @@ public class TranslateSettingView {
             baiduDomainLabel.setVisible(true);
             baiduDomainCheckBox.setVisible(true);
             baiduDomainComboBox.setVisible(true);
-            baiduDomainComboBox.setEnabled(false);
             secretIdLabel.setVisible(false);
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -238,6 +243,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(true);
             accessKeyIdTextField.setVisible(true);
             accessKeySecretLabel.setVisible(true);
@@ -245,7 +253,6 @@ public class TranslateSettingView {
             aliyunDomainLabel.setVisible(true);
             aliyunDomainCheckBox.setVisible(true);
             aliyunDomainComboBox.setVisible(true);
-            aliyunDomainComboBox.setEnabled(false);
             tencentSecretIdLabel.setVisible(false);
             tencentSecretIdTextField.setVisible(false);
             tencentSecretKeyLabel.setVisible(false);
@@ -293,6 +300,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(true);
             secretKeyLabel.setVisible(true);
             secretKeyTextField.setVisible(true);
+            youdaoDomainLabel.setVisible(true);
+            youdaoDomainCheckBox.setVisible(true);
+            youdaoDomainComboBox.setVisible(true);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -347,6 +357,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -401,6 +414,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -455,6 +471,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -509,6 +528,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -563,6 +585,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -617,6 +642,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -671,6 +699,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -725,6 +756,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -779,6 +813,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -832,6 +869,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -887,6 +927,9 @@ public class TranslateSettingView {
             secretIdTextField.setVisible(false);
             secretKeyLabel.setVisible(false);
             secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
             accessKeyIdLabel.setVisible(false);
             accessKeyIdTextField.setVisible(false);
             accessKeySecretLabel.setVisible(false);
@@ -947,6 +990,8 @@ public class TranslateSettingView {
         setBaiduDomainComboBox(translateConfig.getBaiduDomainComboBox());
         setSecretIdTextField(translateConfig.getSecretId());
         setSecretKeyTextField(translateConfig.getSecretKey());
+        setYoudaoDomainCheckBox(translateConfig.getYoudaoDomainCheckBox());
+        setYoudaoDomainComboBox(translateConfig.getYoudaoDomainComboBox());
         setAccessKeyIdTextField(translateConfig.getAccessKeyId());
         setAccessKeySecretTextField(translateConfig.getAccessKeySecret());
         setAliyunDomainCheckBox(translateConfig.getAliyunDomainCheckBox());
@@ -1432,4 +1477,27 @@ public class TranslateSettingView {
         this.aliyunDomainComboBox.setSelectedItem(aliyunDomainComboBox);
     }
 
+    public JLabel getYoudaoDomainLabel() {
+        return youdaoDomainLabel;
+    }
+
+    public void setYoudaoDomainLabel(JLabel youdaoDomainLabel) {
+        this.youdaoDomainLabel = youdaoDomainLabel;
+    }
+
+    public JCheckBox getYoudaoDomainCheckBox() {
+        return youdaoDomainCheckBox;
+    }
+
+    public void setYoudaoDomainCheckBox(Boolean youdaoDomainCheckBox) {
+        this.youdaoDomainCheckBox.setSelected(youdaoDomainCheckBox);
+    }
+
+    public JComboBox getYoudaoDomainComboBox() {
+        return youdaoDomainComboBox;
+    }
+
+    public void setYoudaoDomainComboBox(String youdaoDomainComboBox) {
+        this.youdaoDomainComboBox.setSelectedItem(youdaoDomainComboBox);
+    }
 }

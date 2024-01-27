@@ -4,11 +4,9 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import easy.base.ModelConstants;
-import easy.enums.AliYunTranslateDomainEnum;
-import easy.enums.BaiDuTranslateDomainEnum;
-import easy.enums.OpenModelTranslateEnum;
-import easy.enums.TranslateEnum;
+import easy.enums.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +37,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setBaiduDomainComboBox(BaiDuTranslateDomainEnum.IT.getName());
             translateConfig.setAliyunDomainCheckBox(Boolean.FALSE);
             translateConfig.setAliyunDomainComboBox(AliYunTranslateDomainEnum.SOCIAL.getName());
+            translateConfig.setYoudaoDomainCheckBox(Boolean.FALSE);
+            translateConfig.setYoudaoDomainComboBox(YouDaoTranslateDomainEnum.COMPUTERS.getName());
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
@@ -47,6 +47,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setBaiduDomainComboBox(Objects.isNull(translateConfig.getBaiduDomainComboBox()) ? BaiDuTranslateDomainEnum.IT.getName() : translateConfig.getBaiduDomainComboBox());
             translateConfig.setAliyunDomainCheckBox(Objects.isNull(translateConfig.getAliyunDomainCheckBox()) ? Boolean.FALSE : translateConfig.getAliyunDomainCheckBox());
             translateConfig.setAliyunDomainComboBox(Objects.isNull(translateConfig.getAliyunDomainComboBox()) ? AliYunTranslateDomainEnum.SOCIAL.getName() : translateConfig.getAliyunDomainComboBox());
+            translateConfig.setYoudaoDomainCheckBox(Objects.isNull(translateConfig.getYoudaoDomainCheckBox()) ? Boolean.FALSE : translateConfig.getYoudaoDomainCheckBox());
+            translateConfig.setYoudaoDomainComboBox(Objects.isNull(translateConfig.getYoudaoDomainComboBox()) ? YouDaoTranslateDomainEnum.COMPUTERS.getName() : translateConfig.getYoudaoDomainComboBox());
         }
         return translateConfig;
     }

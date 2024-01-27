@@ -1,9 +1,7 @@
 package easy.config.translate;
 
 import easy.base.ModelConstants;
-import easy.enums.BaiDuTranslateDomainEnum;
-import easy.enums.OpenModelTranslateEnum;
-import easy.enums.TranslateEnum;
+import easy.enums.*;
 
 /**
  * 翻译渠道设置
@@ -49,6 +47,15 @@ public class TranslateConfig {
      * 有道secretKey
      */
     private String secretKey;
+
+    /**
+     * 是否开启有道领域翻译
+     */
+    private Boolean youdaoDomainCheckBox;
+    /**
+     * 有道领域翻译
+     */
+    private String youdaoDomainComboBox;
 
     /**
      * 阿里accessKeyId
@@ -200,6 +207,10 @@ public class TranslateConfig {
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
         tyModel = ModelConstants.TONG_YI.MAX.getModel();
         tyKey = null;
+        aliyunDomainCheckBox = Boolean.FALSE;
+        aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
+        youdaoDomainCheckBox = Boolean.FALSE;
+        youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
     }
 
     public String getTranslateChannel() {
@@ -442,6 +453,22 @@ public class TranslateConfig {
         this.aliyunDomainComboBox = aliyunDomainComboBox;
     }
 
+    public Boolean getYoudaoDomainCheckBox() {
+        return youdaoDomainCheckBox;
+    }
+
+    public void setYoudaoDomainCheckBox(Boolean youdaoDomainCheckBox) {
+        this.youdaoDomainCheckBox = youdaoDomainCheckBox;
+    }
+
+    public String getYoudaoDomainComboBox() {
+        return youdaoDomainComboBox;
+    }
+
+    public void setYoudaoDomainComboBox(String youdaoDomainComboBox) {
+        this.youdaoDomainComboBox = youdaoDomainComboBox;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
@@ -452,6 +479,8 @@ public class TranslateConfig {
                 ", baiduDomainComboBox='" + baiduDomainComboBox + '\'' +
                 ", secretId='" + secretId + '\'' +
                 ", secretKey='" + secretKey + '\'' +
+                ", youdaoDomainCheckBox=" + youdaoDomainCheckBox +
+                ", youdaoDomainComboBox='" + youdaoDomainComboBox + '\'' +
                 ", accessKeyId='" + accessKeyId + '\'' +
                 ", accessKeySecret='" + accessKeySecret + '\'' +
                 ", aliyunDomainCheckBox=" + aliyunDomainCheckBox +

@@ -51,6 +51,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !Objects.equals(translateConfig.getBaiduDomainComboBox(), translateSettingView.getBaiduDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())
+                || !Objects.equals(translateConfig.getYoudaoDomainCheckBox(), translateSettingView.getYoudaoDomainCheckBox().isSelected())
+                || !Objects.equals(translateConfig.getYoudaoDomainComboBox(), translateSettingView.getYoudaoDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getAccessKeyId(), translateSettingView.getAccessKeyIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getAccessKeySecret(), translateSettingView.getAccessKeySecretTextField().getText())
                 || !Objects.equals(translateConfig.getAliyunDomainCheckBox(), translateSettingView.getAliyunDomainCheckBox().isSelected())
@@ -90,6 +92,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setBaiduDomainComboBox(String.valueOf(translateSettingView.getBaiduDomainComboBox().getSelectedItem()));
         translateConfig.setSecretId(translateSettingView.getSecretIdTextField().getText());
         translateConfig.setSecretKey(translateSettingView.getSecretKeyTextField().getText());
+        translateConfig.setYoudaoDomainCheckBox(translateSettingView.getYoudaoDomainCheckBox().isSelected());
+        translateConfig.setYoudaoDomainComboBox(String.valueOf(translateSettingView.getYoudaoDomainComboBox().getSelectedItem()));
         translateConfig.setAccessKeyId(translateSettingView.getAccessKeyIdTextField().getText());
         translateConfig.setAccessKeySecret(translateSettingView.getAccessKeySecretTextField().getText());
         translateConfig.setAliyunDomainCheckBox(translateSettingView.getAliyunDomainCheckBox().isSelected());
@@ -129,6 +133,9 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.YOUDAO.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getSecretId(), translateConfig.getSecretKey()), TranslateEnum.YOUDAO.getTranslate() + "密钥不能为空");
+            if (Boolean.TRUE.equals(translateConfig.getYoudaoDomainCheckBox())) {
+                ValidatorUtil.notBlank(translateConfig.getYoudaoDomainComboBox(), TranslateEnum.YOUDAO.getTranslate() + "领域不能为空");
+            }
         }
         if (TranslateEnum.TENCENT.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getTencentSecretId(), translateConfig.getTencentSecretKey()), TranslateEnum.TENCENT.getTranslate() + "密钥不能为空");
