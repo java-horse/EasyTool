@@ -62,7 +62,7 @@ public class SwaggerGenerateHandler {
         WriteCommandAction.runWriteCommandAction(project, () -> {
             boolean isController = this.isController(psiClass);
             if (StringUtils.isNotBlank(selectionText)) {
-                this.generateSelection(psiClass, selectionText, isController);
+                this.generateSelection(psiClass, StringUtils.trim(selectionText), isController);
                 return;
             }
             this.generateClassAnnotation(psiClass, isController);
