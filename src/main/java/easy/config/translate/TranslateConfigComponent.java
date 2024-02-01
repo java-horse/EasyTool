@@ -4,7 +4,6 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import easy.base.ModelConstants;
 import easy.enums.*;
 import org.jetbrains.annotations.NotNull;

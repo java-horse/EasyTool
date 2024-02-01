@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "2.0.3"
+version = "2.0.4"
 
 repositories {
     maven {
@@ -29,12 +29,12 @@ intellij {
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
         options.encoding = "UTF-8"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {

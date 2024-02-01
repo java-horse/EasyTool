@@ -69,6 +69,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.4</h3>
+      <ul>
+        <li>xxx</li>
+        <li>-------------------------------</li>
+        <li>xxx</li>
+      </ul>
       <h3>v2.0.3</h3>
       <ul>
         <li>Add Emoji identifier when supporting Git commit</li>
