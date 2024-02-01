@@ -94,7 +94,7 @@
 | ![EasyTool示例](https://s2.loli.net/2024/02/01/mzQrMeI3VuPnJjS.png) | ![EasyTool示例](https://s2.loli.net/2024/02/01/o9H7siMe5AfjpKh.png) |
 | ![EasyTool示例](https://s2.loli.net/2024/02/01/m6fPA9DBwv5Kx21.png) | ![EasyTool示例](https://s2.loli.net/2024/02/01/1mXHVLv9ciBfsEO.png) |
 
-## 捐赠 | Donate
+## 捐赠|Donate
 
 | 平台  |                          --                           |
 |-----|:-----------------------------------------------------:|
