@@ -9,6 +9,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.enums.CopyUrlEnum;
+import easy.enums.SpringAnnotationEnum;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +61,7 @@ public class DynamicCopyUrlActionGroup extends DefaultActionGroup {
         PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
         e.getPresentation().setEnabledAndVisible(Arrays.stream(psiAnnotations)
                 .anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(),
-                        Constants.SPRING_ANNOTATION.CONTROLLER_ANNOTATION, Constants.SPRING_ANNOTATION.REST_CONTROLLER_ANNOTATION)));
+                        SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName(), SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName())));
     }
 
     @Override

@@ -58,21 +58,14 @@ public class Constants {
             String SELECT_SQL_COLOR_KEY = PLUGIN_NAME + "." + MYBATIS_LOG.class.getSimpleName() + ".select_sql_color";
         }
 
-    }
+        /**
+         * Git Commit Message
+         */
+        public interface GIT_COMMIT_MESSAGE {
+            String LAST_COMMIT_MESSAGE = PLUGIN_NAME + "." + GIT_COMMIT_MESSAGE.class.getSimpleName() + ".last_commit_message";
+        }
 
-    /**
-     * Spring注解
-     */
-    public interface SPRING_ANNOTATION {
-        String REQUEST_PARAM_TEXT = "org.springframework.web.bind.annotation.RequestParam";
-        String REQUEST_HEADER_TEXT = "org.springframework.web.bind.annotation.RequestHeader";
-        String PATH_VARIABLE_TEXT = "org.springframework.web.bind.annotation.PathVariable";
-        String REQUEST_BODY_TEXT = "org.springframework.web.bind.annotation.RequestBody";
-        String CONTROLLER_ANNOTATION = "org.springframework.stereotype.Controller";
-        String REST_CONTROLLER_ANNOTATION = "org.springframework.web.bind.annotation.RestController";
-        String FEIGN_CLIENT_ANNOTATION = "org.springframework.cloud.openfeign.FeignClient";
     }
-
 
     /**
      * 通用数字
@@ -91,17 +84,6 @@ public class Constants {
         int TEN = 10;
         int EIGHTY = 80;
         int HUNDRED = 100;
-    }
-
-
-    /**
-     * postfix快捷方式名称
-     */
-    public interface POSTFIX_SHORTCUT_NAME {
-        String GENERATE_GETTER = "Generate Getter";
-        String GENERATE_SETTER = "Generate Setter";
-        String GENERATE_SETTER_NO_DEFAULT_VAL = "Generate Setter with no default val";
-        String GENERATE_CONVERT = "Generate Convert";
     }
 
 }

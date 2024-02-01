@@ -20,6 +20,7 @@ import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
 import easy.restful.search.*;
 import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,6 +74,7 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
         showNavigationPopup(e, model, callback, BundleUtil.getI18n("search.find.usages.title"), true,
                 true, (ChooseByNameItemProvider) provider
         );
+        MessageUtil.sendActionDingMessage(e);
     }
 
     @Override

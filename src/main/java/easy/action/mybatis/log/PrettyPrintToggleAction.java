@@ -12,7 +12,7 @@ import java.util.Objects;
 public class PrettyPrintToggleAction extends ToggleAction {
 
     public PrettyPrintToggleAction() {
-    super("Pretty SQL", "Pretty SQL", EasyIcons.ICON.PRETTY_PRINT);
+        super("Pretty SQL", "Pretty SQL", EasyIcons.ICON.MAGIC);
     }
 
     @Override

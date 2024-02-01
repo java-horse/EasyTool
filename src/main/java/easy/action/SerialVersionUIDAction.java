@@ -65,7 +65,7 @@ public class SerialVersionUIDAction extends AnAction {
                 MessageUtil.sendActionDingMessage(e);
             }
         } catch (Throwable ex) {
-            log.error("serialVersionUID写入编辑器异常", ex);
+            log.error("serialVersionUID write editor exception!", ex);
         }
     }
 

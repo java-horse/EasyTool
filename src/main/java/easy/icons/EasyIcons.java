@@ -38,7 +38,13 @@ public class EasyIcons {
         Icon API = IconLoader.getIcon("icons/api.svg", EasyIcons.class);
         Icon YANDEX = IconLoader.getIcon("icons/search/yandex.svg", EasyIcons.class);
         Icon MYBATIS = IconLoader.getIcon("icons/mybatis.svg", EasyIcons.class);
-        Icon PRETTY_PRINT = IconLoader.getIcon("icons/prettyPrint.svg", EasyIcons.class);
+        Icon MAGIC = IconLoader.getIcon("icons/magic.svg", EasyIcons.class);
+        Icon SQL = IconLoader.getIcon("icons/sql.svg", EasyIcons.class);
+        Icon GIT_EMOJI = IconLoader.getIcon("icons/emoji.svg", EasyIcons.class);
+        Icon JSON = IconLoader.getIcon("icons/json.svg", EasyIcons.class);
+        Icon CONVERT = IconLoader.getIcon("icons/convert.svg", EasyIcons.class);
+        Icon CLOCK = IconLoader.getIcon("icons/clock.svg", EasyIcons.class);
+        Icon GIT = IconLoader.getIcon("icons/git.svg", EasyIcons.class);
     }
 
 }

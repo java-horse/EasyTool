@@ -2,7 +2,6 @@ package easy.diagnostic;
 
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
 import com.intellij.util.Consumer;
 import easy.base.Constants;
@@ -14,12 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 
 public abstract class AbstractErrorReportSubmitter extends ErrorReportSubmitter {
-    private static final Logger log = Logger.getInstance(AbstractErrorReportSubmitter.class);
 
     @Override
     @Nullable
     public String getPrivacyNoticeText() {
-        return String.format("请在上报异常时, 在上方输入框内填入您的联系信息, 或 Issue 生成后<a href='%s'>点击进入</a>页面留言以获得 issue 进展通知<br/>"
+        return String.format("请在上报异常时, 在上方输入框内填入您的联系信息, 或 Issue 生成后<a href='%s'>点击进入<icon src=\"AllIcons.Ide.External_link_arrow\"></a>页面留言以获得 issue 进展通知<br/>"
                 + "请在下方按钮选择 %s, 先不要 Clear all, 这样上报后可以点击弹窗最上方链接进入该 Issue", getIssueListPageUrl(), getReportActionText());
     }
 

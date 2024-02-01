@@ -22,6 +22,7 @@ import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.icons.EasyIcons;
 import easy.service.TranslateService;
+import easy.util.BundleUtil;
 import easy.util.LanguageUtil;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -86,10 +87,11 @@ public class TranslateAction extends AnAction {
                         }
                 );
             } catch (Throwable ex) {
-                log.error("中英互译写入编辑器异常", ex);
+                log.error("Chinese English translation writing editor exception!", ex);
             }
         } else {
-            int dialogResult = Messages.showOkCancelDialog(translateResult, title, "Copy", "Cancel", EasyIcons.ICON.TRANSLATE);
+            int dialogResult = Messages.showOkCancelDialog(translateResult, title, BundleUtil.getI18n("global.button.copy.text"),
+                    BundleUtil.getI18n("global.button.cancel.text"), EasyIcons.ICON.TRANSLATE);
             if (dialogResult == Messages.YES) {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }

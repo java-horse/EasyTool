@@ -2,9 +2,7 @@ package easy.util;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,10 @@ import java.util.Map;
 
 public class JsonUtil {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .serializeNulls()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
     private JsonUtil() {
     }
@@ -30,14 +31,26 @@ public class JsonUtil {
         return GSON.toJson(object);
     }
 
-    public static <T> T fromJson(@NotNull String json, Class<T> clazz) {
+    public static String toPrettyJson(Object object) {
+        if (object == null) {
+            return null;
+        }
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setPrettyPrinting()
+                .create();
+        return gson.toJson(object);
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
         if (json == null) {
             return null;
         }
         return GSON.fromJson(json, clazz);
     }
 
-    public static <T> Map<String, T> fromMap(@NotNull String json) {
+    public static <T> Map<String, T> fromMap(String json) {
         if (json == null) {
             return null;
         }
@@ -45,7 +58,7 @@ public class JsonUtil {
         }.getType());
     }
 
-    public static <T> List<Map<String, T>> fromListMap(@NotNull String json) {
+    public static <T> List<Map<String, T>> fromListMap(String json) {
         return GSON.fromJson(json, new TypeToken<List<Map<String, T>>>() {
         }.getType());
     }

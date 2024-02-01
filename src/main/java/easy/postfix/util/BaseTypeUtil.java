@@ -3,9 +3,9 @@ package easy.postfix.util;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiType;
 import easy.base.Constants;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;

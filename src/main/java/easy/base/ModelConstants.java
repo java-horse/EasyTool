@@ -21,7 +21,7 @@ public class ModelConstants {
         PLUS("qwen-plus"),
         TURBO("qwen-turbo");
 
-        private String model;
+        private final String model;
 
         public String getModel() {
             return model;

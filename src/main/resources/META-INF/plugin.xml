@@ -14,6 +14,7 @@
         <li>Support right-click shortcut network search</li>
         <li>Support for quick generation of serialVersionUID</li>
         <li>Support automatic copying of interface complete URL</li>
+        <li>Support insert Emoji identifier when supporting Git commit</li>
       </ul>
 	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
       <ul>
@@ -48,6 +49,7 @@
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
         <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
+        <li>支持 Git Commit 时添加 Emoji 标识</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -67,6 +69,22 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.3</h3>
+      <ul>
+        <li>Add Emoji identifier when supporting Git commit</li>
+        <li>Add a pop-up window for character swapping and various JSON conversions</li>
+        <li>Support dynamic parsing of selected Cron expressions, automatic recognition of @Scheduled annotations, and addition of parsing icons on the right side</li>
+        <li>Support Git commit, submit information according to the template and automatically assemble it</li>
+        <li>Ignore generating parameters annotated by @ApiIgnore and no longer generate Swagger related annotations</li>
+        <li>Translation Channel supports setting new features for domain translation</li>
+        <li>-------------------------------</li>
+        <li>支持 Git Commit 时添加 Emoji 标识</li>
+        <li>新增针对于字符串和JSON相关转换的功能弹窗</li>
+        <li>支持选中Cron表达式动态解析、自动识别@Scheduled注解并在右侧添加小图标按钮</li>
+        <li>支持 Git Commit 时按照模板进行提交信息填写并自动组装</li>
+        <li>忽略生成被 @ApiIgnore 注解的参数，不再生成Swagger相关注解</li>
+        <li>支持设置领域翻译新特性: 百度翻译、阿里翻译、有道翻译</li>
+      </ul>
       <h3>v2.0.2</h3>
       <ul>
         <li>Optimize the logic of English Chinese translation and improve translation accuracy</li>
@@ -256,25 +274,30 @@
 
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.service.TranslateService"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
         <applicationConfigurable id="easy.tool.settings" displayName="EasyTool"
-                                 instance="easy.settings.EasyToolConfigurable"/>
+                                 instance="easy.settings.EasyToolConfigurable" groupId="other"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.common" displayName="Common"
                                  instance="easy.settings.CommonSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
+                                 instance="easy.settings.GitEmojiSettingConfigurable"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
-    </extensions>
 
+        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
+                                        implementationClass="easy.provider.CronMarkerProvider"/>
+    </extensions>
 
     <actions>
         <!--中英字符互转-->
@@ -331,8 +354,28 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt SLASH"/>
         </action>
         <!--Mybatis Log 日志解析-->
-        <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction" text="Mybatis Log"
+        <action id="EasyToolMyBatisLogAction" class="easy.action.mybatis.log.MyBatisLogAction"
+                text="Mybatis Log"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.MYBATIS"/>
+        <!--Git Commit Emoji-->
+        <action id="EasyToolGitCommitEmojiAction" class="easy.action.GitCommitEmojiAction" text="Git Commit Emoji"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT_EMOJI">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+        <!--Git Commit Message-->
+        <action id="EasyToolGitCommitMessageAction" class="easy.action.GitCommitMessageAction"
+                text="Git Commit Message Template"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT">
+            <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
+        </action>
+        <!--Convert动态转换-->
+        <group id="EasyToolConvertDynamicActions" class="easy.action.convert.DynamicConvertActionGroup"
+               text="Convert" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.CONVERT" popup="true" compact="true"/>
+        <!--Cron解析-->
+        <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
+
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
@@ -354,6 +397,8 @@
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolConvertDynamicActions"/>
+            <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
         </group>
         <!--控制台右键菜单-->
@@ -365,6 +410,8 @@
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolConvertDynamicActions"/>
+            <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
         </group>
 

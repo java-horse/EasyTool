@@ -1,8 +1,7 @@
 package easy.config.translate;
 
 import easy.base.ModelConstants;
-import easy.enums.OpenModelTranslateEnum;
-import easy.enums.TranslateEnum;
+import easy.enums.*;
 
 /**
  * 翻译渠道设置
@@ -30,6 +29,16 @@ public class TranslateConfig {
     private String appSecret;
 
     /**
+     * 是否开启百度翻译领域模型
+     */
+    private Boolean baiduDomainCheckBox;
+
+    /**
+     * 百度翻译领域模型名称
+     */
+    private String baiduDomainComboBox;
+
+    /**
      * 有道secretId
      */
     private String secretId;
@@ -40,6 +49,15 @@ public class TranslateConfig {
     private String secretKey;
 
     /**
+     * 是否开启有道领域翻译
+     */
+    private Boolean youdaoDomainCheckBox;
+    /**
+     * 有道领域翻译
+     */
+    private String youdaoDomainComboBox;
+
+    /**
      * 阿里accessKeyId
      */
     private String accessKeyId;
@@ -48,6 +66,15 @@ public class TranslateConfig {
      * 阿里accessKeySecret
      */
     private String accessKeySecret;
+
+    /**
+     * 是否开启阿里翻译专业版领域模型
+     */
+    private Boolean aliyunDomainCheckBox;
+    /**
+     * 专业版领域模型
+     */
+    private String aliyunDomainComboBox;
 
     /**
      * 腾讯secretId
@@ -157,6 +184,8 @@ public class TranslateConfig {
         translateChannel = TranslateEnum.BAIDU.getTranslate();
         appId = null;
         appSecret = null;
+        baiduDomainCheckBox = Boolean.FALSE;
+        baiduDomainComboBox = BaiDuTranslateDomainEnum.IT.getName();
         secretId = null;
         secretKey = null;
         accessKeyId = null;
@@ -178,6 +207,10 @@ public class TranslateConfig {
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
         tyModel = ModelConstants.TONG_YI.MAX.getModel();
         tyKey = null;
+        aliyunDomainCheckBox = Boolean.FALSE;
+        aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
+        youdaoDomainCheckBox = Boolean.FALSE;
+        youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
     }
 
     public String getTranslateChannel() {
@@ -202,6 +235,22 @@ public class TranslateConfig {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    public Boolean getBaiduDomainCheckBox() {
+        return baiduDomainCheckBox;
+    }
+
+    public void setBaiduDomainCheckBox(Boolean baiduDomainCheckBox) {
+        this.baiduDomainCheckBox = baiduDomainCheckBox;
+    }
+
+    public String getBaiduDomainComboBox() {
+        return baiduDomainComboBox;
+    }
+
+    public void setBaiduDomainComboBox(String baiduDomainComboBox) {
+        this.baiduDomainComboBox = baiduDomainComboBox;
     }
 
     public String getSecretId() {
@@ -388,16 +437,54 @@ public class TranslateConfig {
         this.tyModel = tyModel;
     }
 
+    public Boolean getAliyunDomainCheckBox() {
+        return aliyunDomainCheckBox;
+    }
+
+    public void setAliyunDomainCheckBox(Boolean aliyunDomainCheckBox) {
+        this.aliyunDomainCheckBox = aliyunDomainCheckBox;
+    }
+
+    public String getAliyunDomainComboBox() {
+        return aliyunDomainComboBox;
+    }
+
+    public void setAliyunDomainComboBox(String aliyunDomainComboBox) {
+        this.aliyunDomainComboBox = aliyunDomainComboBox;
+    }
+
+    public Boolean getYoudaoDomainCheckBox() {
+        return youdaoDomainCheckBox;
+    }
+
+    public void setYoudaoDomainCheckBox(Boolean youdaoDomainCheckBox) {
+        this.youdaoDomainCheckBox = youdaoDomainCheckBox;
+    }
+
+    public String getYoudaoDomainComboBox() {
+        return youdaoDomainComboBox;
+    }
+
+    public void setYoudaoDomainComboBox(String youdaoDomainComboBox) {
+        this.youdaoDomainComboBox = youdaoDomainComboBox;
+    }
+
     @Override
     public String toString() {
         return "TranslateConfig{" +
                 "translateChannel='" + translateChannel + '\'' +
                 ", appId='" + appId + '\'' +
                 ", appSecret='" + appSecret + '\'' +
+                ", baiduDomainCheckBox=" + baiduDomainCheckBox +
+                ", baiduDomainComboBox='" + baiduDomainComboBox + '\'' +
                 ", secretId='" + secretId + '\'' +
                 ", secretKey='" + secretKey + '\'' +
+                ", youdaoDomainCheckBox=" + youdaoDomainCheckBox +
+                ", youdaoDomainComboBox='" + youdaoDomainComboBox + '\'' +
                 ", accessKeyId='" + accessKeyId + '\'' +
                 ", accessKeySecret='" + accessKeySecret + '\'' +
+                ", aliyunDomainCheckBox=" + aliyunDomainCheckBox +
+                ", aliyunDomainComboBox='" + aliyunDomainComboBox + '\'' +
                 ", tencentSecretId='" + tencentSecretId + '\'' +
                 ", tencentSecretKey='" + tencentSecretKey + '\'' +
                 ", volcanoSecretId='" + volcanoSecretId + '\'' +

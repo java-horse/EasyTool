@@ -1,5 +1,6 @@
 package easy.util;
 
+import cn.hutool.core.date.DatePattern;
 import com.google.gson.JsonObject;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManagerCore;
@@ -86,7 +87,7 @@ public class MessageUtil {
                             "**运行插件：** %s v%s (%s) \n\n" +
                             "**触发时间：** %s \n\n", Constants.PLUGIN_NAME + " 动态", SystemInfo.getOsNameAndVersion(), applicationInfo.getFullApplicationName(),
                     applicationInfo.getBuild().asString(), getIpRegion(), plugin.getName(), plugin.getVersion(), e.getPresentation().getText() + (ArrayUtils.isEmpty(objs) ? StringUtils.EMPTY : ("-" + objs[0])),
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN)));
             actionCardVO.setText(text);
             dingBotParam.setActionCard(actionCardVO);
             sendDingMessage(JsonUtil.toJson(dingBotParam));

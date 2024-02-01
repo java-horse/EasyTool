@@ -6,6 +6,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.enums.RequestAnnotationEnum;
+import easy.enums.SpringAnnotationEnum;
 import easy.util.NetUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,11 +70,11 @@ public class CopyUrlHandler {
         if (Objects.isNull(modifierList)) {
             return StringUtils.EMPTY;
         }
-        PsiAnnotation controllerAnnotation = modifierList.findAnnotation(Constants.SPRING_ANNOTATION.CONTROLLER_ANNOTATION);
+        PsiAnnotation controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName());
         if (Objects.isNull(controllerAnnotation)) {
-            controllerAnnotation = modifierList.findAnnotation(Constants.SPRING_ANNOTATION.REST_CONTROLLER_ANNOTATION);
+            controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName());
             if (Objects.isNull(controllerAnnotation)) {
-                controllerAnnotation = modifierList.findAnnotation(Constants.SPRING_ANNOTATION.FEIGN_CLIENT_ANNOTATION);
+                controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.FEIGN_CLIENT_ANNOTATION.getName());
             }
         }
         if (Objects.isNull(controllerAnnotation)) {
@@ -118,7 +119,7 @@ public class CopyUrlHandler {
     }
 
     /**
-     * 删除引号、大括号，没有/开头自动添加
+     * 删除引号、没有/开头自动添加
      *
      * @param url
      * @return java.lang.String
@@ -126,9 +127,7 @@ public class CopyUrlHandler {
      * @date 2023/11/7 13:59
      */
     private String removeQuotation(String url) {
-        String replaceUrl = StringUtils.replace(url, "\"", StringUtils.EMPTY)
-                .replace("{", StringUtils.EMPTY)
-                .replace("}", StringUtils.EMPTY);
+        String replaceUrl = StringUtils.replace(url, "\"", StringUtils.EMPTY);
         return StringUtils.startsWith(replaceUrl, "/") ? replaceUrl : replaceUrl + "/";
     }
 

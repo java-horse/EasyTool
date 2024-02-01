@@ -3,6 +3,7 @@ package easy.service.translate;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.enums.YouDaoTranslateDomainEnum;
 import easy.service.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
@@ -76,8 +77,16 @@ public class YouDaoTranslate extends AbstractTranslate {
             params.put("signType", "v3");
             params.put("curtime", currentTime);
             params.put("appKey", translateConfig.getSecretId());
+            params.put("domain", YouDaoTranslateDomainEnum.GENERAL.getDomain());
             params.put("salt", salt);
             params.put("sign", sign(translateConfig.getSecretId() + truncate(text) + salt + currentTime + translateConfig.getSecretKey()));
+            // 是否领域翻译
+            if (Boolean.TRUE.equals(translateConfig.getYoudaoDomainCheckBox()) && StringUtils.isNotBlank(translateConfig.getYoudaoDomainComboBox())) {
+                String domain = YouDaoTranslateDomainEnum.getDomain(translateConfig.getYoudaoDomainComboBox());
+                if (StringUtils.isNotBlank(domain)) {
+                    params.put("domain", domain);
+                }
+            }
             String res = HttpUtil.doGet(TranslateEnum.YOUDAO.getUrl(), params);
             YouDaoAiResponse response = JsonUtil.fromJson(res, YouDaoAiResponse.class);
             return Objects.isNull(response) ? StringUtils.EMPTY : response.getTranslation().get(0);

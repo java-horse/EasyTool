@@ -8,9 +8,7 @@ import easy.enums.WebSearchEnum;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -66,7 +64,7 @@ public class WebSearchAction extends AnAction {
                 MessageUtil.sendActionDingMessage(e);
             }
         } catch (Exception ex) {
-            log.error("打开链接失败: " + searchUrl, ex);
+            log.error("Failed to open link: " + searchUrl, ex);
         }
     }
 

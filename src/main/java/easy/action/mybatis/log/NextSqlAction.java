@@ -16,20 +16,14 @@ public class NextSqlAction extends JumpSqlAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-
-        super.actionPerformed(e);
-
         int offset = editor.getCaretModel().getPrimaryCaret().getOffset() + 2;
         int textLength = editor.getDocument().getTextLength();
-
         if (offset >= textLength) {
             return;
         }
-
         int movedOffset = jump(offset, textLength, true);
         if (movedOffset > -1 && (e.getInputEvent().isShiftDown())) {
                 editor.getSelectionModel().setSelection(offset - 2, movedOffset);
-
         }
     }
 

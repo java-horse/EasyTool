@@ -12,6 +12,7 @@ import com.intellij.execution.ui.*;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionGroup;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.editor.Document;
@@ -33,6 +34,7 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.util.messages.MessageBusConnection;
+import easy.action.convert.Log2SqlAction;
 import easy.action.mybatis.log.*;
 import easy.base.Constants;
 import easy.icons.EasyIcons;
@@ -89,11 +91,11 @@ public class MyBatisLogManager implements Disposable {
 
         messageBusConnection.subscribe(ToolWindowManagerListener.TOPIC, new ToolWindowManagerListener() {
             @Override
-            public void toolWindowRegistered(@NotNull String id) {
+            public void toolWindowsRegistered(@NotNull List<String> ids, @NotNull ToolWindowManager toolWindowManager) {
             }
 
             @Override
-            public void stateChanged() {
+            public void stateChanged(@NotNull ToolWindowManager toolWindowManager) {
                 if (!getToolWindow().isAvailable()) {
                     Disposer.dispose(MyBatisLogManager.this);
                 }
@@ -129,9 +131,15 @@ public class MyBatisLogManager implements Disposable {
             protected Editor getEditor(@NotNull AnActionEvent e) {
                 return consoleView.getEditor();
             }
+
+            @Override
+            public @NotNull ActionUpdateThread getActionUpdateThread() {
+                return super.getActionUpdateThread();
+            }
         });
         actionGroup.add(new ScrollToTheEndToolbarAction(consoleView.getEditor()));
         actionGroup.add(new PrettyPrintToggleAction());
+        actionGroup.add(new Log2SqlAction());
         actionGroup.addSeparator();
         actionGroup.add(new ClearAllAction(consoleView));
         actionGroup.addSeparator();
@@ -180,6 +188,7 @@ public class MyBatisLogManager implements Disposable {
         consoleView.print(String.format("--> %s <-- ==> %s", counter.incrementAndGet(), logPrefix) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
         consoleView.print(String.format("%s", isFormat() ? FORMATTER.format(sql) : sql) + ";" + StringUtils.LF, consoleViewContentType);
     }
+
     private boolean isFormat() {
         return PropertiesComponent.getInstance().getBoolean(PrettyPrintToggleAction.class.getName());
     }

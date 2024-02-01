@@ -9,7 +9,7 @@ import easy.postfix.base.BaseVar;
 import easy.postfix.base.GenerateBase;
 import easy.postfix.base.GenerateBaseTemplate;
 import easy.postfix.setter.GenerateBuilder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class GenerateAllSetterByBuilderTemplate extends GenerateBaseTemplate {

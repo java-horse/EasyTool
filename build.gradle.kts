@@ -1,11 +1,11 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.21"
     id("org.jetbrains.intellij") version "1.13.1"
 }
 
 group = "mabin"
-version = "2.0.2"
+version = "2.0.3"
 
 repositories {
     maven {
@@ -16,6 +16,9 @@ repositories {
 dependencies {
     // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
     implementation("cn.hutool:hutool-http:5.8.16")
+    implementation("com.cronutils:cron-utils:9.2.1") {
+        exclude(group = "org.slf4j")
+    }
 }
 
 intellij {
