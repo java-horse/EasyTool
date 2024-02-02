@@ -238,7 +238,8 @@ public class TranslateService {
         } else if (isLower && text.contains(StringUtils.SPACE)) {
             // snake case
             resultText = text;
-        } else if (Character.isUpperCase(text.charAt(0)) && Character.isLowerCase(text.charAt(1)) && text.contains(StringUtils.SPACE)) {
+        } else if (StringUtils.isNotBlank(text) && text.length() >= 2
+                && Character.isUpperCase(text.charAt(0)) && Character.isLowerCase(text.charAt(1)) && text.contains(StringUtils.SPACE)) {
             // SNAKE CASE
             resultText = text.toLowerCase();
         } else if (isLower && text.contains("-") || (isLower && !text.contains(StringUtils.SPACE))) {
