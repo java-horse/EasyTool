@@ -1,6 +1,9 @@
 package easy.service.translate;
 
-import cn.hutool.http.*;
+import cn.hutool.http.ContentType;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
 import easy.service.AbstractTranslate;
@@ -67,7 +70,7 @@ public class KingSoftTranslate extends AbstractTranslate {
                 .form(paramsMap).execute()) {
             String body = httpResponse.body();
             return JsonUtil.fromObject(Objects.requireNonNull(body)).get("out").getAsString();
-        } catch (HttpException e) {
+        } catch (Exception e) {
             log.error(TranslateEnum.KING_SOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;

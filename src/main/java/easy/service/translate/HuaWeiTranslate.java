@@ -2,7 +2,6 @@ package easy.service.translate;
 
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
-import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpRequest;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
@@ -84,7 +83,7 @@ public class HuaWeiTranslate extends AbstractTranslate {
                     .execute().body();
             JsonObject resObject = JsonUtil.fromObject(response);
             return Objects.requireNonNull(resObject.get("translated_text")).getAsString();
-        } catch (HttpException e) {
+        } catch (Exception e) {
             log.error(TranslateEnum.HUAWEI.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return null;

@@ -61,7 +61,7 @@ public class MicrosoftFreeTranslate extends AbstractTranslate {
             }
             return JsonUtil.fromArray(Objects.requireNonNull(response)).get(0).getAsJsonObject().get("translations")
                     .getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString();
-        } catch (HttpException e) {
+        } catch (Exception e) {
             log.error(TranslateEnum.MICROSOFT_FREE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
