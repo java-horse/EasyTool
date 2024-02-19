@@ -79,7 +79,7 @@ public class SerialVersionUIDAction extends AnAction {
             return;
         }
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
-        if (Objects.isNull(psiClass)) {
+        if (Objects.isNull(psiClass) || !editor.getDocument().isWritable()) {
             e.getPresentation().setEnabledAndVisible(false);
             return;
         }

@@ -72,6 +72,7 @@ public class CamelCaseAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && editor.getDocument().isWritable()
                 && editor.getSelectionModel().hasSelection()
                 && !LanguageUtil.isContainsChinese(editor.getSelectionModel().getSelectedText()));
     }

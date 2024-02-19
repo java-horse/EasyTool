@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
@@ -81,7 +82,7 @@ public class SwaggerAction extends AnAction {
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass));
+                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass) && editor.getDocument().isWritable());
     }
 
     @Override

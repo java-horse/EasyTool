@@ -63,7 +63,7 @@ public class TranslateAction extends AnAction {
         }
         String title = Boolean.TRUE.equals(translateService.keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate()
                 : StringUtils.equals(translateConfig.getTranslateChannel(), TranslateEnum.OPEN_BIG_MODEL.getTranslate()) ? translateConfig.getOpenModelChannel() : translateConfig.getTranslateChannel();
-        if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
+        if (LanguageUtil.isAllChinese(selectedText) && editor.getDocument().isWritable()) {
             try {
                 String inputResult = Boolean.TRUE.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult,
                         new InputValidator() {
