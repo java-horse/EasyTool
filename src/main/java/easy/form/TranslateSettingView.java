@@ -1,8 +1,13 @@
 package easy.form;
 
+import com.google.common.collect.Lists;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.CollectionListModel;
+import com.intellij.ui.ListCellRendererWrapper;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBList;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
@@ -10,8 +15,11 @@ import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
 import easy.util.EasyCommonUtil;
+import org.apache.commons.collections.MapUtils;
 
 import javax.swing.*;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
@@ -95,11 +103,16 @@ public class TranslateSettingView {
     private JCheckBox youdaoDomainCheckBox;
     private JComboBox youdaoDomainComboBox;
 
+    // 全局单词映射设置
+    private JPanel globalWordMappingPanel;
+    private JBList<Entry<String, String>> globalWordMapList;
+
     /**
      * 在{@link #createUIComponents()}之后调用
      */
     public TranslateSettingView() {
         setTranslateVisible(translateChannelBox.getSelectedItem());
+        refreshGlobalWordMap();
         resetButton.addActionListener(event -> {
             int result = Messages.showYesNoDialog("确认删除所有配置数据?", "重置数据", Messages.getWarningIcon());
             if (result == MessageConstants.YES) {
@@ -161,6 +174,33 @@ public class TranslateSettingView {
 
     private void createUIComponents() {
         translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
+        // 设置全局单词映射页面
+        globalWordMapList = new JBList<>(new CollectionListModel<>(Lists.newArrayList()));
+        globalWordMapList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        globalWordMapList.setCellRenderer(new ListCellRendererWrapper<>() {
+            @Override
+            public void customize(JList list, Entry<String, String> value, int index, boolean selected, boolean hasFocus) {
+                setText(value.getKey() + " -> " + value.getValue());
+            }
+        });
+        globalWordMapList.setEmptyText("请添加全局单词映射");
+        globalWordMapList.setSelectedIndex(0);
+        ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(globalWordMapList);
+        toolbarDecorator.setAddAction(button -> {
+            WordMapAddView wordMapAddView = new WordMapAddView();
+            if (wordMapAddView.showAndGet()) {
+                Entry<String, String> entry = wordMapAddView.getMapping();
+                translateConfig.getGlobalWordMap().put(entry.getKey(), entry.getValue());
+                refreshGlobalWordMap();
+            }
+        });
+        toolbarDecorator.disableUpDownActions();
+        toolbarDecorator.setRemoveAction(anActionButton -> {
+            Map<String, String> typeMap = translateConfig.getGlobalWordMap();
+            typeMap.remove(globalWordMapList.getSelectedValue().getKey());
+            refreshGlobalWordMap();
+        });
+        globalWordMappingPanel = toolbarDecorator.createPanel();
     }
 
 
@@ -983,6 +1023,7 @@ public class TranslateSettingView {
      * @date 2023/9/3 15:31
      **/
     public void refresh() {
+        refreshGlobalWordMap();
         setTranslateChannelBox(translateConfig.getTranslateChannel());
         setAppIdTextField(translateConfig.getAppId());
         setAppSecretTextField(translateConfig.getAppSecret());
@@ -1016,6 +1057,11 @@ public class TranslateSettingView {
         setTyKeyTextField(translateConfig.getTyKey());
     }
 
+    private void refreshGlobalWordMap() {
+        if (Objects.nonNull(translateConfig) && MapUtils.isNotEmpty(translateConfig.getGlobalWordMap())) {
+            globalWordMapList.setModel(new CollectionListModel<>(Lists.newArrayList(translateConfig.getGlobalWordMap().entrySet())));
+        }
+    }
 
     public JComponent getComponent() {
         return panel;

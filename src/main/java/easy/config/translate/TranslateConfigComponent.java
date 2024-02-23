@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * 翻译渠道配置持久化
@@ -38,6 +39,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setAliyunDomainComboBox(AliYunTranslateDomainEnum.SOCIAL.getName());
             translateConfig.setYoudaoDomainCheckBox(Boolean.FALSE);
             translateConfig.setYoudaoDomainComboBox(YouDaoTranslateDomainEnum.COMPUTERS.getName());
+            translateConfig.setGlobalWordMap(new TreeMap<>());
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
@@ -48,6 +50,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setAliyunDomainComboBox(Objects.isNull(translateConfig.getAliyunDomainComboBox()) ? AliYunTranslateDomainEnum.SOCIAL.getName() : translateConfig.getAliyunDomainComboBox());
             translateConfig.setYoudaoDomainCheckBox(Objects.isNull(translateConfig.getYoudaoDomainCheckBox()) ? Boolean.FALSE : translateConfig.getYoudaoDomainCheckBox());
             translateConfig.setYoudaoDomainComboBox(Objects.isNull(translateConfig.getYoudaoDomainComboBox()) ? YouDaoTranslateDomainEnum.COMPUTERS.getName() : translateConfig.getYoudaoDomainComboBox());
+            translateConfig.setGlobalWordMap(Objects.isNull(translateConfig.getGlobalWordMap()) ? new TreeMap<>() : translateConfig.getGlobalWordMap());
         }
         return translateConfig;
     }
