@@ -14,6 +14,7 @@ import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.service.TranslateService;
+import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.MapUtils;
 
@@ -183,8 +184,8 @@ public class TranslateSettingView {
                 setText(value.getKey() + " -> " + value.getValue());
             }
         });
-        globalWordMapList.setEmptyText("请添加全局单词映射");
-        globalWordMapList.setSelectedIndex(0);
+        globalWordMapList.setEmptyText(BundleUtil.getI18n("global.word.mapping.text"));
+        globalWordMapList.setSelectedIndex(Constants.NUM.ZERO);
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(globalWordMapList);
         toolbarDecorator.setAddAction(button -> {
             WordMapAddView wordMapAddView = new WordMapAddView();

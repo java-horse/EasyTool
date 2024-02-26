@@ -11,7 +11,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ShowSettingsUtil;
-import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.OpenModelTranslateEnum;
@@ -22,6 +21,7 @@ import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -155,8 +155,25 @@ public class TranslateService {
             }
             return builder.toString();
         }
-        // 尝试分割分词&翻译拼接处理
-        return translate.en2Ch(analysisSource(source));
+        // 英译中: 尝试分割分词->单词映射处理->翻译拼接处理
+        // 存在自定义单词: 单个单词翻译(不准确)
+        // 不存在自定义单词: 整句翻译(更准确)
+        String analysisWords = analysisSource(source);
+        List<String> allWordList = new ArrayList<>(Arrays.asList(StringUtils.split(analysisWords, StringUtils.SPACE)));
+        SortedMap<String, String> wordMap = translateConfig.getGlobalWordMap();
+        if (CollectionUtils.containsAny(wordMap.keySet(), allWordList)) {
+            StringBuilder customBuilder = new StringBuilder();
+            for (String word : allWordList) {
+                String res = ObjectUtils.firstNonNull(wordMap.get(word), wordMap.get(word.toLowerCase()), wordMap.get(word.toUpperCase()));
+                if (StringUtils.isBlank(res)) {
+                    res = translate.en2Ch(word);
+                }
+                customBuilder.append(res);
+            }
+            return customBuilder.toString();
+        } else {
+            return translate.en2Ch(analysisWords);
+        }
     }
 
     /**
