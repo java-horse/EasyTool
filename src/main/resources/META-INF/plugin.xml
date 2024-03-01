@@ -299,7 +299,14 @@
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.javadoc" displayName="JavaDoc"
-                                 instance="easy.settings.JavaDocSettingConfigurable"/>
+                                 instance="easy.settings.doc.JavaDocSettingConfigurable">
+            <configurable id="easy.tool.settings.javadoc.class.template" displayName="ClassDoc"
+                          instance="easy.settings.doc.template.JavaDocClassSettingConfigurable"/>
+            <configurable id="easy.tool.settings.javadoc.method.template" displayName="MethodDoc"
+                          instance="easy.settings.doc.template.JavaDocMethodSettingsConfigurable"/>
+            <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
+                          instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
+        </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"

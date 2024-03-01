@@ -1,4 +1,4 @@
-package easy.form;
+package easy.form.doc;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
