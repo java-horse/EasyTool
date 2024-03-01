@@ -12,7 +12,6 @@ import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
 import easy.base.Constants;
-import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +61,7 @@ public class SerialVersionUIDAction extends AnAction {
                 }
             }
             if (dingNotify) {
-                MessageUtil.sendActionDingMessage(e);
+                
             }
         } catch (Throwable ex) {
             log.error("serialVersionUID write editor exception!", ex);

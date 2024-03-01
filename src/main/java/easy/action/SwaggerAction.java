@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
@@ -16,10 +15,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.config.translate.TranslateConfig;
-import easy.config.translate.TranslateConfigComponent;
 import easy.handler.SwaggerGenerateHandler;
-import easy.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -72,7 +68,7 @@ public class SwaggerAction extends AnAction {
      */
     private static void execSwagger(@NotNull AnActionEvent e, Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
         new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     @Override

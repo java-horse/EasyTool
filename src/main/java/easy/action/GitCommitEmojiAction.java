@@ -34,7 +34,6 @@ import easy.git.emoji.GitEmojiData;
 import easy.git.emoji.Gitmojis;
 import easy.util.JsonUtil;
 import easy.util.LanguageUtil;
-import easy.util.MessageUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class GitCommitEmojiAction extends AnAction {
@@ -74,7 +72,6 @@ public class GitCommitEmojiAction extends AnAction {
         loadLocalGitEmoji(gitEmojiConfig.getLanguageRealValue());
         JBPopup popup = createPopup(project, commitMessage, gitmojis);
         popup.showInBestPositionFor(actionEvent.getDataContext());
-        MessageUtil.sendActionDingMessage(actionEvent);
     }
 
     /**

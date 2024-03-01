@@ -11,7 +11,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import easy.enums.CopyUrlEnum;
 import easy.handler.CopyUrlHandler;
-import easy.util.MessageUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +59,7 @@ public class CopyUrlAction extends AnAction {
             return;
         }
         CopyPasteManager.getInstance().setContents(new StringSelection(copyUrl));
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     @Override

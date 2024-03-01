@@ -11,7 +11,6 @@ import com.intellij.openapi.vcs.ui.Refreshable;
 import easy.base.Constants;
 import easy.form.GitCommitMessageView;
 import easy.util.JsonUtil;
-import easy.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class GitCommitMessageAction extends AnAction {
         String commitMessageJson = JsonUtil.toJson(gitCommitMessageView.getGitCommitMessageTemplate());
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
         propertiesComponent.setValue(Constants.Persistence.GIT_COMMIT_MESSAGE.LAST_COMMIT_MESSAGE, commitMessageJson);
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     private static CommitMessageI getCommitPanel(@NotNull AnActionEvent e) {

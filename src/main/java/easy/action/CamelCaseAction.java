@@ -13,7 +13,6 @@ import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ThrowableRunnable;
 import easy.util.LanguageUtil;
-import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,7 +60,6 @@ public class CamelCaseAction extends AnAction {
                         editor.getSelectionModel().setSelection(start, start + convertText.length());
                     }
             );
-            MessageUtil.sendActionDingMessage(e);
         } catch (Throwable ex) {
             log.error("CamelCase转换写入编辑器异常", ex);
         }
