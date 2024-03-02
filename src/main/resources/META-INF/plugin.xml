@@ -73,9 +73,11 @@
       <ul>
         <li>Fix the problem of individual write action modification read-only exception</li>
         <li>Fix translation channel request exception capture processing optimization</li>
+        <li>Support JavaDoc annotation automatic generation</li>
         <li>-------------------------------</li>
         <li>修复个别的写入action修改只读异常问题</li>
         <li>修复翻译渠道请求异常捕获处理优化</li>
+        <li>新增 JavaDoc 注释自动生成功能</li>
       </ul>
       <h3>v2.0.3</h3>
       <ul>
@@ -289,6 +291,7 @@
         <applicationService serviceImplementation="easy.service.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
+        <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 

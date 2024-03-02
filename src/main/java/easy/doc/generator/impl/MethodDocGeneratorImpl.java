@@ -2,6 +2,7 @@ package easy.doc.generator.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -11,16 +12,16 @@ import com.intellij.psi.javadoc.PsiDocTagValue;
 import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
+import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.generator.DocGenerator;
+import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.service.TranslateService;
+import easy.util.VcsUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MethodDocGeneratorImpl implements DocGenerator {
@@ -28,24 +29,26 @@ public class MethodDocGeneratorImpl implements DocGenerator {
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+    private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ApplicationManager.getApplication().getService(JavaDocVariableGeneratorService.class);
 
     @Override
     public String generate(PsiElement psiElement) {
-        if (!(psiElement instanceof PsiMethod)) {
+        if (!(psiElement instanceof PsiMethod psiMethod)) {
             return StringUtils.EMPTY;
         }
-        PsiMethod psiMethod = (PsiMethod) psiElement;
-        return defaultGenerate(psiMethod);
+        JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
+        if (Objects.nonNull(javaDocMethodTemplateConfig) && Boolean.TRUE.equals(javaDocMethodTemplateConfig.getIsDefault())) {
+            return defaultGenerate(psiMethod);
+        } else {
+            return customGenerate(psiMethod);
+        }
     }
 
     private String defaultGenerate(PsiMethod psiMethod) {
-        List<String> paramNameList = Arrays.stream(psiMethod.getParameterList().getParameters())
-                .map(PsiParameter::getName).collect(Collectors.toList());
+        List<String> paramNameList = Arrays.stream(psiMethod.getParameterList().getParameters()).map(PsiParameter::getName).collect(Collectors.toList());
         PsiTypeElement returns = psiMethod.getReturnTypeElement() == null ? null : psiMethod.getReturnTypeElement();
-        String returnName = returns == null ? StringUtils.EMPTY : returns.getText();
-        List<PsiClassType> exceptionTypeList = Arrays.stream(psiMethod.getThrowsList().getReferencedTypes())
-                .collect(Collectors.toList());
-
+        String returnName = returns == null ? StringUtils.EMPTY : returns.getType().getCanonicalText();
+        List<PsiClassType> exceptionTypeList = Arrays.stream(psiMethod.getThrowsList().getReferencedTypes()).collect(Collectors.toList());
         // 有注释，进行兼容处理
         if (psiMethod.getDocComment() != null) {
             List<PsiElement> elements = Lists.newArrayList(psiMethod.getDocComment().getChildren());
@@ -55,7 +58,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             startList.add(buildDesc(elements, translateService.translate(psiMethod.getName())));
             // 参数
             endList.addAll(buildParams(elements, paramNameList));
-            // 返回
+            // 返回值
             endList.add(buildReturn(elements, returns));
             // 异常
             endList.addAll(buildException(elements, exceptionTypeList, psiMethod.getProject()));
@@ -73,27 +76,27 @@ public class MethodDocGeneratorImpl implements DocGenerator {
         }
         StringBuilder sb = new StringBuilder();
         sb.append("/**\n");
-        sb.append("* ").append(translateService.translate(psiMethod.getName())).append("\n");
+        sb.append("* ").append(translateService.translate(psiMethod.getName())).append(StringUtils.LF);
         sb.append("*\n");
         for (String paramName : paramNameList) {
-            sb.append("* @param ").append(paramName).append(StringUtils.SPACE).append(translateService.translate(paramName)).append("\n");
+            sb.append("* @param ").append(paramName).append(StringUtils.SPACE).append(translateService.translate(paramName)).append(StringUtils.LF);
         }
         if (!returnName.isEmpty() && !"void".equals(returnName)) {
             if (Constants.BASE_TYPE_SET.contains(returnName)) {
-                sb.append("* @return ").append(returnName).append("\n");
+                sb.append("* @return ").append(returnName).append(StringUtils.LF);
             } else {
                 if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.CODE.getType())) {
-                    sb.append("* @return {@code ").append(returnName).append("}").append("\n");
+                    sb.append("* @return {@code ").append(returnName).append("}").append(StringUtils.LF);
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
                     sb.append(getLinkTypeReturnDoc(returnName));
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
-                    sb.append("* @return ").append(translateService.translate(returnName)).append("\n");
+                    sb.append("* @return ").append(translateService.translate(returnName)).append(StringUtils.LF);
                 }
             }
         }
         for (PsiClassType exceptionType : exceptionTypeList) {
             sb.append("* @throws ").append(exceptionType.getName()).append(StringUtils.SPACE)
-                    .append(translateService.translate(exceptionType.getName())).append("\n");
+                    .append(translateService.translate(exceptionType.getName())).append(StringUtils.LF);
         }
         sb.append("*/");
         return sb.toString();
@@ -104,7 +107,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
      *
      * @param elements          元素
      * @param exceptionTypeList 异常类型数组
-     * @return {@link List< String>}
+     * @return {@link List<String>}
      */
     private List<String> buildException(List<PsiElement> elements, List<PsiClassType> exceptionTypeList, Project project) {
         List<String> paramDocList = Lists.newArrayList();
@@ -141,7 +144,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             }
         }
         for (PsiClassType exceptionType : exceptionTypeList) {
-            paramDocList.add("@throws " + exceptionType.getName() + StringUtils.SPACE + translateService.translate(exceptionType.getName()) + "\n");
+            paramDocList.add("@throws " + exceptionType.getName() + StringUtils.SPACE + translateService.translate(exceptionType.getName()) + StringUtils.LF);
         }
         return paramDocList;
     }
@@ -158,7 +161,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
         if (returns == null) {
             return StringUtils.EMPTY;
         }
-        String returnName = returns.getText();
+        String returnName = returns.getType().getCanonicalText();
         for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
             PsiElement element = iterator.next();
             if (!"PsiDocTag:@return".equalsIgnoreCase(element.toString())) {
@@ -175,14 +178,14 @@ public class MethodDocGeneratorImpl implements DocGenerator {
         }
         if (isInsert && ObjectUtils.isNotEmpty(returnName) && !"void".equals(returnName)) {
             if (Constants.BASE_TYPE_SET.contains(returnName)) {
-                return "@return " + returnName + "\n";
+                return "@return " + returnName + StringUtils.LF;
             } else {
                 if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.CODE.getType())) {
                     return "@return {@code " + returnName + "}\n";
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
                     return getLinkTypeReturnDoc(returnName);
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
-                    return "* @return " + translateService.translate(returnName) + "\n";
+                    return "* @return " + translateService.translate(returnName) + StringUtils.LF;
                 }
             }
         }
@@ -196,7 +199,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
      * @return {@link String}
      */
     private String getLinkTypeReturnDoc(String returnName) {
-        return "* @return " + returnName.replaceAll("[^<> ,]+", "{@link $0}") + "\n";
+        return String.format("* @return {@link %s }", returnName) + StringUtils.LF;
     }
 
     /**
@@ -233,7 +236,7 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             paramNameList.remove(paramName);
         }
         for (String paramName : paramNameList) {
-            paramDocList.add("@param " + paramName + " " + translateService.translate(paramName) + "\n");
+            paramDocList.add("@param " + paramName + StringUtils.SPACE + translateService.translate(paramName) + StringUtils.LF);
         }
         return paramDocList;
     }
@@ -256,6 +259,24 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             }
         }
         return desc;
+    }
+
+    private String customGenerate(PsiMethod psiMethod) {
+        JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
+        return javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
+    }
+
+    private Map<String, Object> getMethodInnerVariable(PsiMethod psiMethod) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("author", javaDocConfig.getAuthor());
+        map.put("methodName", psiMethod.getName());
+        map.put("methodReturnType", psiMethod.getReturnType() == null ? StringUtils.EMPTY : psiMethod.getReturnType().getCanonicalText());
+        map.put("methodParamTypes",
+                Arrays.stream(psiMethod.getTypeParameters()).map(PsiTypeParameter::getQualifiedName).toArray(String[]::new));
+        map.put("methodParamNames",
+                Arrays.stream(psiMethod.getParameterList().getParameters()).map(PsiParameter::getName).toArray(String[]::new));
+        map.put("branch", VcsUtil.getCurrentBranch(psiMethod.getProject()));
+        return map;
     }
 
 }

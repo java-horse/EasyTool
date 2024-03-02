@@ -1,9 +1,11 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
+import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
@@ -12,6 +14,7 @@ import org.apache.commons.collections.MapUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -33,13 +36,15 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
     private static Map<String, String> innerMap;
 
     static {
-        innerMap = Maps.newHashMap();
+        innerMap = Maps.newLinkedHashMap();
         innerMap.put("$DOC$", "注释信息");
         innerMap.put("$AUTHOR$", "作者信息，可在通用配置里修改作者信息 (默认取系统用户名)");
-        innerMap.put("$DATE$", "日期信息，格式可在通用配置中修改 (默认格式: yyyy/MM/dd)");
+        innerMap.put("$DATE$", "日期信息，格式可在通用配置中修改 (默认格式: " + Constants.JAVA_DOC.DEFAULT_DATE_FORMAT + ")");
         innerMap.put("$SINCE$", "起始版本，默认1.0.0");
         innerMap.put("$SEE$", "父类或接口链接");
         innerMap.put("$VERSION$", "默认：1.0.0");
+        innerMap.put("$PROJECT$", "当前项目名称");
+        innerMap.put("$PACKAGE$", "当前包路径");
     }
 
     private void createUIComponents() {
@@ -60,11 +65,11 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
                 return false;
             }
         };
-        innerScrollPane = new JBScrollPane(innerTable);
-
-        // 设置表格显示的大小
         innerTable.setPreferredScrollableViewportSize(new Dimension(-1, innerTable.getRowHeight() * innerTable.getRowCount()));
         innerTable.setFillsViewportHeight(true);
+        // 内置变量表格添加单元格选择监听器
+        addCellCopyListener(innerTable);
+        innerScrollPane = new JBScrollPane(innerTable);
 
         customTable = new JBTable() {
             @Override
@@ -89,6 +94,7 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
                 refreshCustomTable();
             }
         });
+        addCellCopyListener(customTable);
         customVariablePanel = toolbarDecorator.createPanel();
     }
 

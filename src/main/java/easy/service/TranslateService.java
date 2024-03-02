@@ -17,6 +17,7 @@ import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.service.model.TongYiModelTranslate;
 import easy.service.translate.*;
+import easy.util.EasyCommonUtil;
 import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -115,7 +116,7 @@ public class TranslateService {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - lastNoticeTime > INTERVAL) {
                 NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
-                        NotificationType.WARNING, getTranslateChannelNotifyAction());
+                        NotificationType.WARNING, EasyCommonUtil.getPluginSettingAction());
                 propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
             }
         }
@@ -278,23 +279,6 @@ public class TranslateService {
         return appendText + resultText.replaceAll("-", StringUtils.SPACE)
                 .replaceAll("_", StringUtils.SPACE)
                 .replaceAll("\\.", StringUtils.SPACE);
-    }
-
-    /**
-     * 获取翻译通知Action
-     *
-     * @param
-     * @return com.intellij.openapi.actionSystem.AnAction
-     * @author mabin
-     * @date 2024/1/11 13:39
-     */
-    private AnAction getTranslateChannelNotifyAction() {
-        return new NotificationAction(Constants.PLUGIN_NAME) {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                ShowSettingsUtil.getInstance().showSettingsDialog(null, Constants.PLUGIN_NAME);
-            }
-        };
     }
 
 }

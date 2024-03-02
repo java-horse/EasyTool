@@ -3,6 +3,7 @@ package easy.action;
 import cn.hutool.core.text.CharPool;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
@@ -27,9 +28,9 @@ public class JavaDocAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        Editor editor = e.getData(LangDataKeys.EDITOR);
-        PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
-        PsiElement psiElement = e.getData(LangDataKeys.PSI_ELEMENT);
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
         if (ObjectUtils.anyNull(project, editor, psiElement, psiFile)) {
             return;
         }

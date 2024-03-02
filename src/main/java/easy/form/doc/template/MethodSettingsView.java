@@ -30,7 +30,7 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
     private static Map<String, String> innerMap;
 
     static {
-        innerMap = Maps.newHashMap();
+        innerMap = Maps.newLinkedHashMap();
         innerMap.put("$DOC$", "注释信息");
         innerMap.put("$PARAMS$", "遍历传入参数并添加注释");
         innerMap.put("$RETURN$", "返回值类型");
@@ -56,11 +56,10 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
                 return false;
             }
         };
-        innerScrollPane = new JBScrollPane(innerTable);
-
-        //设置表格显示的大小。
         innerTable.setPreferredScrollableViewportSize(new Dimension(-1, innerTable.getRowHeight() * innerTable.getRowCount()));
         innerTable.setFillsViewportHeight(true);
+        addCellCopyListener(innerTable);
+        innerScrollPane = new JBScrollPane(innerTable);
 
         customTable = new JBTable() {
             @Override
@@ -87,6 +86,7 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
                 refreshCustomTable();
             }
         });
+        addCellCopyListener(customTable);
         customVariablePanel = toolbarDecorator.createPanel();
     }
 

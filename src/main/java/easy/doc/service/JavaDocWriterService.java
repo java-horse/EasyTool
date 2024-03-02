@@ -4,6 +4,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
+import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaDocumentedElement;
@@ -25,8 +26,8 @@ public class JavaDocWriterService {
                             return;
                         }
                         // 写入文档注释
-                        if (psiElement instanceof PsiJavaDocumentedElement) {
-                            PsiDocComment psiDocComment = ((PsiJavaDocumentedElement) psiElement).getDocComment();
+                        if (psiElement instanceof PsiJavaDocumentedElement psiJavaDocumentedElement) {
+                            PsiDocComment psiDocComment = psiJavaDocumentedElement.getDocComment();
                             if (psiDocComment == null) {
                                 psiElement.getNode().addChild(comment.getNode(), psiElement.getFirstChild().getNode());
                             } else {
@@ -42,11 +43,11 @@ public class JavaDocWriterService {
                         // 添加空行
                         if (emptyLineNum > Constants.NUM.ZERO) {
                             PsiElement whiteSpaceElement = psiElement.getChildren()[1];
-                            if (whiteSpaceElement instanceof PsiWhiteSpaceImpl) {
+                            if (whiteSpaceElement instanceof PsiWhiteSpaceImpl psiWhiteSpace) {
                                 // 修改whiteSpace
                                 String space = StringUtils.repeat(StringUtils.LF, emptyLineNum + 1);
                                 String exists = StringUtils.stripStart(whiteSpaceElement.getText(), StringUtils.LF);
-                                ((PsiWhiteSpaceImpl) whiteSpaceElement).replaceWithText(space + exists);
+                                psiWhiteSpace.replaceWithText(space + exists);
                             }
                         }
                     });
@@ -63,7 +64,7 @@ public class JavaDocWriterService {
             WriteCommandAction.writeCommandAction(project).run(
                     (ThrowableRunnable<Throwable>) () -> {
                         int start = editor.getSelectionModel().getSelectionStart();
-                        EditorModificationUtil.insertStringAtCaret(editor, text);
+                        EditorModificationUtilEx.insertStringAtCaret(editor, text);
                         editor.getSelectionModel().setSelection(start, start + text.length());
                     });
         } catch (Throwable throwable) {

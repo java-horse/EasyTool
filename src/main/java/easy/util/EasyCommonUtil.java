@@ -1,11 +1,18 @@
 package easy.util;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.net.URI;
@@ -67,6 +74,30 @@ public class EasyCommonUtil {
         if (result == MessageConstants.YES) {
             openLink(url);
         }
+    }
+
+    /**
+     * 打开插件设置弹窗
+     *
+     * @return
+     */
+    public static AnAction getPluginSettingAction() {
+        return getPluginSettingAction(null);
+    }
+
+    /**
+     * 打开插件设置弹窗
+     *
+     * @param project
+     * @return
+     */
+    public static AnAction getPluginSettingAction(Project project) {
+        return new NotificationAction("⚙️ " + Constants.PLUGIN_NAME) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+            }
+        };
     }
 
 }

@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Vector;
 
 public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
@@ -30,7 +31,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
     private static Map<String, String> innerMap;
 
     static {
-        innerMap = Maps.newHashMap();
+        innerMap = Maps.newLinkedHashMap();
         innerMap.put("$DOC$", "注释信息");
         innerMap.put("$SEE$", "字段类型");
     }
@@ -53,11 +54,10 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
                 return false;
             }
         };
-        innerScrollPane = new JBScrollPane(innerTable);
-
-        //设置表格显示的大小。
         innerTable.setPreferredScrollableViewportSize(new Dimension(-1, innerTable.getRowHeight() * innerTable.getRowCount()));
         innerTable.setFillsViewportHeight(true);
+        addCellCopyListener(innerTable);
+        innerScrollPane = new JBScrollPane(innerTable);
 
         customTable = new JBTable() {
             @Override
@@ -69,12 +69,10 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(customTable);
         toolbarDecorator.setAddAction(button -> {
             CustomTemplateAddView customTemplateAddView = new CustomTemplateAddView();
-            if (customTemplateAddView.showAndGet()) {
-                if (config != null) {
+            if (customTemplateAddView.showAndGet() && Objects.nonNull(config)) {
                     Entry<String, CustomValue> entry = customTemplateAddView.getEntry();
                     config.getJavaDocFieldTemplateConfig().getCustomMap().put(entry.getKey(), entry.getValue());
                     refreshCustomTable();
-                }
             }
         });
         toolbarDecorator.setRemoveAction(anActionButton -> {
@@ -84,6 +82,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
                 refreshCustomTable();
             }
         });
+        addCellCopyListener(customTable);
         customVariablePanel = toolbarDecorator.createPanel();
     }
 
@@ -133,7 +132,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
         for (Entry<String, CustomValue> entry : customMap.entrySet()) {
             String key = entry.getKey();
             CustomValue value = entry.getValue();
-            Vector<String> row = new Vector<>(3);
+            Vector<String> row = new Vector<>(5);
             row.add(key);
             row.add(value.getJavaDocVariableTypeEnum().getDesc());
             row.add(value.getValue());

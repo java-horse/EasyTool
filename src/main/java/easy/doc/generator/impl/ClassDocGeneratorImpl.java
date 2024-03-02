@@ -3,8 +3,9 @@ package easy.doc.generator.impl;
 import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.javadoc.PsiDocTag;
@@ -12,37 +13,36 @@ import com.intellij.psi.javadoc.PsiDocTagValue;
 import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
+import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.generator.DocGenerator;
+import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.service.TranslateService;
+import easy.util.EasyCommonUtil;
+import easy.util.NotificationUtil;
+import easy.util.VcsUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ClassDocGeneratorImpl implements DocGenerator {
-    private static final Logger LOGGER = Logger.getInstance(ClassDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+    private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ApplicationManager.getApplication().getService(JavaDocVariableGeneratorService.class);
 
     @Override
     public String generate(PsiElement psiElement) {
-        if (!(psiElement instanceof PsiClass)) {
+        if (!(psiElement instanceof PsiClass psiClass)) {
             return StringUtils.EMPTY;
         }
-        PsiClass psiClass = (PsiClass) psiElement;
-        return defaultGenerate(psiClass);
+        JavaDocTemplateConfig javaDocClassTemplateConfig = javaDocConfig.getJavaDocClassTemplateConfig();
+        if (Objects.nonNull(javaDocClassTemplateConfig) && Boolean.TRUE.equals(javaDocClassTemplateConfig.getIsDefault())) {
+            return defaultGenerate(psiClass);
+        } else {
+            return customGenerate(psiClass);
+        }
     }
 
     private String defaultGenerate(PsiClass psiClass) {
-        String dateString;
-        try {
-            dateString = DateUtil.format(new Date(), javaDocConfig.getDateFormat());
-        } catch (Exception e) {
-            // todo 错误配置弹窗通知(错误描述, 跳转设置页面的action按钮)
-            LOGGER.error("您输入的日期格式不正确，请到配置中修改类相关日期格式！");
-            dateString = DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
-        }
         // 有注释，进行兼容处理
         if (psiClass.getDocComment() != null) {
             List<PsiElement> elements = Lists.newArrayList(psiClass.getDocComment().getChildren());
@@ -68,10 +68,10 @@ public class ClassDocGeneratorImpl implements DocGenerator {
             return Joiner.on(StringUtils.EMPTY).skipNulls().join(commentItems);
         }
         return "/**\n"
-                + "* " + translateService.translate(psiClass.getName()) + "\n"
+                + "* " + translateService.translate(psiClass.getName()) + StringUtils.LF
                 + "*\n"
-                + "* @author " + javaDocConfig.getAuthor() + "\n"
-                + "* @date " + dateString + "\n"
+                + "* @author " + javaDocConfig.getAuthor() + StringUtils.LF
+                + "* @date " + genFormatDate() + StringUtils.LF
                 + "*/";
     }
 
@@ -116,7 +116,7 @@ public class ClassDocGeneratorImpl implements DocGenerator {
             }
         }
         if (isInsert) {
-            return "@author " + javaDocConfig.getAuthor() + "\n";
+            return "@author " + javaDocConfig.getAuthor() + StringUtils.LF;
         } else {
             return null;
         }
@@ -129,15 +129,6 @@ public class ClassDocGeneratorImpl implements DocGenerator {
      * @return {@link String}
      */
     private String buildDate(List<PsiElement> elements) {
-        String dateString;
-        try {
-            // todo 自定义配置的日期格式
-            dateString = DateUtil.format(new Date(), javaDocConfig.getDateFormat());
-        } catch (Exception e) {
-            // todo 错误配置弹窗通知(错误描述, 跳转设置页面的action按钮)
-            LOGGER.error("您输入的日期格式不正确，请到配置中修改类相关日期格式！");
-            dateString = DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
-        }
         boolean isInsert = true;
         for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
             PsiElement element = iterator.next();
@@ -152,20 +143,38 @@ public class ClassDocGeneratorImpl implements DocGenerator {
             }
         }
         if (isInsert) {
-            return "@date " + dateString + "\n";
+            return "@date " + genFormatDate() + StringUtils.LF;
         } else {
             return null;
         }
     }
 
+    /**
+     * 生成指定格式日期
+     *
+     * @return
+     */
     private String genFormatDate() {
         try {
             return DateUtil.format(new Date(), javaDocConfig.getDateFormat());
         } catch (Exception e) {
-            // todo 错误配置弹窗通知(错误描述, 跳转设置页面的action按钮)
-            LOGGER.error("您配置的日期格式不正确，请到设置界面中修改！");
+            NotificationUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
             return DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
         }
+    }
+
+    private String customGenerate(PsiClass psiClass) {
+        JavaDocTemplateConfig javaDocClassTemplateConfig = javaDocConfig.getJavaDocClassTemplateConfig();
+        return javaDocVariableGeneratorService.generate(psiClass, javaDocClassTemplateConfig.getTemplate(), javaDocClassTemplateConfig.getCustomMap(), getClassInnerVariable(psiClass));
+    }
+
+    private Map<String, Object> getClassInnerVariable(PsiClass psiClass) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("author", javaDocConfig.getAuthor());
+        map.put("className", psiClass.getQualifiedName());
+        map.put("simpleClassName", psiClass.getName());
+        map.put("branch", VcsUtil.getCurrentBranch(psiClass.getProject()));
+        return map;
     }
 
 }

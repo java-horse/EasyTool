@@ -41,13 +41,12 @@ public class GitCommitMessageAction extends AnAction {
         String commitMessageJson = JsonUtil.toJson(gitCommitMessageView.getGitCommitMessageTemplate());
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
         propertiesComponent.setValue(Constants.Persistence.GIT_COMMIT_MESSAGE.LAST_COMMIT_MESSAGE, commitMessageJson);
-        
     }
 
     private static CommitMessageI getCommitPanel(@NotNull AnActionEvent e) {
         Refreshable data = Refreshable.PANEL_KEY.getData(e.getDataContext());
-        if (data instanceof CommitMessageI) {
-            return (CommitMessageI) data;
+        if (data instanceof CommitMessageI commitMessage) {
+            return commitMessage;
         }
         return VcsDataKeys.COMMIT_MESSAGE_CONTROL.getData(e.getDataContext());
     }

@@ -93,7 +93,7 @@ public class Constants {
      */
     public interface JAVA_DOC {
         String DEFAULT_AUTHOR = StringUtils.isBlank(System.getProperty("user.name")) ? "admin" : System.getProperty("user.name");
-        String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
+        String DEFAULT_DATE_FORMAT = "yyyy/MM/dd HH:mm";
     }
 
 }

@@ -2,6 +2,7 @@ package easy.doc.generator.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
@@ -9,25 +10,35 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.javadoc.PsiDocComment;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
+import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.generator.DocGenerator;
+import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocPropertyCommentTypeEnum;
 import easy.service.TranslateService;
+import easy.util.VcsUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class FieldDocGeneratorImpl implements DocGenerator {
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+    private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ApplicationManager.getApplication().getService(JavaDocVariableGeneratorService.class);
 
     @Override
     public String generate(PsiElement psiElement) {
-        if (!(psiElement instanceof PsiField)) {
+        if (!(psiElement instanceof PsiField psiField)) {
             return StringUtils.EMPTY;
         }
-        PsiField psiField = (PsiField) psiElement;
-        return defaultGenerate(psiField);
+        JavaDocTemplateConfig javaDocFieldTemplateConfig = javaDocConfig.getJavaDocFieldTemplateConfig();
+        if (Objects.nonNull(javaDocFieldTemplateConfig) && Boolean.TRUE.equals(javaDocFieldTemplateConfig.getIsDefault())) {
+            return defaultGenerate(psiField);
+        } else {
+            return customGenerate(psiField);
+        }
     }
 
     /**
@@ -55,7 +66,6 @@ public class FieldDocGeneratorImpl implements DocGenerator {
         PsiDocComment comment = psiField.getDocComment();
         if (comment != null) {
             List<PsiElement> elements = Lists.newArrayList(comment.getChildren());
-            // 注释
             String desc = translateService.translate(name);
             List<String> commentItems = Lists.newLinkedList();
             for (PsiElement element : elements) {
@@ -107,6 +117,20 @@ public class FieldDocGeneratorImpl implements DocGenerator {
             }
         }
         return String.format("/** %s */", translateService.translate(name));
+    }
+
+    private String customGenerate(PsiField psiField) {
+        JavaDocTemplateConfig javaDocFieldTemplateConfig = javaDocConfig.getJavaDocFieldTemplateConfig();
+        return javaDocVariableGeneratorService.generate(psiField, javaDocFieldTemplateConfig.getTemplate(), javaDocFieldTemplateConfig.getCustomMap(), getFieldInnerVariable(psiField));
+    }
+
+    private Map<String, Object> getFieldInnerVariable(PsiField psiField) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("author", javaDocConfig.getAuthor());
+        map.put("fieldName", psiField.getName());
+        map.put("fieldType", psiField.getType().getCanonicalText());
+        map.put("branch", VcsUtil.getCurrentBranch(psiField.getProject()));
+        return map;
     }
 
 }
