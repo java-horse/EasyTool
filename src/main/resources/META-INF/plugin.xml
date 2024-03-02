@@ -70,6 +70,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.5</h3>
+      <ul>
+        <li>xxx</li>
+        <li>-------------------------------</li>
+        <li>xxx</li>
+      </ul>
       <h3>v2.0.4</h3>
       <ul>
         <li>Fix the problem of individual write action modification read-only exception</li>
