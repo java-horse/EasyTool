@@ -77,9 +77,9 @@ public class SqlHelper {
         int rgb = getRgb(wholeSql);
         ConsoleViewContentType consoleViewContentType = consoleViewContentTypes.computeIfAbsent(rgb, k -> new ConsoleViewContentType(Integer.toString(rgb),
                 new TextAttributes(new JBColor(rgb, rgb), null, null, null, Font.PLAIN)));
-        consoleView.print("--------------------------------BEGIN-----------------------------------" + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
+        consoleView.print("--------------BEGIN--------------" + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
         consoleView.print(FORMATTER.format(wholeSql) + ";" + StringUtils.LF, consoleViewContentType);
-        consoleView.print("--------------------------------END-------------------------------------" + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
+        consoleView.print("--------------END--------------" + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
     }
 
     private static StringBuilder parseSql(String sql, Queue<Map.Entry<String, String>> params) {

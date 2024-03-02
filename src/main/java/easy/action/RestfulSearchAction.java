@@ -10,8 +10,6 @@ import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.PlatformCoreDataKeys;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -20,7 +18,6 @@ import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
 import easy.restful.search.*;
 import easy.util.BundleUtil;
-import easy.util.MessageUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Restful快捷搜索Action
@@ -74,7 +70,7 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
         showNavigationPopup(e, model, callback, BundleUtil.getI18n("search.find.usages.title"), true,
                 true, (ChooseByNameItemProvider) provider
         );
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     @Override

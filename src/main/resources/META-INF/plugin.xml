@@ -69,6 +69,16 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.4</h3>
+      <ul>
+        <li>Fix the problem of individual write action modification read-only exception</li>
+        <li>Fix translation channel request exception capture processing optimization</li>
+        <li>Support JavaDoc annotation automatic generation</li>
+        <li>-------------------------------</li>
+        <li>修复个别的写入action修改只读异常问题</li>
+        <li>修复翻译渠道请求异常捕获处理优化</li>
+        <li>新增 JavaDoc 注释自动生成功能</li>
+      </ul>
       <h3>v2.0.3</h3>
       <ul>
         <li>Add Emoji identifier when supporting Git commit</li>
@@ -272,10 +282,16 @@
 
         <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
 
+        <!--服务实例注入-->
         <applicationService serviceImplementation="easy.config.translate.TranslateConfigComponent"/>
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
+
         <applicationService serviceImplementation="easy.service.TranslateService"/>
+        <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
+        <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
+        <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -285,6 +301,15 @@
                                  instance="easy.settings.CommonSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.translate" displayName="Translate"
                                  instance="easy.settings.TranslateSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.javadoc" displayName="JavaDoc"
+                                 instance="easy.settings.doc.JavaDocSettingConfigurable">
+            <configurable id="easy.tool.settings.javadoc.class.template" displayName="ClassDoc"
+                          instance="easy.settings.doc.template.JavaDocClassSettingConfigurable"/>
+            <configurable id="easy.tool.settings.javadoc.method.template" displayName="MethodDoc"
+                          instance="easy.settings.doc.template.JavaDocMethodSettingsConfigurable"/>
+            <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
+                          instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
+        </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
@@ -375,6 +400,14 @@
         <!--Cron解析-->
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
+        <!--JavaDoc注释生成-->
+        <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="JavaDoc"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
+        </action>
 
 
         <!--工具栏快捷菜单-->
@@ -391,6 +424,7 @@
             <group id="EasyToolEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
+            <reference ref="EasyToolJavaDocAction"/>
             <reference ref="EasyToolSwaggerToolAction"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>
             <reference ref="EasyToolCamelCaseAction"/>

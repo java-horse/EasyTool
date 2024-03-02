@@ -68,7 +68,7 @@ public class THSTranslate extends AbstractTranslate {
             String body = httpResponse.body();
             return JsonUtil.fromObject(Objects.requireNonNull(body)).get("data").getAsJsonObject()
                     .get("trans_result").getAsJsonArray().get(0).getAsJsonObject().get("dst").getAsString();
-        } catch (HttpException e) {
+        } catch (Exception e) {
             log.error(TranslateEnum.THS_SOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;

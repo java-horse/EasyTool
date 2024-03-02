@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * 翻译渠道设置
@@ -85,6 +86,9 @@ public class TranslateSettingConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        if (translateConfig.getGlobalWordMap() == null) {
+            translateConfig.setGlobalWordMap(new TreeMap<>());
+        }
         translateConfig.setTranslateChannel(String.valueOf(translateSettingView.getTranslateChannelBox().getSelectedItem()));
         translateConfig.setAppId(translateSettingView.getAppIdTextField().getText());
         translateConfig.setAppSecret(translateSettingView.getAppSecretTextField().getText());

@@ -17,10 +17,12 @@ import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.service.model.TongYiModelTranslate;
 import easy.service.translate.*;
+import easy.util.EasyCommonUtil;
 import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -114,7 +116,7 @@ public class TranslateService {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - lastNoticeTime > INTERVAL) {
                 NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
-                        NotificationType.WARNING, getTranslateChannelNotifyAction());
+                        NotificationType.WARNING, EasyCommonUtil.getPluginSettingAction());
                 propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
             }
         }
@@ -154,8 +156,25 @@ public class TranslateService {
             }
             return builder.toString();
         }
-        // 尝试分割分词&翻译拼接处理
-        return translate.en2Ch(analysisSource(source));
+        // 英译中: 尝试分割分词->单词映射处理->翻译拼接处理
+        // 存在自定义单词: 单个单词翻译(不准确)
+        // 不存在自定义单词: 整句翻译(更准确)
+        String analysisWords = analysisSource(source);
+        List<String> allWordList = new ArrayList<>(Arrays.asList(StringUtils.split(analysisWords, StringUtils.SPACE)));
+        SortedMap<String, String> wordMap = translateConfig.getGlobalWordMap();
+        if (CollectionUtils.containsAny(wordMap.keySet(), allWordList)) {
+            StringBuilder customBuilder = new StringBuilder();
+            for (String word : allWordList) {
+                String res = ObjectUtils.firstNonNull(wordMap.get(word), wordMap.get(word.toLowerCase()), wordMap.get(word.toUpperCase()));
+                if (StringUtils.isBlank(res)) {
+                    res = translate.en2Ch(word);
+                }
+                customBuilder.append(res);
+            }
+            return customBuilder.toString();
+        } else {
+            return translate.en2Ch(analysisWords);
+        }
     }
 
     /**
@@ -238,7 +257,8 @@ public class TranslateService {
         } else if (isLower && text.contains(StringUtils.SPACE)) {
             // snake case
             resultText = text;
-        } else if (Character.isUpperCase(text.charAt(0)) && Character.isLowerCase(text.charAt(1)) && text.contains(StringUtils.SPACE)) {
+        } else if (StringUtils.isNotBlank(text) && text.length() >= 2
+                && Character.isUpperCase(text.charAt(0)) && Character.isLowerCase(text.charAt(1)) && text.contains(StringUtils.SPACE)) {
             // SNAKE CASE
             resultText = text.toLowerCase();
         } else if (isLower && text.contains("-") || (isLower && !text.contains(StringUtils.SPACE))) {
@@ -259,23 +279,6 @@ public class TranslateService {
         return appendText + resultText.replaceAll("-", StringUtils.SPACE)
                 .replaceAll("_", StringUtils.SPACE)
                 .replaceAll("\\.", StringUtils.SPACE);
-    }
-
-    /**
-     * 获取翻译通知Action
-     *
-     * @param
-     * @return com.intellij.openapi.actionSystem.AnAction
-     * @author mabin
-     * @date 2024/1/11 13:39
-     */
-    private AnAction getTranslateChannelNotifyAction() {
-        return new NotificationAction(Constants.PLUGIN_NAME) {
-            @Override
-            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                ShowSettingsUtil.getInstance().showSettingsDialog(null, Constants.PLUGIN_NAME);
-            }
-        };
     }
 
 }

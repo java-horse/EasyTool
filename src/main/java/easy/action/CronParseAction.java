@@ -9,7 +9,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.util.CronUtil;
-import easy.util.MessageUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,7 @@ public class CronParseAction extends AnAction {
         }
         String title = "最近" + Constants.NUM.TEN + "次执行时间";
         HintManager.getInstance().showInformationHint(editor, title + StringUtils.LF + StringUtils.join(cronList, StringUtils.LF));
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     @Override

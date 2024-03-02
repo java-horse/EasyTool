@@ -1,6 +1,7 @@
 package easy.base;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
 
@@ -21,10 +22,11 @@ public class Constants {
     public static final String DEFAULT_STRING = "， , 。 . ： : ； ; ！ ! ？ ? “ \" ” \" ‘ ' ’ ' 【 [ 】 ] （ ( ） ) 「 { 」 } 《 < 》 >".replace(" ", "\n");
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-tool-plugin";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easytool/reviews";
-    public static final Set<String> STOP_WORDS = Sets.newHashSet("the");
+    public static final Set<String> STOP_WORDS = Sets.newHashSet("the", "of");
     public static final String UID = "serialVersionUID";
     public static final String PROMPT_TEMPLATE = "我希望你充当一个英语翻译助手。我会用任何语言与你交谈，你将自动分析并检测语言，并将语言翻译成 en(英文)，或者 zh(中文) 目标语言，只输出翻译结果且不需要标点符号。待翻译文本是：%s，目标语言是：%s";
     public static final String BREAK_LINE = "&br;";
+    public static final Set<String> BASE_TYPE_SET = Sets.newHashSet("byte", "short", "int", "long", "char", "float", "double", "boolean");
 
     /**
      * 插件持久化变量
@@ -84,6 +86,14 @@ public class Constants {
         int TEN = 10;
         int EIGHTY = 80;
         int HUNDRED = 100;
+    }
+
+    /**
+     * JavaDoc相关
+     */
+    public interface JAVA_DOC {
+        String DEFAULT_AUTHOR = StringUtils.isBlank(System.getProperty("user.name")) ? "admin" : System.getProperty("user.name");
+        String DEFAULT_DATE_FORMAT = "yyyy/MM/dd HH:mm";
     }
 
 }

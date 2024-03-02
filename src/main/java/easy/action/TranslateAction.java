@@ -24,7 +24,6 @@ import easy.icons.EasyIcons;
 import easy.service.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.LanguageUtil;
-import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,7 +62,7 @@ public class TranslateAction extends AnAction {
         }
         String title = Boolean.TRUE.equals(translateService.keyConfigurationReminder()) ? TranslateEnum.KING_SOFT.getTranslate()
                 : StringUtils.equals(translateConfig.getTranslateChannel(), TranslateEnum.OPEN_BIG_MODEL.getTranslate()) ? translateConfig.getOpenModelChannel() : translateConfig.getTranslateChannel();
-        if (!editor.isViewer() && LanguageUtil.isAllChinese(selectedText)) {
+        if (LanguageUtil.isAllChinese(selectedText) && editor.getDocument().isWritable()) {
             try {
                 String inputResult = Boolean.TRUE.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Messages.showInputDialog(StringUtils.EMPTY, title, EasyIcons.ICON.TRANSLATE, translateResult,
                         new InputValidator() {
@@ -96,7 +95,6 @@ public class TranslateAction extends AnAction {
                 CopyPasteManager.getInstance().setContents(new StringSelection(translateResult));
             }
         }
-        MessageUtil.sendActionDingMessage(e, title);
     }
 
 

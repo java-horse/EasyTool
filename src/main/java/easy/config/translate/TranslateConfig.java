@@ -1,7 +1,11 @@
 package easy.config.translate;
 
+import com.google.common.collect.Maps;
 import easy.base.ModelConstants;
 import easy.enums.*;
+
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 翻译渠道设置
@@ -171,6 +175,11 @@ public class TranslateConfig {
      */
     private String tyKey;
 
+    /**
+     * 全局单词映射
+     */
+    private SortedMap<String, String> globalWordMap = new TreeMap<>();
+
 
     /**
      * 重置翻译配置
@@ -182,6 +191,7 @@ public class TranslateConfig {
      **/
     public void reset() {
         translateChannel = TranslateEnum.BAIDU.getTranslate();
+        globalWordMap = new TreeMap<>();
         appId = null;
         appSecret = null;
         baiduDomainCheckBox = Boolean.FALSE;
@@ -211,6 +221,17 @@ public class TranslateConfig {
         aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
         youdaoDomainCheckBox = Boolean.FALSE;
         youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
+    }
+
+    public SortedMap<String, String> getGlobalWordMap() {
+        if (globalWordMap == null) {
+            globalWordMap = Maps.newTreeMap();
+        }
+        return globalWordMap;
+    }
+
+    public void setGlobalWordMap(SortedMap<String, String> globalWordMap) {
+        this.globalWordMap = globalWordMap;
     }
 
     public String getTranslateChannel() {

@@ -15,10 +15,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.config.translate.TranslateConfig;
-import easy.config.translate.TranslateConfigComponent;
 import easy.handler.SwaggerGenerateHandler;
-import easy.util.MessageUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -71,7 +68,7 @@ public class SwaggerAction extends AnAction {
      */
     private static void execSwagger(@NotNull AnActionEvent e, Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
         new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
-        MessageUtil.sendActionDingMessage(e);
+        
     }
 
     @Override
@@ -81,7 +78,7 @@ public class SwaggerAction extends AnAction {
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass));
+                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass) && editor.getDocument().isWritable());
     }
 
     @Override
