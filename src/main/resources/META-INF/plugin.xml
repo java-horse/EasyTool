@@ -50,6 +50,7 @@
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
         <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
         <li>支持 Git Commit 时添加 Emoji 标识</li>
+        <li>支持一键生成 JavaDoc 注释</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
