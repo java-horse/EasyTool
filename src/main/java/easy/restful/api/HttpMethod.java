@@ -29,8 +29,8 @@ public enum HttpMethod {
             if (Objects.isNull(method)) {
                 return REQUEST;
             }
-            if (method instanceof HttpMethod) {
-                return (HttpMethod) method;
+            if (method instanceof HttpMethod httpMethod) {
+                return httpMethod;
             }
             return HttpMethod.valueOf(method.toString());
         } catch (Exception ignore) {

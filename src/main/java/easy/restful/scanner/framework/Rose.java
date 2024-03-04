@@ -52,18 +52,14 @@ public class Rose implements IJavaFramework {
     @Override
     public Collection<ApiService> getService(@NotNull Project project, @NotNull Module module) {
         List<ApiService> moduleList = new ArrayList<>(0);
-
         List<PsiClass> controllers = getAllControllerClass(project, module);
         if (controllers.isEmpty()) {
             return moduleList;
         }
-
         for (PsiClass controllerClass : controllers) {
             moduleList.addAll(getService(controllerClass));
         }
-
         moduleList.addAll(KotlinUtil.getKotlinRequests(project, module, Control.values()));
-
         return moduleList;
     }
 
@@ -114,7 +110,6 @@ public class Rose implements IJavaFramework {
     @NotNull
     private List<PsiClass> getAllControllerClass(@NotNull Project project, @NotNull Module module) {
         List<PsiClass> allControllerClass = new ArrayList<>();
-
         GlobalSearchScope moduleScope = SystemUtil.getModuleScope(module);
         Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
                 Control.Path.getName(),
@@ -125,11 +120,9 @@ public class Rose implements IJavaFramework {
             PsiModifierList psiModifierList = (PsiModifierList) psiAnnotation.getParent();
             PsiElement psiElement = psiModifierList.getParent();
 
-            if (!(psiElement instanceof PsiClass)) {
+            if (!(psiElement instanceof PsiClass psiClass)) {
                 continue;
             }
-
-            PsiClass psiClass = (PsiClass) psiElement;
             allControllerClass.add(psiClass);
         }
         return allControllerClass;
@@ -193,27 +186,21 @@ public class Rose implements IJavaFramework {
             if (value instanceof String) {
                 paths.add(SystemUtil.formatPath(value));
             } else if (value instanceof List) {
-                //noinspection unchecked,rawtypes
                 List<Object> list = (List) value;
                 list.forEach(item -> paths.add(SystemUtil.formatPath(item)));
             } else {
                 throw new IllegalArgumentException(String.format(
-                        "Scan api: %s\n" +
-                                "Class: %s",
+                        "Scan api: %s\n" + "Class: %s",
                         value,
                         value != null ? value.getClass() : null
                 ));
             }
             hasImplicitPath = false;
         }
-        if (hasImplicitPath) {
-            if (psiMethod != null) {
-                paths.add("/");
-            }
+        if (hasImplicitPath && psiMethod != null) {
+            paths.add("/");
         }
-
         List<ApiService> requests = new ArrayList<>(paths.size());
-
         paths.forEach(path -> {
             for (HttpMethod method : methods) {
                 if (method.equals(HttpMethod.REQUEST) && methods.size() > 1) {
@@ -241,7 +228,6 @@ public class Rose implements IJavaFramework {
         for (PsiAnnotation annotation : RestUtil.getMethodAnnotations(method)) {
             requests.addAll(getRequests(annotation, method));
         }
-
         return requests;
     }
 

@@ -19,8 +19,7 @@ public enum CommentTagEnum {
     NOTES("notes"),
     TAGS("tags"),
     IMPORTANT("important", true),
-    DESCRIPTION("description"),
-    ;
+    DESCRIPTION("description");
 
     private final String tag;
     private final boolean boolType;

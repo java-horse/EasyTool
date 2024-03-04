@@ -37,17 +37,15 @@ public class CronMarkerProvider implements LineMarkerProvider {
 
     @Override
     public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
-        if (element instanceof PsiIdentifier && element.getParent() instanceof PsiMethod) {
-            PsiMethod psiMethod = (PsiMethod) element.getParent();
-            if (shouldShowMarker(psiMethod)) {
-                return new LineMarkerInfo<>(
-                        element,
-                        element.getTextRange(),
-                        EasyIcons.ICON.CLOCK,
-                        null,
-                        new CronNavigationHandler(),
-                        GutterIconRenderer.Alignment.RIGHT);
-            }
+        if (element instanceof PsiIdentifier && element.getParent() instanceof PsiMethod psiMethod
+                && (shouldShowMarker(psiMethod))) {
+            return new LineMarkerInfo<>(
+                    element,
+                    element.getTextRange(),
+                    EasyIcons.ICON.CLOCK,
+                    null,
+                    new CronNavigationHandler(),
+                    GutterIconRenderer.Alignment.RIGHT);
         }
         return null;
     }
@@ -56,10 +54,9 @@ public class CronMarkerProvider implements LineMarkerProvider {
         @Override
         public void navigate(MouseEvent e, PsiElement elt) {
             PsiElement psiElement = elt.getParent();
-            if (!(psiElement instanceof PsiMethod)) {
+            if (!(psiElement instanceof PsiMethod psiMethod)) {
                 return;
             }
-            PsiMethod psiMethod = (PsiMethod) psiElement;
             PsiAnnotation annotation = psiMethod.getModifierList().findAnnotation("org.springframework.scheduling.annotation.Scheduled");
             if (Objects.isNull(annotation)) {
                 return;

@@ -47,7 +47,7 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
                 new RestfulSearchContributor(e.getData(PlatformCoreDataKeys.MODULE)),
         };
         RequestFilteringGotoByModel model = new RequestFilteringGotoByModel(project, contributors);
-        GotoActionCallback<HttpMethod> callback = new GotoActionCallback<HttpMethod>() {
+        GotoActionCallback<HttpMethod> callback = new GotoActionCallback<>() {
             @NotNull
             @Contract("_ -> new")
             @Override

@@ -17,13 +17,9 @@ public class PsiClassUtil {
     }
 
     public static PsiClass getPsiClassByPsiType(PsiType psiType) {
-        if (psiType != null) {
-            if (psiType instanceof PsiClassReferenceType) {
-                PsiClassReferenceType classReferenceType = (PsiClassReferenceType) psiType;
-                return classReferenceType.resolve();
-            }
+        if (psiType instanceof PsiClassReferenceType classReferenceType) {
+            return classReferenceType.resolve();
         }
-
         return null;
     }
 
@@ -121,7 +117,6 @@ public class PsiClassUtil {
      */
     public static boolean isNormalInterface(PsiClass psiClass, Project project) {
         if (psiClass.isInterface()) {
-            String name = psiClass.getQualifiedName();
             boolean psiClassFromCollection = PsiTypeUtil.isPsiClassFromXxx(psiClass, project, "java.util.Collection");
             boolean psiClassFromMap = PsiTypeUtil.isPsiClassFromXxx(psiClass, project, "java.util.Map");
             // 不是 (list,map,set)

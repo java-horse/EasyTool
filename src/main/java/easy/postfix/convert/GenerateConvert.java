@@ -8,6 +8,7 @@ import com.intellij.psi.util.PsiTypesUtil;
 import easy.postfix.base.AbstractMethodListGenerate;
 import easy.postfix.base.BaseVar;
 import easy.postfix.util.PsiMethodUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class GenerateConvert extends AbstractMethodListGenerate {
     @NotNull
     public String generateCodeByMethod(Set<String> newImportList, PsiMethod method) {
         if (baseVar == null) {
-            return "";
+            return StringUtils.EMPTY;
         }
         String generateName = baseVar.getVarName();
         PsiParameterList parameterList = method.getParameterList();
@@ -48,7 +49,7 @@ public class GenerateConvert extends AbstractMethodListGenerate {
             String setVal = getSetVal(getMethodName);
             return generateName + "." + methodName + "(" + setVal + ");";
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 

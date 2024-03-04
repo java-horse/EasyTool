@@ -14,7 +14,6 @@ import java.util.Objects;
 
 /**
  * 泛型, PsiType, PsiClass 相关类型判断工具类
- *
  */
 public class PsiTypeUtil {
 
@@ -63,12 +62,10 @@ public class PsiTypeUtil {
     public static PsiType getRealPsiType(PsiType psiFieldType, Project project, PsiType defaultVal) {
         PsiClassReferenceType psiClassReferenceType = (PsiClassReferenceType) psiFieldType;
         PsiClass resolveClass = psiClassReferenceType.resolve();
-        if (resolveClass instanceof PsiTypeParameter) {
-            PsiTypeParameter typeParameter = (PsiTypeParameter) resolveClass;
+        if (resolveClass instanceof PsiTypeParameter typeParameter) {
             int index = typeParameter.getIndex();
             PsiTypeParameterListOwner owner = typeParameter.getOwner();
-            if (owner instanceof PsiClass) {
-                PsiClass psiClass = (PsiClass) owner;
+            if (owner instanceof PsiClass psiClass) {
                 String qualifiedName = psiClass.getQualifiedName();
                 return getRealPsiType0(qualifiedName, index, project, defaultVal);
             }
@@ -103,40 +100,35 @@ public class PsiTypeUtil {
             return getRealPsiTypeName(componentType, project, typeFormat);
         }
 
-        if (psiType instanceof PsiClassReferenceType) {
-            PsiClassReferenceType psiClassReferenceType = (PsiClassReferenceType) psiType;
+        if (psiType instanceof PsiClassReferenceType psiClassReferenceType) {
             PsiClass resolveClass = psiClassReferenceType.resolve();
             PsiType[] parameters = psiClassReferenceType.getParameters();
             boolean hasGenericParameter = parameters.length > 0;
             if (isPsiTypeFromList(psiType, project) && (hasGenericParameter)) {
-                    PsiType elementType = parameters[0];
-                    String typeFormat = String.format(typeNameFormat, "List<%s>");
-                    return getRealPsiTypeName(elementType, project, typeFormat);
-
+                PsiType elementType = parameters[0];
+                String typeFormat = String.format(typeNameFormat, "List<%s>");
+                return getRealPsiTypeName(elementType, project, typeFormat);
             }
             if (isPsiTypeFromSet(psiType, project) && (hasGenericParameter)) {
-                    PsiType elementType = parameters[0];
-                    String typeFormat = String.format(typeNameFormat, "Set<%s>");
-                    return getRealPsiTypeName(elementType, project, typeFormat);
-
+                PsiType elementType = parameters[0];
+                String typeFormat = String.format(typeNameFormat, "Set<%s>");
+                return getRealPsiTypeName(elementType, project, typeFormat);
             }
             if (isPsiTypeFromCollection(psiType, project) && (hasGenericParameter)) {
-                    PsiType elementType = parameters[0];
-                    String typeFormat = String.format(typeNameFormat, "Collection<%s>");
-                    return getRealPsiTypeName(elementType, project, typeFormat);
-
+                PsiType elementType = parameters[0];
+                String typeFormat = String.format(typeNameFormat, "Collection<%s>");
+                return getRealPsiTypeName(elementType, project, typeFormat);
             }
             if (isPsiTypeFromMap(psiType, project) && (parameters.length > 1)) {
-                    PsiType keyType = parameters[0];
-                    PsiType valueType = parameters[1];
-                    String keyTypeName;
-                    if (isPsiTypeFromParameter(keyType)) {
-                        keyType = getRealPsiType(keyType, project, keyType);
-                    }
-                    keyTypeName = keyType.getPresentableText();
-                    String typeFormat = String.format(typeNameFormat, "Map<" + keyTypeName + ", %s>");
-                    return getRealPsiTypeName(valueType, project, typeFormat);
-
+                PsiType keyType = parameters[0];
+                PsiType valueType = parameters[1];
+                String keyTypeName;
+                if (isPsiTypeFromParameter(keyType)) {
+                    keyType = getRealPsiType(keyType, project, keyType);
+                }
+                keyTypeName = keyType.getPresentableText();
+                String typeFormat = String.format(typeNameFormat, "Map<" + keyTypeName + ", %s>");
+                return getRealPsiTypeName(valueType, project, typeFormat);
             }
         }
         String typeName = psiType.getPresentableText();
@@ -151,8 +143,7 @@ public class PsiTypeUtil {
      * @return 类型是否为泛型
      */
     public static boolean isPsiTypeFromParameter(PsiType psiFieldType) {
-        if (psiFieldType instanceof PsiClassReferenceType) {
-            PsiClassReferenceType psiClassReferenceType = (PsiClassReferenceType) psiFieldType;
+        if (psiFieldType instanceof PsiClassReferenceType psiClassReferenceType) {
             PsiClass resolveClass = psiClassReferenceType.resolve();
             if (resolveClass == null) {
                 return false;
@@ -257,8 +248,7 @@ public class PsiTypeUtil {
      */
     @Nullable
     public static String getClassName(@NotNull PsiType psiType, PsiClass contextClass) {
-        if (psiType instanceof PsiClassReferenceType) {
-            PsiClassReferenceType classReferenceType = (PsiClassReferenceType) psiType;
+        if (psiType instanceof PsiClassReferenceType classReferenceType) {
             PsiClass psiClass = classReferenceType.resolve();
             if (psiClass == null || psiClass.getName() == null) {
                 return null;

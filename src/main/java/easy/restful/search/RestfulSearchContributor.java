@@ -24,7 +24,6 @@ public class RestfulSearchContributor implements ChooseByNameContributor {
     @Override
     public String[] getNames(Project project, boolean includeNonProjectItems) {
         List<String> names;
-
         List<ApiService> apiServices;
         if (includeNonProjectItems && module != null) {
             apiServices = ApiServices.getModuleApis(project, module);
@@ -53,7 +52,6 @@ public class RestfulSearchContributor implements ChooseByNameContributor {
         itemList.stream()
                 .filter(item -> item.getName() != null && item.getName().equals(name))
                 .forEach(list::add);
-
         return list.toArray(new NavigationItem[0]);
     }
 

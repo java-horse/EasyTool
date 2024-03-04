@@ -6,6 +6,7 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiParameterList;
 import easy.postfix.base.BaseVar;
 import easy.postfix.util.PsiMethodUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -28,7 +29,7 @@ public class GenerateChain extends AbstractDefaultValGenerate {
     @NotNull
     public String generateCodeByMethod(Set<String> newImportList, PsiMethod method) {
         if (baseVar == null) {
-            return "";
+            return StringUtils.EMPTY;
         }
         Project project = method.getProject();
         PsiParameterList parameterList = method.getParameterList();
@@ -39,7 +40,7 @@ public class GenerateChain extends AbstractDefaultValGenerate {
             String defaultVal = generateDefaultVal(project, newImportList, parameter);
             return "." + methodName + "(" + defaultVal + ")";
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 

@@ -1,6 +1,7 @@
 package easy.postfix.util;
 
 
+import cn.hutool.core.convert.Convert;
 import easy.base.Constants;
 import easy.postfix.base.common.AnnotationHolder;
 import org.apache.commons.collections.CollectionUtils;
@@ -27,19 +28,19 @@ public class CommentInfo {
     /**
      * 字段含义
      */
-    private String value = "";
+    private String value = StringUtils.EMPTY;
     /**
      * 字段更多说明
      */
-    private String notes = "";
+    private String notes = StringUtils.EMPTY;
     /**
      * 字段示例
      */
-    private String example = "";
+    private String example = StringUtils.EMPTY;
     /**
      * 自定义字段标识
      */
-    private String name = "";
+    private String name = StringUtils.EMPTY;
     /**
      * 字段是否必须
      */
@@ -262,11 +263,11 @@ public class CommentInfo {
      */
     public String getItemName(String defaultName) {
         String itemName = defaultName;
-        String tags = getTags("");
+        String tags = getTags(StringUtils.EMPTY);
         if (StringUtils.isNotBlank(tags)) {
             itemName = tags;
         } else {
-            String value = getValue("");
+            String value = getValue(StringUtils.EMPTY);
             if (StringUtils.isNotBlank(value)) {
                 itemName = value;
             }
@@ -279,7 +280,7 @@ public class CommentInfo {
         if (StringUtils.isBlank(tagVal)) {
             flag = true;
         } else {
-            flag = BaseTypeParseUtil.parseBoolean(tagVal, true);
+            flag = Convert.toBool(tagVal, true);
         }
         return flag;
     }
