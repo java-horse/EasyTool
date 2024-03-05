@@ -3,10 +3,11 @@ package easy.doc.service;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.editor.EditorModificationUtilEx;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiJavaDocumentedElement;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
@@ -18,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 public class JavaDocWriterService {
     private static final Logger log = Logger.getInstance(JavaDocWriterService.class);
 
-    public void writeJavadoc(Project project, PsiElement psiElement, PsiDocComment comment, int emptyLineNum) {
+    public void writeJavadoc(Project project, PsiElement psiElement, String commentStr, int emptyLineNum) {
         try {
             WriteCommandAction.writeCommandAction(project).run(
                     (ThrowableRunnable<Throwable>) () -> {
@@ -26,12 +27,16 @@ public class JavaDocWriterService {
                             return;
                         }
                         // 写入文档注释
-                        if (psiElement instanceof PsiJavaDocumentedElement psiJavaDocumentedElement) {
+                        if (StringUtils.startsWith(commentStr, "//") || (StringUtils.startsWith(commentStr, "/*") && StringUtils.endsWith(commentStr, "*/"))) {
+                            PsiComment newComment = PsiElementFactory.getInstance(project).createCommentFromText(commentStr, psiElement);
+                            psiElement.getParent().addBefore(newComment, psiElement);
+                        } else if (psiElement instanceof PsiJavaDocumentedElement psiJavaDocumentedElement) {
                             PsiDocComment psiDocComment = psiJavaDocumentedElement.getDocComment();
+                            PsiDocComment psiDocCommentUpdate = PsiElementFactory.getInstance(project).createDocCommentFromText(commentStr);
                             if (psiDocComment == null) {
-                                psiElement.getNode().addChild(comment.getNode(), psiElement.getFirstChild().getNode());
+                                psiElement.getNode().addChild(psiDocCommentUpdate.getNode(), psiElement.getFirstChild().getNode());
                             } else {
-                                psiDocComment.replace(comment);
+                                psiDocComment.replace(psiDocCommentUpdate);
                             }
                         }
                         // 格式化文档注释
@@ -44,7 +49,6 @@ public class JavaDocWriterService {
                         if (emptyLineNum > Constants.NUM.ZERO) {
                             PsiElement whiteSpaceElement = psiElement.getChildren()[1];
                             if (whiteSpaceElement instanceof PsiWhiteSpaceImpl psiWhiteSpace) {
-                                // 修改whiteSpace
                                 String space = StringUtils.repeat(StringUtils.LF, emptyLineNum + 1);
                                 String exists = StringUtils.stripStart(whiteSpaceElement.getText(), StringUtils.LF);
                                 psiWhiteSpace.replaceWithText(space + exists);

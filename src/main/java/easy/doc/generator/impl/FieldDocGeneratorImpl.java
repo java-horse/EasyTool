@@ -3,6 +3,7 @@ package easy.doc.generator.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
@@ -13,11 +14,13 @@ import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
+import easy.enums.JavaDocPropertyCommentModelEnum;
 import easy.enums.JavaDocPropertyCommentTypeEnum;
 import easy.service.TranslateService;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -63,18 +66,56 @@ public class FieldDocGeneratorImpl implements DocGenerator {
      * @return {@link String}
      */
     private String genNormalDoc(PsiField psiField, String name) {
-        PsiDocComment comment = psiField.getDocComment();
-        if (comment != null) {
-            List<PsiElement> elements = Lists.newArrayList(comment.getChildren());
-            String desc = translateService.translate(name);
-            List<String> commentItems = Lists.newLinkedList();
-            for (PsiElement element : elements) {
-                commentItems.add(element.getText());
+        if (StringUtils.equals(JavaDocPropertyCommentModelEnum.JAVA_DOC.getModel(), javaDocConfig.getPropertyCommentModel())) {
+            PsiDocComment comment = psiField.getDocComment();
+            if (comment != null) {
+                List<PsiElement> elements = Lists.newArrayList(comment.getChildren());
+                String desc = translateService.translate(name);
+                List<String> commentItems = Lists.newLinkedList();
+                for (PsiElement element : elements) {
+                    commentItems.add(element.getText());
+                }
+                commentItems.add(1, buildDesc(elements, desc));
+                return Joiner.on(StringUtils.EMPTY).skipNulls().join(commentItems);
             }
-            commentItems.add(1, buildDesc(elements, desc));
-            return Joiner.on(StringUtils.EMPTY).skipNulls().join(commentItems);
+            return String.format("/**%s* %s%s */", "\n", translateService.translate(name), "\n");
+        } else {
+            // 只能兼容字段上方紧跟注释的情况（中间有空行时无效）
+            if (Arrays.stream(StringUtils.split(psiField.getText(), StringUtils.LF)).map(StringUtils::trim).anyMatch(item -> StringUtils.startsWith(item, "/*") && StringUtils.endsWith(item, "*/"))) {
+                return null;
+            }
+            return String.format("/* %s */", translateService.translate(name));
         }
-        return String.format("/**%s* %s%s */", "\n", translateService.translate(name), "\n");
+    }
+
+    /**
+     * 生成简单的文档
+     *
+     * @param name 名字
+     * @return {@link String}
+     */
+    private String genSimpleDoc(PsiField psiField, String name) {
+        if (StringUtils.equals(JavaDocPropertyCommentModelEnum.JAVA_DOC.getModel(), javaDocConfig.getPropertyCommentModel())) {
+            PsiDocComment comment = psiField.getDocComment();
+            if (comment != null) {
+                for (PsiElement element : comment.getChildren()) {
+                    if (!"PsiDocToken:DOC_COMMENT_DATA".equalsIgnoreCase(element.toString())) {
+                        continue;
+                    }
+                    String source = element.getText().replaceAll("[/* \n]+", StringUtils.EMPTY);
+                    if (StringUtils.isNotBlank(source)) {
+                        return null;
+                    }
+                }
+            }
+            return String.format("/** %s */", translateService.translate(name));
+        } else {
+            // 只能兼容字段上方紧跟注释的情况（中间有空行时无效）
+            if (Arrays.stream(StringUtils.split(psiField.getText(), StringUtils.LF)).map(StringUtils::trim).anyMatch(item -> StringUtils.startsWith(item, "//"))) {
+                return null;
+            }
+            return String.format("// %s", translateService.translate(name));
+        }
     }
 
     /**
@@ -95,28 +136,6 @@ public class FieldDocGeneratorImpl implements DocGenerator {
             }
         }
         return desc;
-    }
-
-    /**
-     * 生成简单的文档
-     *
-     * @param name 名字
-     * @return {@link String}
-     */
-    private String genSimpleDoc(PsiField psiField, String name) {
-        PsiDocComment comment = psiField.getDocComment();
-        if (comment != null) {
-            for (PsiElement element : comment.getChildren()) {
-                if (!"PsiDocToken:DOC_COMMENT_DATA".equalsIgnoreCase(element.toString())) {
-                    continue;
-                }
-                String source = element.getText().replaceAll("[/* \n]+", StringUtils.EMPTY);
-                if (StringUtils.isNotBlank(source)) {
-                    return null;
-                }
-            }
-        }
-        return String.format("/** %s */", translateService.translate(name));
     }
 
     private String customGenerate(PsiField psiField) {

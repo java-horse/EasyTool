@@ -72,9 +72,9 @@
         <![CDATA[
       <h3>v2.0.5</h3>
       <ul>
-        <li>xxx</li>
+        <li>Support field properties to add a single line of ordinary text comment function</li>
         <li>-------------------------------</li>
-        <li>xxx</li>
+        <li>支持字段属性新增单行普通文本注释功能</li>
       </ul>
       <h3>v2.0.4</h3>
       <ul>
@@ -409,7 +409,7 @@
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
         <!--JavaDoc注释生成-->
         <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="JavaDoc"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK">
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
