@@ -1,7 +1,7 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
-import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
@@ -14,7 +14,6 @@ import org.apache.commons.collections.MapUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -32,6 +31,7 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
     private JRadioButton customRadioButton;
     private JTable innerTable;
     private JScrollPane innerScrollPane;
+    private JLabel defaultRadioTipLabel;
     private JTable customTable;
     private static Map<String, String> innerMap;
 
@@ -100,6 +100,15 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
 
     public ClassSettingsView(JavaDocConfig config) {
         super(config);
+        // 添加提示标签
+        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
+        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+                "/**<br>" +
+                " * $DOC$<br>" +
+                " * <br>" +
+                " * @author $AUTHOR$<br>" +
+                " * @date $DATE$<br>" +
+                " */");
         // 添加单选按钮事件
         defaultRadioButton.addChangeListener(e -> {
             JRadioButton button = (JRadioButton) e.getSource();

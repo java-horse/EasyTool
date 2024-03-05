@@ -1,6 +1,7 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
+import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
@@ -27,6 +28,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
     private JRadioButton customRadioButton;
     private JTable innerTable;
     private JScrollPane innerScrollPane;
+    private JLabel defaultRadioTipLabel;
     private JTable customTable;
     private static Map<String, String> innerMap;
 
@@ -88,6 +90,12 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
 
     public FieldSettingsView(JavaDocConfig config) {
         super(config);
+        // 添加提示标签
+        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
+        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+                "/**<br>" +
+                " * $DOC$<br>" +
+                " */");
         // 添加单选按钮事件
         defaultRadioButton.addChangeListener(e -> {
             JRadioButton button = (JRadioButton) e.getSource();
