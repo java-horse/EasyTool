@@ -1,7 +1,6 @@
 package easy.action;
 
 import cn.hutool.core.text.CharPool;
-import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

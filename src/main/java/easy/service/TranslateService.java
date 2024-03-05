@@ -142,12 +142,12 @@ public class TranslateService {
                 return chList.get(0).toLowerCase();
             }
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < size; i++) {
-                String lowEn = chList.get(i);
+            for (String lowEn : chList) {
                 if (StringUtils.isBlank(lowEn) || Constants.STOP_WORDS.contains(lowEn.toLowerCase())) {
                     continue;
                 }
-                if (i == 0) {
+                // 当第一个就是停用词时，首字母也需要大写
+                if (builder.isEmpty()) {
                     builder.append(lowEn.toLowerCase());
                 } else {
                     builder.append(StringUtils.substring(lowEn, 0, 1).toUpperCase())
