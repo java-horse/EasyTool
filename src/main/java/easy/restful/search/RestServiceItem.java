@@ -4,13 +4,14 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.module.Module;
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.MinusculeMatcher;
 import com.intellij.psi.codeStyle.NameUtil;
+import com.intellij.psi.javadoc.PsiDocComment;
+import easy.enums.SwaggerAnnotationEnum;
 import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,7 @@ import org.jetbrains.kotlin.psi.KtClass;
 import org.jetbrains.kotlin.psi.KtNamedFunction;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class RestServiceItem implements NavigationItem {
 
@@ -53,7 +55,6 @@ public class RestServiceItem implements NavigationItem {
     @Contract(" -> new")
     public ItemPresentation getPresentation() {
         return new ItemPresentation() {
-
             @Nullable
             @Override
             public String getPresentableText() {
@@ -63,14 +64,16 @@ public class RestServiceItem implements NavigationItem {
             @Override
             public String getLocationString() {
                 String location = null;
-
-                if (psiElement instanceof PsiMethod) {
-                    PsiMethod psiMethod = ((PsiMethod) psiElement);
+                if (psiElement instanceof PsiMethod psiMethod) {
                     PsiClass psiClass = psiMethod.getContainingClass();
                     if (psiClass != null) {
                         location = psiClass.getName();
                     }
                     location += "#" + psiMethod.getName();
+                    String methodComment = getMethodComment(psiMethod);
+                    if (StringUtils.isNotBlank(methodComment)) {
+                        location += "#" + methodComment;
+                    }
                     location = "Java: (" + location + ")";
                 } else if (psiElement instanceof KtNamedFunction) {
                     KtNamedFunction function = (KtNamedFunction) psiElement;
@@ -78,7 +81,6 @@ public class RestServiceItem implements NavigationItem {
                     location += "#" + function.getName();
                     location = "Kotlin: (" + location + ")";
                 }
-
                 if (psiElement != null) {
                     location += " in " + psiElement.getResolveScope().getDisplayName();
                 }
@@ -91,6 +93,37 @@ public class RestServiceItem implements NavigationItem {
                 return Icons.getMethodIcon(method);
             }
         };
+    }
+
+    /**
+     * 获取方法注释
+     * 优先规则：swagger的ApiOperation中的value属性 -> 普通JavaDoc注释
+     *
+     * @param psiMethod psi方法
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/03/06 17:59
+     */
+    private String getMethodComment(PsiMethod psiMethod) {
+        PsiAnnotation psiAnnotation = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
+        if (Objects.nonNull(psiAnnotation)) {
+            PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+            if (Objects.nonNull(psiAnnotationAttributeValue)) {
+                return StringUtils.replace(psiAnnotationAttributeValue.getText(), "\"", StringUtils.EMPTY);
+            }
+        }
+        // 获取JavaDoc中第一行非空注释元素即可
+        PsiDocComment docComment = psiMethod.getDocComment();
+        if (Objects.nonNull(docComment)) {
+            PsiElement[] descriptionElements = docComment.getDescriptionElements();
+            for (PsiElement descriptionElement : descriptionElements) {
+                String text = descriptionElement.getText().trim();
+                if (StringUtils.isNotEmpty(text)) {
+                    return text;
+                }
+            }
+        }
+        return StringUtils.EMPTY;
     }
 
     @Override

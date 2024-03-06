@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Restful快捷搜索Action
@@ -57,38 +58,33 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
 
             @Override
             public void elementChosen(ChooseByNamePopup chooseByNamePopup, Object element) {
-                if (element instanceof RestServiceItem) {
-                    RestServiceItem navigationItem = (RestServiceItem) element;
-                    if (navigationItem.canNavigate()) {
-                        navigationItem.navigate(true);
-                    }
+                if (element instanceof RestServiceItem navigationItem && navigationItem.canNavigate()) {
+                    navigationItem.navigate(true);
                 }
             }
         };
-
         GotoRequestProvider provider = new GotoRequestProvider(getPsiContext(e));
-        showNavigationPopup(e, model, callback, BundleUtil.getI18n("search.find.usages.title"), true,
-                true, (ChooseByNameItemProvider) provider
+        showNavigationPopup(e, model, callback, BundleUtil.getI18n("search.find.usages.title"),
+                true, true, (ChooseByNameItemProvider) provider
         );
-        
     }
 
     @Override
     protected <T> void showNavigationPopup(@NotNull AnActionEvent e,
                                            @NotNull ChooseByNameModel model,
-                                           final GotoActionCallback<T> callback,
-                                           @Nullable final String findUsagesTitle,
+                                           GotoActionCallback<T> callback,
+                                           @Nullable String findUsagesTitle,
                                            boolean useSelectionFromEditor,
-                                           final boolean allowMultipleSelection,
-                                           final ChooseByNameItemProvider itemProvider) {
-        final Project project = e.getData(CommonDataKeys.PROJECT);
-        boolean mayRequestOpenInCurrentWindow = model.willOpenEditor() &&
-                FileEditorManagerEx.getInstanceEx(project).hasSplitOrUndockedWindows();
+                                           boolean allowMultipleSelection,
+                                           ChooseByNameItemProvider itemProvider) {
+        Project project = e.getData(CommonDataKeys.PROJECT);
+        if (Objects.isNull(project)) {
+            return;
+        }
+        boolean mayRequestOpenInCurrentWindow = model.willOpenEditor() && FileEditorManagerEx.getInstanceEx(project).hasSplitOrUndockedWindows();
         Pair<String, Integer> start = getInitialText(useSelectionFromEditor, e);
-        showNavigationPopup(callback, findUsagesTitle,
-                RestChooseByNamePopup.createPopup(project, model, itemProvider, start.first,
-                        mayRequestOpenInCurrentWindow, start.second),
-                allowMultipleSelection);
+        showNavigationPopup(callback, findUsagesTitle, RestChooseByNamePopup.createPopup(project, model, itemProvider, start.first,
+                mayRequestOpenInCurrentWindow, start.second), allowMultipleSelection);
     }
 
     protected static class GotoRequestMappingFilter extends ChooseByNameFilter<HttpMethod> {

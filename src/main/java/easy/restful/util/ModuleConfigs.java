@@ -2,6 +2,7 @@ package easy.restful.util;
 
 import com.intellij.openapi.project.Project;
 import easy.restful.api.ApiService;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -49,17 +50,17 @@ public class ModuleConfigs {
 
         @NotNull
         public String getConfig(@NotNull Project project, @NotNull String moduleName) {
-            return Storage.MODULE_HTTP_CONFIG.getMap(project, moduleName).getOrDefault(getName(), "");
+            return Storage.MODULE_HTTP_CONFIG.getMap(project, moduleName).getOrDefault(getName(), StringUtils.EMPTY);
         }
 
         public static void apply(@NotNull Map<String, String> config, @NotNull ApiService apiService) {
             String port = config.get(PORT.getName());
             apiService.setPort(port);
-
             String contextPath = config.get(CONTEXT_PATH.getName());
             if (contextPath != null) {
                 apiService.setPath(contextPath + apiService.getPath());
             }
         }
     }
+
 }
