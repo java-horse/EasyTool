@@ -321,6 +321,9 @@
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
+                                 displayName="BackgroundImage"
+                                 instance="easy.form.BackgroundImageSettingView"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
@@ -415,7 +418,10 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
         </action>
-
+        <!--Background Image 背景图动态切换-->
+        <group id="DynamicBackgroundImageActionGroups" class="easy.action.background.DynamicBackgroundImageActionGroup"
+               text="BackgroundImage" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.PICTURE" popup="true" compact="true"/>
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
@@ -441,6 +447,7 @@
             <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
+            <reference ref="DynamicBackgroundImageActionGroups"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -454,6 +461,8 @@
             <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
+            <reference ref="DynamicBackgroundImageActionGroups"/>
+
         </group>
 
     </actions>

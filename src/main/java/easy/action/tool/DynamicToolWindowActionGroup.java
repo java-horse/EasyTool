@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import easy.action.background.DynamicBackgroundImageActionGroup;
 import easy.action.mybatis.log.MyBatisLogAction;
 import easy.enums.ToolWindowEnum;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,8 @@ public class DynamicToolWindowActionGroup extends DefaultActionGroup {
                 new ToolWindowAction(ToolWindowEnum.SEARCH_API),
                 new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
                 new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING),
-                new MyBatisLogAction()
+                new MyBatisLogAction(),
+                new DynamicBackgroundImageActionGroup()
         };
     }
 

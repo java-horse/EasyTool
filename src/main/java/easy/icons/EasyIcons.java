@@ -46,6 +46,7 @@ public class EasyIcons {
         Icon CLOCK = IconLoader.getIcon("icons/clock.svg", EasyIcons.class);
         Icon GIT = IconLoader.getIcon("icons/git.svg", EasyIcons.class);
         Icon JAVA = IconLoader.getIcon("icons/java.svg", EasyIcons.class);
+        Icon PICTURE = IconLoader.getIcon("icons/picture.svg", EasyIcons.class);
     }
 
 }
