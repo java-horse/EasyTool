@@ -16,29 +16,35 @@ public class RandomBackgroundTask implements Runnable {
         String folder = prop.getValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER);
         if (StringUtils.isBlank(folder)) {
             NotificationUtil.notify("Background image folder not set", EasyCommonUtil.getPluginSettingAction());
+            BackgroundService.stop();
             return;
         }
         File file = new File(folder);
         if (!file.exists()) {
             NotificationUtil.notify("Background image folder not set", EasyCommonUtil.getPluginSettingAction());
+            BackgroundService.stop();
             return;
         }
         String changeScope = prop.getValue(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SCOPE);
         if (StringUtils.isBlank(changeScope)) {
+            BackgroundService.stop();
             return;
         }
         String[] scopeArray = changeScope.split(",");
         String image = null;
         for (int i = 0; i < scopeArray.length; i++) {
             if (i == 0) {
-                image = ImagesHandlerSingleton.INSTANCE.getRandomImage(folder);
+                image = ImagesHandler.INSTANCE.getRandomImage(folder);
             }
             if (image == null) {
                 NotificationUtil.notify("Background image folder no image resource found", EasyCommonUtil.getPluginSettingAction());
+                BackgroundService.stop();
                 return;
             }
             if (image.contains(",")) {
                 NotificationUtil.notify("IDE wont load images with ',' character image：" + image, EasyCommonUtil.getPluginSettingAction());
+                BackgroundService.stop();
+                return;
             }
             String type = scopeArray[i];
             String lastImage = prop.getValue(type);

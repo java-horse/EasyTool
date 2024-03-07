@@ -27,6 +27,7 @@ public class BackgroundImageSettingView implements Configurable {
     private JLabel changeModelLabel;
     private JLabel changeScopeLabel;
     private JLabel changeSwitchLabel;
+    private JLabel imageCountLabel;
     private TextFieldWithBrowseButton imageFolderTextField;
     private JSpinner intervalSpinner;
     private JComboBox timeUnitComboBox;
@@ -36,6 +37,8 @@ public class BackgroundImageSettingView implements Configurable {
     private JLabel imageFolderTipLabel;
     private JLabel changeModelTipLabel;
     private JLabel changeScopeTipLabel;
+    private JSpinner imageCountSpinner;
+    private JLabel imageCountTipLabel;
 
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
@@ -54,16 +57,21 @@ public class BackgroundImageSettingView implements Configurable {
         changeModelTipLabel.setToolTipText("建议背景轮播间隔单位为：分钟（MINUTES）");
         changeScopeTipLabel.setIcon(AllIcons.General.ContextHelp);
         changeScopeTipLabel.setToolTipText("建议背景图展示范围为：BOTH（IDE可视范围内背景全覆盖）");
+        imageCountTipLabel.setIcon(AllIcons.General.ContextHelp);
+        imageCountTipLabel.setToolTipText("背景轮播图数量限制，建议控制在10张以内（无论文件夹有多少图片，都只会读取此限制数量的图片）");
         // 默认不开启背景轮播功能
         changeSwitchEnableCheckBox.setSelected(false);
         changeSwitchEnableCheckBox.addActionListener(e -> {
-            imageFolderTextField.setEnabled(changeSwitchEnableCheckBox.isSelected());
-            intervalSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
-            timeUnitComboBox.setEnabled(changeSwitchEnableCheckBox.isSelected());
-            changeScopeComboBox.setEnabled(changeSwitchEnableCheckBox.isSelected());
+            boolean changeSwitch = changeSwitchEnableCheckBox.isSelected();
+            imageFolderTextField.setEnabled(changeSwitch);
+            intervalSpinner.setEnabled(changeSwitch);
+            timeUnitComboBox.setEnabled(changeSwitch);
+            changeScopeComboBox.setEnabled(changeSwitch);
+            imageCountSpinner.setEnabled(changeSwitch);
         });
         // 设置轮播模式（最大值，最小值，步长等）
         intervalSpinner.setModel(new SpinnerNumberModel(0, 0, 1000, 5));
+        imageCountSpinner.setModel(new SpinnerNumberModel(5, 2, 100, 1));
         // 设置文件选择监听
         FileChooserDescriptor singleFolderDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         imageFolderTextField.addBrowseFolderListener(new TextBrowseFolderListener(singleFolderDescriptor) {
@@ -99,6 +107,7 @@ public class BackgroundImageSettingView implements Configurable {
         BackgroundService.stop();
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         intervalSpinner = new JSpinner(new SpinnerNumberModel(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO), 0, 1000, 5));
+        imageCountSpinner = new JSpinner(new SpinnerNumberModel(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE), 2, 100, 1));
         timeUnitComboBox.setSelectedIndex(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE));
     }
 
@@ -113,11 +122,13 @@ public class BackgroundImageSettingView implements Configurable {
     }
 
     private boolean changeModelModified(PropertiesComponent propertiesComponent) {
+        int imageCount = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE);
+        int uiImageCount = ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue();
         int storedInterval = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO);
         int uiInterval = ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue();
         int timeUnit = timeUnitComboBox.getSelectedIndex();
         int storedTimeUnit = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE);
-        return storedInterval != uiInterval || storedTimeUnit != timeUnit;
+        return imageCount != uiImageCount || storedInterval != uiInterval || storedTimeUnit != timeUnit;
     }
 
     private boolean changeScopeModified(PropertiesComponent prop) {
@@ -138,6 +149,8 @@ public class BackgroundImageSettingView implements Configurable {
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         changeSwitchEnableCheckBox.setSelected(propertiesComponent.getBoolean(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SWITCH, false));
         imageFolderTextField.setText(propertiesComponent.getValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER));
+        imageCountSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
+        imageCountSpinner.setValue(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE));
         intervalSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
         intervalSpinner.setValue(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO));
         timeUnitComboBox.setSelectedIndex(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE));
@@ -158,6 +171,8 @@ public class BackgroundImageSettingView implements Configurable {
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER, imageFolderTextField.getText());
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue(), Constants.NUM.ZERO);
         intervalSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
+        propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue(), Constants.NUM.FIVE);
+        imageCountSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, timeUnitComboBox.getSelectedIndex(), Constants.NUM.ONE);
         String changeScopeText = String.valueOf(changeScopeComboBox.getSelectedItem());
         if (StringUtils.equals(changeScopeText, BackgroundImageChangeScopeEnum.BOTH.getName())) {

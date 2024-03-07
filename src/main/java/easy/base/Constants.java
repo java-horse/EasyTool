@@ -72,6 +72,7 @@ public class Constants {
          */
         public interface BACKGROUND_IMAGE {
             String FOLDER = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_folder";
+            String IMAGE_COUNT = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_count";
             String CHANGE_SWITCH = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_change_switch";
             String INTERVAL = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_interval";
             String TIME_UNIT = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_time_unit";

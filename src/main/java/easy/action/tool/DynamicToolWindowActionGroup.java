@@ -29,7 +29,6 @@ public class DynamicToolWindowActionGroup extends DefaultActionGroup {
                 new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
                 new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING),
                 new MyBatisLogAction(),
-                new DynamicBackgroundImageActionGroup()
         };
     }
 
