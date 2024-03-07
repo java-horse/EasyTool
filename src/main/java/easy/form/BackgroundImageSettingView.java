@@ -1,5 +1,7 @@
 package easy.form;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ArrayUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -70,7 +72,7 @@ public class BackgroundImageSettingView implements Configurable {
             imageCountSpinner.setEnabled(changeSwitch);
         });
         // 设置轮播模式（最大值，最小值，步长等）
-        intervalSpinner.setModel(new SpinnerNumberModel(0, 0, 1000, 5));
+        intervalSpinner.setModel(new SpinnerNumberModel(5, 5, 1000, 5));
         imageCountSpinner.setModel(new SpinnerNumberModel(5, 2, 100, 1));
         // 设置文件选择监听
         FileChooserDescriptor singleFolderDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
@@ -95,7 +97,7 @@ public class BackgroundImageSettingView implements Configurable {
     public void disposeUIResources() {
         // 关闭设置页面时重新判断是否启动
         int interval = ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue();
-        if (changeSwitchEnableCheckBox.isSelected() && interval > Constants.NUM.ZERO) {
+        if (changeSwitchEnableCheckBox.isSelected() && interval > Constants.NUM.FIVE) {
             BackgroundService.start();
         } else {
             BackgroundService.stop();
@@ -106,7 +108,7 @@ public class BackgroundImageSettingView implements Configurable {
         // 打开设置页面时关闭轮播任务
         BackgroundService.stop();
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-        intervalSpinner = new JSpinner(new SpinnerNumberModel(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO), 0, 1000, 5));
+        intervalSpinner = new JSpinner(new SpinnerNumberModel(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.FIVE), 5, 1000, 5));
         imageCountSpinner = new JSpinner(new SpinnerNumberModel(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE), 2, 100, 1));
         timeUnitComboBox.setSelectedIndex(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE));
     }
@@ -124,7 +126,7 @@ public class BackgroundImageSettingView implements Configurable {
     private boolean changeModelModified(PropertiesComponent propertiesComponent) {
         int imageCount = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE);
         int uiImageCount = ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue();
-        int storedInterval = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO);
+        int storedInterval = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.FIVE);
         int uiInterval = ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue();
         int timeUnit = timeUnitComboBox.getSelectedIndex();
         int storedTimeUnit = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE);
@@ -149,10 +151,11 @@ public class BackgroundImageSettingView implements Configurable {
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         changeSwitchEnableCheckBox.setSelected(propertiesComponent.getBoolean(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SWITCH, false));
         imageFolderTextField.setText(propertiesComponent.getValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER));
+        imageFolderTextField.setEnabled(changeSwitchEnableCheckBox.isSelected());
         imageCountSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
         imageCountSpinner.setValue(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE));
         intervalSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
-        intervalSpinner.setValue(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO));
+        intervalSpinner.setValue(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.FIVE));
         timeUnitComboBox.setSelectedIndex(propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE));
         String storedText = propertiesComponent.getValue(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SCOPE, getChangeScopeCombination());
         if (StringUtils.equals(storedText, IdeBackgroundUtil.EDITOR_PROP)) {
@@ -166,10 +169,12 @@ public class BackgroundImageSettingView implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        // 检查背景图像属性正确性
+        checkBackgroundImageProperties();
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SWITCH, changeSwitchEnableCheckBox.isSelected());
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER, imageFolderTextField.getText());
-        propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue(), Constants.NUM.ZERO);
+        propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue(), Constants.NUM.FIVE);
         intervalSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
         propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue(), Constants.NUM.FIVE);
         imageCountSpinner.setEnabled(changeSwitchEnableCheckBox.isSelected());
@@ -182,6 +187,35 @@ public class BackgroundImageSettingView implements Configurable {
         } else if (StringUtils.equals(changeScopeText, BackgroundImageChangeScopeEnum.FRAME.getName())) {
             propertiesComponent.setValue(Constants.Persistence.BACKGROUND_IMAGE.CHANGE_SCOPE, IdeBackgroundUtil.FRAME_PROP);
         }
+    }
+
+
+    /**
+     * 检查背景图像属性正确性
+     *
+     * @author mabin
+     * @date 2024/03/07 17:34
+     */
+    private void checkBackgroundImageProperties() throws ConfigurationException {
+        // 校验图片文件夹是否存在且文件夹下存在图片
+        String imageFolder = imageFolderTextField.getText();
+        if (!FileUtil.exist(imageFolder)) {
+            throw new ConfigurationException(String.format("文件夹：%s 资源不存在", imageFolder));
+        }
+        File[] files = FileUtil.file(imageFolder).listFiles((dir, name) -> StringUtils.endsWithAny(name, "jpg", "png", "gif"));
+        if (ArrayUtil.isEmpty(files)) {
+            throw new ConfigurationException(String.format("文件夹：%s 中不存在符合条件的图片资源", imageFolder));
+        }
+        // 校验相关数字是否合法
+        int intervalValue = ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue();
+        if (intervalValue < Constants.NUM.FIVE || intervalValue > 1000) {
+            throw new ConfigurationException("间隔时间不符合表达式：5 <= x <= 1000");
+        }
+        int imageCountValue = ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue();
+        if (imageCountValue < Constants.NUM.TWO || imageCountValue > 100) {
+            throw new ConfigurationException("图片数量限制不符合表达式：2 <= x <= 100");
+        }
+
     }
 
     /**

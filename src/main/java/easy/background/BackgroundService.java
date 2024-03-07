@@ -15,8 +15,8 @@ public class BackgroundService {
 
     public static void start() {
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-        int interval = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, Constants.NUM.ZERO);
-        if (interval == Constants.NUM.ZERO) {
+        int interval = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.INTERVAL, 0);
+        if (interval < Constants.NUM.FIVE) {
             return;
         }
         if (executor != null) {
@@ -24,7 +24,6 @@ public class BackgroundService {
         }
         executor = new ScheduledThreadPoolExecutor(1, new MyThreadFactory(Constants.PLUGIN_NAME + "_RandomBackgroundTask"));
         try {
-
             TimeUnit timeUnitEnum;
             int timeUnit = propertiesComponent.getInt(Constants.Persistence.BACKGROUND_IMAGE.TIME_UNIT, Constants.NUM.ONE);
             timeUnitEnum = switch (timeUnit) {
