@@ -12,6 +12,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
+import easy.enums.RestfulSearchAnnotationTypeEnum;
 import easy.restful.annotation.JaxrsHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
@@ -67,7 +68,7 @@ public class Jaxrs implements IJavaFramework {
         if (psiClass == null) {
             return false;
         }
-        if (psiClass.hasAnnotation(Control.Path.getQualifiedName())) {
+        if (psiClass.hasAnnotation(RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getQualifiedName())) {
             return true;
         }
         GlobalSearchScope scope = psiClass.getResolveScope();
@@ -111,7 +112,7 @@ public class Jaxrs implements IJavaFramework {
             }
         }
         Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
-                Control.Path.getName(),
+                RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getName(),
                 project,
                 SystemUtil.getModuleScope(module)
         );
@@ -140,33 +141,26 @@ public class Jaxrs implements IJavaFramework {
         if (rootPathOfClass != null) {
             rootPath = rootPathOfClass;
         }
-
         List<ApiService> childrenApiServices = new ArrayList<>();
-
         PsiMethod[] psiMethods = psiClass.getMethods();
         for (PsiMethod psiMethod : psiMethods) {
             String path = "/";
             List<HttpMethod> methods = new ArrayList<>();
-
             PsiAnnotation[] annotations = RestUtil.getMethodAnnotations(psiMethod).toArray(new PsiAnnotation[0]);
             for (PsiAnnotation annotation : annotations) {
-                Control controlPath = Control.getPathByQualifiedName(annotation.getQualifiedName());
-                if (controlPath != null) {
+                RestfulSearchAnnotationTypeEnum searchAnnotationTypeEnum = RestfulSearchAnnotationTypeEnum.getByQualifiedName(annotation.getQualifiedName());
+                if (searchAnnotationTypeEnum != null) {
                     List<JvmAnnotationAttribute> attributes = annotation.getAttributes();
                     Object value = RestUtil.getAttributeValue(attributes.get(0).getAttributeValue());
                     if (value != null) {
                         path = (String) value;
                     }
                 }
-
-                JaxrsHttpMethodAnnotation jaxrs = JaxrsHttpMethodAnnotation.getByQualifiedName(
-                        annotation.getQualifiedName()
-                );
+                JaxrsHttpMethodAnnotation jaxrs = JaxrsHttpMethodAnnotation.getByQualifiedName(annotation.getQualifiedName());
                 if (jaxrs != null) {
                     methods.add(jaxrs.getMethod());
                 }
             }
-
             for (HttpMethod method : methods) {
                 String tempPath = path;
                 if (!tempPath.startsWith("/")) {
@@ -190,7 +184,7 @@ public class Jaxrs implements IJavaFramework {
     private String getRootPathOfClass(@NotNull PsiClass psiClass) {
         PsiAnnotation psiAnnotation = RestUtil.getClassAnnotation(
                 psiClass,
-                Control.Path.getQualifiedName()
+                RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getQualifiedName()
         );
         if (psiAnnotation != null) {
             return (String) RestUtil.getAttributeValue(psiAnnotation.getAttributes().get(0).getAttributeValue());
@@ -210,8 +204,8 @@ public class Jaxrs implements IJavaFramework {
         Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName("applicationContext.xml", module.getModuleScope());
         for (VirtualFile virtualFile : virtualFiles) {
             PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-            if (psiFile instanceof XmlFile) {
-                return (XmlFile) psiFile;
+            if (psiFile instanceof XmlFile psiFile1) {
+                return psiFile1;
             }
         }
         return null;
@@ -243,16 +237,16 @@ public class Jaxrs implements IJavaFramework {
     }
 
     @Override
-    public boolean  isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
+    public boolean isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
         try {
             JavaAnnotationIndex instance = JavaAnnotationIndex.getInstance();
-            Collection<PsiAnnotation> collection = instance.get(Control.Path.getName(), project, module.getModuleScope());
+            Collection<PsiAnnotation> collection = instance.get(RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getName(), project, module.getModuleScope());
             if (collection != null && !collection.isEmpty()) {
                 for (PsiAnnotation annotation : collection) {
                     if (annotation == null) {
                         continue;
                     }
-                    if (Control.Path.getQualifiedName().equals(annotation.getQualifiedName())) {
+                    if (RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getQualifiedName().equals(annotation.getQualifiedName())) {
                         return true;
                     }
                 }
@@ -268,40 +262,6 @@ public class Jaxrs implements IJavaFramework {
         } catch (Exception ignore) {
         }
         return false;
-    }
-
-    enum Control {
-
-        /**
-         * Javax.ws.rs.Path
-         */
-        Path("Path", "javax.ws.rs.Path");
-
-        private final String name;
-        private final String qualifiedName;
-
-        Control(String name, String qualifiedName) {
-            this.name = name;
-            this.qualifiedName = qualifiedName;
-        }
-
-        @Nullable
-        public static Control getPathByQualifiedName(String qualifiedName) {
-            for (Control annotation : Control.values()) {
-                if (annotation.getQualifiedName().equals(qualifiedName)) {
-                    return annotation;
-                }
-            }
-            return null;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getQualifiedName() {
-            return qualifiedName;
-        }
     }
 
     private static class PsiClassBean {

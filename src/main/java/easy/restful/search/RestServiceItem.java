@@ -15,8 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.psi.KtClass;
-import org.jetbrains.kotlin.psi.KtNamedFunction;
 
 import javax.swing.*;
 import java.util.Objects;
@@ -75,11 +73,6 @@ public class RestServiceItem implements NavigationItem {
                         location += "#" + methodComment;
                     }
                     location = "Java: (" + location + ")";
-                } else if (psiElement instanceof KtNamedFunction) {
-                    KtNamedFunction function = (KtNamedFunction) psiElement;
-                    location = ((KtClass) function.getParent().getParent()).getName();
-                    location += "#" + function.getName();
-                    location = "Kotlin: (" + location + ")";
                 }
                 if (psiElement != null) {
                     location += " in " + psiElement.getResolveScope().getDisplayName();

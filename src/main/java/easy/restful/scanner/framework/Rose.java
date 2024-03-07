@@ -6,11 +6,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import easy.enums.RestfulSearchAnnotationTypeEnum;
 import easy.restful.annotation.RoseHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
 import easy.restful.scanner.IJavaFramework;
-import easy.restful.scanner.KotlinUtil;
 import easy.util.RestUtil;
 import easy.util.SystemUtil;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +33,13 @@ public class Rose implements IJavaFramework {
     public boolean isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
         try {
             JavaAnnotationIndex instance = JavaAnnotationIndex.getInstance();
-            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(Control.Path.getName(), project, module.getModuleScope()));
+            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getName(), project, module.getModuleScope()));
             if (!annotations.isEmpty()) {
                 for (PsiAnnotation annotation : annotations) {
                     if (annotation == null) {
                         continue;
                     }
-                    if (Control.Path.getQualifiedName().equals(annotation.getQualifiedName())) {
+                    if (RestfulSearchAnnotationTypeEnum.ROSE_PATH.getQualifiedName().equals(annotation.getQualifiedName())) {
                         return true;
                     }
                 }
@@ -59,7 +59,6 @@ public class Rose implements IJavaFramework {
         for (PsiClass controllerClass : controllers) {
             moduleList.addAll(getService(controllerClass));
         }
-        moduleList.addAll(KotlinUtil.getKotlinRequests(project, module, Control.values()));
         return moduleList;
     }
 
@@ -97,7 +96,7 @@ public class Rose implements IJavaFramework {
         if (psiClass == null) {
             return false;
         }
-        return psiClass.hasAnnotation(Control.Path.getQualifiedName());
+        return psiClass.hasAnnotation(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getQualifiedName());
     }
 
     /**
@@ -111,11 +110,7 @@ public class Rose implements IJavaFramework {
     private List<PsiClass> getAllControllerClass(@NotNull Project project, @NotNull Module module) {
         List<PsiClass> allControllerClass = new ArrayList<>();
         GlobalSearchScope moduleScope = SystemUtil.getModuleScope(module);
-        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
-                Control.Path.getName(),
-                project,
-                moduleScope
-        );
+        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getName(), project, moduleScope);
         for (PsiAnnotation psiAnnotation : pathList) {
             PsiModifierList psiModifierList = (PsiModifierList) psiAnnotation.getParent();
             PsiElement psiElement = psiModifierList.getParent();
@@ -230,30 +225,5 @@ public class Rose implements IJavaFramework {
         }
         return requests;
     }
-
-    enum Control implements KotlinUtil.Qualified {
-
-        /**
-         * <p>@Path</p>
-         */
-        Path("Path", "net.paoding.rose.web.annotation.Path");
-
-        private final String name;
-        private final String qualifiedName;
-
-        Control(String name, String qualifiedName) {
-            this.name = name;
-            this.qualifiedName = qualifiedName;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getQualifiedName() {
-            return qualifiedName;
-        }
-    }
+    
 }

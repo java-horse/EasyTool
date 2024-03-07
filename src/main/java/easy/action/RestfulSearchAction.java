@@ -88,7 +88,7 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
     }
 
     protected static class GotoRequestMappingFilter extends ChooseByNameFilter<HttpMethod> {
-        GotoRequestMappingFilter(final ChooseByNamePopup popup, RequestFilteringGotoByModel model, final Project project) {
+        GotoRequestMappingFilter(ChooseByNamePopup popup, RequestFilteringGotoByModel model, Project project) {
             super(popup, model, RestfulSearchConfiguration.getInstance(project), project);
         }
 
