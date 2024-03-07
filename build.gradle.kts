@@ -1,3 +1,4 @@
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.21"
@@ -24,7 +25,7 @@ dependencies {
 intellij {
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java", "org.jetbrains.kotlin"))
+    plugins.set(listOf("com.intellij.java"))
 }
 
 tasks {
@@ -32,9 +33,6 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
         options.encoding = "UTF-8"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {

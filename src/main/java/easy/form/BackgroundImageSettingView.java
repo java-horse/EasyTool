@@ -62,6 +62,8 @@ public class BackgroundImageSettingView implements Configurable {
             timeUnitComboBox.setEnabled(changeSwitchEnableCheckBox.isSelected());
             changeScopeComboBox.setEnabled(changeSwitchEnableCheckBox.isSelected());
         });
+        // 设置轮播模式（最大值，最小值，步长等）
+        intervalSpinner.setModel(new SpinnerNumberModel(0, 0, 1000, 5));
         // 设置文件选择监听
         FileChooserDescriptor singleFolderDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         imageFolderTextField.addBrowseFolderListener(new TextBrowseFolderListener(singleFolderDescriptor) {

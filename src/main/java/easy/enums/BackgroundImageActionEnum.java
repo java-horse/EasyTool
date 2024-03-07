@@ -1,14 +1,14 @@
 package easy.enums;
 
-import com.intellij.icons.AllIcons;
+import easy.icons.EasyIcons;
 
 import javax.swing.*;
 
 public enum BackgroundImageActionEnum {
 
-    START("Start", "Random Background Image", AllIcons.Actions.Execute),
-    STOP("Stop", "Stop Random Background Image", AllIcons.Actions.Restart),
-    RESTART("Restart", "Restart Random Background Image", AllIcons.Actions.Suspend);
+    START("Start", "Random Background Image", EasyIcons.ICON.GREEN),
+    STOP("Stop", "Stop Random Background Image", EasyIcons.ICON.RED),
+    RESTART("Restart", "Restart Random Background Image", EasyIcons.ICON.YELLOW);
 
     BackgroundImageActionEnum(String title, String desc, Icon icon) {
         this.title = title;

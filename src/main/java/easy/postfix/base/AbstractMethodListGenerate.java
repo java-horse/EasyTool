@@ -7,8 +7,8 @@ import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
 import easy.postfix.util.PsiTypeUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,8 +29,7 @@ public abstract class AbstractMethodListGenerate implements GenerateBase {
         }
         PsiType varType = baseVar.getVarType();
         PsiClass psiClass = PsiTypesUtil.getPsiClass(varType);
-        if (varType instanceof PsiClassType) {
-            PsiClassType referenceType = (PsiClassType) varType;
+        if (varType instanceof PsiClassType referenceType) {
             PsiTypeUtil.resolvePsiClassParameter(referenceType);
         }
         return getGenerateMethodListByClass(psiClass);
@@ -38,6 +37,7 @@ public abstract class AbstractMethodListGenerate implements GenerateBase {
 
     /**
      * 根据 baseVar 对应的具体的 psiClass 获取其需要的方法列表
+     *
      * @param psiClass psiClass
      * @return 其需要的方法列表
      */
