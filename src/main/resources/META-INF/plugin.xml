@@ -279,6 +279,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>org.intellij.plugins.markdown</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -333,6 +334,13 @@
 
         <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
                                         implementationClass="easy.provider.CronMarkerProvider"/>
+
+        <completion.contributor language="any"
+                                implementationClass="easy.git.emoji.prompt.contributor.CommentEmojiCompletionContributor"/>
+        <completion.contributor language="TEXT" order="first, before commitCompletion"
+                                implementationClass="easy.git.emoji.prompt.contributor.PlainTextCompletionContributor"/>
+        <completion.contributor language="Markdown"
+                                implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
     </extensions>
 
     <actions>

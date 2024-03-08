@@ -25,7 +25,7 @@ dependencies {
 intellij {
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java"))
+    plugins.set(listOf("com.intellij.java","markdown"))
 }
 
 tasks {

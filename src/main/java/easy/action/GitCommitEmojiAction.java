@@ -27,23 +27,16 @@ import com.intellij.ui.scale.JBUIScale;
 import com.intellij.ui.speedSearch.SpeedSearchUtil;
 import com.intellij.util.ObjectUtils;
 import com.intellij.vcs.commit.message.CommitMessageInspectionProfile;
-import easy.base.Constants;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
 import easy.git.emoji.GitEmojiData;
+import easy.git.emoji.GitEmojiHelper;
 import easy.git.emoji.Gitmojis;
-import easy.util.JsonUtil;
-import easy.util.LanguageUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,7 +45,7 @@ public class GitCommitEmojiAction extends AnAction {
     private static final Logger log = Logger.getInstance(GitCommitEmojiAction.class);
 
     private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
-    private final List<GitEmojiData> gitmojis = new ArrayList<>();
+    private final GitEmojiHelper gitEmojiResourceLoadService = new GitEmojiHelper();
 
     @Override
     public boolean isDumbAware() {
@@ -69,7 +62,7 @@ public class GitCommitEmojiAction extends AnAction {
         if (Objects.isNull(commitMessage)) {
             return;
         }
-        loadLocalGitEmoji(gitEmojiConfig.getLanguageRealValue());
+        List<GitEmojiData> gitmojis = gitEmojiResourceLoadService.loadEmoji(gitEmojiConfig.getLanguageRealValue());
         JBPopup popup = createPopup(project, commitMessage, gitmojis);
         popup.showInBestPositionFor(actionEvent.getDataContext());
     }
@@ -100,7 +93,7 @@ public class GitCommitEmojiAction extends AnAction {
                 .setItemSelectedCallback(item -> {
                     selectedMessage[0] = item;
                     if (item != null) {
-                        preview(project, commitMessage, item, currentCommitMessage, currentOffset, previewCommandGroup);
+                        preview(project, commitMessage, item, currentCommitMessage, currentOffset, previewCommandGroup, gitmojis);
                     }
                 })
                 .setItemChosenCallback(chosenItem -> chosenMessage[0] = chosenItem)
@@ -165,11 +158,12 @@ public class GitCommitEmojiAction extends AnAction {
      * @param currentCommitMessage
      * @param currentOffset
      * @param groupId
+     * @param gitmojis
      * @return void
      * @author mabin
      * @date 2024/1/15 10:26
      */
-    private void preview(Project project, CommitMessage commitMessage, GitEmojiData gitmoji, String currentCommitMessage, int currentOffset, Object groupId) {
+    private void preview(Project project, CommitMessage commitMessage, GitEmojiData gitmoji, String currentCommitMessage, int currentOffset, Object groupId, List<GitEmojiData> gitmojis) {
         CommandProcessor.getInstance().executeCommand(project, () -> {
             boolean useUnicode = gitEmojiConfig.getUseUnicodeCheckBox();
             boolean insertInCursorPosition = gitEmojiConfig.getInsertInCursorPositionCheckBox();
@@ -224,48 +218,6 @@ public class GitCommitEmojiAction extends AnAction {
         FileEditor fileEditor = (editor != null) ? TextEditorProvider.getInstance().getTextEditor(editor) : null;
         if (fileEditor != null && manager.isUndoAvailable(fileEditor)) {
             manager.undo(fileEditor);
-        }
-    }
-
-    /**
-     * 加载本地emoji源信息: 语种相同则不再重新加载
-     *
-     * @param language
-     * @return void
-     * @author mabin
-     * @date 2024/1/15 9:57
-     */
-    private void loadLocalGitEmoji(String language) {
-        if (CollectionUtils.isNotEmpty(gitmojis)) {
-            GitEmojiData emojiData = gitmojis.get(Constants.NUM.ZERO);
-            boolean containsChinese = LanguageUtil.isContainsChinese(emojiData.getDescription());
-            if (StringUtils.equals(language, "en") && !containsChinese) {
-                return;
-            } else if (StringUtils.equals(language, "zh-CN") && containsChinese) {
-                return;
-            }
-        }
-        try (InputStream inputStream = getClass().getResourceAsStream("/emoji/json/" + language + ".json")) {
-            if (inputStream != null) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder content = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    content.append(line);
-                }
-                Gitmojis gitmojisJson = JsonUtil.fromJson(content.toString(), Gitmojis.class);
-                if (Objects.isNull(gitmojisJson)) {
-                    return;
-                }
-                gitmojis.clear();
-                GitEmojiData emojiData;
-                for (Gitmojis.Gitmoji gitmoji : gitmojisJson.getGitmojis()) {
-                    emojiData = new GitEmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription());
-                    gitmojis.add(emojiData);
-                }
-            }
-        } catch (IOException e) {
-            log.error("Loading emoji resource exception", e);
         }
     }
 
