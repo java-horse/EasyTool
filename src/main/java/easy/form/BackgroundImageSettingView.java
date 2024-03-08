@@ -197,7 +197,7 @@ public class BackgroundImageSettingView implements Configurable {
      * @date 2024/03/07 17:34
      */
     private void checkBackgroundImageProperties() throws ConfigurationException {
-        // 校验图片文件夹是否存在且文件夹下存在图片
+        // 校验图片文件夹是否存在且文件夹下存在图片(数量>=2)
         String imageFolder = imageFolderTextField.getText();
         if (!FileUtil.exist(imageFolder)) {
             throw new ConfigurationException(String.format("文件夹：%s 资源不存在", imageFolder));
@@ -206,17 +206,20 @@ public class BackgroundImageSettingView implements Configurable {
         if (ArrayUtil.isEmpty(files)) {
             throw new ConfigurationException(String.format("文件夹：%s 中不存在符合条件的图片资源", imageFolder));
         }
+        if (files.length < 2) {
+            throw new ConfigurationException(String.format("文件夹：%s 中需至少存在2张图片资源", imageFolder));
+        }
         // 校验相关数字是否合法
         int intervalValue = ((SpinnerNumberModel) intervalSpinner.getModel()).getNumber().intValue();
-        if (intervalValue < Constants.NUM.FIVE || intervalValue > 1000) {
-            throw new ConfigurationException("间隔时间不符合表达式：5 <= x <= 1000");
+        if (intervalValue < Constants.NUM.FIVE || intervalValue > Constants.NUM.ONE_THOUSAND) {
+            throw new ConfigurationException(String.format("图片轮播间隔不符合表达式：%d <= x <= %d", Constants.NUM.FIVE, Constants.NUM.ONE_THOUSAND));
         }
         int imageCountValue = ((SpinnerNumberModel) imageCountSpinner.getModel()).getNumber().intValue();
-        if (imageCountValue < Constants.NUM.TWO || imageCountValue > 100) {
-            throw new ConfigurationException("图片数量限制不符合表达式：2 <= x <= 100");
+        if (imageCountValue < Constants.NUM.TWO || imageCountValue > Constants.NUM.HUNDRED) {
+            throw new ConfigurationException(String.format("图片数量限制不符合表达式：%d <= x <= %d", Constants.NUM.TWO, Constants.NUM.HUNDRED));
         }
-
     }
+
 
     /**
      * 获取变更范围组合
