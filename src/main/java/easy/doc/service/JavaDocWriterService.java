@@ -27,7 +27,7 @@ public class JavaDocWriterService {
                             return;
                         }
                         // 写入文档注释
-                        if (StringUtils.startsWith(commentStr, "//") || (StringUtils.startsWith(commentStr, "/*") && StringUtils.endsWith(commentStr, "*/"))) {
+                        if (StringUtils.startsWith(commentStr, "//") || (!StringUtils.startsWith(commentStr, "/**") && StringUtils.startsWith(commentStr, "/*") && StringUtils.endsWith(commentStr, "*/"))) {
                             PsiComment newComment = PsiElementFactory.getInstance(project).createCommentFromText(commentStr, psiElement);
                             psiElement.getParent().addBefore(newComment, psiElement);
                         } else if (psiElement instanceof PsiJavaDocumentedElement psiJavaDocumentedElement) {
