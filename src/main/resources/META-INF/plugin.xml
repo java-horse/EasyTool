@@ -49,8 +49,9 @@
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
         <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
-        <li>支持 Git Commit 时添加 Emoji 标识</li>
+        <li>支持 Git Commit 时添加 Emoji 标识, 以及在 Git Commit Message 消息输入框中输入英文冒号<em>:</em> + Emoji英文字符 自动提示功能</li>
         <li>支持一键生成 JavaDoc 注释</li>
+        <li>支持Markdown、Java、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -74,9 +75,11 @@
       <ul>
         <li>Support field properties to add a single line of ordinary text comment function</li>
         <li>Optimized to remove Kotlin resource dependencies</li>
+        <li>Support Git Commit Message message text input English colon Emoji English character automatic prompt</li>
         <li>-------------------------------</li>
         <li>支持字段属性新增单行普通文本注释功能</li>
         <li>优化移除kotlin资源依赖</li>
+        <li>支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符 自动提示（支持Markdown、Java、Txt等文件）</li>
       </ul>
       <h3>v2.0.4</h3>
       <ul>
@@ -335,11 +338,11 @@
         <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
                                         implementationClass="easy.provider.CronMarkerProvider"/>
 
-        <completion.contributor language="any"
-                                implementationClass="easy.git.emoji.prompt.contributor.CommentEmojiCompletionContributor"/>
+        <completion.contributor language="JAVA" order="last"
+                                implementationClass="easy.git.emoji.prompt.contributor.JavaEmojiCompletionContributor"/>
         <completion.contributor language="TEXT" order="first, before commitCompletion"
                                 implementationClass="easy.git.emoji.prompt.contributor.PlainTextCompletionContributor"/>
-        <completion.contributor language="Markdown"
+        <completion.contributor language="Markdown" order="first"
                                 implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
     </extensions>
 
