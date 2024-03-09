@@ -1,8 +1,10 @@
 package easy.doc.generator.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -17,6 +19,8 @@ import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.service.TranslateService;
+import easy.util.EasyCommonUtil;
+import easy.util.NotificationUtil;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +66,10 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             endList.add(buildReturn(elements, returns));
             // 异常
             endList.addAll(buildException(elements, exceptionTypeList, psiMethod.getProject()));
+            // 作者
+            endList.add(buildAuthor(elements));
+            // 日期
+            endList.add(buildDate(elements));
             List<String> commentItems = Lists.newLinkedList();
             for (PsiElement element : elements) {
                 commentItems.add(element.getText());
@@ -190,6 +198,74 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             }
         }
         return null;
+    }
+
+    /**
+     * 构建作者
+     *
+     * @param elements 元素
+     * @return {@link String}
+     */
+    private String buildAuthor(List<PsiElement> elements) {
+        boolean isInsert = true;
+        for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
+            PsiElement element = iterator.next();
+            if (!"PsiDocTag:@author".equalsIgnoreCase(element.toString())) {
+                continue;
+            }
+            PsiDocTagValue value = ((PsiDocTag) element).getValueElement();
+            if (value == null || StringUtils.isBlank(value.getText())) {
+                iterator.remove();
+            } else {
+                isInsert = false;
+            }
+        }
+        if (isInsert) {
+            return "@author " + javaDocConfig.getAuthor() + StringUtils.LF;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 构建日期
+     *
+     * @param elements 元素
+     * @return {@link String}
+     */
+    private String buildDate(List<PsiElement> elements) {
+        boolean isInsert = true;
+        for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
+            PsiElement element = iterator.next();
+            if (!"PsiDocTag:@date".equalsIgnoreCase(element.toString())) {
+                continue;
+            }
+            PsiDocTagValue value = ((PsiDocTag) element).getValueElement();
+            if (value == null || StringUtils.isBlank(value.getText())) {
+                iterator.remove();
+            } else {
+                isInsert = false;
+            }
+        }
+        if (isInsert) {
+            return "@date " + genFormatDate() + StringUtils.LF;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 生成指定格式日期
+     *
+     * @return
+     */
+    private String genFormatDate() {
+        try {
+            return DateUtil.format(new Date(), javaDocConfig.getDateFormat());
+        } catch (Exception e) {
+            NotificationUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
+            return DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
+        }
     }
 
     /**

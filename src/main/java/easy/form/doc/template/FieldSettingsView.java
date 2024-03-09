@@ -7,6 +7,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
+import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
 
 import javax.swing.*;
@@ -34,8 +35,9 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
 
     static {
         innerMap = Maps.newLinkedHashMap();
-        innerMap.put("$DOC$", "注释信息");
-        innerMap.put("$SEE$", "字段类型");
+        innerMap.put(JavaDocInnerVariableEnum.DOC.name, JavaDocInnerVariableEnum.DOC.value);
+        innerMap.put(JavaDocInnerVariableEnum.SEE.name, JavaDocInnerVariableEnum.SEE.value);
+        innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
     }
 
     private void createUIComponents() {
@@ -72,9 +74,9 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
         toolbarDecorator.setAddAction(button -> {
             CustomTemplateAddView customTemplateAddView = new CustomTemplateAddView();
             if (customTemplateAddView.showAndGet() && Objects.nonNull(config)) {
-                    Entry<String, CustomValue> entry = customTemplateAddView.getEntry();
-                    config.getJavaDocFieldTemplateConfig().getCustomMap().put(entry.getKey(), entry.getValue());
-                    refreshCustomTable();
+                Entry<String, CustomValue> entry = customTemplateAddView.getEntry();
+                config.getJavaDocFieldTemplateConfig().getCustomMap().put(entry.getKey(), entry.getValue());
+                refreshCustomTable();
             }
         });
         toolbarDecorator.setRemoveAction(anActionButton -> {

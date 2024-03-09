@@ -23,7 +23,7 @@ public class DocVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
             PsiDocComment docComment = ((PsiJavaDocumentedElement) element).getDocComment();
             if (docComment != null) {
                 PsiElement[] descriptionElements = docComment.getDescriptionElements();
-                List<String> descTextList = Arrays.stream(descriptionElements).map(PsiElement::getText).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                List<String> descTextList = Arrays.stream(descriptionElements).map(PsiElement::getText).filter(StringUtils::isNotBlank).map(StringUtils::trim).collect(Collectors.toList());
                 String result = Joiner.on(StringUtils.EMPTY).skipNulls().join(descTextList);
                 return StringUtils.isNotBlank(result) ? result : translateService.translate(psiNamedElement.getName());
             }

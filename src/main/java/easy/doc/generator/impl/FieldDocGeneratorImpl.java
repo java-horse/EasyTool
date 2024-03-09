@@ -3,7 +3,6 @@ package easy.doc.generator.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
@@ -78,7 +77,7 @@ public class FieldDocGeneratorImpl implements DocGenerator {
                 commentItems.add(1, buildDesc(elements, desc));
                 return Joiner.on(StringUtils.EMPTY).skipNulls().join(commentItems);
             }
-            return String.format("/**%s* %s%s */", "\n", translateService.translate(name), "\n");
+            return String.format("/**%s* %s%s */", StringUtils.LF, translateService.translate(name), StringUtils.LF);
         } else {
             // 只能兼容字段上方紧跟注释的情况（中间有空行时无效）
             if (Arrays.stream(StringUtils.split(psiField.getText(), StringUtils.LF)).map(StringUtils::trim).anyMatch(item -> StringUtils.startsWith(item, "/*") && StringUtils.endsWith(item, "*/"))) {

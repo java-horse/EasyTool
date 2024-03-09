@@ -7,6 +7,7 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
+import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
 
 import javax.swing.*;
@@ -33,11 +34,13 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
 
     static {
         innerMap = Maps.newLinkedHashMap();
-        innerMap.put("$DOC$", "注释信息");
-        innerMap.put("$PARAMS$", "遍历传入参数并添加注释");
-        innerMap.put("$RETURN$", "返回值类型");
-        innerMap.put("$THROWS$", "异常类型并注释");
-        innerMap.put("$SEE$", "引用传入参数类型和返回值类型");
+        innerMap.put(JavaDocInnerVariableEnum.DOC.name, JavaDocInnerVariableEnum.DOC.value);
+        innerMap.put(JavaDocInnerVariableEnum.PARAMS.name, JavaDocInnerVariableEnum.PARAMS.value);
+        innerMap.put(JavaDocInnerVariableEnum.RETURN.name, JavaDocInnerVariableEnum.RETURN.value);
+        innerMap.put(JavaDocInnerVariableEnum.AUTHOR.name, JavaDocInnerVariableEnum.AUTHOR.value);
+        innerMap.put(JavaDocInnerVariableEnum.DATE.name, JavaDocInnerVariableEnum.DATE.value);
+        innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
+        innerMap.put(JavaDocInnerVariableEnum.THROWS.name, JavaDocInnerVariableEnum.THROWS.value);
     }
 
     private void createUIComponents() {

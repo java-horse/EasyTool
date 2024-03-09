@@ -55,6 +55,9 @@ public class JavaDocMethodSettingsConfigurable extends AbstractJavaDocTemplateCo
             if (!temp.startsWith("/**") || !temp.endsWith("*/")) {
                 throw new ConfigurationException("模板格式不正确，正确的JavaDoc应该以\"/**\"开头，以\"*/\"结束");
             }
+            if (StringUtils.containsAny(temp, "@params", "@param", "@return")) {
+                throw new ConfigurationException("模板格式不正确，无需额外配置@params、@param、@return等标识");
+            }
         }
     }
 
