@@ -2,6 +2,7 @@ package easy.restful.search;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RestServiceItem implements NavigationItem {
 
@@ -98,25 +100,29 @@ public class RestServiceItem implements NavigationItem {
      * @date 2024/03/06 17:59
      */
     private String getMethodComment(PsiMethod psiMethod) {
-        PsiAnnotation psiAnnotation = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
-        if (Objects.nonNull(psiAnnotation)) {
-            PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
-            if (Objects.nonNull(psiAnnotationAttributeValue)) {
-                return StringUtils.replace(psiAnnotationAttributeValue.getText(), "\"", StringUtils.EMPTY);
-            }
-        }
-        // 获取JavaDoc中第一行非空注释元素即可
-        PsiDocComment docComment = psiMethod.getDocComment();
-        if (Objects.nonNull(docComment)) {
-            PsiElement[] descriptionElements = docComment.getDescriptionElements();
-            for (PsiElement descriptionElement : descriptionElements) {
-                String text = descriptionElement.getText().trim();
-                if (StringUtils.isNotEmpty(text)) {
-                    return text;
+        AtomicReference<String> methodComment = new AtomicReference<>(StringUtils.EMPTY);
+        ApplicationManager.getApplication().invokeLater(() -> {
+            // 尝试获取Swagger的@ApiOperation注解中的value属性值
+            PsiAnnotation psiAnnotation = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
+            if (Objects.nonNull(psiAnnotation)) {
+                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+                if (Objects.nonNull(psiAnnotationAttributeValue)) {
+                    methodComment.set(StringUtils.replace(psiAnnotationAttributeValue.getText(), "\"", StringUtils.EMPTY));
                 }
             }
-        }
-        return StringUtils.EMPTY;
+            // 获取JavaDoc中第一行非空注释元素即可
+            PsiDocComment docComment = psiMethod.getDocComment();
+            if (Objects.nonNull(docComment)) {
+                PsiElement[] descriptionElements = docComment.getDescriptionElements();
+                for (PsiElement descriptionElement : descriptionElements) {
+                    String text = descriptionElement.getText().trim();
+                    if (StringUtils.isNotEmpty(text)) {
+                        methodComment.set(text);
+                    }
+                }
+            }
+        });
+        return methodComment.get();
     }
 
     @Override
