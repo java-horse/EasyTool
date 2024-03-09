@@ -26,13 +26,13 @@ public class JavaDocConfigComponent implements PersistentStateComponent<JavaDocC
             javaDocConfig.setAuthor(Constants.JAVA_DOC.DEFAULT_AUTHOR);
             javaDocConfig.setDateFormat(Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
             javaDocConfig.setMethodReturnType(JavaDocMethodReturnTypeEnum.LINK.getType());
-            javaDocConfig.setPropertyCommentType(JavaDocPropertyCommentTypeEnum.SINGLE.getType());
+            javaDocConfig.setPropertyCommentType(JavaDocPropertyCommentTypeEnum.ORDINARY.getType());
             javaDocConfig.setPropertyCommentModel(JavaDocPropertyCommentModelEnum.JAVA_DOC.getModel());
         } else {
             javaDocConfig.setAuthor(StringUtils.isBlank(javaDocConfig.getAuthor()) ? Constants.JAVA_DOC.DEFAULT_AUTHOR : javaDocConfig.getAuthor());
             javaDocConfig.setDateFormat(StringUtils.isBlank(javaDocConfig.getDateFormat()) ? Constants.JAVA_DOC.DEFAULT_DATE_FORMAT : javaDocConfig.getDateFormat());
             javaDocConfig.setMethodReturnType(StringUtils.isBlank(javaDocConfig.getMethodReturnType()) ? JavaDocMethodReturnTypeEnum.LINK.getType() : javaDocConfig.getMethodReturnType());
-            javaDocConfig.setPropertyCommentType(StringUtils.isBlank(javaDocConfig.getPropertyCommentType()) ? JavaDocPropertyCommentTypeEnum.SINGLE.getType() : javaDocConfig.getPropertyCommentType());
+            javaDocConfig.setPropertyCommentType(StringUtils.isBlank(javaDocConfig.getPropertyCommentType()) ? JavaDocPropertyCommentTypeEnum.ORDINARY.getType() : javaDocConfig.getPropertyCommentType());
             javaDocConfig.setPropertyCommentModel(StringUtils.isBlank(javaDocConfig.getPropertyCommentModel()) ? JavaDocPropertyCommentModelEnum.JAVA_DOC.getModel() : javaDocConfig.getPropertyCommentModel());
         }
         return javaDocConfig;
