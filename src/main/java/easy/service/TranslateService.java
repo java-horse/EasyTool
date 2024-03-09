@@ -156,12 +156,16 @@ public class TranslateService {
             }
             return builder.toString();
         }
-        // 英译中: 尝试分割分词->单词映射处理->翻译拼接处理
+        // 英译中: 全量单词映射处理->尝试分割分词->再次单词映射处理->翻译拼接处理
         // 存在自定义单词: 单个单词翻译(不准确)
         // 不存在自定义单词: 整句翻译(更准确)
+        SortedMap<String, String> wordMap = translateConfig.getGlobalWordMap();
+        String originRes = ObjectUtils.firstNonNull(wordMap.get(source), wordMap.get(source.toLowerCase()), wordMap.get(source.toUpperCase()));
+        if (StringUtils.isNotBlank(originRes)) {
+            return originRes;
+        }
         String analysisWords = analysisSource(source);
         List<String> allWordList = new ArrayList<>(Arrays.asList(StringUtils.split(analysisWords, StringUtils.SPACE)));
-        SortedMap<String, String> wordMap = translateConfig.getGlobalWordMap();
         if (CollectionUtils.containsAny(wordMap.keySet(), allWordList)) {
             StringBuilder customBuilder = new StringBuilder();
             for (String word : allWordList) {
