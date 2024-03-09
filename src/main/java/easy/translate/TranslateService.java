@@ -1,22 +1,17 @@
-package easy.service;
+package easy.translate;
 
 import cn.hutool.core.date.DateUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationAction;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
-import easy.service.model.TongYiModelTranslate;
-import easy.service.translate.*;
+import easy.translate.model.TongYiModelTranslate;
+import easy.translate.translate.*;
 import easy.util.EasyCommonUtil;
 import easy.util.LanguageUtil;
 import easy.util.NotificationUtil;
@@ -24,7 +19,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Matcher;

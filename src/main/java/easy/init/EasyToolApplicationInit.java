@@ -16,7 +16,7 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.listener.AppActiveListener;
 import easy.listener.TabHighlighterFileEditorListener;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

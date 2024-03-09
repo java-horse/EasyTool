@@ -15,7 +15,7 @@ import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocPropertyCommentModelEnum;
 import easy.enums.JavaDocPropertyCommentTypeEnum;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.StringUtils;
 

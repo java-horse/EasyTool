@@ -1,11 +1,11 @@
-package easy.service.model;
+package easy.translate.model;
 
 import cn.hutool.http.*;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.enums.OpenModelTranslateEnum;
-import easy.service.AbstractTranslate;
+import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 

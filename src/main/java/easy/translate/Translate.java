@@ -1,4 +1,4 @@
-package easy.service;
+package easy.translate;
 
 import easy.config.translate.TranslateConfig;
 

@@ -1,7 +1,6 @@
-package easy.service;
+package easy.translate;
 
 import easy.config.translate.TranslateConfig;
-import easy.service.Translate;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;

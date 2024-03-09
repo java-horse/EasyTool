@@ -8,7 +8,7 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.impl.source.PsiMethodImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

@@ -6,7 +6,7 @@ import com.intellij.psi.PsiMethod;
 import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.enums.JavaDocMethodReturnTypeEnum;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
 public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {

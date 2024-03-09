@@ -1,27 +1,28 @@
-package easy.service.translate;
+package easy.translate.translate;
 
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
-import easy.service.AbstractTranslate;
+import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
- * 谷歌翻译服务
+ * 小牛翻译服务
  *
  * @project: EasyChar
  * @package: easy.service.impl
  * @author: mabin
- * @date: 2023/10/08 09:44:21
+ * @date: 2023/10/09 09:49:31
  */
-public class GoogleTranslate extends AbstractTranslate {
+public class NiuTranslate extends AbstractTranslate {
 
-    private static final Logger log = Logger.getInstance(GoogleTranslate.class);
+    private static final Logger log = Logger.getInstance(NiuTranslate.class);
 
     /**
      * 中译英
@@ -57,16 +58,15 @@ public class GoogleTranslate extends AbstractTranslate {
      * @param target
      * @return java.lang.String
      * @author mabin
-     * @date 2023/10/8 9:46
+     * @date 2023/10/9 15:13
      */
     private String translate(String text, String source, String target) {
         try {
-            String res = HttpUtil.doGet(String.format(TranslateEnum.GOOGLE.getUrl(), URLEncoder.encode(text, StandardCharsets.UTF_8.name()), source, target, getTranslateConfig().getGoogleSecretKey()));
+            String res = HttpUtil.doGet(String.format(TranslateEnum.NIU.getUrl(), source, target, getTranslateConfig().getNiuApiKey(), URLEncoder.encode(text, StandardCharsets.UTF_8.name())));
             JsonObject resObject = JsonUtil.fromJson(res, JsonObject.class);
-            return resObject.get("data").getAsJsonObject().get("translations").getAsJsonArray().get(0).getAsJsonObject()
-                    .get("translatedText").getAsString();
+            return Objects.requireNonNull(resObject).get("tgt_text").getAsString();
         } catch (Exception e) {
-            log.error(TranslateEnum.GOOGLE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
+            log.error(TranslateEnum.NIU.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;
     }

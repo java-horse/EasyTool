@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaDocumentedElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.javadoc.PsiDocComment;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;

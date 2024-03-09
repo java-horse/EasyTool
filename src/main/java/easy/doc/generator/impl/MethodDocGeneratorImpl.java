@@ -18,7 +18,7 @@ import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
 import easy.util.NotificationUtil;
 import easy.util.VcsUtil;

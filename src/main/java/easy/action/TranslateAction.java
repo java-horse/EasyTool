@@ -21,7 +21,7 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
 import easy.icons.EasyIcons;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.LanguageUtil;
 import org.apache.commons.lang3.StringUtils;

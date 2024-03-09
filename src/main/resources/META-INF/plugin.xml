@@ -300,7 +300,7 @@
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
 
-        <applicationService serviceImplementation="easy.service.TranslateService"/>
+        <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>

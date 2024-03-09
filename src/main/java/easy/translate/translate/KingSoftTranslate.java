@@ -1,4 +1,4 @@
-package easy.service.translate;
+package easy.translate.translate;
 
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
@@ -6,7 +6,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
-import easy.service.AbstractTranslate;
+import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 
