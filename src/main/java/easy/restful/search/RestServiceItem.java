@@ -98,25 +98,30 @@ public class RestServiceItem implements NavigationItem {
      * @date 2024/03/06 17:59
      */
     private String getMethodComment(PsiMethod psiMethod) {
-        PsiAnnotation psiAnnotation = psiMethod.getAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
-        if (Objects.nonNull(psiAnnotation)) {
-            PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
-            if (Objects.nonNull(psiAnnotationAttributeValue)) {
-                return StringUtils.replace(psiAnnotationAttributeValue.getText(), "\"", StringUtils.EMPTY);
-            }
-        }
-        // 获取JavaDoc中第一行非空注释元素即可
-        PsiDocComment docComment = psiMethod.getDocComment();
-        if (Objects.nonNull(docComment)) {
-            PsiElement[] descriptionElements = docComment.getDescriptionElements();
-            for (PsiElement descriptionElement : descriptionElements) {
-                String text = descriptionElement.getText().trim();
-                if (StringUtils.isNotEmpty(text)) {
-                    return text;
+        try {
+            PsiAnnotation psiAnnotation = psiMethod.getAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
+            if (Objects.nonNull(psiAnnotation)) {
+                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+                if (Objects.nonNull(psiAnnotationAttributeValue)) {
+                    String valueText = psiAnnotationAttributeValue.getText();
+                    return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
+                            StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
                 }
             }
+            // 获取JavaDoc中第一行非空注释元素即可
+            PsiDocComment docComment = psiMethod.getDocComment();
+            if (Objects.nonNull(docComment)) {
+                for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
+                    String text = descriptionElement.getText().trim();
+                    if (StringUtils.isNotEmpty(text)) {
+                        return text;
+                    }
+                }
+            }
+            return StringUtils.EMPTY;
+        } catch (Exception e) {
+            return StringUtils.EMPTY;
         }
-        return StringUtils.EMPTY;
     }
 
     @Override

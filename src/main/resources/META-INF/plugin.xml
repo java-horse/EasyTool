@@ -15,6 +15,7 @@
         <li>Support for quick generation of serialVersionUID</li>
         <li>Support automatic copying of interface complete URL</li>
         <li>Support insert Emoji identifier when supporting Git commit</li>
+        <li>Support one-click generation of JavaDoc notes</li>
       </ul>
 	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
       <ul>
