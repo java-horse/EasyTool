@@ -69,8 +69,7 @@ public class JavaDocAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && StringUtils.isNotBlank(editor.getSelectionModel().getSelectedText()));
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
     }
 
     @Override
