@@ -1,6 +1,7 @@
 package easy.action;
 
 import cn.hutool.core.text.CharPool;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -62,6 +63,19 @@ public class JavaDocAction extends AnAction {
             }
         }
         return count;
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        Project project = e.getProject();
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
+                && StringUtils.isNotBlank(editor.getSelectionModel().getSelectedText()));
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return super.getActionUpdateThread();
     }
 
 }

@@ -435,6 +435,9 @@
         <group id="DynamicBackgroundImageActionGroups" class="easy.action.background.DynamicBackgroundImageActionGroup"
                text="BackgroundImage" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.PICTURE" popup="true" compact="true"/>
+        <!--插件检查更新-->
+        <action id="PluginForUpdateAction" class="easy.action.PluginForUpdateAction" text="ForUpdate"
+                description="EasyTool development assistance tools" icon="AllIcons.Ide.Notification.PluginUpdate"/>
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
@@ -461,6 +464,7 @@
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
+            <reference ref="PluginForUpdateAction"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -475,6 +479,7 @@
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
+            <reference ref="PluginForUpdateAction"/>
 
         </group>
 

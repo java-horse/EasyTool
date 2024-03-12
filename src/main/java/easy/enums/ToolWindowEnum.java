@@ -1,5 +1,6 @@
 package easy.enums;
 
+import com.intellij.icons.AllIcons;
 import easy.icons.EasyIcons;
 
 import javax.swing.*;
@@ -15,7 +16,8 @@ import javax.swing.*;
 public enum ToolWindowEnum {
     WECHAT_OFFICIAL("微信公众号", "微信公众号", EasyIcons.ICON.WECHAT_OFFICIAL),
     PLUGIN_SETTING("插件设置", "插件设置", EasyIcons.ICON.SETTING),
-    SEARCH_API("搜索API", "搜索API", EasyIcons.ICON.API);
+    SEARCH_API("搜索API", "搜索API", EasyIcons.ICON.API),
+    FOR_UPDATE("ForUpdate", "检查插件最新版本", AllIcons.Ide.Notification.PluginUpdate);
 
     ToolWindowEnum(String title, String desc, Icon icon) {
         this.title = title;
