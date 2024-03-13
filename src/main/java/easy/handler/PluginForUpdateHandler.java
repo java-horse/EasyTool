@@ -20,9 +20,9 @@ import java.util.Objects;
 /**
  * 检查插件更新处理
  *
+ * @author mabin
  * @project EasyTool
  * @package easy.handler
- * @author mabin
  * @date 2024/03/12 17:30
  */
 public class PluginForUpdateHandler {
@@ -44,7 +44,6 @@ public class PluginForUpdateHandler {
         if (StringUtils.isBlank(version)) {
             return;
         }
-        System.out.println("version1" + version);
         // 远程获取插件最新版本
         String response = HttpUtil.doGet("https://plugins.jetbrains.com/api/plugins/21589/updates?size=1");
         if (StringUtils.isBlank(response)) {
@@ -56,7 +55,7 @@ public class PluginForUpdateHandler {
             return;
         }
         // 发送插件最新版本通知
-        NotificationUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("😎 点击更新") {
+        NotificationUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("😎 立即更新") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
                 ShowSettingsUtil.getInstance().showSettingsDialog(project, "Plugins");

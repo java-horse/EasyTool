@@ -64,13 +64,8 @@ public class JavaDocVariableGeneratorService {
         List<String> keyList = Lists.newArrayList();
         List<String> valueList = Lists.newArrayList();
         for (Entry<String, String> entry : variableMap.entrySet()) {
+            keyList.add(entry.getKey());
             valueList.add(entry.getValue());
-            if (StringUtils.containsAny(entry.getKey(), JavaDocInnerVariableEnum.PARAMS.name,
-                    JavaDocInnerVariableEnum.RETURN.name, JavaDocInnerVariableEnum.THROWS.name)) {
-                keyList.add(StringUtils.isNotBlank(entry.getValue()) ? entry.getKey() : "* " + entry.getKey());
-            } else {
-                keyList.add(entry.getKey());
-            }
         }
         return StringUtils.replaceEach(template, keyList.toArray(new String[0]), valueList.toArray(new String[0]));
     }
