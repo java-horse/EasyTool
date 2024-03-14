@@ -28,6 +28,7 @@ public enum TranslateEnum {
     MICROSOFT("微软翻译(API)", "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&textType=plain&from=%s&to=%s", ""),
     MICROSOFT_FREE("微软翻译(Free)", "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=%s&to=%s", ""),
     KING_SOFT("金山翻译", "https://ifanyi.iciba.com/index.php?c=trans", ""),
+    YOUDAO_FREE("有道翻译(Free)", "https://m.youdao.com/translate", ""),
     THS_SOFT("同花顺翻译", "https://b2b-api.10jqka.com.cn/gateway/arsenal/machineTranslation/batch/get/result", ""),
     OPEN_BIG_MODEL("开源大模型", "", "");
 

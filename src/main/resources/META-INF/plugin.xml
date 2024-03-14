@@ -34,6 +34,7 @@
             <li>--<em>小牛翻译</em></li>
             <li>--<em>彩云翻译</em></li>
             <li>--<em>同花顺翻译</em></li>
+            <li>--<em>有道翻译(Free)</em></li>
             <li>--<em>微软翻译(API)</em></li>
             <li>--<em>微软翻译(Free)</em></li>
             <li>--<em>谷歌翻译(API)</em></li>
@@ -74,10 +75,12 @@
         <![CDATA[
       <h3>v2.0.5</h3>
       <ul>
+        <li>Add Youdao Translation Free Channel</li>
         <li>Support field properties to add a single line of ordinary text comment function</li>
         <li>Optimized to remove Kotlin resource dependencies</li>
         <li>Support Git Commit Message message text input English colon Emoji English character automatic prompt</li>
         <li>-------------------------------</li>
+        <li>新增有道翻译免费渠道</li>
         <li>支持字段属性新增单行普通文本注释功能</li>
         <li>优化移除kotlin资源依赖</li>
         <li>支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符 自动提示（支持Markdown、Java、Txt等文件）</li>

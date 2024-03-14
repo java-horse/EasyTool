@@ -79,9 +79,10 @@ public class TranslateService {
                     .put(TranslateEnum.CAIYUN.getTranslate(), new CaiYunTranslate().init(translateConfig))
                     .put(TranslateEnum.HUAWEI.getTranslate(), new HuaWeiTranslate().init(translateConfig))
                     .put(TranslateEnum.GOOGLE_FREE.getTranslate(), new GoogleFreeTranslate().init(translateConfig))
-                    .put(TranslateEnum.KING_SOFT.getTranslate(), new KingSoftTranslate().init(translateConfig))
+                    .put(TranslateEnum.KING_SOFT.getTranslate(), new YouDaoFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.MICROSOFT_FREE.getTranslate(), new MicrosoftFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.THS_SOFT.getTranslate(), new THSTranslate().init(translateConfig))
+                    .put(TranslateEnum.YOUDAO_FREE.getTranslate(), new YouDaoFreeTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
