@@ -31,17 +31,14 @@ public class RestfulSearchContributor implements ChooseByNameContributor {
             apiServices = new ArrayList<>();
             ApiServices.getApis(project).forEach((s, rs) -> apiServices.addAll(rs));
         }
-        names = new ArrayList<>(apiServices.size());
 
+        names = new ArrayList<>(apiServices.size());
         itemList = new ArrayList<>(apiServices.size());
-        apiServices.stream().map(request -> new RestServiceItem(
-                request.getPsiElement(),
-                request.getMethod(),
-                request.getPath()
-        )).forEach(restServiceItem -> {
-            names.add(restServiceItem.getName());
-            itemList.add(restServiceItem);
-        });
+        apiServices.stream().map(request -> new RestServiceItem(request.getPsiElement(), request.getMethod(), request.getPath()))
+                .forEach(restServiceItem -> {
+                    names.add(restServiceItem.getName());
+                    itemList.add(restServiceItem);
+                });
         return names.toArray(new String[0]);
     }
 
@@ -49,8 +46,7 @@ public class RestfulSearchContributor implements ChooseByNameContributor {
     @Override
     public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
         List<NavigationItem> list = new ArrayList<>();
-        itemList.stream()
-                .filter(item -> item.getName() != null && item.getName().equals(name))
+        itemList.stream().filter(item -> item.getName() != null && item.getName().equals(name))
                 .forEach(list::add);
         return list.toArray(new NavigationItem[0]);
     }

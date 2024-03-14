@@ -90,7 +90,7 @@ public class RestServiceItem implements NavigationItem {
 
     /**
      * 获取方法注释
-     * 优先规则：swagger的ApiOperation中的value属性 -> 普通JavaDoc注释
+     * 优先规则：普通JavaDoc注释 -> swagger的ApiOperation中的value属性
      *
      * @param psiMethod psi方法
      * @return {@link java.lang.String }
@@ -99,15 +99,6 @@ public class RestServiceItem implements NavigationItem {
      */
     private String getMethodComment(PsiMethod psiMethod) {
         try {
-            PsiAnnotation psiAnnotation = psiMethod.getAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
-            if (Objects.nonNull(psiAnnotation)) {
-                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
-                if (Objects.nonNull(psiAnnotationAttributeValue)) {
-                    String valueText = psiAnnotationAttributeValue.getText();
-                    return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
-                            StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
-                }
-            }
             // 获取JavaDoc中第一行非空注释元素即可
             PsiDocComment docComment = psiMethod.getDocComment();
             if (Objects.nonNull(docComment)) {
@@ -117,6 +108,18 @@ public class RestServiceItem implements NavigationItem {
                         return text;
                     }
                 }
+            }
+            for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
+                if (!StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage())) {
+                    continue;
+                }
+                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+                if (Objects.isNull(psiAnnotationAttributeValue)) {
+                    continue;
+                }
+                String valueText = psiAnnotationAttributeValue.getText();
+                return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
+                        StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
             }
             return StringUtils.EMPTY;
         } catch (Exception e) {

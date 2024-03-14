@@ -65,7 +65,7 @@ public class RestfulSearchAction extends GotoActionBase implements DumbAware {
         };
         GotoRequestProvider provider = new GotoRequestProvider(getPsiContext(e));
         showNavigationPopup(e, model, callback, BundleUtil.getI18n("search.find.usages.title"),
-                true, true, (ChooseByNameItemProvider) provider
+                true, false, (ChooseByNameItemProvider) provider
         );
     }
 
