@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
+import easy.base.Constants;
 import easy.enums.TranslateEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
@@ -54,7 +55,7 @@ public class GoogleFreeTranslate extends AbstractTranslate {
             String response = HttpRequest.get(url)
                     .timeout(30000)
                     .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
-                    .header(Header.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0")
+                    .header(Header.USER_AGENT, Constants.UA)
                     .execute().body();
             JsonObject resObject = JsonUtil.fromObject(response);
             JsonArray sentencesArray = resObject.getAsJsonArray("sentences");

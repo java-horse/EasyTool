@@ -11,7 +11,6 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
-import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocPropertyCommentModelEnum;
 import easy.enums.JavaDocPropertyCommentTypeEnum;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class FieldDocGeneratorImpl implements DocGenerator {
+public class FieldDocGeneratorImpl extends AbstractDocGenerator {
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
@@ -139,7 +138,8 @@ public class FieldDocGeneratorImpl implements DocGenerator {
 
     private String customGenerate(PsiField psiField) {
         JavaDocTemplateConfig javaDocFieldTemplateConfig = javaDocConfig.getJavaDocFieldTemplateConfig();
-        return javaDocVariableGeneratorService.generate(psiField, javaDocFieldTemplateConfig.getTemplate(), javaDocFieldTemplateConfig.getCustomMap(), getFieldInnerVariable(psiField));
+        String doc = javaDocVariableGeneratorService.generate(psiField, javaDocFieldTemplateConfig.getTemplate(), javaDocFieldTemplateConfig.getCustomMap(), getFieldInnerVariable(psiField));
+        return mergeDoc(psiField, doc);
     }
 
     private Map<String, Object> getFieldInnerVariable(PsiField psiField) {

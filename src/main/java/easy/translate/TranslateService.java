@@ -83,6 +83,7 @@ public class TranslateService {
                     .put(TranslateEnum.MICROSOFT_FREE.getTranslate(), new MicrosoftFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.THS_SOFT.getTranslate(), new THSTranslate().init(translateConfig))
                     .put(TranslateEnum.YOUDAO_FREE.getTranslate(), new YouDaoFreeTranslate().init(translateConfig))
+                    .put(TranslateEnum.CNKI.getTranslate(), new CNKIFreeTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;

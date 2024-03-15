@@ -15,7 +15,6 @@ import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
-import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.translate.TranslateService;
@@ -28,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MethodDocGeneratorImpl implements DocGenerator {
+public class MethodDocGeneratorImpl extends AbstractDocGenerator {
 
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
@@ -339,7 +338,8 @@ public class MethodDocGeneratorImpl implements DocGenerator {
 
     private String customGenerate(PsiMethod psiMethod) {
         JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
-        return javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
+        String doc = javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
+        return mergeDoc(psiMethod, doc);
     }
 
     private Map<String, Object> getMethodInnerVariable(PsiMethod psiMethod) {

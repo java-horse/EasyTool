@@ -30,6 +30,7 @@ public enum TranslateEnum {
     KING_SOFT("金山翻译", "https://ifanyi.iciba.com/index.php?c=trans", ""),
     YOUDAO_FREE("有道翻译(Free)", "https://m.youdao.com/translate", ""),
     THS_SOFT("同花顺翻译", "https://b2b-api.10jqka.com.cn/gateway/arsenal/machineTranslation/batch/get/result", ""),
+    CNKI("CNKI学术翻译", "https://dict.cnki.net/fyzs-front-api/translate/literaltranslation", ""),
     OPEN_BIG_MODEL("开源大模型", "", "");
 
     private final String translate;

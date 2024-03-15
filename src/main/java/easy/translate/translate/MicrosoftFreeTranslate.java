@@ -1,6 +1,9 @@
 package easy.translate.translate;
 
-import cn.hutool.http.*;
+import cn.hutool.http.ContentType;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonObject;
@@ -25,12 +28,10 @@ import java.util.concurrent.TimeUnit;
 public class MicrosoftFreeTranslate extends AbstractTranslate {
 
     private static final Logger log = Logger.getInstance(MicrosoftFreeTranslate.class);
-
     private static final String TOKEN_URL = "https://edge.microsoft.com/translate/auth";
-
     private static Cache<String, String> CACHE_TOKEN = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES).maximumSize(3).build();
-
     private static final String TOKEN = "MICROSOFT_TOKEN";
+    private static final int RETRY_COUNT = 3;
 
     @Override
     protected String translateCh2En(String chStr) {
@@ -101,7 +102,16 @@ public class MicrosoftFreeTranslate extends AbstractTranslate {
         if (StringUtils.isNotBlank(token)) {
             return token;
         }
+        // 尝试多次获取TOKEN (免费接口可能不稳定)
         String response = HttpUtil.get(TOKEN_URL);
+        if (StringUtils.isBlank(response)) {
+            for (int i = 0; i < RETRY_COUNT; i++) {
+                response = HttpUtil.get(TOKEN_URL);
+                if (StringUtils.isNotBlank(response)) {
+                    break;
+                }
+            }
+        }
         if (StringUtils.isNotBlank(response)) {
             CACHE_TOKEN.put(TOKEN, response);
             token = response;

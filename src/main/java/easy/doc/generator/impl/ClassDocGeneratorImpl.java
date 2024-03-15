@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
-public class ClassDocGeneratorImpl implements DocGenerator {
+public class ClassDocGeneratorImpl extends AbstractDocGenerator {
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
     private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ApplicationManager.getApplication().getService(JavaDocVariableGeneratorService.class);
@@ -165,7 +165,8 @@ public class ClassDocGeneratorImpl implements DocGenerator {
 
     private String customGenerate(PsiClass psiClass) {
         JavaDocTemplateConfig javaDocClassTemplateConfig = javaDocConfig.getJavaDocClassTemplateConfig();
-        return javaDocVariableGeneratorService.generate(psiClass, javaDocClassTemplateConfig.getTemplate(), javaDocClassTemplateConfig.getCustomMap(), getClassInnerVariable(psiClass));
+        String doc = javaDocVariableGeneratorService.generate(psiClass, javaDocClassTemplateConfig.getTemplate(), javaDocClassTemplateConfig.getCustomMap(), getClassInnerVariable(psiClass));
+        return mergeDoc(psiClass, doc);
     }
 
     private Map<String, Object> getClassInnerVariable(PsiClass psiClass) {
