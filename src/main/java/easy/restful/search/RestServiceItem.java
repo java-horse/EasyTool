@@ -2,12 +2,15 @@ package easy.restful.search;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.MinusculeMatcher;
 import com.intellij.psi.codeStyle.NameUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
@@ -20,6 +23,8 @@ import javax.swing.*;
 import java.util.Objects;
 
 public class RestServiceItem implements NavigationItem {
+
+    private final CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
 
     private final PsiElement psiElement;
     private PsiMethod psiMethod;
@@ -68,9 +73,11 @@ public class RestServiceItem implements NavigationItem {
                         location = psiClass.getName();
                     }
                     location += "#" + psiMethod.getName();
-                    String methodComment = getMethodComment(psiMethod);
-                    if (StringUtils.isNotBlank(methodComment)) {
-                        location += "#" + methodComment;
+                    if (Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getRestfulDisplayApiCommentCheckBox())) {
+                        String methodComment = getMethodComment(psiMethod);
+                        if (StringUtils.isNotBlank(methodComment)) {
+                            location += "#" + methodComment;
+                        }
                     }
                     location = "Java: (" + location + ")";
                 }
