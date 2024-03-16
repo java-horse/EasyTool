@@ -1,6 +1,5 @@
 package easy.translate.translate;
 
-import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
 import easy.translate.AbstractTranslate;
@@ -62,9 +61,8 @@ public class NiuTranslate extends AbstractTranslate {
      */
     private String translate(String text, String source, String target) {
         try {
-            String res = HttpUtil.doGet(String.format(TranslateEnum.NIU.getUrl(), source, target, getTranslateConfig().getNiuApiKey(), URLEncoder.encode(text, StandardCharsets.UTF_8.name())));
-            JsonObject resObject = JsonUtil.fromJson(res, JsonObject.class);
-            return Objects.requireNonNull(resObject).get("tgt_text").getAsString();
+            String res = HttpUtil.doGet(String.format(TranslateEnum.NIU.getUrl(), source, target, getTranslateConfig().getNiuApiKey(), URLEncoder.encode(text, StandardCharsets.UTF_8)));
+            return Objects.requireNonNull(JsonUtil.fromObject(res)).get("tgt_text").getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.NIU.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

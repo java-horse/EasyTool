@@ -1,6 +1,7 @@
 package easy.form;
 
 import com.google.common.collect.Lists;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
@@ -38,6 +39,7 @@ public class TranslateSettingView {
     private JPanel translatePanel;
     private JLabel translateChannelLabel;
     private JComboBox translateChannelBox;
+    private JLabel translateChannelTipLabel;
     private JLabel appIdLabel;
     private JTextField appIdTextField;
     private JLabel appSecretLabel;
@@ -114,6 +116,7 @@ public class TranslateSettingView {
     public TranslateSettingView() {
         setTranslateVisible(translateChannelBox.getSelectedItem());
         refreshGlobalWordMap();
+        // 设置监听器
         resetButton.addActionListener(event -> {
             int result = Messages.showYesNoDialog("确认删除所有配置数据?", "重置数据", Messages.getWarningIcon());
             if (result == MessageConstants.YES) {
@@ -130,10 +133,17 @@ public class TranslateSettingView {
         startButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.GITEE_URL));
         reviewButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL));
         payButton.addActionListener(event -> new SupportView().show());
-        translateChannelBox.addItemListener(e -> setTranslateVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
+        translateChannelBox.addItemListener(e -> {
+            Object selectedItem = ((JComboBox<?>) e.getSource()).getSelectedItem();
+            setTranslateVisible(selectedItem);
+            translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(selectedItem)));
+        });
         openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         baiduDomainCheckBox.addActionListener(e -> baiduDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
         aliyunDomainCheckBox.addActionListener(e -> aliyunDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        // 设置温馨提示
+        translateChannelTipLabel.setIcon(AllIcons.General.ContextHelp);
+        translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
     }
 
     /**

@@ -94,7 +94,6 @@ public class THSTranslate extends AbstractTranslate {
                 .form("appSecret", translateConfig.getThsAppSecret())
                 .execute()) {
             String response = httpResponse.body();
-            log.warn("response=" + response);
             if (StringUtils.isNotBlank(response)) {
                 String accessToken = JsonUtil.fromObject(response).get("data").getAsJsonObject().get("access_token").getAsString();
                 if (StringUtils.isNotBlank(accessToken)) {

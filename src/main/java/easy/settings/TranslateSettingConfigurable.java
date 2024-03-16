@@ -86,6 +86,7 @@ public class TranslateSettingConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        // 配置赋值持久化
         if (translateConfig.getGlobalWordMap() == null) {
             translateConfig.setGlobalWordMap(new TreeMap<>());
         }
@@ -121,7 +122,17 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
         translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
         translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
+        // 配置检查
+        checkTranslateConfig();
+    }
 
+    /**
+     * 检查翻译配置
+     *
+     * @author mabin
+     * @date 2024/03/16 14:02
+     */
+    private void checkTranslateConfig() throws ConfigurationException {
         ValidatorUtil.notTrue(StringUtils.isBlank(translateConfig.getTranslateChannel()) || !TranslateEnum.getTranslator().contains(translateConfig.getTranslateChannel()), "请选择正确的翻译渠道");
         if (TranslateEnum.BAIDU.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getAppId(), translateConfig.getAppSecret()), TranslateEnum.BAIDU.getTranslate() + "密钥不能为空");
