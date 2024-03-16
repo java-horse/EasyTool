@@ -82,11 +82,11 @@
         <li>Optimized to remove Kotlin resource dependencies</li>
         <li>Support Git Commit Message message text input English colon Emoji English character automatic prompt</li>
         <li>-------------------------------</li>
-        <li>新增有道翻译免费渠道</li>
+        <li>新增有道翻译免费渠道（推荐优先考虑）</li>
         <li>新增CNKI学术翻译免费渠道（注重学术领域翻译）</li>
         <li>支持字段属性新增单行普通文本注释功能、支持自定义模式注释文本合并</li>
         <li>优化移除kotlin资源依赖</li>
-        <li>支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符 自动提示（支持Markdown、Java、Txt等文件）</li>
+        <li>支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符（例如 :bug:） 自动提示（支持Markdown、Txt等文件类型）</li>
       </ul>
       <h3>v2.0.4</h3>
       <ul>
