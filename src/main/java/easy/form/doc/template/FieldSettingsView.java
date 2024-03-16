@@ -1,11 +1,13 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
+import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
+import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
 
 import javax.swing.*;
@@ -27,13 +29,15 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
     private JRadioButton customRadioButton;
     private JTable innerTable;
     private JScrollPane innerScrollPane;
+    private JLabel defaultRadioTipLabel;
     private JTable customTable;
     private static Map<String, String> innerMap;
 
     static {
         innerMap = Maps.newLinkedHashMap();
-        innerMap.put("$DOC$", "注释信息");
-        innerMap.put("$SEE$", "字段类型");
+        innerMap.put(JavaDocInnerVariableEnum.DOC.name, JavaDocInnerVariableEnum.DOC.value);
+        innerMap.put(JavaDocInnerVariableEnum.SEE.name, JavaDocInnerVariableEnum.SEE.value);
+        innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
     }
 
     private void createUIComponents() {
@@ -70,9 +74,9 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
         toolbarDecorator.setAddAction(button -> {
             CustomTemplateAddView customTemplateAddView = new CustomTemplateAddView();
             if (customTemplateAddView.showAndGet() && Objects.nonNull(config)) {
-                    Entry<String, CustomValue> entry = customTemplateAddView.getEntry();
-                    config.getJavaDocFieldTemplateConfig().getCustomMap().put(entry.getKey(), entry.getValue());
-                    refreshCustomTable();
+                Entry<String, CustomValue> entry = customTemplateAddView.getEntry();
+                config.getJavaDocFieldTemplateConfig().getCustomMap().put(entry.getKey(), entry.getValue());
+                refreshCustomTable();
             }
         });
         toolbarDecorator.setRemoveAction(anActionButton -> {
@@ -88,6 +92,12 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
 
     public FieldSettingsView(JavaDocConfig config) {
         super(config);
+        // 添加提示标签
+        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
+        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+                "/**<br>" +
+                " * $DOC$<br>" +
+                " */");
         // 添加单选按钮事件
         defaultRadioButton.addChangeListener(e -> {
             JRadioButton button = (JRadioButton) e.getSource();

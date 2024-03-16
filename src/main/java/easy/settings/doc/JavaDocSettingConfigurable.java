@@ -35,7 +35,8 @@ public class JavaDocSettingConfigurable implements Configurable {
         return !StringUtils.equals(javaDocConfig.getAuthor(), javaDocSettingView.getAuthorTextField().getText())
                 || !StringUtils.equals(javaDocConfig.getDateFormat(), javaDocSettingView.getAuthorTextField().getText())
                 || !StringUtils.equals(javaDocConfig.getMethodReturnType(), String.valueOf(javaDocSettingView.getMethodReturnTypeComboBox().getSelectedItem()))
-                || !StringUtils.equals(javaDocConfig.getPropertyCommentType(), String.valueOf(javaDocSettingView.getPropertyCommentTypeComboBox().getSelectedItem()));
+                || !StringUtils.equals(javaDocConfig.getPropertyCommentType(), String.valueOf(javaDocSettingView.getPropertyCommentTypeComboBox().getSelectedItem()))
+                || !StringUtils.equals(javaDocConfig.getPropertyCommentModel(), String.valueOf(javaDocSettingView.getPropertyCommentModelComboBox().getSelectedItem()));
     }
 
     @Override
@@ -49,6 +50,7 @@ public class JavaDocSettingConfigurable implements Configurable {
         javaDocConfig.setDateFormat(javaDocSettingView.getDateFormatTextField().getText());
         javaDocConfig.setMethodReturnType(String.valueOf(javaDocSettingView.getMethodReturnTypeComboBox().getSelectedItem()));
         javaDocConfig.setPropertyCommentType(String.valueOf(javaDocSettingView.getPropertyCommentTypeComboBox().getSelectedItem()));
+        javaDocConfig.setPropertyCommentModel(String.valueOf(javaDocSettingView.getPropertyCommentModelComboBox().getSelectedItem()));
     }
 
 }

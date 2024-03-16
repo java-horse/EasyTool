@@ -18,13 +18,13 @@ public class CommonConfig {
     private Boolean swaggerConfirmNoCheckBox;
     private Boolean searchApiDefaultIconRadioButton;
     private Boolean searchApiCuteIconRadioButton;
+    private Boolean restfulDisplayApiCommentCheckBox;
     private Boolean translateConfirmInputModelYesCheckBox;
     private Boolean translateConfirmInputModelNoCheckBox;
     private PersistentColor persistentColor;
     private String tabHighlightSizeComboBox;
     private String tabHighlightGradientStepFormattedTextField;
     private Boolean tabHighlightEnableCheckBox;
-
     private Boolean convertCharEnableCheckBox;
 
     public Boolean getSwaggerConfirmYesCheckBox() {
@@ -115,6 +115,14 @@ public class CommonConfig {
         this.convertCharEnableCheckBox = convertCharEnableCheckBox;
     }
 
+    public Boolean getRestfulDisplayApiCommentCheckBox() {
+        return restfulDisplayApiCommentCheckBox;
+    }
+
+    public void setRestfulDisplayApiCommentCheckBox(Boolean restfulDisplayApiCommentCheckBox) {
+        this.restfulDisplayApiCommentCheckBox = restfulDisplayApiCommentCheckBox;
+    }
+
     @Override
     public String toString() {
         return "CommonConfig{" +
@@ -122,6 +130,7 @@ public class CommonConfig {
                 ", swaggerConfirmNoCheckBox=" + swaggerConfirmNoCheckBox +
                 ", searchApiDefaultIconRadioButton=" + searchApiDefaultIconRadioButton +
                 ", searchApiCuteIconRadioButton=" + searchApiCuteIconRadioButton +
+                ", restfulDisplayApiCommentCheckBox=" + restfulDisplayApiCommentCheckBox +
                 ", translateConfirmInputModelYesCheckBox=" + translateConfirmInputModelYesCheckBox +
                 ", translateConfirmInputModelNoCheckBox=" + translateConfirmInputModelNoCheckBox +
                 ", persistentColor=" + persistentColor +

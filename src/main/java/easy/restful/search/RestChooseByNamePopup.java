@@ -18,22 +18,20 @@ public class RestChooseByNamePopup extends ChooseByNamePopup {
     }
 
     @NotNull
-    public static RestChooseByNamePopup createPopup(final Project project,
-                                                    @NotNull final ChooseByNameModel model,
+    public static RestChooseByNamePopup createPopup(Project project,
+                                                    @NotNull ChooseByNameModel model,
                                                     @NotNull ChooseByNameItemProvider provider,
-                                                    @Nullable final String predefinedText,
+                                                    @Nullable String predefinedText,
                                                     boolean mayRequestOpenInCurrentWindow,
-                                                    final int initialIndex) {
+                                                    int initialIndex) {
         if (!StringUtil.isEmptyOrSpaces(predefinedText)) {
             return new RestChooseByNamePopup(project, model, provider, null, predefinedText, mayRequestOpenInCurrentWindow, initialIndex);
         }
-
-        final RestChooseByNamePopup oldPopup = project == null ? null : project.getUserData(CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY);
+        RestChooseByNamePopup oldPopup = project == null ? null : project.getUserData(CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY);
         if (oldPopup != null) {
             oldPopup.close(false);
         }
         RestChooseByNamePopup newPopup = new RestChooseByNamePopup(project, model, provider, oldPopup, predefinedText, mayRequestOpenInCurrentWindow, initialIndex);
-
         if (project != null) {
             project.putUserData(CHOOSE_BY_NAME_POPUP_IN_PROJECT_KEY, newPopup);
         }
@@ -52,19 +50,18 @@ public class RestChooseByNamePopup extends ChooseByNamePopup {
     @NotNull
     @Override
     public String transformPattern(@NotNull String pattern) {
-        final ChooseByNameModel model = getModel();
+        ChooseByNameModel model = getModel();
         return getTransformedPattern(pattern, model);
     }
 
     @Override
     @Nullable
     public String getMemberPattern() {
-        final String enteredText = getTrimmedText();
-        final int index = enteredText.lastIndexOf('#');
+        String enteredText = getTrimmedText();
+        int index = enteredText.lastIndexOf('#');
         if (index == -1) {
             return null;
         }
-
         String name = enteredText.substring(index + 1).trim();
         return StringUtil.isEmptyOrSpaces(name) ? null : name;
     }

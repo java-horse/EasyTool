@@ -10,10 +10,10 @@ import java.util.Map;
  * JSON数据处理(Gson)
  *
  * @author mabin
- * @project EasyChar
- * @date 2023/09/05 11:47
- **/
-
+ * @project EasyTool
+ * @package easy.util
+ * @date 2024/03/16 11:12
+ */
 public class JsonUtil {
 
     private static final Gson GSON = new GsonBuilder()
@@ -86,5 +86,49 @@ public class JsonUtil {
         return null;
     }
 
+    public static String findJson(String json, String fieldName) {
+        if (Boolean.TRUE.equals(isJson(json))) {
+            JsonElement jsonElement = findJson(fromJson(json, JsonElement.class), fieldName);
+            return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
+        }
+        return null;
+    }
+
+    public static Boolean isJson(String json) {
+        try {
+            fromJson(json, JsonElement.class);
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            return Boolean.FALSE;
+        }
+    }
+
+    private static JsonElement findJson(JsonElement jsonElement, String fieldName) {
+        if (jsonElement == null) {
+            return JsonNull.INSTANCE;
+        }
+        if (jsonElement.isJsonObject()) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                if (entry.getKey().equals(fieldName)) {
+                    return entry.getValue();
+                } else {
+                    JsonElement foundValue = findJson(entry.getValue(), fieldName);
+                    if (!foundValue.isJsonNull()) {
+                        return foundValue;
+                    }
+                }
+            }
+        } else if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            for (JsonElement element : jsonArray) {
+                JsonElement foundValue = findJson(element, fieldName);
+                if (!foundValue.isJsonNull()) {
+                    return foundValue;
+                }
+            }
+        }
+        return JsonNull.INSTANCE;
+    }
 
 }

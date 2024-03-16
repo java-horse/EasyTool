@@ -100,7 +100,6 @@ public class ApiServices {
             }
             apiServices.addAll(service);
         }
-
         return fill(project, module.getName(), apiServices);
     }
 

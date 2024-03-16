@@ -4,6 +4,7 @@ package easy.form;
 import com.intellij.openapi.application.ApplicationManager;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
+import easy.enums.GitEmojiLanguageEnum;
 import easy.util.BundleUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -58,7 +59,7 @@ public class GitEmojiSettingView {
         } else {
             setAfterEmojiComboBox(afterEmojiValue);
         }
-        setLanguageComboBox(StringUtils.equals(gitEmojiConfig.getLanguageRealValue(), "en") ? "English" : "Chinese");
+        setLanguageComboBox(GitEmojiLanguageEnum.getLanguage(gitEmojiConfig.getLanguageRealValue()));
     }
 
     public JPanel getEmojiPanel() {

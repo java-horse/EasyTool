@@ -6,8 +6,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaDocumentedElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.javadoc.PsiDocComment;
-import easy.service.TranslateService;
-import org.apache.commons.lang.StringUtils;
+import easy.translate.TranslateService;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,15 +19,15 @@ public class DocVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
 
     @Override
     public String generate(PsiElement element) {
-        if (element instanceof PsiNamedElement) {
+        if (element instanceof PsiNamedElement psiNamedElement) {
             PsiDocComment docComment = ((PsiJavaDocumentedElement) element).getDocComment();
             if (docComment != null) {
                 PsiElement[] descriptionElements = docComment.getDescriptionElements();
-                List<String> descTextList = Arrays.stream(descriptionElements).map(PsiElement::getText).collect(Collectors.toList());
+                List<String> descTextList = Arrays.stream(descriptionElements).map(PsiElement::getText).filter(StringUtils::isNotBlank).map(StringUtils::trim).collect(Collectors.toList());
                 String result = Joiner.on(StringUtils.EMPTY).skipNulls().join(descTextList);
-                return StringUtils.isNotBlank(result) ? result : translateService.translate(((PsiNamedElement) element).getName());
+                return StringUtils.isNotBlank(result) ? result : translateService.translate(psiNamedElement.getName());
             }
-            return translateService.translate(((PsiNamedElement) element).getName());
+            return translateService.translate(psiNamedElement.getName());
         }
         return StringUtils.EMPTY;
     }

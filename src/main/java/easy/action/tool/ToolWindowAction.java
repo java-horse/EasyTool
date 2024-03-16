@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.enums.ToolWindowEnum;
 import easy.form.WeChatOfficialView;
+import easy.handler.PluginForUpdateHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +36,7 @@ public class ToolWindowAction extends AnAction {
         String actionText = presentation.getText();
         if (StringUtils.equals(ToolWindowEnum.WECHAT_OFFICIAL.title, actionText)) {
             new WeChatOfficialView().show();
-            
+
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
             ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
         } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {
@@ -44,6 +45,8 @@ public class ToolWindowAction extends AnAction {
                 return;
             }
             action.actionPerformed(e);
+        } else if (StringUtils.equals(ToolWindowEnum.FOR_UPDATE.title, actionText)) {
+            PluginForUpdateHandler.forUpdate(project);
         }
     }
 

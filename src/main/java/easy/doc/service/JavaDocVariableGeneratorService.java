@@ -8,12 +8,16 @@ import com.intellij.psi.PsiElement;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
 import easy.doc.variable.VariableGenerator;
 import easy.doc.variable.impl.*;
+import easy.enums.JavaDocInnerVariableEnum;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,18 +26,18 @@ public class JavaDocVariableGeneratorService {
     private static final Logger log = Logger.getInstance(JavaDocVariableGeneratorService.class);
     private final Pattern pattern = Pattern.compile("\\$[a-zA-Z0-9_-]*\\$");
 
-    private Map<String, VariableGenerator> variableGeneratorMap = ImmutableMap.<String, VariableGenerator>builder()
-            .put("author", new AuthorVariableGeneratorImpl())
-            .put("date", new DateVariableGeneratorImpl())
-            .put("doc", new DocVariableGeneratorImpl())
-            .put("params", new ParamsVariableGeneratorImpl())
-            .put("return", new ReturnVariableGeneratorImpl())
-            .put("see", new SeeVariableGeneratorImpl())
-            .put("since", new SinceVariableGeneratorImpl())
-            .put("throws", new ThrowsVariableGeneratorImpl())
-            .put("version", new VersionVariableGeneratorImpl())
-            .put("project", new ProjectVariableGeneratorImpl())
-            .put("package", new PackageVariableGeneratorImpl())
+    private final Map<String, VariableGenerator> variableGeneratorMap = ImmutableMap.<String, VariableGenerator>builder()
+            .put(JavaDocInnerVariableEnum.AUTHOR.key, new AuthorVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.DATE.key, new DateVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.DOC.key, new DocVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.PARAMS.key, new ParamsVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.RETURN.key, new ReturnVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.SEE.key, new SeeVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.SINCE.key, new SinceVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.THROWS.key, new ThrowsVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.VERSION.key, new VersionVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.PROJECT.key, new ProjectVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.PACKAGE.key, new PackageVariableGeneratorImpl())
             .build();
 
     public String generate(PsiElement psiElement, String template, Map<String, CustomValue> customValueMap, Map<String, Object> innerVariableMap) {

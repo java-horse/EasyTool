@@ -40,7 +40,6 @@ public class ApiService {
             this.setPath(path);
         }
         this.psiElement = psiElement;
-
         this.moduleHeaders = new HashMap<>();
         this.headers = "";
     }

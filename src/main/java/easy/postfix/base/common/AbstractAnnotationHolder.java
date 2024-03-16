@@ -1,5 +1,6 @@
 package easy.postfix.base.common;
 
+import cn.hutool.core.convert.Convert;
 import com.intellij.psi.PsiAnnotation;
 import easy.base.Constants;
 import easy.postfix.util.*;
@@ -89,7 +90,7 @@ public abstract class AbstractAnnotationHolder implements AnnotationHolder {
         if (StringUtils.isBlank(tagVal)) {
             flag = true;
         } else {
-            flag = BaseTypeParseUtil.parseBoolean(tagVal, true);
+            flag = Convert.toBool(tagVal, true);
         }
         return flag;
     }

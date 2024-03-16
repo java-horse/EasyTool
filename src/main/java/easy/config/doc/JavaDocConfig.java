@@ -6,6 +6,7 @@ public class JavaDocConfig {
     private String dateFormat;
     private String methodReturnType;
     private String propertyCommentType;
+    private String propertyCommentModel;
 
     // 类、方法、属性的JavaDoc模板配置持久化
     private JavaDocTemplateConfig javaDocClassTemplateConfig = new JavaDocTemplateConfig();
@@ -42,6 +43,14 @@ public class JavaDocConfig {
 
     public void setPropertyCommentType(String propertyCommentType) {
         this.propertyCommentType = propertyCommentType;
+    }
+
+    public String getPropertyCommentModel() {
+        return propertyCommentModel;
+    }
+
+    public void setPropertyCommentModel(String propertyCommentModel) {
+        this.propertyCommentModel = propertyCommentModel;
     }
 
     public JavaDocTemplateConfig getJavaDocClassTemplateConfig() {

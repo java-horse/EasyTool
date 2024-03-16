@@ -14,7 +14,16 @@ import java.util.List;
  */
 public class Gitmojis {
 
+    private String language;
     private List<Gitmoji> gitmojis;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public Gitmojis(List<Gitmoji> gitmojis) {
         this.gitmojis = gitmojis;

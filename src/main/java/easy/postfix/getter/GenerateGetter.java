@@ -8,6 +8,7 @@ import easy.postfix.base.AbstractMethodListGenerate;
 import easy.postfix.base.BaseVar;
 import easy.postfix.util.BaseTypeUtil;
 import easy.postfix.util.PsiMethodUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,10 +37,10 @@ public class GenerateGetter extends AbstractMethodListGenerate {
     @NotNull
     public String generateCodeByMethod(Set<String> newImportList, PsiMethod method) {
         if (baseVar == null) {
-            return "";
+            return StringUtils.EMPTY;
         }
         String methodName = method.getName();
-        String recvVarName = methodName.replaceFirst("get", "");
+        String recvVarName = methodName.replaceFirst("get", StringUtils.EMPTY);
         recvVarName = recvVarName.substring(0, 1).toLowerCase() + recvVarName.substring(1);
         PsiType psiType = method.getReturnType();
         String sourceVarName = baseVar.getVarName();
@@ -58,7 +59,7 @@ public class GenerateGetter extends AbstractMethodListGenerate {
         }
         Pair<String, String> pair = handlerByPsiType(newImportList, project, psiType, "%s", typeName);
         String fieldType = pair.getLeft();
-        return fieldType + " " + recvVarName + " = " + sourceVarName + "." + methodName + "();";
+        return fieldType + StringUtils.SPACE + recvVarName + " = " + sourceVarName + "." + methodName + "();";
     }
 
 }

@@ -1,8 +1,10 @@
 package easy.doc.generator.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -13,10 +15,11 @@ import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
-import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
+import easy.util.EasyCommonUtil;
+import easy.util.NotificationUtil;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MethodDocGeneratorImpl implements DocGenerator {
+public class MethodDocGeneratorImpl extends AbstractDocGenerator {
 
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
@@ -62,6 +65,10 @@ public class MethodDocGeneratorImpl implements DocGenerator {
             endList.add(buildReturn(elements, returns));
             // 异常
             endList.addAll(buildException(elements, exceptionTypeList, psiMethod.getProject()));
+            // 作者
+            endList.add(buildAuthor(elements));
+            // 日期
+            endList.add(buildDate(elements));
             List<String> commentItems = Lists.newLinkedList();
             for (PsiElement element : elements) {
                 commentItems.add(element.getText());
@@ -193,6 +200,74 @@ public class MethodDocGeneratorImpl implements DocGenerator {
     }
 
     /**
+     * 构建作者
+     *
+     * @param elements 元素
+     * @return {@link String}
+     */
+    private String buildAuthor(List<PsiElement> elements) {
+        boolean isInsert = true;
+        for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
+            PsiElement element = iterator.next();
+            if (!"PsiDocTag:@author".equalsIgnoreCase(element.toString())) {
+                continue;
+            }
+            PsiDocTagValue value = ((PsiDocTag) element).getValueElement();
+            if (value == null || StringUtils.isBlank(value.getText())) {
+                iterator.remove();
+            } else {
+                isInsert = false;
+            }
+        }
+        if (isInsert) {
+            return "@author " + javaDocConfig.getAuthor() + StringUtils.LF;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 构建日期
+     *
+     * @param elements 元素
+     * @return {@link String}
+     */
+    private String buildDate(List<PsiElement> elements) {
+        boolean isInsert = true;
+        for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
+            PsiElement element = iterator.next();
+            if (!"PsiDocTag:@date".equalsIgnoreCase(element.toString())) {
+                continue;
+            }
+            PsiDocTagValue value = ((PsiDocTag) element).getValueElement();
+            if (value == null || StringUtils.isBlank(value.getText())) {
+                iterator.remove();
+            } else {
+                isInsert = false;
+            }
+        }
+        if (isInsert) {
+            return "@date " + genFormatDate() + StringUtils.LF;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 生成指定格式日期
+     *
+     * @return
+     */
+    private String genFormatDate() {
+        try {
+            return DateUtil.format(new Date(), javaDocConfig.getDateFormat());
+        } catch (Exception e) {
+            NotificationUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
+            return DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
+        }
+    }
+
+    /**
      * 获取link类型文档注释
      *
      * @param returnName 返回名
@@ -263,7 +338,8 @@ public class MethodDocGeneratorImpl implements DocGenerator {
 
     private String customGenerate(PsiMethod psiMethod) {
         JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
-        return javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
+        String doc = javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
+        return mergeDoc(psiMethod, doc);
     }
 
     private Map<String, Object> getMethodInnerVariable(PsiMethod psiMethod) {

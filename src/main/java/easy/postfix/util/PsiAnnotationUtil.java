@@ -12,10 +12,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 注解工具类
- *
  */
 public class PsiAnnotationUtil {
 
@@ -50,10 +50,7 @@ public class PsiAnnotationUtil {
             return defaultVal;
         }
         Object value = getValueByPsiAnnotationMemberValue(memberValue);
-        if (value != null) {
-            return (T) value;
-        }
-        return defaultVal;
+        return Objects.nonNull(value) ? (T) value : defaultVal;
     }
 
     /**
@@ -94,7 +91,7 @@ public class PsiAnnotationUtil {
     }
 
     @NotNull
-    public static <T> T getAnnotationInfoByPojo(PsiAnnotation psiAnnotation,@NotNull Class<T> clazz) throws Exception {
+    public static <T> T getAnnotationInfoByPojo(PsiAnnotation psiAnnotation, @NotNull Class<T> clazz) throws Exception {
         Constructor<T> constructor = clazz.getConstructor((Class<?>[]) null);
         T instance = constructor.newInstance((Object[]) null);
         Field[] fields = clazz.getDeclaredFields();

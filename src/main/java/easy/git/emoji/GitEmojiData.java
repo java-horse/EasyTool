@@ -10,11 +10,13 @@ public class GitEmojiData {
     private String emoji;
     private String description;
     private Icon icon;
+    private String language;
 
-    public GitEmojiData(String code, String emoji, String description) {
+    public GitEmojiData(String code, String emoji, String description, String language) {
         this.code = code;
         this.emoji = emoji;
         this.description = description;
+        this.language = language;
     }
 
     public void setCode(String code) {
@@ -41,6 +43,14 @@ public class GitEmojiData {
         return description;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
     public Icon getIcon() {
         if (icon == null) {
             try {
@@ -57,10 +67,11 @@ public class GitEmojiData {
 
     @Override
     public String toString() {
-        return "GitmojiData{" +
+        return "GitEmojiData{" +
                 "code='" + code + '\'' +
                 ", emoji='" + emoji + '\'' +
-                ", description='" + description +
+                ", description='" + description + '\'' +
+                ", language='" + language + '\'' +
                 '}';
     }
 }

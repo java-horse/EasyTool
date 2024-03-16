@@ -23,12 +23,12 @@ public class BaseTypeUtil {
 
     static {
         Function<CommentInfo, Object> stringGetFn = commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomString(commentInfo) : example;
         };
         Function<CommentInfo, Object> dateGetFn = commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomDate(commentInfo) : example;
         };
@@ -57,46 +57,46 @@ public class BaseTypeUtil {
 
         // java base
         JAVA_BASE_TYPE_MAP.put("byte", TypeInfo.of("(byte) 0", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomByte() : Byte.parseByte(example);
         }));
         JAVA_BASE_TYPE_MAP.put("short", TypeInfo.of("(short) 0", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomShort() : Short.parseShort(example);
         }));
         TypeInfo typeInfoForInt = TypeInfo.of("0", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomInt() : Integer.parseInt(example);
         });
         JAVA_BASE_TYPE_MAP.put("int", typeInfoForInt);
         JAVA_BASE_TYPE_MAP.put("integer", typeInfoForInt);
         TypeInfo typeInfoForChar = TypeInfo.of("'0'", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomChar() : example.charAt(0);
         });
         JAVA_BASE_TYPE_MAP.put("char", typeInfoForChar);
         JAVA_BASE_TYPE_MAP.put("character", typeInfoForChar);
         JAVA_BASE_TYPE_MAP.put("boolean", TypeInfo.of("false", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomBoolean() : Boolean.parseBoolean(example);
         }));
         JAVA_BASE_TYPE_MAP.put("double", TypeInfo.of("0D", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomDouble() : Double.parseDouble(example);
         }));
         JAVA_BASE_TYPE_MAP.put("float", TypeInfo.of("0f", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomFloat() : Float.parseFloat(example);
         }));
         JAVA_BASE_TYPE_MAP.put("long", TypeInfo.of("0L", commentInfo -> {
-            String example = commentInfo.getExample("");
+            String example = commentInfo.getExample(StringUtils.EMPTY);
             boolean noExampleValue = StringUtils.isBlank(example);
             return noExampleValue ? randomLong() : Long.parseLong(example);
         }));

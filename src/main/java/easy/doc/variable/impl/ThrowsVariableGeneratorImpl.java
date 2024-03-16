@@ -4,7 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;

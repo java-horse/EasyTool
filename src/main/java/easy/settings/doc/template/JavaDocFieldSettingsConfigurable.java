@@ -48,11 +48,11 @@ public class JavaDocFieldSettingsConfigurable extends AbstractJavaDocTemplateCon
         }
         if (!view.isDefault()) {
             if (StringUtils.isBlank(view.getTemplate())) {
-                throw new ConfigurationException("使用自定义模板，模板不能为空");
+                throw new ConfigurationException("自定义模板不能为空");
             }
             String temp = StringUtils.strip(view.getTemplate());
-            if (!temp.startsWith("/**") || !temp.endsWith("*/")) {
-                throw new ConfigurationException("模板格式不正确，正确的javadoc应该以\"/**\"开头，以\"*/\"结束");
+            if (!StringUtils.startsWith(temp, "/**") && !StringUtils.endsWith(temp, "*/")) {
+                throw new ConfigurationException("模板格式不正确，JavaDoc应该以\"/**\"开头，以\"*/\"结束（自定义模式暂不支持普通文本注释模板格式）");
             }
         }
     }

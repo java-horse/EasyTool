@@ -42,7 +42,7 @@ public abstract class AbstractErrorReportSubmitter extends ErrorReportSubmitter 
                 additionalInfo = StringUtils.EMPTY;
             }
             SubmittedReportInfo reportInfo;
-            String issueId = findIssueByMd5(DigestUtils.md5Hex(throwableText).toUpperCase());
+            String issueId = findIssueByMd5(DigestUtils.md5Hex(message).toUpperCase());
             if (StringUtils.isBlank(issueId)) {
                 issueId = newIssue(throwableText, message, additionalInfo);
                 reportInfo = new SubmittedReportInfo(generateUrlByIssueId(issueId), generateTextByIssueId(issueId), SubmittedReportInfo.SubmissionStatus.NEW_ISSUE);

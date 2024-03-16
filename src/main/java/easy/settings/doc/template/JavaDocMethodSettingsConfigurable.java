@@ -49,11 +49,14 @@ public class JavaDocMethodSettingsConfigurable extends AbstractJavaDocTemplateCo
         }
         if (!view.isDefault()) {
             if (StringUtils.isBlank(view.getTemplate())) {
-                throw new ConfigurationException("使用自定义模板，模板不能为空");
+                throw new ConfigurationException("自定义模板不能为空");
             }
             String temp = StringUtils.strip(view.getTemplate());
             if (!temp.startsWith("/**") || !temp.endsWith("*/")) {
-                throw new ConfigurationException("模板格式不正确，正确的javadoc应该以\"/**\"开头，以\"*/\"结束");
+                throw new ConfigurationException("模板格式不正确，正确的JavaDoc应该以\"/**\"开头，以\"*/\"结束");
+            }
+            if (StringUtils.containsAny(temp, "@params", "@param", "@return")) {
+                throw new ConfigurationException("模板格式不正确，无需额外配置@params、@param、@return等标识");
             }
         }
     }

@@ -15,6 +15,7 @@
         <li>Support for quick generation of serialVersionUID</li>
         <li>Support automatic copying of interface complete URL</li>
         <li>Support insert Emoji identifier when supporting Git commit</li>
+        <li>Support one-click generation of JavaDoc notes</li>
       </ul>
 	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
       <ul>
@@ -33,6 +34,8 @@
             <li>--<em>小牛翻译</em></li>
             <li>--<em>彩云翻译</em></li>
             <li>--<em>同花顺翻译</em></li>
+            <li>--<em>CNKI学术翻译</em></li>
+            <li>--<em>有道翻译(Free)</em></li>
             <li>--<em>微软翻译(API)</em></li>
             <li>--<em>微软翻译(Free)</em></li>
             <li>--<em>谷歌翻译(API)</em></li>
@@ -49,8 +52,9 @@
         <li>支持 Navigate -> Request Service 搜索 Controller Mapping 方法, 快捷键: <em>CTRL + ALT + /</em> </li>
         <li>支持当前打开文件的Tab标签高亮显示及相关设置项</li>
         <li>支持将控制台 Mybatis SQL 日志恢复为原始完整可执行的SQL</li>
-        <li>支持 Git Commit 时添加 Emoji 标识</li>
+        <li>支持 Git Commit 时添加 Emoji 标识, 以及在 Git Commit Message 消息输入框中输入英文冒号<em>:</em> + Emoji英文字符 自动提示功能</li>
         <li>支持一键生成 JavaDoc 注释</li>
+        <li>支持Markdown、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -70,6 +74,20 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.5</h3>
+      <ul>
+        <li>Add Youdao Translation Free Channel</li>
+        <li>Add CNKI Academic Translation Free Channel (Focus on Academic Translation)</li>
+        <li>Support field properties to add a single line of ordinary text comment function</li>
+        <li>Optimized to remove Kotlin resource dependencies</li>
+        <li>Support Git Commit Message message text input English colon Emoji English character automatic prompt</li>
+        <li>-------------------------------</li>
+        <li>新增有道翻译免费渠道（推荐优先考虑）</li>
+        <li>新增CNKI学术翻译免费渠道（注重学术领域翻译）</li>
+        <li>支持字段属性新增单行普通文本注释功能、支持自定义模式注释文本合并</li>
+        <li>优化移除kotlin资源依赖</li>
+        <li>支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符（例如 :bug:） 自动提示（支持Markdown、Txt等文件类型）</li>
+      </ul>
       <h3>v2.0.4</h3>
       <ul>
         <li>Fix the problem of individual write action modification read-only exception</li>
@@ -271,7 +289,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
-    <depends>org.jetbrains.kotlin</depends>
+    <depends>org.intellij.plugins.markdown</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -289,7 +307,7 @@
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
 
-        <applicationService serviceImplementation="easy.service.TranslateService"/>
+        <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
@@ -315,6 +333,9 @@
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
+                                 displayName="BackgroundImage"
+                                 instance="easy.form.BackgroundImageSettingView"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
@@ -323,6 +344,13 @@
 
         <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
                                         implementationClass="easy.provider.CronMarkerProvider"/>
+
+        <completion.contributor language="JAVA" order="last"
+                                implementationClass="easy.git.emoji.prompt.contributor.JavaEmojiCompletionContributor"/>
+        <completion.contributor language="TEXT" order="first, before commitCompletion"
+                                implementationClass="easy.git.emoji.prompt.contributor.PlainTextCompletionContributor"/>
+        <completion.contributor language="Markdown" order="first"
+                                implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
     </extensions>
 
     <actions>
@@ -403,13 +431,19 @@
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
         <!--JavaDoc注释生成-->
         <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="JavaDoc"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK">
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
         </action>
-
+        <!--Background Image 背景图动态切换-->
+        <group id="DynamicBackgroundImageActionGroups" class="easy.action.background.DynamicBackgroundImageActionGroup"
+               text="BackgroundImage" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.PICTURE" popup="true" compact="true"/>
+        <!--插件检查更新-->
+        <action id="PluginForUpdateAction" class="easy.action.PluginForUpdateAction" text="ForUpdate"
+                description="EasyTool development assistance tools" icon="AllIcons.Ide.Notification.PluginUpdate"/>
 
         <!--工具栏快捷菜单-->
         <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
@@ -435,6 +469,8 @@
             <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
+            <reference ref="DynamicBackgroundImageActionGroups"/>
+            <reference ref="PluginForUpdateAction"/>
         </group>
         <!--控制台右键菜单-->
         <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -448,6 +484,9 @@
             <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
+            <reference ref="DynamicBackgroundImageActionGroups"/>
+            <reference ref="PluginForUpdateAction"/>
+
         </group>
 
     </actions>

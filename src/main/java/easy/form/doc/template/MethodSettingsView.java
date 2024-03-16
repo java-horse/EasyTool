@@ -1,11 +1,13 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
+import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
+import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
 
 import javax.swing.*;
@@ -26,16 +28,19 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
     private JRadioButton customRadioButton;
     private JTable innerTable;
     private JScrollPane innerScrollPane;
+    private JLabel defaultRadioTipLabel;
     private JTable customTable;
     private static Map<String, String> innerMap;
 
     static {
         innerMap = Maps.newLinkedHashMap();
-        innerMap.put("$DOC$", "注释信息");
-        innerMap.put("$PARAMS$", "遍历传入参数并添加注释");
-        innerMap.put("$RETURN$", "返回值类型");
-        innerMap.put("$THROWS$", "异常类型并注释");
-        innerMap.put("$SEE$", "引用传入参数类型和返回值类型");
+        innerMap.put(JavaDocInnerVariableEnum.DOC.name, JavaDocInnerVariableEnum.DOC.value);
+        innerMap.put(JavaDocInnerVariableEnum.PARAMS.name, JavaDocInnerVariableEnum.PARAMS.value);
+        innerMap.put(JavaDocInnerVariableEnum.RETURN.name, JavaDocInnerVariableEnum.RETURN.value);
+        innerMap.put(JavaDocInnerVariableEnum.AUTHOR.name, JavaDocInnerVariableEnum.AUTHOR.value);
+        innerMap.put(JavaDocInnerVariableEnum.DATE.name, JavaDocInnerVariableEnum.DATE.value);
+        innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
+        innerMap.put(JavaDocInnerVariableEnum.THROWS.name, JavaDocInnerVariableEnum.THROWS.value);
     }
 
     private void createUIComponents() {
@@ -92,6 +97,18 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
 
     public MethodSettingsView(JavaDocConfig config) {
         super(config);
+        // 添加提示标签
+        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
+        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+                "/**<br>" +
+                " * $DOC$<br>" +
+                " * <br>" +
+                " * $PARAMS$<br>" +
+                " * $RETURN$<br>" +
+                " * @author $AUTHOR$<br>" +
+                " * @date $DATE$<br>" +
+                " * $THROWS$<br>" +
+                " */");
         // 添加单选按钮事件
         defaultRadioButton.addChangeListener(e -> {
             JRadioButton button = (JRadioButton) e.getSource();

@@ -1,20 +1,19 @@
 package easy.form.doc.template;
 
 import com.google.common.collect.Maps;
-import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
-import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
+import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
 import org.apache.commons.collections.MapUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -32,19 +31,20 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
     private JRadioButton customRadioButton;
     private JTable innerTable;
     private JScrollPane innerScrollPane;
+    private JLabel defaultRadioTipLabel;
     private JTable customTable;
     private static Map<String, String> innerMap;
 
     static {
         innerMap = Maps.newLinkedHashMap();
-        innerMap.put("$DOC$", "注释信息");
-        innerMap.put("$AUTHOR$", "作者信息，可在通用配置里修改作者信息 (默认取系统用户名)");
-        innerMap.put("$DATE$", "日期信息，格式可在通用配置中修改 (默认格式: " + Constants.JAVA_DOC.DEFAULT_DATE_FORMAT + ")");
-        innerMap.put("$SINCE$", "起始版本，默认1.0.0");
-        innerMap.put("$SEE$", "父类或接口链接");
-        innerMap.put("$VERSION$", "默认：1.0.0");
-        innerMap.put("$PROJECT$", "当前项目名称");
-        innerMap.put("$PACKAGE$", "当前包路径");
+        innerMap.put(JavaDocInnerVariableEnum.DOC.name, JavaDocInnerVariableEnum.DOC.value);
+        innerMap.put(JavaDocInnerVariableEnum.AUTHOR.name, JavaDocInnerVariableEnum.AUTHOR.value);
+        innerMap.put(JavaDocInnerVariableEnum.DATE.name, JavaDocInnerVariableEnum.DATE.value);
+        innerMap.put(JavaDocInnerVariableEnum.SINCE.name, JavaDocInnerVariableEnum.SINCE.value);
+        innerMap.put(JavaDocInnerVariableEnum.SEE.name, JavaDocInnerVariableEnum.SEE.value);
+        innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
+        innerMap.put(JavaDocInnerVariableEnum.PROJECT.name, JavaDocInnerVariableEnum.PROJECT.value);
+        innerMap.put(JavaDocInnerVariableEnum.PACKAGE.name, JavaDocInnerVariableEnum.PACKAGE.value);
     }
 
     private void createUIComponents() {
@@ -100,6 +100,15 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
 
     public ClassSettingsView(JavaDocConfig config) {
         super(config);
+        // 添加提示标签
+        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
+        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+                "/**<br>" +
+                " * $DOC$<br>" +
+                " * <br>" +
+                " * @author $AUTHOR$<br>" +
+                " * @date $DATE$<br>" +
+                " */");
         // 添加单选按钮事件
         defaultRadioButton.addChangeListener(e -> {
             JRadioButton button = (JRadioButton) e.getSource();

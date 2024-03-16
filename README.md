@@ -1,14 +1,23 @@
 <div style="text-align: center; font-size: xxx-large; margin-top: 1em; margin-bottom: 0.5em;"> <strong>EasyTool</strong> </div>
 <div style="text-align: center;"> EasyTool 多功能插件工具集</div>
 <div style="text-align: center;">
-    <img src="https://img.shields.io/jetbrains/plugin/v/21589" alt="JetBrains Plugin Version" />
-    <img src="https://gitee.com/milubin/easy-tool-plugin/badge/star.svg" alt="Gitee Start" />
+    <p>    
+        <img src="https://gitee.com/milubin/easy-tool-plugin/badge/star.svg" alt="Gitee Start" />
+        <img src="https://img.shields.io/github/license/java-horse/EasyTool-Plugin" alt="Github license" />
+        <img src="https://img.shields.io/github/followers/java-horse" alt="Github followers" />
+    </p>
+    <p>
+        <img src="https://img.shields.io/jetbrains/plugin/v/21589" alt="JetBrains Plugin Version" />
+        <img src="https://img.shields.io/jetbrains/plugin/d/21589" alt="JetBrains Plugin Download" />
+        <img src="https://img.shields.io/jetbrains/plugin/r/stars/21589" alt="JetBrains Plugin Starts" />
+    </p>
 </div>
 
 ## 简介|Intro
 
 `EasyTool` 是一个支持多平台的插件工具集，具有日常编程过程中常用的功能特性，包括但不限于中英文字符互转、
-中英互译、Swagger2.x 注解一键生成、JavaDoc注释一键生成、Mybatis Log 日志还原、Git 提交信息规范模板、Git Emoji 表情弹窗等功能特性。
+中英互译、Swagger2.x 注解一键生成、JavaDoc注释一键生成、Mybatis Log 日志还原、Git 提交信息规范模板、Git Emoji 表情弹窗、Background
+Image Plus背景图轮播等功能特性。
 并提供一系列可视化、个性化的配置界面，
 具体功能可在安装插件后尽情体验。
 
@@ -54,6 +63,8 @@
         * 小牛翻译（推荐）
         * 彩云翻译
         * 同花顺翻译
+        * CNKI学术翻译
+        * 有道翻译（Free）
         * 微软翻译（API）
         * 微软翻译（Free）
         * 谷歌翻译（API）
@@ -80,6 +91,7 @@
 * 支持选中`Cron`表达式动态解析、自动识别`@Scheduled`注解并在右侧添加小图标按钮
 * 支持 Git Commit 时按照模板进行提交信息填写并自动组装
 * 支持 Git Commit 时添加 Emoji 标识
+    * 支持 Git Commit Message 消息文本输入 英文冒号+Emoji英文字符 自动提示（支持Markdown、Java、Txt等文件）
 * 支持选中文本右键快捷Web搜索
 * 支持快捷生成 `serialVersionUID`, 快捷键: `CTRL + SHIFT + ALT + \`
 * 支持自动复制接口完整URL，自动尝试获取项目端口号，默认端口为`8080`
@@ -89,19 +101,22 @@
 
 ## 示例|Example
 
-| --                                                                |                                --                                 |
-|-------------------------------------------------------------------|:-----------------------------------------------------------------:|
-| ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJRqf.md.png)     |   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJfZ8.md.png)   |
-| ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJ2sP.md.png)     |   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJgMt.md.png)   |
-| ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJ6xI.md.png)     | ![EasyTool示例](https://s2.loli.net/2024/02/01/GtbruVxFQlL4jzd.png) |
+|                                --                                 |                                --                                 |
+|:-----------------------------------------------------------------:|:-----------------------------------------------------------------:|
+|   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJRqf.md.png)   |   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJfZ8.md.png)   |
+|   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsvfzj.md.png)   |   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJgMt.md.png)   |
+|   ![EasyTool示例](https://s11.ax1x.com/2024/02/01/pFMJ6xI.md.png)   | ![EasyTool示例](https://s2.loli.net/2024/02/01/GtbruVxFQlL4jzd.png) |
 | ![EasyTool示例](https://s2.loli.net/2024/02/01/XO9g2hSnkbwWAqa.png) | ![EasyTool示例](https://s2.loli.net/2024/02/01/wJuaboTyjLrZilY.png) |
 | ![EasyTool示例](https://s2.loli.net/2024/02/01/mzQrMeI3VuPnJjS.png) | ![EasyTool示例](https://s2.loli.net/2024/02/01/o9H7siMe5AfjpKh.png) |
 | ![EasyTool示例](https://s2.loli.net/2024/02/01/m6fPA9DBwv5Kx21.png) | ![EasyTool示例](https://s2.loli.net/2024/02/01/1mXHVLv9ciBfsEO.png) |
+|   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsvWWQ.md.png)   |   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsv4Qs.md.png)   |
+|   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsv7wV.md.png)   |   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsvILq.md.png)   |
+|   ![EasyTool示例](https://s21.ax1x.com/2024/03/09/pFsvTe0.md.png)   |                                                                   |
 
 ## 捐赠|Donate
 
-| 平台  |                          😀                           |
-|-----|:-----------------------------------------------------:|
+| 平台  |                          😎                           |
+|:---:|:-----------------------------------------------------:|
 | 微信  |  ![微信](https://s11.ax1x.com/2024/02/01/pFMJ0aD.png)   |
 | 支付宝 |  ![支付宝](https://s11.ax1x.com/2024/02/01/pFMJwVO.png)  |
 | 公众号 | ![微信公众号](https://s11.ax1x.com/2024/02/01/pFMJaqK.jpg) |

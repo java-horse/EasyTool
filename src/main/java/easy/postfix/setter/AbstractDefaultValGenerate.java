@@ -23,7 +23,7 @@ public abstract class AbstractDefaultValGenerate extends AbstractMethodListGener
     }
 
     protected String generateDefaultVal(Project project, Set<String> newImportList, PsiParameter parameter) {
-        String defaultVal = "";
+        String defaultVal = StringUtils.EMPTY;
         if (generateDefaultVal) {
             PsiType psiType = parameter.getType();
             String typeName = psiType.getPresentableText();
@@ -32,8 +32,7 @@ public abstract class AbstractDefaultValGenerate extends AbstractMethodListGener
             if (defaultVal0 != null) {
                 defaultVal = defaultVal0;
             } else {
-                if (psiType instanceof PsiClassReferenceType) {
-                    PsiClassReferenceType psiClassReferenceType = (PsiClassReferenceType) psiType;
+                if (psiType instanceof PsiClassReferenceType psiClassReferenceType) {
                     PsiClass psiClass = psiClassReferenceType.resolve();
                     if (psiClass == null) {
                         return StringUtils.EMPTY;

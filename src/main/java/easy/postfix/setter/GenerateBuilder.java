@@ -7,6 +7,7 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiParameterList;
 import easy.postfix.base.BaseVar;
 import easy.postfix.util.PsiMethodUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -29,19 +30,19 @@ public class GenerateBuilder extends AbstractDefaultValGenerate {
     @NotNull
     public String generateCodeByMethod(Set<String> newImportList, PsiMethod method) {
         if (baseVar == null) {
-            return "";
+            return StringUtils.EMPTY;
         }
         Project project = method.getProject();
         PsiParameterList parameterList = method.getParameterList();
         PsiParameter[] parameters = parameterList.getParameters();
         if (parameters.length > 0) {
             PsiParameter parameter = parameters[0];
-            String methodName = method.getName().replaceFirst("set", "");
+            String methodName = method.getName().replaceFirst("set", StringUtils.EMPTY);
             methodName = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
             String defaultVal = generateDefaultVal(project, newImportList, parameter);
             return "." + methodName + "(" + defaultVal + ")";
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 

@@ -21,6 +21,7 @@ public class JavaDocSettingView {
     private JLabel methodReturnTypeLabel;
     private JComboBox propertyCommentTypeComboBox;
     private JLabel propertyCommentTypeLabel;
+    private JComboBox propertyCommentModelComboBox;
 
 
     public JavaDocSettingView() {
@@ -36,6 +37,7 @@ public class JavaDocSettingView {
         setDateFormatTextField(javaDocConfig.getDateFormat());
         setMethodReturnTypeComboBox(javaDocConfig.getMethodReturnType());
         setPropertyCommentTypeComboBox(javaDocConfig.getPropertyCommentType());
+        setPropertyCommentModelComboBox(javaDocConfig.getPropertyCommentModel());
     }
 
     public JComponent getComponent() {
@@ -113,4 +115,13 @@ public class JavaDocSettingView {
     public void setPropertyCommentTypeLabel(JLabel propertyCommentTypeLabel) {
         this.propertyCommentTypeLabel = propertyCommentTypeLabel;
     }
+
+    public JComboBox getPropertyCommentModelComboBox() {
+        return propertyCommentModelComboBox;
+    }
+
+    public void setPropertyCommentModelComboBox(String propertyCommentModelComboBox) {
+        this.propertyCommentModelComboBox.setSelectedItem(propertyCommentModelComboBox);
+    }
+
 }

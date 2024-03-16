@@ -68,7 +68,6 @@ public class SwaggerAction extends AnAction {
      */
     private static void execSwagger(@NotNull AnActionEvent e, Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
         new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
-        
     }
 
     @Override

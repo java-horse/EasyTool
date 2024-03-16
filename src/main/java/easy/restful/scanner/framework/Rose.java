@@ -6,11 +6,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import easy.enums.RestfulSearchAnnotationTypeEnum;
 import easy.restful.annotation.RoseHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
 import easy.restful.scanner.IJavaFramework;
-import easy.restful.scanner.KotlinUtil;
 import easy.util.RestUtil;
 import easy.util.SystemUtil;
 import org.jetbrains.annotations.NotNull;
@@ -33,13 +33,13 @@ public class Rose implements IJavaFramework {
     public boolean isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
         try {
             JavaAnnotationIndex instance = JavaAnnotationIndex.getInstance();
-            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(Control.Path.getName(), project, module.getModuleScope()));
+            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getName(), project, module.getModuleScope()));
             if (!annotations.isEmpty()) {
                 for (PsiAnnotation annotation : annotations) {
                     if (annotation == null) {
                         continue;
                     }
-                    if (Control.Path.getQualifiedName().equals(annotation.getQualifiedName())) {
+                    if (RestfulSearchAnnotationTypeEnum.ROSE_PATH.getQualifiedName().equals(annotation.getQualifiedName())) {
                         return true;
                     }
                 }
@@ -52,18 +52,13 @@ public class Rose implements IJavaFramework {
     @Override
     public Collection<ApiService> getService(@NotNull Project project, @NotNull Module module) {
         List<ApiService> moduleList = new ArrayList<>(0);
-
         List<PsiClass> controllers = getAllControllerClass(project, module);
         if (controllers.isEmpty()) {
             return moduleList;
         }
-
         for (PsiClass controllerClass : controllers) {
             moduleList.addAll(getService(controllerClass));
         }
-
-        moduleList.addAll(KotlinUtil.getKotlinRequests(project, module, Control.values()));
-
         return moduleList;
     }
 
@@ -101,7 +96,7 @@ public class Rose implements IJavaFramework {
         if (psiClass == null) {
             return false;
         }
-        return psiClass.hasAnnotation(Control.Path.getQualifiedName());
+        return psiClass.hasAnnotation(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getQualifiedName());
     }
 
     /**
@@ -114,22 +109,15 @@ public class Rose implements IJavaFramework {
     @NotNull
     private List<PsiClass> getAllControllerClass(@NotNull Project project, @NotNull Module module) {
         List<PsiClass> allControllerClass = new ArrayList<>();
-
         GlobalSearchScope moduleScope = SystemUtil.getModuleScope(module);
-        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
-                Control.Path.getName(),
-                project,
-                moduleScope
-        );
+        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.ROSE_PATH.getName(), project, moduleScope);
         for (PsiAnnotation psiAnnotation : pathList) {
             PsiModifierList psiModifierList = (PsiModifierList) psiAnnotation.getParent();
             PsiElement psiElement = psiModifierList.getParent();
 
-            if (!(psiElement instanceof PsiClass)) {
+            if (!(psiElement instanceof PsiClass psiClass)) {
                 continue;
             }
-
-            PsiClass psiClass = (PsiClass) psiElement;
             allControllerClass.add(psiClass);
         }
         return allControllerClass;
@@ -193,27 +181,21 @@ public class Rose implements IJavaFramework {
             if (value instanceof String) {
                 paths.add(SystemUtil.formatPath(value));
             } else if (value instanceof List) {
-                //noinspection unchecked,rawtypes
                 List<Object> list = (List) value;
                 list.forEach(item -> paths.add(SystemUtil.formatPath(item)));
             } else {
                 throw new IllegalArgumentException(String.format(
-                        "Scan api: %s\n" +
-                                "Class: %s",
+                        "Scan api: %s\n" + "Class: %s",
                         value,
                         value != null ? value.getClass() : null
                 ));
             }
             hasImplicitPath = false;
         }
-        if (hasImplicitPath) {
-            if (psiMethod != null) {
-                paths.add("/");
-            }
+        if (hasImplicitPath && psiMethod != null) {
+            paths.add("/");
         }
-
         List<ApiService> requests = new ArrayList<>(paths.size());
-
         paths.forEach(path -> {
             for (HttpMethod method : methods) {
                 if (method.equals(HttpMethod.REQUEST) && methods.size() > 1) {
@@ -241,33 +223,7 @@ public class Rose implements IJavaFramework {
         for (PsiAnnotation annotation : RestUtil.getMethodAnnotations(method)) {
             requests.addAll(getRequests(annotation, method));
         }
-
         return requests;
     }
-
-    enum Control implements KotlinUtil.Qualified {
-
-        /**
-         * <p>@Path</p>
-         */
-        Path("Path", "net.paoding.rose.web.annotation.Path");
-
-        private final String name;
-        private final String qualifiedName;
-
-        Control(String name, String qualifiedName) {
-            this.name = name;
-            this.qualifiedName = qualifiedName;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getQualifiedName() {
-            return qualifiedName;
-        }
-    }
+    
 }

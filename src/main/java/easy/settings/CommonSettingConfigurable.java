@@ -51,6 +51,7 @@ public class CommonSettingConfigurable implements Configurable {
                 || !Objects.equals(commonConfig.getSwaggerConfirmNoCheckBox(), commonSettingView.getSwaggerConfirmNoCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getSearchApiDefaultIconRadioButton(), commonSettingView.getSearchApiDefaultIconRadioButton().isSelected())
                 || !Objects.equals(commonConfig.getSearchApiCuteIconRadioButton(), commonSettingView.getSearchApiCuteIconRadioButton().isSelected())
+                || !Objects.equals(commonConfig.getRestfulDisplayApiCommentCheckBox(), commonSettingView.getRestfulDisplayApiCommentCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox(), commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getTranslateConfirmInputModelNoCheckBox(), commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getTabHighlightEnableCheckBox(), commonSettingView.getTabHighlightEnableCheckBox().isSelected())
@@ -74,6 +75,7 @@ public class CommonSettingConfigurable implements Configurable {
         commonConfig.setSwaggerConfirmNoCheckBox(commonSettingView.getSwaggerConfirmNoCheckBox().isSelected());
         commonConfig.setSearchApiDefaultIconRadioButton(commonSettingView.getSearchApiDefaultIconRadioButton().isSelected());
         commonConfig.setSearchApiCuteIconRadioButton(commonSettingView.getSearchApiCuteIconRadioButton().isSelected());
+        commonConfig.setRestfulDisplayApiCommentCheckBox(commonSettingView.getRestfulDisplayApiCommentCheckBox().isSelected());
         commonConfig.setTranslateConfirmInputModelYesCheckBox(commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected());
         commonConfig.setTranslateConfirmInputModelNoCheckBox(commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
         commonConfig.setTabHighlightEnableCheckBox(commonSettingView.getTabHighlightEnableCheckBox().isSelected());

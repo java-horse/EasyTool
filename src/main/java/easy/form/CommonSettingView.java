@@ -55,6 +55,9 @@ public class CommonSettingView {
     private JFormattedTextField tabHighlightGradientStepFormattedTextField;
     private JLabel convertCharGroupLabel;
     private JCheckBox convertCharEnableCheckBox;
+    private JLabel restfulDisplayApiCommentLabel;
+    private JCheckBox restfulDisplayApiCommentCheckBox;
+    private JLabel restfulDisplayApiCommentTipLabel;
 
     public CommonSettingView() {
         // 设置提示小图标和提示信息
@@ -93,6 +96,7 @@ public class CommonSettingView {
         tabBackgroundTipsLabel.setIcon(AllIcons.General.ContextHelp);
         tabHighlightSizeTipsLabel.setIcon(AllIcons.General.ContextHelp);
         tabHighlightGradientStepTipsLabel.setIcon(AllIcons.General.ContextHelp);
+        restfulDisplayApiCommentTipLabel.setIcon(AllIcons.General.ContextHelp);
 
         swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
         searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
@@ -100,6 +104,7 @@ public class CommonSettingView {
         tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
         tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
         tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
+        restfulDisplayApiCommentTipLabel.setToolTipText("开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
     }
 
     /**
@@ -138,6 +143,7 @@ public class CommonSettingView {
         setTabHighlightSizeComboBox(commonConfig.getTabHighlightSizeComboBox());
         setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
         setConvertCharEnableCheckBox(commonConfig.getConvertCharEnableCheckBox());
+        setRestfulDisplayApiCommentCheckBox(commonConfig.getRestfulDisplayApiCommentCheckBox());
     }
 
     public JComponent getComponent() {
@@ -368,4 +374,27 @@ public class CommonSettingView {
         this.translateGroupLabel = translateGroupLabel;
     }
 
+    public JLabel getRestfulDisplayApiCommentLabel() {
+        return restfulDisplayApiCommentLabel;
+    }
+
+    public void setRestfulDisplayApiCommentLabel(JLabel restfulDisplayApiCommentLabel) {
+        this.restfulDisplayApiCommentLabel = restfulDisplayApiCommentLabel;
+    }
+
+    public JCheckBox getRestfulDisplayApiCommentCheckBox() {
+        return restfulDisplayApiCommentCheckBox;
+    }
+
+    public void setRestfulDisplayApiCommentCheckBox(Boolean restfulDisplayApiCommentCheckBox) {
+        this.restfulDisplayApiCommentCheckBox.setSelected(restfulDisplayApiCommentCheckBox);
+    }
+
+    public JLabel getRestfulDisplayApiCommentTipLabel() {
+        return restfulDisplayApiCommentTipLabel;
+    }
+
+    public void setRestfulDisplayApiCommentTipLabel(JLabel restfulDisplayApiCommentTipLabel) {
+        this.restfulDisplayApiCommentTipLabel = restfulDisplayApiCommentTipLabel;
+    }
 }

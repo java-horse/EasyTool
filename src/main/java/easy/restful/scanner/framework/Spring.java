@@ -3,16 +3,20 @@ package easy.restful.scanner.framework;
 import com.intellij.lang.jvm.annotation.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import easy.enums.RestfulSearchAnnotationTypeEnum;
 import easy.restful.annotation.SpringHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
 import easy.restful.scanner.IJavaFramework;
-import easy.restful.scanner.KotlinUtil;
 import easy.util.RestUtil;
 import easy.util.SystemUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,28 +34,28 @@ public class Spring implements IJavaFramework {
     }
 
     @Override
-    public boolean isRestfulProject(@NotNull final Project project, @NotNull final Module module) {
+    public boolean isRestfulProject(@NotNull Project project, @NotNull Module module) {
         try {
             JavaAnnotationIndex instance = JavaAnnotationIndex.getInstance();
-            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(Control.Controller.getName(), project, module.getModuleScope()));
+            Set<PsiAnnotation> annotations = new HashSet<>(instance.get(RestfulSearchAnnotationTypeEnum.CONTROLLER.getName(), project, module.getModuleScope()));
             if (!annotations.isEmpty()) {
                 for (PsiAnnotation annotation : annotations) {
                     if (annotation == null) {
                         continue;
                     }
-                    if (Control.Controller.getQualifiedName().equals(annotation.getQualifiedName())) {
+                    if (RestfulSearchAnnotationTypeEnum.CONTROLLER.getQualifiedName().equals(annotation.getQualifiedName())) {
                         return true;
                     }
                 }
             }
             annotations.clear();
-            annotations.addAll(instance.get(Control.RestController.getName(), project, module.getModuleScope()));
+            annotations.addAll(instance.get(RestfulSearchAnnotationTypeEnum.REST_CONTROLLER.getName(), project, module.getModuleScope()));
             if (!annotations.isEmpty()) {
                 for (PsiAnnotation annotation : annotations) {
                     if (annotation == null) {
                         continue;
                     }
-                    if (Control.RestController.getQualifiedName().equals(annotation.getQualifiedName())) {
+                    if (RestfulSearchAnnotationTypeEnum.REST_CONTROLLER.getQualifiedName().equals(annotation.getQualifiedName())) {
                         return true;
                     }
                 }
@@ -63,19 +67,14 @@ public class Spring implements IJavaFramework {
 
     @Override
     public Collection<ApiService> getService(@NotNull Project project, @NotNull Module module) {
-        List<ApiService> moduleList = new ArrayList<>(0);
-
+        List<ApiService> moduleList = new ArrayList<>();
         List<PsiClass> controllers = getAllControllerClass(project, module);
-        if (controllers.isEmpty()) {
+        if (CollectionUtils.isEmpty(controllers)) {
             return moduleList;
         }
-
         for (PsiClass controllerClass : controllers) {
             moduleList.addAll(getService(controllerClass));
         }
-
-        moduleList.addAll(KotlinUtil.getKotlinRequests(project, module, Control.values()));
-
         return moduleList;
     }
 
@@ -114,8 +113,8 @@ public class Spring implements IJavaFramework {
         if (psiClass == null) {
             return false;
         }
-        return psiClass.hasAnnotation(Control.Controller.getQualifiedName())
-                || psiClass.hasAnnotation(Control.RestController.getQualifiedName());
+        return psiClass.hasAnnotation(RestfulSearchAnnotationTypeEnum.CONTROLLER.getQualifiedName())
+                || psiClass.hasAnnotation(RestfulSearchAnnotationTypeEnum.REST_CONTROLLER.getQualifiedName());
     }
 
     /**
@@ -128,27 +127,14 @@ public class Spring implements IJavaFramework {
     @NotNull
     private List<PsiClass> getAllControllerClass(@NotNull Project project, @NotNull Module module) {
         List<PsiClass> allControllerClass = new ArrayList<>();
-
         GlobalSearchScope moduleScope = SystemUtil.getModuleScope(module);
-        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
-                Control.Controller.getName(),
-                project,
-                moduleScope
-        );
-        pathList.addAll(JavaAnnotationIndex.getInstance().get(
-                Control.RestController.getName(),
-                project,
-                moduleScope
-        ));
+        Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.CONTROLLER.getName(), project, moduleScope);
+        pathList.addAll(JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.REST_CONTROLLER.getName(), project, moduleScope));
         for (PsiAnnotation psiAnnotation : pathList) {
-            PsiModifierList psiModifierList = (PsiModifierList) psiAnnotation.getParent();
-            PsiElement psiElement = psiModifierList.getParent();
-
-            if (!(psiElement instanceof PsiClass)) {
+            PsiElement psiElement = psiAnnotation.getParent().getParent();
+            if (!(psiElement instanceof PsiClass psiClass)) {
                 continue;
             }
-
-            PsiClass psiClass = (PsiClass) psiElement;
             allControllerClass.add(psiClass);
         }
         return allControllerClass;
@@ -163,9 +149,7 @@ public class Spring implements IJavaFramework {
      */
     @NotNull
     private List<ApiService> getRequests(@NotNull PsiAnnotation annotation, @Nullable PsiMethod psiMethod) {
-        SpringHttpMethodAnnotation spring = SpringHttpMethodAnnotation.getByQualifiedName(
-                annotation.getQualifiedName()
-        );
+        SpringHttpMethodAnnotation spring = SpringHttpMethodAnnotation.getByQualifiedName(annotation.getQualifiedName());
         if (annotation.getResolveScope().isSearchInLibraries()) {
             spring = SpringHttpMethodAnnotation.getByShortName(annotation.getQualifiedName());
         }
@@ -284,7 +268,6 @@ public class Spring implements IJavaFramework {
             return null;
         }
         CustomRefAnnotation otherAnnotation = new CustomRefAnnotation();
-
         for (JvmAnnotationAttribute attribute : qualifiedAnnotation.getAttributes()) {
             Object methodValues = getAnnotationValue(attribute, "method");
             if (methodValues != null) {
@@ -300,7 +283,6 @@ public class Spring implements IJavaFramework {
                 }
                 continue;
             }
-
             Object pathValues = getAnnotationValue(attribute, "path", "value");
             if (pathValues != null) {
                 List<?> paths = pathValues instanceof List ? ((List<?>) pathValues) : Collections.singletonList(pathValues);
@@ -354,37 +336,6 @@ public class Spring implements IJavaFramework {
             return values;
         }
         return null;
-    }
-
-    enum Control implements KotlinUtil.Qualified {
-
-        /**
-         * <p>@Controller</p>
-         */
-        Controller("Controller", "org.springframework.stereotype.Controller"),
-
-        /**
-         * <p>@RestController</p>
-         */
-        RestController("RestController", "org.springframework.web.bind.annotation.RestController");
-
-        private final String name;
-        private final String qualifiedName;
-
-        Control(String name, String qualifiedName) {
-            this.name = name;
-            this.qualifiedName = qualifiedName;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getQualifiedName() {
-            return qualifiedName;
-        }
     }
 
     private static class CustomRefAnnotation {

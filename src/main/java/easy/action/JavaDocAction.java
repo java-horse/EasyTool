@@ -1,17 +1,15 @@
 package easy.action;
 
 import cn.hutool.core.text.CharPool;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.javadoc.PsiDocComment;
 import easy.doc.service.JavaDocGenerateService;
 import easy.doc.service.JavaDocWriterService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -41,8 +39,7 @@ public class JavaDocAction extends AnAction {
         if (StringUtils.isBlank(comment)) {
             return;
         }
-        PsiDocComment psiDocComment = PsiElementFactory.getInstance(project).createDocCommentFromText(comment);
-        javaDocWriterService.writeJavadoc(project, psiElement, psiDocComment, endCount(comment, CharPool.LF));
+        javaDocWriterService.writeJavadoc(project, psiElement, comment, endCount(comment, CharPool.LF));
     }
 
     /**
@@ -66,6 +63,18 @@ public class JavaDocAction extends AnAction {
             }
         }
         return count;
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        Project project = e.getProject();
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return super.getActionUpdateThread();
     }
 
 }

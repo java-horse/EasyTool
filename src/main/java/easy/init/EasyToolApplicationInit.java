@@ -16,18 +16,19 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.listener.AppActiveListener;
 import easy.listener.TabHighlighterFileEditorListener;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+
 /**
- * Tab标签高亮初始化
+ * EasyTool插件启动初始化
  *
- * @project: EasyTool
- * @package: easy.init
- * @author: mabin
- * @date: 2023/12/20 11:24:00
+ * @project EasyTool
+ * @package easy.init
+ * @author mabin
+ * @date 2024/03/09 10:20
  */
 public class EasyToolApplicationInit implements StartupActivity, DumbAware {
 

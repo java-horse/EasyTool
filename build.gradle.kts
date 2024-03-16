@@ -1,3 +1,4 @@
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.21"
@@ -5,7 +6,7 @@ plugins {
 }
 
 group = "mabin"
-version = "2.0.4"
+version = "2.0.5"
 
 repositories {
     maven {
@@ -15,7 +16,8 @@ repositories {
 
 dependencies {
     // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
-    implementation("cn.hutool:hutool-http:5.8.16")
+    implementation("cn.hutool:hutool-http:5.8.26")
+    implementation("cn.hutool:hutool-crypto:5.8.26")
     implementation("com.cronutils:cron-utils:9.2.1") {
         exclude(group = "org.slf4j")
     }
@@ -24,7 +26,7 @@ dependencies {
 intellij {
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java", "org.jetbrains.kotlin"))
+    plugins.set(listOf("com.intellij.java","markdown"))
 }
 
 tasks {
@@ -32,9 +34,6 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
         options.encoding = "UTF-8"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {

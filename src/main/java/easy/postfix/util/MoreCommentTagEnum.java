@@ -34,8 +34,7 @@ public enum MoreCommentTagEnum {
     AMP_CURRENT_TAG("currentTag"),
     AMP_PID("AmpPid"),
     AMP_MOCK_VAL("mock-val"),
-    AMP_MOCK_KEY("mock-key"),
-    ;
+    AMP_MOCK_KEY("mock-key");
 
     private final String tag;
     private final boolean boolType;

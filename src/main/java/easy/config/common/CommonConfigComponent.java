@@ -29,6 +29,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig = new CommonConfig();
             commonConfig.setSwaggerConfirmYesCheckBox(Boolean.TRUE);
             commonConfig.setSearchApiDefaultIconRadioButton(Boolean.TRUE);
+            commonConfig.setRestfulDisplayApiCommentCheckBox(Boolean.FALSE);
             commonConfig.setTranslateConfirmInputModelYesCheckBox(Boolean.TRUE);
             commonConfig.setTabHighlightEnableCheckBox(Boolean.TRUE);
             CommonConfig.PersistentColor persistentColor = new CommonConfig.PersistentColor();
@@ -42,6 +43,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
         } else {
             commonConfig.setSwaggerConfirmYesCheckBox(Objects.isNull(commonConfig.getSwaggerConfirmYesCheckBox()) ? Boolean.TRUE : commonConfig.getSwaggerConfirmYesCheckBox());
             commonConfig.setSearchApiDefaultIconRadioButton(Objects.isNull(commonConfig.getSearchApiDefaultIconRadioButton()) ? Boolean.TRUE : commonConfig.getSearchApiDefaultIconRadioButton());
+            commonConfig.setRestfulDisplayApiCommentCheckBox(Objects.isNull(commonConfig.getRestfulDisplayApiCommentCheckBox()) ? Boolean.FALSE : commonConfig.getRestfulDisplayApiCommentCheckBox());
             commonConfig.setSwaggerConfirmYesCheckBox(Objects.isNull(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Boolean.TRUE : commonConfig.getTranslateConfirmInputModelYesCheckBox());
             commonConfig.setTabHighlightEnableCheckBox(Objects.isNull(commonConfig.getTabHighlightEnableCheckBox()) ? Boolean.TRUE : commonConfig.getTabHighlightEnableCheckBox());
             CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();

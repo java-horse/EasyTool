@@ -14,7 +14,7 @@ import easy.enums.BaseTypeEnum;
 import easy.enums.RequestAnnotationEnum;
 import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
-import easy.service.TranslateService;
+import easy.translate.TranslateService;
 import easy.util.LanguageUtil;
 import easy.util.SwaggerCommentUtil;
 import org.apache.commons.collections.CollectionUtils;

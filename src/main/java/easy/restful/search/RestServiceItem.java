@@ -2,24 +2,29 @@ package easy.restful.search;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.pom.Navigatable;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.MinusculeMatcher;
 import com.intellij.psi.codeStyle.NameUtil;
+import com.intellij.psi.javadoc.PsiDocComment;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
+import easy.enums.SwaggerAnnotationEnum;
 import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.kotlin.psi.KtClass;
-import org.jetbrains.kotlin.psi.KtNamedFunction;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class RestServiceItem implements NavigationItem {
+
+    private final CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
 
     private final PsiElement psiElement;
     private PsiMethod psiMethod;
@@ -53,7 +58,6 @@ public class RestServiceItem implements NavigationItem {
     @Contract(" -> new")
     public ItemPresentation getPresentation() {
         return new ItemPresentation() {
-
             @Nullable
             @Override
             public String getPresentableText() {
@@ -63,22 +67,20 @@ public class RestServiceItem implements NavigationItem {
             @Override
             public String getLocationString() {
                 String location = null;
-
-                if (psiElement instanceof PsiMethod) {
-                    PsiMethod psiMethod = ((PsiMethod) psiElement);
+                if (psiElement instanceof PsiMethod psiMethod) {
                     PsiClass psiClass = psiMethod.getContainingClass();
                     if (psiClass != null) {
                         location = psiClass.getName();
                     }
                     location += "#" + psiMethod.getName();
+                    if (Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getRestfulDisplayApiCommentCheckBox())) {
+                        String methodComment = getMethodComment(psiMethod);
+                        if (StringUtils.isNotBlank(methodComment)) {
+                            location += "#" + methodComment;
+                        }
+                    }
                     location = "Java: (" + location + ")";
-                } else if (psiElement instanceof KtNamedFunction) {
-                    KtNamedFunction function = (KtNamedFunction) psiElement;
-                    location = ((KtClass) function.getParent().getParent()).getName();
-                    location += "#" + function.getName();
-                    location = "Kotlin: (" + location + ")";
                 }
-
                 if (psiElement != null) {
                     location += " in " + psiElement.getResolveScope().getDisplayName();
                 }
@@ -91,6 +93,45 @@ public class RestServiceItem implements NavigationItem {
                 return Icons.getMethodIcon(method);
             }
         };
+    }
+
+    /**
+     * 获取方法注释
+     * 优先规则：普通JavaDoc注释 -> swagger的ApiOperation中的value属性
+     *
+     * @param psiMethod psi方法
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/03/06 17:59
+     */
+    private String getMethodComment(PsiMethod psiMethod) {
+        try {
+            // 获取JavaDoc中第一行非空注释元素即可
+            PsiDocComment docComment = psiMethod.getDocComment();
+            if (Objects.nonNull(docComment)) {
+                for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
+                    String text = descriptionElement.getText().trim();
+                    if (StringUtils.isNotEmpty(text)) {
+                        return text;
+                    }
+                }
+            }
+            for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
+                if (!StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage())) {
+                    continue;
+                }
+                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+                if (Objects.isNull(psiAnnotationAttributeValue)) {
+                    continue;
+                }
+                String valueText = psiAnnotationAttributeValue.getText();
+                return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
+                        StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
+            }
+            return StringUtils.EMPTY;
+        } catch (Exception e) {
+            return StringUtils.EMPTY;
+        }
     }
 
     @Override
