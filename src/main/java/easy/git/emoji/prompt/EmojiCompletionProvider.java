@@ -53,7 +53,6 @@ public class EmojiCompletionProvider extends CompletionProvider<CompletionParame
             LookupElementBuilder lookupElementBuilder = LookupElementBuilder.create(emojiData.getCode() + StringUtils.SPACE + emojiData.getDescription()
                             + StringUtils.SPACE + emojiData.getEmoji())
                     .withIcon(emojiData.getIcon())
-                    .withLookupStrings(Arrays.asList(emojiData.getCode(), emojiData.getCode()))
                     .withInsertHandler((insertionContext, lookupElement) -> {
                         Document document = insertionContext.getDocument();
                         document.replaceString(colonPosition, insertionContext.getTailOffset(), emojiData.getEmoji());
