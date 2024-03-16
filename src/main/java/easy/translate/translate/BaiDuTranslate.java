@@ -66,17 +66,18 @@ public class BaiDuTranslate extends AbstractTranslate {
      * @date 2023/9/4 13:56
      **/
     private String translate(String text, String source, String target) {
-        if (StringUtils.isBlank(text)) {
+        TranslateConfig translateConfig = getTranslateConfig();
+        String appId = translateConfig.getAppId();
+        if (StringUtils.isNoneBlank(text, appId, translateConfig.getAppSecret())) {
             return StringUtils.EMPTY;
         }
         try {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 3; i++) {
                 Map<String, Object> paramsMap = new HashMap<>(16);
                 paramsMap.put("q", text);
                 paramsMap.put("from", source);
                 paramsMap.put("to", target);
-                TranslateConfig translateConfig = getTranslateConfig();
-                String appId = translateConfig.getAppId();
+
                 paramsMap.put("appid", appId);
                 String salt = Long.toString(System.currentTimeMillis());
                 paramsMap.put("salt", salt);

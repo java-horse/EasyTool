@@ -7,7 +7,6 @@ import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
 import easy.base.Constants;
 import easy.util.JsonUtil;
-import easy.util.LanguageUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,9 +22,9 @@ import java.util.Objects;
 /**
  * git表情符号资源加载服务
  *
+ * @author mabin
  * @project EasyTool
  * @package easy.git.emoji
- * @author mabin
  * @date 2024/03/08 15:19
  */
 public class GitEmojiHelper {
@@ -44,11 +43,7 @@ public class GitEmojiHelper {
      */
     public List<GitEmojiData> loadEmoji(String language) {
         if (CollectionUtils.isNotEmpty(GIT_EMOJI_LIST)) {
-            GitEmojiData emojiData = GIT_EMOJI_LIST.get(Constants.NUM.ZERO);
-            boolean containsChinese = LanguageUtil.isContainsChinese(emojiData.getDescription());
-            if (StringUtils.equals(language, "en") && !containsChinese) {
-                return GIT_EMOJI_LIST;
-            } else if (StringUtils.equals(language, "zh-CN") && containsChinese) {
+            if (StringUtils.equals(GIT_EMOJI_LIST.get(Constants.NUM.ZERO).getLanguage(), language)) {
                 return GIT_EMOJI_LIST;
             }
         }
@@ -60,14 +55,14 @@ public class GitEmojiHelper {
                 while ((line = reader.readLine()) != null) {
                     content.append(line);
                 }
-                Gitmojis gitmojisJson = JsonUtil.fromJson(content.toString(), Gitmojis.class);
-                if (Objects.isNull(gitmojisJson)) {
+                Gitmojis gitmojis = JsonUtil.fromJson(content.toString(), Gitmojis.class);
+                if (Objects.isNull(gitmojis)) {
                     return GIT_EMOJI_LIST;
                 }
                 GIT_EMOJI_LIST.clear();
                 GitEmojiData emojiData;
-                for (Gitmojis.Gitmoji gitmoji : gitmojisJson.getGitmojis()) {
-                    emojiData = new GitEmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription());
+                for (Gitmojis.Gitmoji gitmoji : gitmojis.getGitmojis()) {
+                    emojiData = new GitEmojiData(gitmoji.getCode(), gitmoji.getEmoji(), gitmoji.getDescription(), gitmojis.getLanguage());
                     GIT_EMOJI_LIST.add(emojiData);
                 }
             }

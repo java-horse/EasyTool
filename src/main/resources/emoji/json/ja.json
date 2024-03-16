@@ -1,11 +1,11 @@
 {
-  "language": "en",
+  "language": "ja",
   "gitmojis": [
     {
       "emoji": "🎨",
       "entity": "&#x1f3a8;",
       "code": ":art:",
-      "description": "Improve structure / format of the code.",
+      "description": "コードの構造/フォーマットを改善する",
       "name": "art",
       "semver": null
     },
@@ -13,7 +13,7 @@
       "emoji": "⚡️",
       "entity": "&#x26a1;",
       "code": ":zap:",
-      "description": "Improve performance.",
+      "description": "パフォーマンスを向上させる",
       "name": "zap",
       "semver": "patch"
     },
@@ -21,7 +21,7 @@
       "emoji": "🔥",
       "entity": "&#x1f525;",
       "code": ":fire:",
-      "description": "Remove code or files.",
+      "description": "コードやファイルを削除する",
       "name": "fire",
       "semver": null
     },
@@ -29,7 +29,7 @@
       "emoji": "🐛",
       "entity": "&#x1f41b;",
       "code": ":bug:",
-      "description": "Fix a bug.",
+      "description": "BUGを修正する",
       "name": "bug",
       "semver": "patch"
     },
@@ -37,7 +37,7 @@
       "emoji": "🚑️",
       "entity": "&#128657;",
       "code": ":ambulance:",
-      "description": "Critical hotfix.",
+      "description": "重要な修正プログラム",
       "name": "ambulance",
       "semver": "patch"
     },
@@ -45,7 +45,7 @@
       "emoji": "✨",
       "entity": "&#x2728;",
       "code": ":sparkles:",
-      "description": "Introduce new features.",
+      "description": "新機能を追加する",
       "name": "sparkles",
       "semver": "minor"
     },
@@ -53,7 +53,7 @@
       "emoji": "📝",
       "entity": "&#x1f4dd;",
       "code": ":memo:",
-      "description": "Add or update documentation.",
+      "description": "ドキュメントを追加または更新する",
       "name": "memo",
       "semver": null
     },
@@ -61,7 +61,7 @@
       "emoji": "🚀",
       "entity": "&#x1f680;",
       "code": ":rocket:",
-      "description": "Deploy stuff.",
+      "description": "何かをデプロイする",
       "name": "rocket",
       "semver": null
     },
@@ -69,7 +69,7 @@
       "emoji": "💄",
       "entity": "&#ff99cc;",
       "code": ":lipstick:",
-      "description": "Add or update the UI and style files.",
+      "description": "UIやスタイルシートを追加または更新する",
       "name": "lipstick",
       "semver": "patch"
     },
@@ -77,7 +77,7 @@
       "emoji": "🎉",
       "entity": "&#127881;",
       "code": ":tada:",
-      "description": "Begin a project.",
+      "description": "プロジェクトを始める",
       "name": "tada",
       "semver": null
     },
@@ -85,7 +85,7 @@
       "emoji": "✅",
       "entity": "&#x2705;",
       "code": ":white_check_mark:",
-      "description": "Add, update, or pass tests.",
+      "description": "追加、更新、テストを通過する",
       "name": "white-check-mark",
       "semver": null
     },
@@ -93,7 +93,7 @@
       "emoji": "🔒️",
       "entity": "&#x1f512;",
       "code": ":lock:",
-      "description": "Fix security issues.",
+      "description": "セキュリティの問題を修正する",
       "name": "lock",
       "semver": "patch"
     },
@@ -101,7 +101,7 @@
       "emoji": "🔐",
       "entity": "&#x1f510;",
       "code": ":closed_lock_with_key:",
-      "description": "Add or update secrets.",
+      "description": "秘密を追加または更新する",
       "name": "closed-lock-with-key",
       "semver": null
     },
@@ -109,7 +109,7 @@
       "emoji": "🔖",
       "entity": "&#x1f516;",
       "code": ":bookmark:",
-      "description": "Release / Version tags.",
+      "description": "リリース/バージョンタグ",
       "name": "bookmark",
       "semver": null
     },
@@ -117,7 +117,7 @@
       "emoji": "🚨",
       "entity": "&#x1f6a8;",
       "code": ":rotating_light:",
-      "description": "Fix compiler / linter warnings.",
+      "description": "コンパイラ/linterの警告を修正する",
       "name": "rotating-light",
       "semver": null
     },
@@ -125,7 +125,7 @@
       "emoji": "🚧",
       "entity": "&#x1f6a7;",
       "code": ":construction:",
-      "description": "Work in progress.",
+      "description": "作業中",
       "name": "construction",
       "semver": null
     },
@@ -133,7 +133,7 @@
       "emoji": "💚",
       "entity": "&#x1f49a;",
       "code": ":green_heart:",
-      "description": "Fix CI Build.",
+      "description": "CIビルドを修正する",
       "name": "green-heart",
       "semver": null
     },
@@ -141,7 +141,7 @@
       "emoji": "⬇️",
       "entity": "⬇️",
       "code": ":arrow_down:",
-      "description": "Downgrade dependencies.",
+      "description": "依存関係をダウングレードする",
       "name": "arrow-down",
       "semver": "patch"
     },
@@ -149,7 +149,7 @@
       "emoji": "⬆️",
       "entity": "⬆️",
       "code": ":arrow_up:",
-      "description": "Upgrade dependencies.",
+      "description": "依存関係をアップグレードする",
       "name": "arrow-up",
       "semver": "patch"
     },
@@ -157,7 +157,7 @@
       "emoji": "📌",
       "entity": "&#x1F4CC;",
       "code": ":pushpin:",
-      "description": "Pin dependencies to specific versions.",
+      "description": "特定のバージョンに依存関係を固定する",
       "name": "pushpin",
       "semver": "patch"
     },
@@ -165,7 +165,7 @@
       "emoji": "👷",
       "entity": "&#x1f477;",
       "code": ":construction_worker:",
-      "description": "Add or update CI build system.",
+      "description": "CIビルドシステムを追加または更新する",
       "name": "construction-worker",
       "semver": null
     },
@@ -173,7 +173,7 @@
       "emoji": "📈",
       "entity": "&#x1F4C8;",
       "code": ":chart_with_upwards_trend:",
-      "description": "Add or update analytics or track code.",
+      "description": "分析または追跡コードを追加または更新する",
       "name": "chart-with-upwards-trend",
       "semver": "patch"
     },
@@ -181,7 +181,7 @@
       "emoji": "♻️",
       "entity": "&#x267b;",
       "code": ":recycle:",
-      "description": "Refactor code.",
+      "description": "コードをリファクタリングする",
       "name": "recycle",
       "semver": null
     },
@@ -189,7 +189,7 @@
       "emoji": "➕",
       "entity": "&#10133;",
       "code": ":heavy_plus_sign:",
-      "description": "Add a dependency.",
+      "description": "依存関係を追加する",
       "name": "heavy-plus-sign",
       "semver": "patch"
     },
@@ -197,7 +197,7 @@
       "emoji": "➖",
       "entity": "&#10134;",
       "code": ":heavy_minus_sign:",
-      "description": "Remove a dependency.",
+      "description": "依存関係を削除する",
       "name": "heavy-minus-sign",
       "semver": "patch"
     },
@@ -205,7 +205,7 @@
       "emoji": "🔧",
       "entity": "&#x1f527;",
       "code": ":wrench:",
-      "description": "Add or update configuration files.",
+      "description": "設定ファイルを追加または更新する",
       "name": "wrench",
       "semver": "patch"
     },
@@ -213,7 +213,7 @@
       "emoji": "🔨",
       "entity": "&#128296;",
       "code": ":hammer:",
-      "description": "Add or update development scripts.",
+      "description": "開発スクリプトを追加または更新する",
       "name": "hammer",
       "semver": null
     },
@@ -221,7 +221,7 @@
       "emoji": "🌐",
       "entity": "&#127760;",
       "code": ":globe_with_meridians:",
-      "description": "Internationalization and localization.",
+      "description": "国際化とローカライゼーション",
       "name": "globe-with-meridians",
       "semver": "patch"
     },
@@ -229,7 +229,7 @@
       "emoji": "✏️",
       "entity": "&#59161;",
       "code": ":pencil2:",
-      "description": "Fix typos.",
+      "description": "スペルミスを修正する",
       "name": "pencil2",
       "semver": "patch"
     },
@@ -237,7 +237,7 @@
       "emoji": "💩",
       "entity": "&#58613;",
       "code": ":poop:",
-      "description": "Write bad code that needs to be improved.",
+      "description": "改善が必要な悪いコードを書く",
       "name": "poop",
       "semver": null
     },
@@ -245,7 +245,7 @@
       "emoji": "⏪️",
       "entity": "&#9194;",
       "code": ":rewind:",
-      "description": "Revert changes.",
+      "description": "変更を元に戻す",
       "name": "rewind",
       "semver": "patch"
     },
@@ -253,7 +253,7 @@
       "emoji": "🔀",
       "entity": "&#128256;",
       "code": ":twisted_rightwards_arrows:",
-      "description": "Merge branches.",
+      "description": "ブランチをマージする",
       "name": "twisted-rightwards-arrows",
       "semver": null
     },
@@ -261,7 +261,7 @@
       "emoji": "📦️",
       "entity": "&#1F4E6;",
       "code": ":package:",
-      "description": "Add or update compiled files or packages.",
+      "description": "コンパイル済みのファイルやパッケージを追加または更新する",
       "name": "package",
       "semver": "patch"
     },
@@ -269,7 +269,7 @@
       "emoji": "👽️",
       "entity": "&#1F47D;",
       "code": ":alien:",
-      "description": "Update code due to external API changes.",
+      "description": "外部APIの変更によってコードを更新する",
       "name": "alien",
       "semver": "patch"
     },
@@ -277,7 +277,7 @@
       "emoji": "🚚",
       "entity": "&#1F69A;",
       "code": ":truck:",
-      "description": "Move or rename resources (e.g.: files, paths, routes).",
+      "description": "リソース（ファイル、パス、ルートなど）を移動または名前を変える",
       "name": "truck",
       "semver": null
     },
@@ -285,7 +285,7 @@
       "emoji": "📄",
       "entity": "&#1F4C4;",
       "code": ":page_facing_up:",
-      "description": "Add or update license.",
+      "description": "ライセンスを追加または更新する",
       "name": "page-facing-up",
       "semver": null
     },
@@ -293,15 +293,15 @@
       "emoji": "💥",
       "entity": "&#x1f4a5;",
       "code": ":boom:",
-      "description": "Introduce breaking changes.",
+      "description": "大きな変更を導入する",
       "name": "boom",
       "semver": "major"
     },
     {
       "emoji": "🍱",
-      "entity": "&#1F371",
+      "entity": "&#1F371;",
       "code": ":bento:",
-      "description": "Add or update assets.",
+      "description": "アセットを追加または更新する",
       "name": "bento",
       "semver": "patch"
     },
@@ -309,7 +309,7 @@
       "emoji": "♿️",
       "entity": "&#9855;",
       "code": ":wheelchair:",
-      "description": "Improve accessibility.",
+      "description": "アクセシビリティを向上させる",
       "name": "wheelchair",
       "semver": "patch"
     },
@@ -317,7 +317,7 @@
       "emoji": "💡",
       "entity": "&#128161;",
       "code": ":bulb:",
-      "description": "Add or update comments in source code.",
+      "description": "ソースコードのコメントを追加または更新する",
       "name": "bulb",
       "semver": null
     },
@@ -325,7 +325,7 @@
       "emoji": "🍻",
       "entity": "&#x1f37b;",
       "code": ":beers:",
-      "description": "Write code drunkenly.",
+      "description": "酔っ払ってコードを書く",
       "name": "beers",
       "semver": null
     },
@@ -333,7 +333,7 @@
       "emoji": "💬",
       "entity": "&#128172;",
       "code": ":speech_balloon:",
-      "description": "Add or update text and literals.",
+      "description": "テキストや文章を追加または更新する",
       "name": "speech-balloon",
       "semver": "patch"
     },
@@ -341,7 +341,7 @@
       "emoji": "🗃️",
       "entity": "&#128451;",
       "code": ":card_file_box:",
-      "description": "Perform database related changes.",
+      "description": "データベースに関する変更を実行する",
       "name": "card-file-box",
       "semver": "patch"
     },
@@ -349,7 +349,7 @@
       "emoji": "🔊",
       "entity": "&#128266;",
       "code": ":loud_sound:",
-      "description": "Add or update logs.",
+      "description": "ログを追加または更新する",
       "name": "loud-sound",
       "semver": null
     },
@@ -357,7 +357,7 @@
       "emoji": "🔇",
       "entity": "&#128263;",
       "code": ":mute:",
-      "description": "Remove logs.",
+      "description": "ログを削除する",
       "name": "mute",
       "semver": null
     },
@@ -365,7 +365,7 @@
       "emoji": "👥",
       "entity": "&#128101;",
       "code": ":busts_in_silhouette:",
-      "description": "Add or update contributor(s).",
+      "description": "寄与者を追加または更新する",
       "name": "busts-in-silhouette",
       "semver": null
     },
@@ -373,7 +373,7 @@
       "emoji": "🚸",
       "entity": "&#128696;",
       "code": ":children_crossing:",
-      "description": "Improve user experience / usability.",
+      "description": "ユーザー体験/可用性を改善する",
       "name": "children-crossing",
       "semver": "patch"
     },
@@ -381,7 +381,7 @@
       "emoji": "🏗️",
       "entity": "&#1f3d7;",
       "code": ":building_construction:",
-      "description": "Make architectural changes.",
+      "description": "アーキテクチャの変更を実行する",
       "name": "building-construction",
       "semver": null
     },
@@ -389,7 +389,7 @@
       "emoji": "📱",
       "entity": "&#128241;",
       "code": ":iphone:",
-      "description": "Work on responsive design.",
+      "description": "レスポンシブデザインに取り組む",
       "name": "iphone",
       "semver": "patch"
     },
@@ -397,7 +397,7 @@
       "emoji": "🤡",
       "entity": "&#129313;",
       "code": ":clown_face:",
-      "description": "Mock things.",
+      "description": "パフォーマンス",
       "name": "clown-face",
       "semver": null
     },
@@ -405,7 +405,7 @@
       "emoji": "🥚",
       "entity": "&#129370;",
       "code": ":egg:",
-      "description": "Add or update an easter egg.",
+      "description": "エaster eggを追加または更新する",
       "name": "egg",
       "semver": "patch"
     },
@@ -413,7 +413,7 @@
       "emoji": "🙈",
       "entity": "&#8bdfe7;",
       "code": ":see_no_evil:",
-      "description": "Add or update a .gitignore file.",
+      "description": ".gitignoreファイルを追加または更新する",
       "name": "see-no-evil",
       "semver": null
     },
@@ -421,7 +421,7 @@
       "emoji": "📸",
       "entity": "&#128248;",
       "code": ":camera_flash:",
-      "description": "Add or update snapshots.",
+      "description": "スナップショットを追加または更新する",
       "name": "camera-flash",
       "semver": null
     },
@@ -429,7 +429,7 @@
       "emoji": "⚗️",
       "entity": "&#128248;",
       "code": ":alembic:",
-      "description": "Perform experiments.",
+      "description": "実験を行う",
       "name": "alembic",
       "semver": "patch"
     },
@@ -437,7 +437,7 @@
       "emoji": "🔍️",
       "entity": "&#128269;",
       "code": ":mag:",
-      "description": "Improve SEO.",
+      "description": "検索エンジンの最適化を改善する",
       "name": "mag",
       "semver": "patch"
     },
@@ -445,7 +445,7 @@
       "emoji": "🏷️",
       "entity": "&#127991;",
       "code": ":label:",
-      "description": "Add or update types.",
+      "description": "タイプを追加または更新する",
       "name": "label",
       "semver": "patch"
     },
@@ -453,7 +453,7 @@
       "emoji": "🌱",
       "entity": "&#127793;",
       "code": ":seedling:",
-      "description": "Add or update seed files.",
+      "description": "シードファイルを追加または更新する",
       "name": "seedling",
       "semver": null
     },
@@ -461,7 +461,7 @@
       "emoji": "🚩",
       "entity": "&#x1F6A9;",
       "code": ":triangular_flag_on_post:",
-      "description": "Add, update, or remove feature flags.",
+      "description": "機能フラグを追加、更新、または削除する",
       "name": "triangular-flag-on-post",
       "semver": "patch"
     },
@@ -469,7 +469,7 @@
       "emoji": "🥅",
       "entity": "&#x1F945;",
       "code": ":goal_net:",
-      "description": "Catch errors.",
+      "description": "エラーを捕捉する",
       "name": "goal-net",
       "semver": "patch"
     },
@@ -477,7 +477,7 @@
       "emoji": "💫",
       "entity": "&#x1f4ab;",
       "code": ":dizzy:",
-      "description": "Add or update animations and transitions.",
+      "description": "アニメーションや遷移を追加または更新する",
       "name": "animation",
       "semver": "patch"
     },
@@ -485,7 +485,7 @@
       "emoji": "🗑️",
       "entity": "&#x1F5D1;",
       "code": ":wastebasket:",
-      "description": "Deprecate code that needs to be cleaned up.",
+      "description": "クリーンアップが必要とされるコードを廃止する",
       "name": "wastebasket",
       "semver": "patch"
     },
@@ -493,7 +493,7 @@
       "emoji": "🛂",
       "entity": "&#x1F6C2;",
       "code": ":passport_control:",
-      "description": "Work on code related to authorization, roles and permissions.",
+      "description": "認証、役割、権限に関するコードを処理する",
       "name": "passport-control",
       "semver": "patch"
     },
@@ -501,7 +501,7 @@
       "emoji": "🩹",
       "entity": "&#x1FA79;",
       "code": ":adhesive_bandage:",
-      "description": "Simple fix for a non-critical issue.",
+      "description": "重要な問題ではない問題への簡単な修正",
       "name": "adhesive-bandage",
       "semver": "patch"
     },
@@ -509,7 +509,7 @@
       "emoji": "🧐",
       "entity": "&#x1F9D0;",
       "code": ":monocle_face:",
-      "description": "Data exploration/inspection.",
+      "description": "データの探査/チェック",
       "name": "monocle-face",
       "semver": null
     },
@@ -517,7 +517,7 @@
       "emoji": "⚰️",
       "entity": "&#x26B0;",
       "code": ":coffin:",
-      "description": "Remove dead code.",
+      "description": "死んでいるコードを削除する",
       "name": "coffin",
       "semver": null
     },
@@ -525,7 +525,7 @@
       "emoji": "🧪",
       "entity": "&#x1F9EA;",
       "code": ":test_tube:",
-      "description": "Add a failing test.",
+      "description": "失敗したテストを追加する",
       "name": "test-tube",
       "semver": null
     },
@@ -533,7 +533,7 @@
       "emoji": "👔",
       "entity": "&#128084;",
       "code": ":necktie:",
-      "description": "Add or update business logic.",
+      "description": "ビジネスロジックを追加または更新する",
       "name": "necktie",
       "semver": "patch"
     },
@@ -541,7 +541,7 @@
       "emoji": "🩺",
       "entity": "&#x1FA7A;",
       "code": ":stethoscope:",
-      "description": "Add or update healthcheck.",
+      "description": "健康診断を追加または更新する",
       "name": "stethoscope",
       "semver": null
     },
@@ -549,7 +549,7 @@
       "emoji": "🧱",
       "entity": "&#x1f9f1;",
       "code": ":bricks:",
-      "description": "Infrastructure related changes.",
+      "description": "インフラストラクチャに関する変更",
       "name": "bricks",
       "semver": null
     },
@@ -557,7 +557,7 @@
       "emoji": "🧑‍💻",
       "entity": "&#129489;&#8205;&#128187;",
       "code": ":technologist:",
-      "description": "Improve developer experience.",
+      "description": "開発者の体験を改善する",
       "name": "technologist",
       "semver": null
     },
@@ -565,7 +565,7 @@
       "emoji": "💸",
       "entity": "&#x1F4B8;",
       "code": ":money_with_wings:",
-      "description": "Add sponsorships or money related infrastructure.",
+      "description": "スポンサーシップを追加または金銭に関するインフラストラクチャを更新する",
       "name": "money-with-wings",
       "semver": null
     },
@@ -573,7 +573,7 @@
       "emoji": "🧵",
       "entity": "&#x1F9F5;",
       "code": ":thread:",
-      "description": "Add or update code related to multithreading or concurrency.",
+      "description": "マルチスレッドや並行性に関するコードを追加または更新する",
       "name": "thread",
       "semver": null
     },
@@ -581,7 +581,7 @@
       "emoji": "🦺",
       "entity": "&#x1F9BA;",
       "code": ":safety_vest:",
-      "description": "Add or update code related to validation.",
+      "description": "検証に関するコードを追加または更新する",
       "name": "safety-vest",
       "semver": null
     }

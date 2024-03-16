@@ -5,6 +5,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import easy.base.Constants;
+import easy.enums.GitEmojiLanguageEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,12 +30,12 @@ public class GitEmojiConfigComponent implements PersistentStateComponent<GitEmoj
             gitEmojiConfig.setRenderCommitLogCheckBox(Boolean.TRUE);
             gitEmojiConfig.setUseUnicodeCheckBox(Boolean.FALSE);
             gitEmojiConfig.setDisplayEmojiCheckBox(Boolean.TRUE);
-            gitEmojiConfig.setInsertInCursorPositionCheckBox(Boolean.FALSE);
+            gitEmojiConfig.setInsertInCursorPositionCheckBox(Boolean.TRUE);
             gitEmojiConfig.setIncludeEmojiDescCheckBox(Boolean.FALSE);
             gitEmojiConfig.setAfterEmojiComboBox("<space>");
             gitEmojiConfig.setAfterEmojiRealValue(StringUtils.SPACE);
-            gitEmojiConfig.setLanguageComboBox("English");
-            gitEmojiConfig.setLanguageRealValue("en");
+            gitEmojiConfig.setLanguageComboBox(GitEmojiLanguageEnum.ENGLISH.getLanguage());
+            gitEmojiConfig.setLanguageRealValue(GitEmojiLanguageEnum.ENGLISH.getCode());
         }
         return gitEmojiConfig;
     }

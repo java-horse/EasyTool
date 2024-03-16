@@ -5,6 +5,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
+import easy.enums.GitEmojiLanguageEnum;
 import easy.form.GitEmojiSettingView;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -69,11 +70,7 @@ public class GitEmojiSettingConfigurable implements Configurable {
         }
         String languageComboBox = String.valueOf(gitEmojiSettingView.getLanguageComboBox().getSelectedItem());
         gitEmojiConfig.setLanguageComboBox(languageComboBox);
-        if (StringUtils.equals(languageComboBox, "English")) {
-            gitEmojiConfig.setLanguageRealValue("en");
-        } else {
-            gitEmojiConfig.setLanguageRealValue("zh-CN");
-        }
+        gitEmojiConfig.setLanguageRealValue(GitEmojiLanguageEnum.getCode(languageComboBox));
     }
 
 }
