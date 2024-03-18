@@ -10,6 +10,7 @@ import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
+import easy.translate.model.KimiModelTranslate;
 import easy.translate.model.TongYiModelTranslate;
 import easy.translate.translate.*;
 import easy.util.EasyCommonUtil;
@@ -85,6 +86,7 @@ public class TranslateService {
                     .put(TranslateEnum.YOUDAO_FREE.getTranslate(), new YouDaoFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.CNKI.getTranslate(), new CNKIFreeTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
+                    .put(OpenModelTranslateEnum.KIMI.getModel(), new KimiModelTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }

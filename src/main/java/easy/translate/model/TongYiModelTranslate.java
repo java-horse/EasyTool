@@ -50,7 +50,7 @@ public class TongYiModelTranslate extends AbstractTranslate {
                 .body(bodyJson).execute()) {
             String response = httpResponse.body();
             return replaceBackQuote(JsonUtil.fromObject(Objects.requireNonNull(response)).get("output").getAsJsonObject().get("text").getAsString());
-        } catch (HttpException e) {
+        } catch (Exception e) {
             log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;

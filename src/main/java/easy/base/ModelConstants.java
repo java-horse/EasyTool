@@ -13,8 +13,14 @@ public class ModelConstants {
     private ModelConstants() {
     }
 
+
     /**
-     * 通义千问
+     * 阿里巴巴-通义千问
+     *
+     * @author mabin
+     * @project EasyTool
+     * @package easy.base.ModelConstants
+     * @date 2024/03/18 15:29
      */
     public enum TONG_YI {
         MAX("qwen-max"),
@@ -30,6 +36,29 @@ public class ModelConstants {
         }
 
         TONG_YI(String model) {
+            this.model = model;
+        }
+    }
+
+    /**
+     * 月之暗面-Kimi大模型
+     *
+     * @author mabin
+     * @project EasyTool
+     * @package easy.base.ModelConstants
+     * @date 2024/03/18 15:28
+     */
+    public enum KIMI {
+        MOONSHOT_V1_8K("moonshot-v1-8k"),
+        MOONSHOT_V1_32K("moonshot-v1-32k"),
+        MOONSHOT_V1_128K("moonshot-v1-128k");
+        private final String model;
+
+        public String getModel() {
+            return model;
+        }
+
+        KIMI(String model) {
             this.model = model;
         }
     }

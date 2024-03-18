@@ -76,7 +76,9 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
                 || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
                 || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
-                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText());
+                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText())
+                || !Objects.equals(translateConfig.getKimiModel(), translateSettingView.getKimiModelComboBox().getSelectedItem())
+                || !StringUtils.equals(translateConfig.getKimiKey(), String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
     }
 
     @Override
@@ -122,6 +124,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
         translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
         translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
+        translateConfig.setKimiModel(String.valueOf(translateSettingView.getKimiModelComboBox().getSelectedItem()));
+        translateConfig.setKimiKey(String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
         // 配置检查
         checkTranslateConfig();
     }
@@ -182,6 +186,9 @@ public class TranslateSettingConfigurable implements Configurable {
         if (TranslateEnum.OPEN_BIG_MODEL.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (OpenModelTranslateEnum.TONG_YI.getModel().equals(translateConfig.getOpenModelChannel())) {
                 ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getTyKey(), translateConfig.getTyModel()), OpenModelTranslateEnum.TONG_YI.getModel() + "配置不能为空");
+            }
+            if (OpenModelTranslateEnum.KIMI.getModel().equals(translateConfig.getOpenModelChannel())) {
+                ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getKimiKey(), translateConfig.getKimiModel()), OpenModelTranslateEnum.KIMI.getModel() + "配置不能为空");
             }
         }
     }

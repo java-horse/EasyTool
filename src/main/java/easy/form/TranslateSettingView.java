@@ -35,6 +35,10 @@ public class TranslateSettingView {
     private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
     private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
 
+    // 全局单词映射设置
+    private JBList<Entry<String, String>> globalWordMapList;
+    private JPanel globalWordMappingPanel;
+
     private JPanel panel;
     private JPanel translatePanel;
     private JLabel translateChannelLabel;
@@ -105,10 +109,10 @@ public class TranslateSettingView {
     private JLabel youdaoDomainLabel;
     private JCheckBox youdaoDomainCheckBox;
     private JComboBox youdaoDomainComboBox;
-
-    // 全局单词映射设置
-    private JPanel globalWordMappingPanel;
-    private JBList<Entry<String, String>> globalWordMapList;
+    private JLabel kimiModelLabel;
+    private JLabel kimiKeyLabel;
+    private JComboBox kimiModelComboBox;
+    private JPasswordField kimiKeyPasswordField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -160,11 +164,28 @@ public class TranslateSettingView {
             tyModelComboBox.setVisible(true);
             tyKeyLabel.setVisible(true);
             tyKeyTextField.setVisible(true);
+            kimiModelLabel.setVisible(false);
+            kimiModelComboBox.setVisible(false);
+            kimiKeyLabel.setVisible(false);
+            kimiKeyPasswordField.setVisible(false);
+        } else if (Objects.equals(OpenModelTranslateEnum.KIMI.getModel(), selectedItem)) {
+            tyModelLabel.setVisible(false);
+            tyModelComboBox.setVisible(false);
+            tyKeyLabel.setVisible(false);
+            tyKeyTextField.setVisible(false);
+            kimiModelLabel.setVisible(true);
+            kimiModelComboBox.setVisible(true);
+            kimiKeyLabel.setVisible(true);
+            kimiKeyPasswordField.setVisible(true);
         } else {
             tyModelLabel.setVisible(false);
             tyModelComboBox.setVisible(false);
             tyKeyLabel.setVisible(false);
             tyKeyTextField.setVisible(false);
+            kimiModelLabel.setVisible(false);
+            kimiModelComboBox.setVisible(false);
+            kimiKeyLabel.setVisible(false);
+            kimiKeyPasswordField.setVisible(false);
         }
     }
 
@@ -181,6 +202,10 @@ public class TranslateSettingView {
         tyModelComboBox.setVisible(false);
         tyKeyLabel.setVisible(false);
         tyKeyTextField.setVisible(false);
+        kimiModelLabel.setVisible(false);
+        kimiModelComboBox.setVisible(false);
+        kimiKeyLabel.setVisible(false);
+        kimiKeyPasswordField.setVisible(false);
     }
 
     private void createUIComponents() {
@@ -964,6 +989,7 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(true);
             openModelComboBox.setVisible(true);
+            // 开元大模型UI设置
             setOpenModelVisible(openModelComboBox.getSelectedItem());
         } else {
             setCommonVisible();
@@ -1064,8 +1090,12 @@ public class TranslateSettingView {
         setHwAppSecretTextField(translateConfig.getHwAppSecret());
         setThsAppIdTextField(translateConfig.getThsAppId());
         setThsAppSecretTextField(translateConfig.getThsAppSecret());
+        setOpenModelComboBox(translateConfig.getOpenModelChannel());
         setTyModelComboBox(translateConfig.getTyModel());
         setTyKeyTextField(translateConfig.getTyKey());
+        setKimiModelComboBox(translateConfig.getKimiModel());
+        setKimiKeyPasswordField(translateConfig.getKimiKey());
+
     }
 
     private void refreshGlobalWordMap() {
@@ -1557,4 +1587,37 @@ public class TranslateSettingView {
     public void setYoudaoDomainComboBox(String youdaoDomainComboBox) {
         this.youdaoDomainComboBox.setSelectedItem(youdaoDomainComboBox);
     }
+
+    public JLabel getKimiModelLabel() {
+        return kimiModelLabel;
+    }
+
+    public void setKimiModelLabel(JLabel kimiModelLabel) {
+        this.kimiModelLabel = kimiModelLabel;
+    }
+
+    public JLabel getKimiKeyLabel() {
+        return kimiKeyLabel;
+    }
+
+    public void setKimiKeyLabel(JLabel kimiKeyLabel) {
+        this.kimiKeyLabel = kimiKeyLabel;
+    }
+
+    public JComboBox getKimiModelComboBox() {
+        return kimiModelComboBox;
+    }
+
+    public void setKimiModelComboBox(String kimiModelComboBox) {
+        this.kimiModelComboBox.setSelectedItem(kimiModelComboBox);
+    }
+
+    public JPasswordField getKimiKeyPasswordField() {
+        return kimiKeyPasswordField;
+    }
+
+    public void setKimiKeyPasswordField(String kimiKeyPasswordField) {
+        this.kimiKeyPasswordField.setText(kimiKeyPasswordField);
+    }
+
 }

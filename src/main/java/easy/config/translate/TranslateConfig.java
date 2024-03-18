@@ -176,6 +176,15 @@ public class TranslateConfig {
     private String tyKey;
 
     /**
+     * kimi大模型model
+     */
+    private String kimiModel;
+    /**
+     * kimi大模型密钥
+     */
+    private String kimiKey;
+
+    /**
      * 全局单词映射
      */
     private SortedMap<String, String> globalWordMap = new TreeMap<>();
@@ -221,6 +230,8 @@ public class TranslateConfig {
         aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
         youdaoDomainCheckBox = Boolean.FALSE;
         youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
+        kimiModel = OpenModelTranslateEnum.KIMI.getModel();
+        kimiKey = null;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -490,41 +501,20 @@ public class TranslateConfig {
         this.youdaoDomainComboBox = youdaoDomainComboBox;
     }
 
-    @Override
-    public String toString() {
-        return "TranslateConfig{" +
-                "translateChannel='" + translateChannel + '\'' +
-                ", appId='" + appId + '\'' +
-                ", appSecret='" + appSecret + '\'' +
-                ", baiduDomainCheckBox=" + baiduDomainCheckBox +
-                ", baiduDomainComboBox='" + baiduDomainComboBox + '\'' +
-                ", secretId='" + secretId + '\'' +
-                ", secretKey='" + secretKey + '\'' +
-                ", youdaoDomainCheckBox=" + youdaoDomainCheckBox +
-                ", youdaoDomainComboBox='" + youdaoDomainComboBox + '\'' +
-                ", accessKeyId='" + accessKeyId + '\'' +
-                ", accessKeySecret='" + accessKeySecret + '\'' +
-                ", aliyunDomainCheckBox=" + aliyunDomainCheckBox +
-                ", aliyunDomainComboBox='" + aliyunDomainComboBox + '\'' +
-                ", tencentSecretId='" + tencentSecretId + '\'' +
-                ", tencentSecretKey='" + tencentSecretKey + '\'' +
-                ", volcanoSecretId='" + volcanoSecretId + '\'' +
-                ", volcanoSecretKey='" + volcanoSecretKey + '\'' +
-                ", xfAppId='" + xfAppId + '\'' +
-                ", xfApiSecret='" + xfApiSecret + '\'' +
-                ", xfApiKey='" + xfApiKey + '\'' +
-                ", googleSecretKey='" + googleSecretKey + '\'' +
-                ", microsoftKey='" + microsoftKey + '\'' +
-                ", niuApiKey='" + niuApiKey + '\'' +
-                ", caiyunToken='" + caiyunToken + '\'' +
-                ", hwProjectId='" + hwProjectId + '\'' +
-                ", hwAppId='" + hwAppId + '\'' +
-                ", hwAppSecret='" + hwAppSecret + '\'' +
-                ", thsAppId='" + thsAppId + '\'' +
-                ", thsAppSecret='" + thsAppSecret + '\'' +
-                ", openModelChannel='" + openModelChannel + '\'' +
-                ", tyModel='" + tyModel + '\'' +
-                ", tyKey='" + tyKey + '\'' +
-                '}';
+    public String getKimiModel() {
+        return kimiModel;
     }
+
+    public void setKimiModel(String kimiModel) {
+        this.kimiModel = kimiModel;
+    }
+
+    public String getKimiKey() {
+        return kimiKey;
+    }
+
+    public void setKimiKey(String kimiKey) {
+        this.kimiKey = kimiKey;
+    }
+
 }
