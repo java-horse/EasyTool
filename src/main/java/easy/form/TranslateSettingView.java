@@ -3,6 +3,7 @@ package easy.form;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.CollectionListModel;
@@ -18,8 +19,10 @@ import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.datatransfer.StringSelection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -113,6 +116,7 @@ public class TranslateSettingView {
     private JLabel kimiKeyLabel;
     private JComboBox kimiModelComboBox;
     private JPasswordField kimiKeyPasswordField;
+    private JButton viewOpenModelKeyButton;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -137,6 +141,13 @@ public class TranslateSettingView {
         startButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.GITEE_URL));
         reviewButton.addActionListener(event -> EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL));
         payButton.addActionListener(event -> new SupportView().show());
+        viewOpenModelKeyButton.addActionListener(event -> {
+            String model = String.valueOf(openModelComboBox.getSelectedItem());
+            String key = getOpenModelKey(model);
+            if (new OpenModelPreviewKeyView(model, key).showAndGet()) {
+                CopyPasteManager.getInstance().setContents(new StringSelection(key));
+            }
+        });
         translateChannelBox.addItemListener(e -> {
             Object selectedItem = ((JComboBox<?>) e.getSource()).getSelectedItem();
             setTranslateVisible(selectedItem);
@@ -148,6 +159,27 @@ public class TranslateSettingView {
         // 设置温馨提示
         translateChannelTipLabel.setIcon(AllIcons.General.ContextHelp);
         translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
+    }
+
+
+    /**
+     * 获取大模型明文密钥
+     *
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/03/18 16:57
+     */
+    public String getOpenModelKey(String model) {
+        if (StringUtils.isBlank(model)) {
+            return StringUtils.EMPTY;
+        }
+        if (model.equals(OpenModelTranslateEnum.TONG_YI.getModel())) {
+            return translateConfig.getTyKey();
+        } else if (model.equals(OpenModelTranslateEnum.KIMI.getModel())) {
+            return translateConfig.getKimiKey();
+        } else {
+            return StringUtils.EMPTY;
+        }
     }
 
     /**
@@ -198,6 +230,7 @@ public class TranslateSettingView {
      * @date 2023/11/28 17:22
      */
     private void setCommonVisible() {
+        viewOpenModelKeyButton.setVisible(false);
         tyModelLabel.setVisible(false);
         tyModelComboBox.setVisible(false);
         tyKeyLabel.setVisible(false);
@@ -989,6 +1022,7 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(true);
             openModelComboBox.setVisible(true);
+            viewOpenModelKeyButton.setVisible(true);
             // 开元大模型UI设置
             setOpenModelVisible(openModelComboBox.getSelectedItem());
         } else {
