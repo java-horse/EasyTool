@@ -32,7 +32,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig = new TranslateConfig();
             translateConfig.setTranslateChannel(TranslateEnum.BAIDU.getTranslate());
             translateConfig.setOpenModelChannel(OpenModelTranslateEnum.TONG_YI.getModel());
-            translateConfig.setTyModel(ModelConstants.TONG_YI.MAX.getModel());
+            translateConfig.setTyModel(ModelConstants.TONG_YI.TURBO.getModel());
             translateConfig.setBaiduDomainCheckBox(Boolean.FALSE);
             translateConfig.setBaiduDomainComboBox(BaiDuTranslateDomainEnum.IT.getName());
             translateConfig.setAliyunDomainCheckBox(Boolean.FALSE);
@@ -43,7 +43,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
-            translateConfig.setTyModel(Objects.isNull(translateConfig.getTyModel()) ? ModelConstants.TONG_YI.MAX.getModel() : translateConfig.getTyModel());
+            translateConfig.setTyModel(Objects.isNull(translateConfig.getTyModel()) ? ModelConstants.TONG_YI.TURBO.getModel() : translateConfig.getTyModel());
             translateConfig.setBaiduDomainCheckBox(Objects.isNull(translateConfig.getBaiduDomainCheckBox()) ? Boolean.FALSE : translateConfig.getBaiduDomainCheckBox());
             translateConfig.setBaiduDomainComboBox(Objects.isNull(translateConfig.getBaiduDomainComboBox()) ? BaiDuTranslateDomainEnum.IT.getName() : translateConfig.getBaiduDomainComboBox());
             translateConfig.setAliyunDomainCheckBox(Objects.isNull(translateConfig.getAliyunDomainCheckBox()) ? Boolean.FALSE : translateConfig.getAliyunDomainCheckBox());

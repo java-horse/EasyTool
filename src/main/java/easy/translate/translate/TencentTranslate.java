@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.net.HTTPMethod;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
@@ -33,7 +34,7 @@ public class TencentTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "auto", "en");
+        return translate(chStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.EN.lang);
     }
 
     /**
@@ -46,7 +47,7 @@ public class TencentTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "auto", "zh");
+        return translate(enStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.ZH.lang);
     }
 
     /**

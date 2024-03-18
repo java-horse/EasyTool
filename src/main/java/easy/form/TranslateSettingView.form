@@ -555,9 +555,11 @@
             </constraints>
             <properties>
               <model>
-                <item value="qwen-max"/>
-                <item value="qwen-plus"/>
                 <item value="qwen-turbo"/>
+                <item value="qwen-plus"/>
+                <item value="qwen-max"/>
+                <item value="qwen-max-1201"/>
+                <item value="qwen-max-longcontext"/>
               </model>
             </properties>
           </component>

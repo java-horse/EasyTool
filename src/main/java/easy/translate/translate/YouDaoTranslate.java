@@ -3,6 +3,7 @@ package easy.translate.translate;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.enums.YouDaoTranslateDomainEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
@@ -39,7 +40,7 @@ public class YouDaoTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "auto", "en");
+        return translate(chStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.EN.lang);
     }
 
     /**
@@ -52,7 +53,7 @@ public class YouDaoTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "auto", "zh-CHS");
+        return translate(enStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.ZH_CHS.lang);
     }
 
     /**

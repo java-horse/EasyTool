@@ -19,7 +19,9 @@ public class ModelConstants {
     public enum TONG_YI {
         MAX("qwen-max"),
         PLUS("qwen-plus"),
-        TURBO("qwen-turbo");
+        TURBO("qwen-turbo"),
+        MAX_1201("qwen-max-1201"),
+        MAX_LONG_CONTEXT("qwen-max-longcontext");
 
         private final String model;
 

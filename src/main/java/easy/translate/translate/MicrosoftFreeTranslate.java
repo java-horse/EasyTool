@@ -9,6 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -35,12 +36,12 @@ public class MicrosoftFreeTranslate extends AbstractTranslate {
 
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "zh-Hans", "en");
+        return translate(chStr, TranslateLanguageEnum.ZH_HANS.lang, TranslateLanguageEnum.EN.lang);
     }
 
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "en", "zh-Hans");
+        return translate(enStr, TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_HANS.lang);
     }
 
     /**

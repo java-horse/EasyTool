@@ -215,7 +215,7 @@ public class TranslateConfig {
         hwAppId = null;
         hwAppSecret = null;
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
-        tyModel = ModelConstants.TONG_YI.MAX.getModel();
+        tyModel = ModelConstants.TONG_YI.TURBO.getModel();
         tyKey = null;
         aliyunDomainCheckBox = Boolean.FALSE;
         aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();

@@ -14,11 +14,13 @@ import java.util.stream.Collectors;
  */
 public enum OpenModelTranslateEnum {
 
-    TONG_YI("通义千问", "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation"),
+    TONG_YI("通义千问", "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
+            "{\"model\":\"%s\",\"input\":{\"messages\":[{\"role\":\"system\",\"content\":\"将反引号中的%s翻译成%s，并输出到一对反引号中，如`cat`->`猫`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`dog`\"},{\"role\":\"assistant\",\"content\":\"`狗`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`%s`\"}]}}"),
     ;
 
     private final String model;
     private final String url;
+    private final String prompt;
 
     /**
      * 获取全部开源大模型名称
@@ -32,9 +34,10 @@ public enum OpenModelTranslateEnum {
         return Arrays.stream(values()).map(OpenModelTranslateEnum::getModel).collect(Collectors.toSet());
     }
 
-    OpenModelTranslateEnum(String model, String url) {
+    OpenModelTranslateEnum(String model, String url, String prompt) {
         this.model = model;
         this.url = url;
+        this.prompt = prompt;
     }
 
     public String getModel() {
@@ -43,6 +46,10 @@ public enum OpenModelTranslateEnum {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getPrompt() {
+        return prompt;
     }
 
 }

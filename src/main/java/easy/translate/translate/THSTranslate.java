@@ -1,11 +1,15 @@
 package easy.translate.translate;
 
-import cn.hutool.http.*;
+import cn.hutool.http.ContentType;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -35,12 +39,12 @@ public class THSTranslate extends AbstractTranslate {
 
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "auto", "en");
+        return translate(chStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.EN.lang);
     }
 
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "auto", "zh");
+        return translate(enStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.ZH.lang);
     }
 
     /**
