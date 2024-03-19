@@ -76,7 +76,7 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
                 || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
                 || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
-                || !StringUtils.equals(translateConfig.getTyKey(), translateSettingView.getTyKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getTyKey(), String.valueOf(translateSettingView.getTyKeyTextField().getPassword()))
                 || !Objects.equals(translateConfig.getKimiModel(), translateSettingView.getKimiModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getKimiKey(), String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
     }
@@ -123,7 +123,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
         translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
-        translateConfig.setTyKey(translateSettingView.getTyKeyTextField().getText());
+        translateConfig.setTyKey(String.valueOf(translateSettingView.getTyKeyTextField().getPassword()));
         translateConfig.setKimiModel(String.valueOf(translateSettingView.getKimiModelComboBox().getSelectedItem()));
         translateConfig.setKimiKey(String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
         // 配置检查

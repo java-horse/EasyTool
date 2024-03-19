@@ -100,7 +100,7 @@ public class TranslateSettingView {
     private JLabel openModelLabel;
     private JComboBox openModelComboBox;
     private JLabel tyKeyLabel;
-    private JTextField tyKeyTextField;
+    private JPasswordField tyKeyTextField;
     private JLabel tyModelLabel;
     private JComboBox tyModelComboBox;
     private JLabel baiduDomainLabel;
@@ -1566,7 +1566,7 @@ public class TranslateSettingView {
         this.tyKeyLabel = tyKeyLabel;
     }
 
-    public JTextField getTyKeyTextField() {
+    public JPasswordField getTyKeyTextField() {
         return tyKeyTextField;
     }
 
