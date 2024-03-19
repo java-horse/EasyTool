@@ -52,13 +52,21 @@ public class WenXinModelTranslate extends AbstractTranslate {
      */
     private String translate(String text, String source, String target) {
         String bodyJson = String.format(OpenModelTranslateEnum.WEN_XIN.getPrompt(), target, target, text);
-        try (HttpResponse httpResponse = HttpRequest.post(String.format(OpenModelTranslateEnum.WEN_XIN.getUrl(),
-                        ModelConstants.WEN_XIN.getRealModel(getTranslateConfig().getWenxinModel()), getAccessToken()))
-                .timeout(10000)
-                .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
-                .body(bodyJson)
-                .execute()) {
-            String response = httpResponse.body();
+        try {
+            String response = sendPost(bodyJson);
+            if (StringUtils.isBlank(response)) {
+                return StringUtils.EMPTY;
+            }
+            if (StringUtils.contains(response, "error_code")) {
+                if (JsonUtil.fromObject(response).get("error_code").getAsInt() == 110) {
+                    // 令牌置空，重新获取并请求
+                    PROPERTIES_COMPONENT.setValue(Constants.Persistence.OPEN_MODEL.WEN_XIN_ACCESS_TOKEN, StringUtils.EMPTY);
+                    response = sendPost(bodyJson);
+                    if (StringUtils.isBlank(response)) {
+                        return StringUtils.EMPTY;
+                    }
+                }
+            }
             return replaceBackQuote(JsonUtil.fromObject(Objects.requireNonNull(response)).get("result").getAsString());
         } catch (Exception e) {
             log.error(OpenModelTranslateEnum.WEN_XIN.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
@@ -67,7 +75,28 @@ public class WenXinModelTranslate extends AbstractTranslate {
     }
 
     /**
-     * 获取访问令牌
+     * 发送翻译请求
+     *
+     * @param bodyJson 请求Json参数
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/03/19 16:28
+     */
+    private String sendPost(String bodyJson) {
+        try (HttpResponse httpResponse = HttpRequest.post(String.format(OpenModelTranslateEnum.WEN_XIN.getUrl(),
+                        ModelConstants.WEN_XIN.getRealModel(getTranslateConfig().getWenxinModel()), getAccessToken()))
+                .timeout(10000)
+                .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
+                .body(bodyJson)
+                .execute()) {
+            return httpResponse.body();
+        } catch (Exception e) {
+            throw new RuntimeException("获取访问令牌异常", e);
+        }
+    }
+
+    /**
+     * 获取访问令牌（有效期30天，所以适合进行持久化）
      *
      * @return {@link java.lang.String }
      * @author mabin

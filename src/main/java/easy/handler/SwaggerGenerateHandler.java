@@ -175,8 +175,7 @@ public class SwaggerGenerateHandler {
         String commentDesc = StringUtils.EMPTY;
         Map<String, String> methodParamCommentDesc = null;
         for (PsiElement tmpEle : psiMethod.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                PsiComment classComment = (PsiComment) tmpEle;
+            if (tmpEle instanceof PsiComment classComment) {
                 String tmpText = classComment.getText();
                 methodParamCommentDesc = SwaggerCommentUtil.getCommentMethodParam(tmpText);
                 commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
@@ -294,14 +293,15 @@ public class SwaggerGenerateHandler {
         }
 
         boolean complex = false;
-        String apiImplicitParamsAnnotationText;
-        if (CollectionUtils.isNotEmpty(apiImplicitParamList) && apiImplicitParamList.size() == 1) {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
-        } else {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
-            complex = true;
+        String apiImplicitParamsAnnotationText = null;
+        if (CollectionUtils.isNotEmpty(apiImplicitParamList)) {
+            if (apiImplicitParamList.size() == Constants.NUM.ONE) {
+                apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
+            } else {
+                apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
+                complex = true;
+            }
         }
-
         this.doWrite(SwaggerAnnotationEnum.API_OPERATION.getClassName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), apiOperationAnnotationText.toString(), psiMethod);
         if (StringUtils.isNotEmpty(apiImplicitParamsAnnotationText)) {
             if (complex) {
