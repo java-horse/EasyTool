@@ -117,6 +117,12 @@ public class TranslateSettingView {
     private JComboBox kimiModelComboBox;
     private JPasswordField kimiKeyPasswordField;
     private JButton viewOpenModelKeyButton;
+    private JLabel wenxinModelLabel;
+    private JComboBox wenxinModelComboBox;
+    private JLabel wenxinApiKeyLabel;
+    private JTextField wenxinApiKeyTextField;
+    private JLabel wenxinApiSecretLabel;
+    private JPasswordField wenxinApiSecretPasswordField;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -177,7 +183,9 @@ public class TranslateSettingView {
             return translateConfig.getTyKey();
         } else if (model.equals(OpenModelTranslateEnum.KIMI.getModel())) {
             return translateConfig.getKimiKey();
-        } else {
+        } else if (model.equals(OpenModelTranslateEnum.WEN_XIN.getModel())) {
+            return translateConfig.getWenxinApiSecret();
+        }else {
             return StringUtils.EMPTY;
         }
     }
@@ -200,6 +208,12 @@ public class TranslateSettingView {
             kimiModelComboBox.setVisible(false);
             kimiKeyLabel.setVisible(false);
             kimiKeyPasswordField.setVisible(false);
+            wenxinModelLabel.setVisible(false);
+            wenxinModelComboBox.setVisible(false);
+            wenxinApiKeyLabel.setVisible(false);
+            wenxinApiKeyTextField.setVisible(false);
+            wenxinApiSecretLabel.setVisible(false);
+            wenxinApiSecretPasswordField.setVisible(false);
         } else if (Objects.equals(OpenModelTranslateEnum.KIMI.getModel(), selectedItem)) {
             tyModelLabel.setVisible(false);
             tyModelComboBox.setVisible(false);
@@ -209,6 +223,27 @@ public class TranslateSettingView {
             kimiModelComboBox.setVisible(true);
             kimiKeyLabel.setVisible(true);
             kimiKeyPasswordField.setVisible(true);
+            wenxinModelLabel.setVisible(false);
+            wenxinModelComboBox.setVisible(false);
+            wenxinApiKeyLabel.setVisible(false);
+            wenxinApiKeyTextField.setVisible(false);
+            wenxinApiSecretLabel.setVisible(false);
+            wenxinApiSecretPasswordField.setVisible(false);
+        } else if (Objects.equals(OpenModelTranslateEnum.WEN_XIN.getModel(), selectedItem)) {
+            tyModelLabel.setVisible(false);
+            tyModelComboBox.setVisible(false);
+            tyKeyLabel.setVisible(false);
+            tyKeyTextField.setVisible(false);
+            kimiModelLabel.setVisible(false);
+            kimiModelComboBox.setVisible(false);
+            kimiKeyLabel.setVisible(false);
+            kimiKeyPasswordField.setVisible(false);
+            wenxinModelLabel.setVisible(true);
+            wenxinModelComboBox.setVisible(true);
+            wenxinApiKeyLabel.setVisible(true);
+            wenxinApiKeyTextField.setVisible(true);
+            wenxinApiSecretLabel.setVisible(true);
+            wenxinApiSecretPasswordField.setVisible(true);
         } else {
             tyModelLabel.setVisible(false);
             tyModelComboBox.setVisible(false);
@@ -218,6 +253,12 @@ public class TranslateSettingView {
             kimiModelComboBox.setVisible(false);
             kimiKeyLabel.setVisible(false);
             kimiKeyPasswordField.setVisible(false);
+            wenxinModelLabel.setVisible(false);
+            wenxinModelComboBox.setVisible(false);
+            wenxinApiKeyLabel.setVisible(false);
+            wenxinApiKeyTextField.setVisible(false);
+            wenxinApiSecretLabel.setVisible(false);
+            wenxinApiSecretPasswordField.setVisible(false);
         }
     }
 
@@ -239,6 +280,12 @@ public class TranslateSettingView {
         kimiModelComboBox.setVisible(false);
         kimiKeyLabel.setVisible(false);
         kimiKeyPasswordField.setVisible(false);
+        wenxinModelLabel.setVisible(false);
+        wenxinModelComboBox.setVisible(false);
+        wenxinApiKeyLabel.setVisible(false);
+        wenxinApiKeyTextField.setVisible(false);
+        wenxinApiSecretLabel.setVisible(false);
+        wenxinApiSecretPasswordField.setVisible(false);
     }
 
     private void createUIComponents() {
@@ -1129,7 +1176,9 @@ public class TranslateSettingView {
         setTyKeyTextField(translateConfig.getTyKey());
         setKimiModelComboBox(translateConfig.getKimiModel());
         setKimiKeyPasswordField(translateConfig.getKimiKey());
-
+        setWenxinModelComboBox(translateConfig.getWenxinModel());
+        setWenxinApiKeyTextField(translateConfig.getWenxinApiKey());
+        setWenxinApiSecretPasswordField(translateConfig.getWenxinApiSecret());
     }
 
     private void refreshGlobalWordMap() {
@@ -1652,6 +1701,54 @@ public class TranslateSettingView {
 
     public void setKimiKeyPasswordField(String kimiKeyPasswordField) {
         this.kimiKeyPasswordField.setText(kimiKeyPasswordField);
+    }
+
+    public JLabel getWenxinModelLabel() {
+        return wenxinModelLabel;
+    }
+
+    public void setWenxinModelLabel(JLabel wenxinModelLabel) {
+        this.wenxinModelLabel = wenxinModelLabel;
+    }
+
+    public JComboBox getWenxinModelComboBox() {
+        return wenxinModelComboBox;
+    }
+
+    public void setWenxinModelComboBox(String wenxinModelComboBox) {
+        this.wenxinModelComboBox.setSelectedItem(wenxinModelComboBox);
+    }
+
+    public JLabel getWenxinApiKeyLabel() {
+        return wenxinApiKeyLabel;
+    }
+
+    public void setWenxinApiKeyLabel(JLabel wenxinApiKeyLabel) {
+        this.wenxinApiKeyLabel = wenxinApiKeyLabel;
+    }
+
+    public JTextField getWenxinApiKeyTextField() {
+        return wenxinApiKeyTextField;
+    }
+
+    public void setWenxinApiKeyTextField(String wenxinApiKeyTextField) {
+        this.wenxinApiKeyTextField.setText(wenxinApiKeyTextField);
+    }
+
+    public JLabel getWenxinApiSecretLabel() {
+        return wenxinApiSecretLabel;
+    }
+
+    public void setWenxinApiSecretLabel(JLabel wenxinApiSecretLabel) {
+        this.wenxinApiSecretLabel = wenxinApiSecretLabel;
+    }
+
+    public JPasswordField getWenxinApiSecretPasswordField() {
+        return wenxinApiSecretPasswordField;
+    }
+
+    public void setWenxinApiSecretPasswordField(String wenxinApiSecretPasswordField) {
+        this.wenxinApiSecretPasswordField.setText(wenxinApiSecretPasswordField);
     }
 
 }

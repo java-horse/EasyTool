@@ -17,7 +17,11 @@ public enum OpenModelTranslateEnum {
     TONG_YI("通义千问", "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
             "{\"model\":\"%s\",\"input\":{\"messages\":[{\"role\":\"system\",\"content\":\"将反引号中的%s翻译成%s，并输出到一对反引号中，如`cat`->`猫`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`dog`\"},{\"role\":\"assistant\",\"content\":\"`狗`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`%s`\"}]}}"),
     KIMI("月之暗面-Kimi", "https://api.moonshot.cn/v1/chat/completions",
-            "{\"model\":\"%s\",\"temperature\":0.3,\"messages\":[{\"role\":\"system\",\"content\":\"将反引号中的%s翻译成%s，并输出到一对反引号中，如`cat`->`猫`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`dog`\"},{\"role\":\"assistant\",\"content\":\"`狗`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`%s`\"}]}");
+            "{\"model\":\"%s\",\"temperature\":0.3,\"messages\":[{\"role\":\"system\",\"content\":\"将反引号中的%s翻译成%s，并输出到一对反引号中，如`cat`->`猫`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`dog`\"},{\"role\":\"assistant\",\"content\":\"`狗`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`%s`\"}]}"),
+    WEN_XIN("文心一言", "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/%s?access_token=%s",
+            "{\"messages\":[{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`dog`\"},{\"role\":\"assistant\",\"content\":\"`狗`\"},{\"role\":\"user\",\"content\":\"将反引号中的指令翻译成%s:`%s`\"}]}"),
+
+    ;
 
     private final String model;
     private final String url;

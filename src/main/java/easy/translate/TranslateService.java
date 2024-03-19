@@ -12,6 +12,7 @@ import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.translate.model.KimiModelTranslate;
 import easy.translate.model.TongYiModelTranslate;
+import easy.translate.model.WenXinModelTranslate;
 import easy.translate.translate.*;
 import easy.util.EasyCommonUtil;
 import easy.util.LanguageUtil;
@@ -87,6 +88,7 @@ public class TranslateService {
                     .put(TranslateEnum.CNKI.getTranslate(), new CNKIFreeTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.KIMI.getModel(), new KimiModelTranslate().init(translateConfig))
+                    .put(OpenModelTranslateEnum.WEN_XIN.getModel(), new WenXinModelTranslate().init(translateConfig))
                     .build();
             this.translateConfig = translateConfig;
         }

@@ -10,7 +10,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="653ad" binding="translatePanel" layout-manager="GridLayoutManager" row-count="32" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="653ad" binding="translatePanel" layout-manager="GridLayoutManager" row-count="35" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -168,7 +168,7 @@
           </component>
           <component id="615ea" class="javax.swing.JLabel">
             <constraints>
-              <grid row="31" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="34" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="快捷操作"/>
@@ -177,7 +177,7 @@
           <grid id="27250" binding="supportPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="31" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="34" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -523,6 +523,7 @@
               <model>
                 <item value="通义千问"/>
                 <item value="月之暗面-Kimi"/>
+                <item value="文心一言"/>
               </model>
             </properties>
           </component>
@@ -707,6 +708,59 @@
           <component id="c93f6" class="javax.swing.JPasswordField" binding="tyKeyTextField">
             <constraints>
               <grid row="28" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="61483" class="javax.swing.JLabel" binding="wenxinModelLabel">
+            <constraints>
+              <grid row="31" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Model"/>
+            </properties>
+          </component>
+          <component id="ea52d" class="javax.swing.JComboBox" binding="wenxinModelComboBox">
+            <constraints>
+              <grid row="31" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="ERNIE-3.5-8K"/>
+                <item value="ERNIE-4.0-8K"/>
+              </model>
+            </properties>
+          </component>
+          <component id="c3dcc" class="javax.swing.JLabel" binding="wenxinApiKeyLabel">
+            <constraints>
+              <grid row="32" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="ApiKey"/>
+            </properties>
+          </component>
+          <component id="91792" class="javax.swing.JTextField" binding="wenxinApiKeyTextField">
+            <constraints>
+              <grid row="32" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="ef74" class="javax.swing.JLabel" binding="wenxinApiSecretLabel">
+            <constraints>
+              <grid row="33" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="ApiSecret"/>
+            </properties>
+          </component>
+          <component id="11ca2" class="javax.swing.JPasswordField" binding="wenxinApiSecretPasswordField">
+            <constraints>
+              <grid row="33" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>

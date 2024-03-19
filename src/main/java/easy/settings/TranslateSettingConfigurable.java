@@ -78,7 +78,10 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getTyKey(), String.valueOf(translateSettingView.getTyKeyTextField().getPassword()))
                 || !Objects.equals(translateConfig.getKimiModel(), translateSettingView.getKimiModelComboBox().getSelectedItem())
-                || !StringUtils.equals(translateConfig.getKimiKey(), String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
+                || !StringUtils.equals(translateConfig.getKimiKey(), String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()))
+                || !Objects.equals(translateConfig.getWenxinModel(), translateSettingView.getWenxinModelComboBox().getSelectedItem())
+                || !StringUtils.equals(translateConfig.getWenxinApiKey(), translateSettingView.getWenxinApiKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getWenxinApiSecret(), String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()));
     }
 
     @Override
@@ -126,6 +129,9 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setTyKey(String.valueOf(translateSettingView.getTyKeyTextField().getPassword()));
         translateConfig.setKimiModel(String.valueOf(translateSettingView.getKimiModelComboBox().getSelectedItem()));
         translateConfig.setKimiKey(String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()));
+        translateConfig.setWenxinModel(String.valueOf(translateSettingView.getWenxinModelComboBox().getSelectedItem()));
+        translateConfig.setWenxinApiKey(translateSettingView.getWenxinApiKeyTextField().getText());
+        translateConfig.setWenxinApiSecret(String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()));
         // 配置检查
         checkTranslateConfig();
     }
@@ -189,6 +195,10 @@ public class TranslateSettingConfigurable implements Configurable {
             }
             if (OpenModelTranslateEnum.KIMI.getModel().equals(translateConfig.getOpenModelChannel())) {
                 ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getKimiKey(), translateConfig.getKimiModel()), OpenModelTranslateEnum.KIMI.getModel() + "配置不能为空");
+            }
+            if (OpenModelTranslateEnum.WEN_XIN.getModel().equals(translateConfig.getOpenModelChannel())) {
+                ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getWenxinApiKey(), translateConfig.getWenxinApiSecret(),
+                        translateConfig.getWenxinModel()), OpenModelTranslateEnum.KIMI.getModel() + "配置不能为空");
             }
         }
     }

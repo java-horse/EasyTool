@@ -79,6 +79,13 @@ public class Constants {
             String CHANGE_SCOPE = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_change_scope";
         }
 
+        /**
+         * 开源大模型相关
+         */
+        public interface OPEN_MODEL {
+            String WEN_XIN_ACCESS_TOKEN = PLUGIN_NAME + "." + OPEN_MODEL.class.getSimpleName() + "access_token";
+        }
+
     }
 
     /**

@@ -3,7 +3,6 @@ package easy.config.translate;
 import com.google.common.collect.Maps;
 import easy.base.ModelConstants;
 import easy.enums.*;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -180,10 +179,25 @@ public class TranslateConfig {
      * kimi大模型model
      */
     private String kimiModel;
+
     /**
      * kimi大模型密钥
      */
     private String kimiKey;
+
+    /**
+     * 文心一言模型model
+     */
+    private String wenxinModel;
+    /**
+     * 文心一言模型ApiKey
+     */
+    private String wenxinApiKey;
+    /**
+     * 文心一言模型ApiSecret
+     */
+    private String wenxinApiSecret;
+
 
     /**
      * 全局单词映射
@@ -231,8 +245,11 @@ public class TranslateConfig {
         aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
         youdaoDomainCheckBox = Boolean.FALSE;
         youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
-        kimiModel = OpenModelTranslateEnum.KIMI.getModel();
+        kimiModel = null;
         kimiKey = null;
+        wenxinModel = null;
+        wenxinApiKey = null;
+        wenxinApiSecret = null;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -518,4 +535,27 @@ public class TranslateConfig {
         this.kimiKey = kimiKey;
     }
 
+    public String getWenxinModel() {
+        return wenxinModel;
+    }
+
+    public void setWenxinModel(String wenxinModel) {
+        this.wenxinModel = wenxinModel;
+    }
+
+    public String getWenxinApiKey() {
+        return wenxinApiKey;
+    }
+
+    public void setWenxinApiKey(String wenxinApiKey) {
+        this.wenxinApiKey = wenxinApiKey;
+    }
+
+    public String getWenxinApiSecret() {
+        return wenxinApiSecret;
+    }
+
+    public void setWenxinApiSecret(String wenxinApiSecret) {
+        this.wenxinApiSecret = wenxinApiSecret;
+    }
 }

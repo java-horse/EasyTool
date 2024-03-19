@@ -63,4 +63,45 @@ public class ModelConstants {
         }
     }
 
+    /**
+     * 文心一言大模型
+     *
+     * @author mabin
+     * @project EasyTool
+     * @package easy.base.ModelConstants
+     * @date 2024/03/19 14:52
+     */
+    public enum WEN_XIN {
+        ERNIE_3_5_8K("ERNIE-3.5-8K", "completions"),
+        ERNIE_4_8K("ERNIE-4.0-8K", "completions_pro");
+
+        private final String model;
+        private final String value;
+
+        public static String getRealModel(String model) {
+            if (model == null || model.isBlank()) {
+                return null;
+            }
+            for (WEN_XIN anEnum : values()) {
+                if (anEnum.getModel().equals(model)) {
+                    return anEnum.value;
+                }
+            }
+            return null;
+        }
+
+        public String getModel() {
+            return model;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        WEN_XIN(String model, String value) {
+            this.model = model;
+            this.value = value;
+        }
+    }
+
 }
