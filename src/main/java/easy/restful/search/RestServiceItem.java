@@ -79,7 +79,7 @@ public class RestServiceItem implements NavigationItem {
                             location += "#" + methodComment;
                         }
                     }
-                    location = "Java: (" + location + ")";
+                    location = "(" + location + ")";
                 }
                 if (psiElement != null) {
                     location += " in " + psiElement.getResolveScope().getDisplayName();
@@ -97,7 +97,7 @@ public class RestServiceItem implements NavigationItem {
 
     /**
      * 获取方法注释
-     * 优先规则：普通JavaDoc注释 -> swagger的ApiOperation中的value属性
+     * 优先规则：swagger的ApiOperation中的value属性 -> 普通JavaDoc注释
      *
      * @param psiMethod psi方法
      * @return {@link java.lang.String }
@@ -106,16 +106,7 @@ public class RestServiceItem implements NavigationItem {
      */
     private String getMethodComment(PsiMethod psiMethod) {
         try {
-            // 获取JavaDoc中第一行非空注释元素即可
-            PsiDocComment docComment = psiMethod.getDocComment();
-            if (Objects.nonNull(docComment)) {
-                for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
-                    String text = descriptionElement.getText().trim();
-                    if (StringUtils.isNotEmpty(text)) {
-                        return text;
-                    }
-                }
-            }
+            // 获取Swagger的ApiOperation注解中的value属性
             for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
                 if (!StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage())) {
                     continue;
@@ -127,6 +118,16 @@ public class RestServiceItem implements NavigationItem {
                 String valueText = psiAnnotationAttributeValue.getText();
                 return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
                         StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
+            }
+            // 获取JavaDoc中第一行非空注释元素即可
+            PsiDocComment docComment = psiMethod.getDocComment();
+            if (Objects.nonNull(docComment)) {
+                for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
+                    String text = descriptionElement.getText().trim();
+                    if (StringUtils.isNotEmpty(text)) {
+                        return text;
+                    }
+                }
             }
             return StringUtils.EMPTY;
         } catch (Exception e) {
