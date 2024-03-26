@@ -4,10 +4,9 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.*;
-import com.intellij.psi.codeStyle.MinusculeMatcher;
-import com.intellij.psi.codeStyle.NameUtil;
 import com.intellij.psi.javadoc.PsiDocComment;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
@@ -41,7 +40,11 @@ public class RestServiceItem implements NavigationItem {
         if (method != null) {
             this.method = method;
         }
-        this.url = urlPath;
+        String methodComment = null;
+        if (Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getRestfulDisplayApiCommentCheckBox())) {
+            methodComment = getMethodComment(psiMethod);
+        }
+        this.url = urlPath + (StringUtils.isNotBlank(methodComment) ? (" #" + methodComment) : StringUtils.EMPTY);
         if (psiElement instanceof Navigatable) {
             navigationElement = (Navigatable) psiElement;
         }
@@ -73,12 +76,6 @@ public class RestServiceItem implements NavigationItem {
                         location = psiClass.getName();
                     }
                     location += "#" + psiMethod.getName();
-                    if (Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getRestfulDisplayApiCommentCheckBox())) {
-                        String methodComment = getMethodComment(psiMethod);
-                        if (StringUtils.isNotBlank(methodComment)) {
-                            location += "#" + methodComment;
-                        }
-                    }
                     location = "(" + location + ")";
                 }
                 if (psiElement != null) {
@@ -106,31 +103,33 @@ public class RestServiceItem implements NavigationItem {
      */
     private String getMethodComment(PsiMethod psiMethod) {
         try {
-            // 获取Swagger的ApiOperation注解中的value属性
-            for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
-                if (!StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage())) {
-                    continue;
+            return ApplicationManager.getApplication().runReadAction((ThrowableComputable<String, Throwable>) () -> {
+                // 获取Swagger的ApiOperation注解中的value属性
+                for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
+                    if (!StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage())) {
+                        continue;
+                    }
+                    PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
+                    if (Objects.isNull(psiAnnotationAttributeValue)) {
+                        continue;
+                    }
+                    String valueText = psiAnnotationAttributeValue.getText();
+                    return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
+                            StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
                 }
-                PsiAnnotationMemberValue psiAnnotationAttributeValue = psiAnnotation.findAttributeValue("value");
-                if (Objects.isNull(psiAnnotationAttributeValue)) {
-                    continue;
-                }
-                String valueText = psiAnnotationAttributeValue.getText();
-                return StringUtils.contains(valueText, "\"") ? StringUtils.replace(valueText, "\"",
-                        StringUtils.EMPTY).trim() : StringUtils.trim(valueText);
-            }
-            // 获取JavaDoc中第一行非空注释元素即可
-            PsiDocComment docComment = psiMethod.getDocComment();
-            if (Objects.nonNull(docComment)) {
-                for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
-                    String text = descriptionElement.getText().trim();
-                    if (StringUtils.isNotEmpty(text)) {
-                        return text;
+                // 获取JavaDoc中第一行非空注释元素即可
+                PsiDocComment docComment = psiMethod.getDocComment();
+                if (Objects.nonNull(docComment)) {
+                    for (PsiElement descriptionElement : docComment.getDescriptionElements()) {
+                        String text = descriptionElement.getText().trim();
+                        if (StringUtils.isNotEmpty(text)) {
+                            return text;
+                        }
                     }
                 }
-            }
-            return StringUtils.EMPTY;
-        } catch (Exception e) {
+                return StringUtils.EMPTY;
+            });
+        } catch (Throwable e) {
             return StringUtils.EMPTY;
         }
     }
@@ -150,18 +149,6 @@ public class RestServiceItem implements NavigationItem {
     @Override
     public boolean canNavigateToSource() {
         return true;
-    }
-
-    /**
-     * 匹配
-     */
-    public boolean matches(String queryText) {
-        if ("/".equals(queryText)) {
-            return true;
-        }
-
-        MinusculeMatcher matcher = NameUtil.buildMatcher("*" + queryText, NameUtil.MatchingCaseSensitivity.NONE);
-        return matcher.matches(this.url);
     }
 
     public Module getModule() {
