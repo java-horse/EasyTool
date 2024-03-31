@@ -106,6 +106,7 @@ public class Constants {
         int EIGHTY = 80;
         int HUNDRED = 100;
         int ONE_THOUSAND = 1000;
+        int TWO_THOUSAND = 2000;
     }
 
     /**

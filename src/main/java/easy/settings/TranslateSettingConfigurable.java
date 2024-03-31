@@ -74,6 +74,9 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getThsAppId(), translateSettingView.getThsAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getCustomApiUrl(), translateSettingView.getCustomApiUrlTextField().getText())
+                || !StringUtils.equals(translateConfig.getCustomSupportLanguage(), translateSettingView.getCustomSupportLanguageTextField().getText())
+                || !Objects.equals(translateConfig.getCustomApiMaxCharLength(), Integer.parseInt(translateSettingView.getCustomApiMaxCharLengthTextField().getText()))
                 || !Objects.equals(translateConfig.getOpenModelChannel(), translateSettingView.getOpenModelComboBox().getSelectedItem())
                 || !Objects.equals(translateConfig.getTyModel(), translateSettingView.getTyModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getTyKey(), String.valueOf(translateSettingView.getTyKeyTextField().getPassword()))
@@ -124,6 +127,9 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setHwAppSecret(translateSettingView.getHwAppSecretTextField().getText());
         translateConfig.setThsAppId(translateSettingView.getThsAppIdTextField().getText());
         translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
+        translateConfig.setCustomApiUrl(translateSettingView.getCustomApiUrlTextField().getText());
+        translateConfig.setCustomApiMaxCharLength(Integer.parseInt(translateSettingView.getCustomApiMaxCharLengthTextField().getText()));
+        translateConfig.setCustomSupportLanguage(translateSettingView.getCustomSupportLanguageTextField().getText());
         translateConfig.setOpenModelChannel(String.valueOf(translateSettingView.getOpenModelComboBox().getSelectedItem()));
         translateConfig.setTyModel(String.valueOf(translateSettingView.getTyModelComboBox().getSelectedItem()));
         translateConfig.setTyKey(String.valueOf(translateSettingView.getTyKeyTextField().getPassword()));
@@ -188,6 +194,10 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.THS_SOFT.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getThsAppId(), translateConfig.getThsAppSecret()), TranslateEnum.THS_SOFT.getTranslate() + "密钥不能为空");
+        }
+        if (TranslateEnum.CUSTOM.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getCustomApiUrl(), translateConfig.getCustomSupportLanguage())
+                    && Objects.nonNull(translateConfig.getCustomApiMaxCharLength()), TranslateEnum.CUSTOM.getTranslate() + "配置不能为空");
         }
         if (TranslateEnum.OPEN_BIG_MODEL.getTranslate().equals(translateConfig.getTranslateChannel())) {
             if (OpenModelTranslateEnum.TONG_YI.getModel().equals(translateConfig.getOpenModelChannel())) {

@@ -1,9 +1,11 @@
 package easy.config.translate;
 
+import cn.hutool.core.util.StrUtil;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import easy.base.Constants;
 import easy.base.ModelConstants;
 import easy.enums.*;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +42,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setYoudaoDomainCheckBox(Boolean.FALSE);
             translateConfig.setYoudaoDomainComboBox(YouDaoTranslateDomainEnum.COMPUTERS.getName());
             translateConfig.setGlobalWordMap(new TreeMap<>());
+            translateConfig.setCustomApiMaxCharLength(Constants.NUM.ONE_THOUSAND);
+            translateConfig.setCustomSupportLanguage(TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang);
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
@@ -51,6 +55,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setYoudaoDomainCheckBox(Objects.isNull(translateConfig.getYoudaoDomainCheckBox()) ? Boolean.FALSE : translateConfig.getYoudaoDomainCheckBox());
             translateConfig.setYoudaoDomainComboBox(Objects.isNull(translateConfig.getYoudaoDomainComboBox()) ? YouDaoTranslateDomainEnum.COMPUTERS.getName() : translateConfig.getYoudaoDomainComboBox());
             translateConfig.setGlobalWordMap(Objects.isNull(translateConfig.getGlobalWordMap()) ? new TreeMap<>() : translateConfig.getGlobalWordMap());
+            translateConfig.setCustomApiMaxCharLength(Objects.isNull(translateConfig.getCustomApiMaxCharLength()) ? Constants.NUM.ONE_THOUSAND : translateConfig.getCustomApiMaxCharLength());
+            translateConfig.setCustomSupportLanguage(Objects.isNull(translateConfig.getCustomSupportLanguage()) ? TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang : translateConfig.getCustomSupportLanguage());
         }
         return translateConfig;
     }

@@ -1,6 +1,8 @@
 package easy.config.translate;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
+import easy.base.Constants;
 import easy.base.ModelConstants;
 import easy.enums.*;
 
@@ -189,15 +191,31 @@ public class TranslateConfig {
      * 文心一言模型model
      */
     private String wenxinModel;
+
     /**
      * 文心一言模型ApiKey
      */
     private String wenxinApiKey;
+
     /**
      * 文心一言模型ApiSecret
      */
     private String wenxinApiSecret;
 
+    /**
+     * 自定义API url
+     */
+    private String customApiUrl;
+
+    /**
+     * 自定义API最大字符长度, 默认:1000
+     */
+    private Integer customApiMaxCharLength;
+
+    /**
+     * 自定义支持语言文本字段
+     */
+    private String customSupportLanguage;
 
     /**
      * 全局单词映射
@@ -250,6 +268,9 @@ public class TranslateConfig {
         wenxinModel = null;
         wenxinApiKey = null;
         wenxinApiSecret = null;
+        customApiUrl = null;
+        customApiMaxCharLength = Constants.NUM.ONE_THOUSAND;
+        customSupportLanguage = TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -558,4 +579,29 @@ public class TranslateConfig {
     public void setWenxinApiSecret(String wenxinApiSecret) {
         this.wenxinApiSecret = wenxinApiSecret;
     }
+
+    public String getCustomApiUrl() {
+        return customApiUrl;
+    }
+
+    public void setCustomApiUrl(String customApiUrl) {
+        this.customApiUrl = customApiUrl;
+    }
+
+    public Integer getCustomApiMaxCharLength() {
+        return customApiMaxCharLength;
+    }
+
+    public void setCustomApiMaxCharLength(Integer customApiMaxCharLength) {
+        this.customApiMaxCharLength = customApiMaxCharLength;
+    }
+
+    public String getCustomSupportLanguage() {
+        return customSupportLanguage;
+    }
+
+    public void setCustomSupportLanguage(String customSupportLanguage) {
+        this.customSupportLanguage = customSupportLanguage;
+    }
+
 }

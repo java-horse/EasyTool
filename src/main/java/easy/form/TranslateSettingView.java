@@ -15,6 +15,7 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
@@ -123,6 +124,14 @@ public class TranslateSettingView {
     private JTextField wenxinApiKeyTextField;
     private JLabel wenxinApiSecretLabel;
     private JPasswordField wenxinApiSecretPasswordField;
+    private JTextField customApiUrlTextField;
+    private JLabel customApiUrlLabel;
+    private JLabel customApiMaxCharLengthLabel;
+    private JTextField customApiMaxCharLengthTextField;
+    private JLabel customApiMaxCharLengthTipLabel;
+    private JLabel customSupportLanguageLabel;
+    private JTextField customSupportLanguageTextField;
+    private JLabel customSupportLanguageTipLabel;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -154,17 +163,21 @@ public class TranslateSettingView {
                 CopyPasteManager.getInstance().setContents(new StringSelection(key));
             }
         });
+        openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         translateChannelBox.addItemListener(e -> {
             Object selectedItem = ((JComboBox<?>) e.getSource()).getSelectedItem();
             setTranslateVisible(selectedItem);
             translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(selectedItem)));
         });
-        openModelComboBox.addItemListener(e -> setOpenModelVisible(((JComboBox<?>) e.getSource()).getSelectedItem()));
         baiduDomainCheckBox.addActionListener(e -> baiduDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
         aliyunDomainCheckBox.addActionListener(e -> aliyunDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
         // 设置温馨提示
         translateChannelTipLabel.setIcon(AllIcons.General.ContextHelp);
         translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
+        customApiMaxCharLengthTipLabel.setIcon(AllIcons.General.ContextHelp);
+        customApiMaxCharLengthTipLabel.setToolTipText("每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
+        customSupportLanguageTipLabel.setIcon(AllIcons.General.ContextHelp);
+        customSupportLanguageTipLabel.setToolTipText(String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
     }
 
 
@@ -185,7 +198,7 @@ public class TranslateSettingView {
             return translateConfig.getKimiKey();
         } else if (model.equals(OpenModelTranslateEnum.WEN_XIN.getModel())) {
             return translateConfig.getWenxinApiSecret();
-        }else {
+        } else {
             return StringUtils.EMPTY;
         }
     }
@@ -386,6 +399,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -443,6 +464,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -500,6 +529,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -557,6 +594,17 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -614,6 +662,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -671,6 +727,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -728,6 +792,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -785,6 +857,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -842,6 +922,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -899,6 +987,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -956,6 +1052,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         } else if (Objects.equals(TranslateEnum.THS_SOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1013,6 +1117,79 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(true);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.CUSTOM.getTranslate(), selectedItem)) {
+            setCommonVisible();
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+            microsoftKeyLabel.setVisible(false);
+            microsoftKeyTextField.setVisible(false);
+            niuApiKeyLabel.setVisible(false);
+            niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
+            hwProjectIdLabel.setVisible(false);
+            hwProjectIdTextField.setVisible(false);
+            hwAppIdLabel.setVisible(false);
+            hwAppIdTextField.setVisible(false);
+            hwAppSecretLabel.setVisible(false);
+            hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(true);
+            customApiUrlTextField.setVisible(true);
+            customApiMaxCharLengthLabel.setVisible(true);
+            customApiMaxCharLengthTextField.setVisible(true);
+            customApiMaxCharLengthTipLabel.setVisible(true);
+            customSupportLanguageLabel.setVisible(true);
+            customSupportLanguageTextField.setVisible(true);
+            customSupportLanguageTipLabel.setVisible(true);
         } else if (Objects.equals(TranslateEnum.OPEN_BIG_MODEL.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -1070,6 +1247,14 @@ public class TranslateSettingView {
             openModelLabel.setVisible(true);
             openModelComboBox.setVisible(true);
             viewOpenModelKeyButton.setVisible(true);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
             // 开元大模型UI设置
             setOpenModelVisible(openModelComboBox.getSelectedItem());
         } else {
@@ -1129,6 +1314,14 @@ public class TranslateSettingView {
             thsAppSecretTextField.setVisible(false);
             openModelLabel.setVisible(false);
             openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
         }
     }
 
@@ -1179,6 +1372,9 @@ public class TranslateSettingView {
         setWenxinModelComboBox(translateConfig.getWenxinModel());
         setWenxinApiKeyTextField(translateConfig.getWenxinApiKey());
         setWenxinApiSecretPasswordField(translateConfig.getWenxinApiSecret());
+        setCustomApiUrlTextField(translateConfig.getCustomApiUrl());
+        setCustomApiMaxCharLengthTextField(Integer.toString(translateConfig.getCustomApiMaxCharLength()));
+        setCustomSupportLanguageTextField(translateConfig.getCustomSupportLanguage());
     }
 
     private void refreshGlobalWordMap() {
@@ -1749,6 +1945,70 @@ public class TranslateSettingView {
 
     public void setWenxinApiSecretPasswordField(String wenxinApiSecretPasswordField) {
         this.wenxinApiSecretPasswordField.setText(wenxinApiSecretPasswordField);
+    }
+
+    public JTextField getCustomApiUrlTextField() {
+        return customApiUrlTextField;
+    }
+
+    public void setCustomApiUrlTextField(String customApiUrlTextField) {
+        this.customApiUrlTextField.setText(customApiUrlTextField);
+    }
+
+    public JTextField getCustomApiMaxCharLengthTextField() {
+        return customApiMaxCharLengthTextField;
+    }
+
+    public void setCustomApiMaxCharLengthTextField(String customApiMaxCharLengthTextField) {
+        this.customApiMaxCharLengthTextField.setText(customApiMaxCharLengthTextField);
+    }
+
+    public JLabel getCustomApiUrlLabel() {
+        return customApiUrlLabel;
+    }
+
+    public void setCustomApiUrlLabel(JLabel customApiUrlLabel) {
+        this.customApiUrlLabel = customApiUrlLabel;
+    }
+
+    public JLabel getCustomApiMaxCharLengthLabel() {
+        return customApiMaxCharLengthLabel;
+    }
+
+    public void setCustomApiMaxCharLengthLabel(JLabel customApiMaxCharLengthLabel) {
+        this.customApiMaxCharLengthLabel = customApiMaxCharLengthLabel;
+    }
+
+    public JLabel getCustomApiMaxCharLengthTipLabel() {
+        return customApiMaxCharLengthTipLabel;
+    }
+
+    public void setCustomApiMaxCharLengthTipLabel(JLabel customApiMaxCharLengthTipLabel) {
+        this.customApiMaxCharLengthTipLabel = customApiMaxCharLengthTipLabel;
+    }
+
+    public JLabel getCustomSupportLanguageLabel() {
+        return customSupportLanguageLabel;
+    }
+
+    public void setCustomSupportLanguageLabel(JLabel customSupportLanguageLabel) {
+        this.customSupportLanguageLabel = customSupportLanguageLabel;
+    }
+
+    public JTextField getCustomSupportLanguageTextField() {
+        return customSupportLanguageTextField;
+    }
+
+    public void setCustomSupportLanguageTextField(String customSupportLanguageTextField) {
+        this.customSupportLanguageTextField.setText(customSupportLanguageTextField);
+    }
+
+    public JLabel getCustomSupportLanguageTipLabel() {
+        return customSupportLanguageTipLabel;
+    }
+
+    public void setCustomSupportLanguageTipLabel(JLabel customSupportLanguageTipLabel) {
+        this.customSupportLanguageTipLabel = customSupportLanguageTipLabel;
     }
 
 }
