@@ -30,11 +30,11 @@ public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
             if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.CODE.getType())) {
                 return "@return {@code " + returnName + " }";
             } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
-                return String.format("@return {@link %s }", returnName);
+                return String.format("@return {@link %s}", returnName);
             } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
                 return "@return " + translateService.translate(returnName);
             }
-            return String.format("@return {@link %s }", returnName);
+            return String.format("@return {@link %s}", returnName);
         }
     }
 

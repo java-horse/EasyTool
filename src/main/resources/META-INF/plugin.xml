@@ -316,11 +316,16 @@
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.api.ApiDocConfigComponent"/>
 
         <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
+        <applicationService serviceInterface="easy.api.service.YApiService"
+                            serviceImplementation="easy.api.service.impl.YApiServiceImpl"/>
+        <applicationService serviceImplementation="easy.api.strategy.impl.YApiSyncDocStrategy"/>
+        <applicationService serviceImplementation="easy.api.strategy.impl.ApiFoxSyncDocStrategy"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -339,6 +344,8 @@
             <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
                           instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
         </applicationConfigurable>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.apidoc" displayName="ApiDoc"
+                                 instance="easy.settings.ApiDocSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
@@ -458,16 +465,21 @@
         <!--插件检查更新-->
         <action id="PluginForUpdateAction" class="easy.action.PluginForUpdateAction" text="ForUpdate"
                 description="EasyTool development assistance tools" icon="AllIcons.Ide.Notification.PluginUpdate"/>
-
         <!--工具栏快捷菜单-->
-        <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
+        <group id="DynamicToolWindowActionGroups" class="easy.action.tool.DynamicToolWindowActionGroup"
                text="EasyTool" icon="easy.icons.EasyIcons.ICON.LOGO" description="EasyTool development assistance tools"
                popup="true" compact="true">
             <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
+        <!--ApiDoc-->
+        <group id="DynamicApiDocActionGroups" class="easy.action.api.DynamicApiDocActionGroup" text="ApiDoc"
+               description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.LOGO"
+               popup="true" compact="true"/>
+
+
         <!--编辑器右键菜单-->
-        <group id="easy.char.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
+        <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyToolEditorSubGroup"/>
@@ -486,8 +498,10 @@
             <reference ref="DynamicBackgroundImageActionGroups"/>
             <reference ref="PluginForUpdateAction"/>
         </group>
+
+
         <!--控制台右键菜单-->
-        <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
+        <group id="easy.tool.console.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyToolConsoleSubGroup"/>

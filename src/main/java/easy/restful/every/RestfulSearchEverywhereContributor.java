@@ -14,9 +14,12 @@ import org.jetbrains.annotations.NotNull;
  * @date 2024/03/24 17:46
  */
 public class RestfulSearchEverywhereContributor implements SearchEverywhereContributorFactory {
+
+    private final RestfulSearchLocalService restfulSearchLocalService = new RestfulSearchLocalService();
+
     @Override
     public @NotNull SearchEverywhereContributor createContributor(@NotNull AnActionEvent initEvent) {
-        return new RestfulSearchGotoSEContributor(initEvent);
+        return new RestfulSearchGotoSEContributor(initEvent, restfulSearchLocalService);
     }
 
 

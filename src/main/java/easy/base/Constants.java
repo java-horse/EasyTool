@@ -27,6 +27,8 @@ public class Constants {
     public static final String BREAK_LINE = "&br;";
     public static final Set<String> BASE_TYPE_SET = Sets.newHashSet("byte", "short", "int", "long", "char", "float", "double", "boolean");
     public static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
+    public static final String HTTP = "http://";
+    public static final String HTTPS = "https://";
 
     /**
      * 插件持久化变量

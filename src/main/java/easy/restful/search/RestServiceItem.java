@@ -31,6 +31,7 @@ public class RestServiceItem implements NavigationItem {
     private HttpMethod method;
     private String url;
     private Navigatable navigationElement;
+    private String accessTime;
 
     public RestServiceItem(PsiElement psiElement, HttpMethod method, String urlPath) {
         this.psiElement = psiElement;
@@ -80,6 +81,9 @@ public class RestServiceItem implements NavigationItem {
                 }
                 if (psiElement != null) {
                     location += " in " + psiElement.getResolveScope().getDisplayName();
+                }
+                if (StringUtils.isNotEmpty(accessTime)) {
+                    location += " (" + accessTime + ")";
                 }
                 return location;
             }
@@ -181,6 +185,14 @@ public class RestServiceItem implements NavigationItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setAccessTime(String accessTime) {
+        this.accessTime = accessTime;
+    }
+
+    public String getAccessTime() {
+        return accessTime;
     }
 
     public PsiElement getPsiElement() {
