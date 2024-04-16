@@ -16,7 +16,7 @@ public class YApiProjectInfo {
     private Integer groupId;
 
     @SerializedName("_id")
-    private Integer projectId;
+    private Long projectId;
 
     @SerializedName("name")
     private String projectName;
@@ -29,11 +29,11 @@ public class YApiProjectInfo {
         this.groupId = groupId;
     }
 
-    public Integer getProjectId() {
+    public Long getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Integer projectId) {
+    public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
 

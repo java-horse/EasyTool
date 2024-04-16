@@ -3,6 +3,7 @@ package easy.api.service.impl;
 import cn.hutool.core.util.URLUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import easy.api.entity.YApiCategoryInfo;
 import easy.api.entity.YApiDocInfo;
 import easy.api.entity.YApiProjectInfo;
 import easy.api.service.YApiService;
@@ -10,8 +11,7 @@ import easy.util.HttpUtil;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * YAPI服务实现
@@ -45,6 +45,61 @@ public class YApiServiceImpl implements YApiService {
 
         String response = HttpUtil.doGet(URLUtil.completeUrl(baseUrl, "/api/project/get"), paramMap);
         return parseData(response, YApiProjectInfo.class);
+    }
+
+    /**
+     * 新增类别信息
+     *
+     * @param baseUrl   基url
+     * @param token     令牌
+     * @param projectId 项目id
+     * @param name      名字
+     * @param desc      desc
+     * @return {@link YApiCategoryInfo }
+     * @author mabin
+     * @date 2024/04/15 13:56
+     */
+    @Override
+    public YApiCategoryInfo addCategoryInfo(String baseUrl, String token, Long projectId, String name, String desc) {
+        if (StringUtils.isAnyBlank(baseUrl, token, name) || Objects.isNull(projectId)) {
+            return null;
+        }
+        Map<String, Object> paramMap = new HashMap<>(16);
+        paramMap.put("project_id", projectId);
+        paramMap.put("token", token);
+        paramMap.put("name", name);
+        paramMap.put("desc", desc);
+        String response = HttpUtil.doPost(URLUtil.completeUrl(baseUrl, "/api/interface/add_cat"), paramMap);
+        return parseData(response, YApiCategoryInfo.class);
+    }
+
+    /**
+     * 获取类别信息列表
+     *
+     * @param baseUrl   基url
+     * @param token     令牌
+     * @param projectId 项目id
+     * @return {@link List<YApiCategoryInfo> }
+     * @author mabin
+     * @date 2024/04/15 13:57
+     */
+    @Override
+    public List<YApiCategoryInfo> listCategoryInfo(String baseUrl, String token, Long projectId) {
+        if (StringUtils.isAnyBlank(baseUrl, token) || Objects.isNull(projectId)) {
+            return null;
+        }
+        Map<String, String> paramMap = new HashMap<>(16);
+        paramMap.put("project_id", String.valueOf(projectId));
+        paramMap.put("token", token);
+        String response = HttpUtil.doGet(URLUtil.completeUrl(baseUrl, "/api/interface/getCatMenu"), paramMap);
+        if (StringUtils.isBlank(response)) {
+            return null;
+        }
+        JsonObject resObject = JsonUtil.fromObject(response);
+        if (Objects.isNull(resObject) || resObject.get("errcode").getAsInt() != 0) {
+            return null;
+        }
+        return Arrays.asList(JsonUtil.fromJson(resObject.get("data").getAsString(), YApiCategoryInfo[].class));
     }
 
     /**

@@ -324,8 +324,8 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
         <applicationService serviceInterface="easy.api.service.YApiService"
                             serviceImplementation="easy.api.service.impl.YApiServiceImpl"/>
-        <applicationService serviceImplementation="easy.api.strategy.impl.YApiSyncDocStrategy"/>
-        <applicationService serviceImplementation="easy.api.strategy.impl.ApiFoxSyncDocStrategy"/>
+        <applicationService serviceImplementation="easy.api.strategy.impl.YApiSyncApiApiDocStrategy"/>
+        <applicationService serviceImplementation="easy.api.strategy.impl.ApiFoxSyncApiApiDocStrategy"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 

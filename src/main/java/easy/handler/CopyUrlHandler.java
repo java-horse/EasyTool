@@ -46,11 +46,13 @@ public class CopyUrlHandler {
      */
     public String doCopyFullUrl(PsiElement psiElement) {
         PsiClass psiClass = PsiTreeUtil.getParentOfType(psiElement, PsiClass.class);
-        StringBuilder url = new StringBuilder();
+        String url = StringUtils.EMPTY;
         if (Objects.nonNull(psiClass)) {
             String classUrl = getClassRestUrl(psiClass);
             if (StringUtils.isNotBlank(classUrl)) {
-                url.append(removeQuotation(classUrl));
+                url = StringUtils.replace(classUrl, "\"", StringUtils.EMPTY);
+                url = StringUtils.startsWith(url, "/") ? url : "/" + url;
+                url = StringUtils.endsWith(url, "/") ? StringUtils.substringBeforeLast(url, "/") : url;
             }
         }
         PsiAnnotation psiAnnotation = PsiTreeUtil.getParentOfType(psiElement, PsiAnnotation.class);
@@ -59,11 +61,13 @@ public class CopyUrlHandler {
             if (Objects.nonNull(element) && element.getParent() instanceof PsiMethod) {
                 String methodUrl = getUrl(psiAnnotation);
                 if (StringUtils.isNotBlank(methodUrl)) {
-                    url.append(removeQuotation(methodUrl));
+                    methodUrl = StringUtils.replace(methodUrl, "\"", StringUtils.EMPTY);
+                    methodUrl = StringUtils.startsWith(methodUrl, "/") ? methodUrl : "/" + methodUrl;
+                    url += methodUrl;
                 }
             }
         }
-        return url.toString();
+        return url;
     }
 
     /**

@@ -16,6 +16,7 @@ import java.util.List;
  * @date 2024/04/02 16:17
  */
 public class YApiDocInfo implements Serializable {
+    private static final long serialVersionUID = -6950965685504922540L;
 
     /**
      * 项目 token
@@ -136,4 +137,172 @@ public class YApiDocInfo implements Serializable {
      * 备注信息
      */
     private String markdown;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Long getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Long catId) {
+        this.catId = catId;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getReqBodyType() {
+        return reqBodyType;
+    }
+
+    public void setReqBodyType(String reqBodyType) {
+        this.reqBodyType = reqBodyType;
+    }
+
+    public String getReqBodyOther() {
+        return reqBodyOther;
+    }
+
+    public void setReqBodyOther(String reqBodyOther) {
+        this.reqBodyOther = reqBodyOther;
+    }
+
+    public boolean isReqBodyIsJsonSchema() {
+        return reqBodyIsJsonSchema;
+    }
+
+    public void setReqBodyIsJsonSchema(boolean reqBodyIsJsonSchema) {
+        this.reqBodyIsJsonSchema = reqBodyIsJsonSchema;
+    }
+
+    public List<YApiParamInfo> getReqBodyForm() {
+        return reqBodyForm;
+    }
+
+    public void setReqBodyForm(List<YApiParamInfo> reqBodyForm) {
+        this.reqBodyForm = reqBodyForm;
+    }
+
+    public List<YApiParamInfo> getReqParams() {
+        return reqParams;
+    }
+
+    public void setReqParams(List<YApiParamInfo> reqParams) {
+        this.reqParams = reqParams;
+    }
+
+    public List<YApiHeaderInfo> getReqHeaders() {
+        return reqHeaders;
+    }
+
+    public void setReqHeaders(List<YApiHeaderInfo> reqHeaders) {
+        this.reqHeaders = reqHeaders;
+    }
+
+    public List<YApiParamInfo> getReqQuery() {
+        return reqQuery;
+    }
+
+    public void setReqQuery(List<YApiParamInfo> reqQuery) {
+        this.reqQuery = reqQuery;
+    }
+
+    public String getResBodyType() {
+        return resBodyType;
+    }
+
+    public void setResBodyType(String resBodyType) {
+        this.resBodyType = resBodyType;
+    }
+
+    public String getResBody() {
+        return resBody;
+    }
+
+    public void setResBody(String resBody) {
+        this.resBody = resBody;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Boolean getSwitchNotice() {
+        return switchNotice;
+    }
+
+    public void setSwitchNotice(Boolean switchNotice) {
+        this.switchNotice = switchNotice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public boolean isResBodyIsJsonSchema() {
+        return resBodyIsJsonSchema;
+    }
+
+    public void setResBodyIsJsonSchema(boolean resBodyIsJsonSchema) {
+        this.resBodyIsJsonSchema = resBodyIsJsonSchema;
+    }
+
+    public String getMarkdown() {
+        return markdown;
+    }
+
+    public void setMarkdown(String markdown) {
+        this.markdown = markdown;
+    }
 }

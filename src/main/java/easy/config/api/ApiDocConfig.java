@@ -1,6 +1,10 @@
 package easy.config.api;
 
-import javax.swing.*;
+import cn.hutool.core.util.IdUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * API文档配置
@@ -12,12 +16,19 @@ import javax.swing.*;
  */
 public class ApiDocConfig {
 
+    /**
+     * 项目方法唯一标识
+     * key:方法全路径 value:随机字符串
+     */
+    private Map<String, String> methodIdMap = new ConcurrentHashMap<>(16);
+
     private String yapiServer;
     private String yapiToken;
     private Boolean yapiEnable;
     private String apifoxServer;
     private String apifoxToken;
     private Boolean apifoxEnable;
+
     public String getYapiServer() {
         return yapiServer;
     }
@@ -65,4 +76,33 @@ public class ApiDocConfig {
     public void setApifoxEnable(Boolean apifoxEnable) {
         this.apifoxEnable = apifoxEnable;
     }
+
+    public Map<String, String> getMethodIdMap() {
+        return methodIdMap;
+    }
+
+    public void setMethodIdMap(Map<String, String> methodIdMap) {
+        this.methodIdMap = methodIdMap;
+    }
+
+    /**
+     * 获取全局方法id
+     *
+     * @param methodFullPath 方法全路径
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/04/13 16:10
+     */
+    public String getMethodId(String methodFullPath) {
+        if (StringUtils.isBlank(methodFullPath)) {
+            return StringUtils.EMPTY;
+        }
+        String methodId = methodIdMap.get(methodFullPath);
+        if (StringUtils.isBlank(methodId)) {
+            methodId = IdUtil.getSnowflakeNextIdStr();
+            methodIdMap.put(methodFullPath, methodId);
+        }
+        return methodId;
+    }
+
 }

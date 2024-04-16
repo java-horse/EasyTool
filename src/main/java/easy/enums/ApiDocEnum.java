@@ -19,6 +19,15 @@ public enum ApiDocEnum {
         this.icon = icon;
     }
 
+    public static ApiDocEnum getEnum(String title) {
+        for (ApiDocEnum apiDocEnum : values()) {
+            if (apiDocEnum.getTitle().equals(title)) {
+                return apiDocEnum;
+            }
+        }
+        return null;
+    }
+
     public String getTitle() {
         return title;
     }
