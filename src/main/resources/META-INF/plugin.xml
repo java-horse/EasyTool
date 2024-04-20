@@ -41,9 +41,11 @@
             <li>--<em>谷歌翻译(API)</em></li>
             <li>--<em>谷歌翻译(Free)</em></li>
         </ul>
-        <li>支持并接入多种开源大模型翻译引擎, 快捷键: <em>CTRL + \</em> </li>
+        <li>支持并接入多种开源大模型翻译引擎</li>
         <ul>
             <li>--<em>通义千问</em></li>
+            <li>--<em>文心一言</em></li>
+            <li>--<em>月之暗面-Kimi</em></li>
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: <em>CTRL + ALT + \</em> </li>
         <li>支持选中文本右键快捷Web搜索</li>
@@ -77,10 +79,14 @@
       <h3>v2.0.6</h3>
       <ul>
         <li>Support double-clicking the global search window of shift to quickly retrieve Controller API</li>
+        <li>New online translation channels such as Baidu-Wen Xin Yi Yan and Moon Dark Face-Kimi</li>
         <li>Optimize check plug-in latest version logic</li>
+        <li>Fix several bugs and greatly improve plug-in performance</li>
         <li>-------------------------------</li>
         <li>支持双击shift的全局搜索弹窗中快捷检索Controller Api</li>
+        <li>新增开源大模型 百度-文心一言、月之暗面-Kimi 等在线翻译渠道</li>
         <li>优化检查插件最新版本逻辑</li>
+        <li>修复若干Bug, 大幅提升插件性能</li>
       </ul>
       <h3>v2.0.5</h3>
       <ul>
@@ -323,7 +329,6 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
 
 
-
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
         <applicationConfigurable id="easy.tool.settings" displayName="EasyTool"
@@ -341,8 +346,6 @@
             <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
                           instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
         </applicationConfigurable>
-        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.apidoc" displayName="ApiDoc"
-                                 instance="easy.settings.ApiDocSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"

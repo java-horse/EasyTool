@@ -132,6 +132,8 @@ public class TranslateSettingView {
     private JLabel customSupportLanguageLabel;
     private JTextField customSupportLanguageTextField;
     private JLabel customSupportLanguageTipLabel;
+    private JLabel customApiExampleLabel;
+    private JTextArea customApiExampleTextArea;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -407,6 +409,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -472,6 +476,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -537,6 +543,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -601,10 +609,13 @@ public class TranslateSettingView {
             customApiMaxCharLengthTipLabel.setVisible(false);
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
-            customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -670,6 +681,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -735,6 +748,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -800,6 +815,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -865,6 +882,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -930,6 +949,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -995,6 +1016,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1060,6 +1083,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.THS_SOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1125,6 +1150,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CUSTOM.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1190,6 +1217,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(true);
             customSupportLanguageTextField.setVisible(true);
             customSupportLanguageTipLabel.setVisible(true);
+            customApiExampleLabel.setVisible(true);
+            customApiExampleTextArea.setVisible(true);
         } else if (Objects.equals(TranslateEnum.OPEN_BIG_MODEL.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -1255,6 +1284,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
             // 开元大模型UI设置
             setOpenModelVisible(openModelComboBox.getSelectedItem());
         } else {
@@ -1322,6 +1353,8 @@ public class TranslateSettingView {
             customSupportLanguageLabel.setVisible(false);
             customSupportLanguageTextField.setVisible(false);
             customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
         }
     }
 
@@ -2009,6 +2042,22 @@ public class TranslateSettingView {
 
     public void setCustomSupportLanguageTipLabel(JLabel customSupportLanguageTipLabel) {
         this.customSupportLanguageTipLabel = customSupportLanguageTipLabel;
+    }
+
+    public JLabel getCustomApiExampleLabel() {
+        return customApiExampleLabel;
+    }
+
+    public void setCustomApiExampleLabel(JLabel customApiExampleLabel) {
+        this.customApiExampleLabel = customApiExampleLabel;
+    }
+
+    public JTextArea getCustomApiExampleTextArea() {
+        return customApiExampleTextArea;
+    }
+
+    public void setCustomApiExampleTextArea(String customApiExampleTextArea) {
+        this.customApiExampleTextArea.setText(customApiExampleTextArea);
     }
 
 }

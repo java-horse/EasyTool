@@ -3,14 +3,14 @@
   <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="776" height="1434"/>
+      <xy x="20" y="20" width="776" height="1655"/>
     </constraints>
     <properties>
       <toolTipText value=""/>
     </properties>
     <border type="none"/>
     <children>
-      <grid id="653ad" binding="translatePanel" layout-manager="GridLayoutManager" row-count="38" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="653ad" binding="translatePanel" layout-manager="GridLayoutManager" row-count="39" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -169,7 +169,7 @@
           </component>
           <component id="615ea" class="javax.swing.JLabel">
             <constraints>
-              <grid row="37" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="38" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="快捷操作"/>
@@ -178,7 +178,7 @@
           <grid id="27250" binding="supportPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="37" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="38" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -510,7 +510,7 @@
           </component>
           <component id="55a98" class="javax.swing.JLabel" binding="openModelLabel">
             <constraints>
-              <grid row="29" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="30" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="大模型"/>
@@ -518,7 +518,7 @@
           </component>
           <component id="70f83" class="javax.swing.JComboBox" binding="openModelComboBox">
             <constraints>
-              <grid row="29" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="30" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
@@ -530,7 +530,7 @@
           </component>
           <component id="9aa3f" class="javax.swing.JLabel" binding="tyKeyLabel">
             <constraints>
-              <grid row="31" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="32" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Key"/>
@@ -538,7 +538,7 @@
           </component>
           <component id="46dcd" class="javax.swing.JLabel" binding="tyModelLabel">
             <constraints>
-              <grid row="30" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="31" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Model"/>
@@ -546,7 +546,7 @@
           </component>
           <component id="75765" class="javax.swing.JComboBox" binding="tyModelComboBox">
             <constraints>
-              <grid row="30" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="31" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
@@ -664,7 +664,7 @@
           </component>
           <component id="7e4ef" class="javax.swing.JLabel" binding="kimiModelLabel">
             <constraints>
-              <grid row="32" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="33" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Model"/>
@@ -672,7 +672,7 @@
           </component>
           <component id="367cc" class="javax.swing.JLabel" binding="kimiKeyLabel">
             <constraints>
-              <grid row="33" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="34" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Key"/>
@@ -680,7 +680,7 @@
           </component>
           <component id="9a1b2" class="javax.swing.JComboBox" binding="kimiModelComboBox">
             <constraints>
-              <grid row="32" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="33" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
@@ -692,7 +692,7 @@
           </component>
           <component id="8b2cb" class="javax.swing.JPasswordField" binding="kimiKeyPasswordField">
             <constraints>
-              <grid row="33" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="34" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -700,7 +700,7 @@
           </component>
           <component id="23c65" class="javax.swing.JButton" binding="viewOpenModelKeyButton">
             <constraints>
-              <grid row="29" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="30" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="预览秘钥"/>
@@ -708,7 +708,7 @@
           </component>
           <component id="c93f6" class="javax.swing.JPasswordField" binding="tyKeyTextField">
             <constraints>
-              <grid row="31" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="32" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -716,7 +716,7 @@
           </component>
           <component id="61483" class="javax.swing.JLabel" binding="wenxinModelLabel">
             <constraints>
-              <grid row="34" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="35" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Model"/>
@@ -724,7 +724,7 @@
           </component>
           <component id="ea52d" class="javax.swing.JComboBox" binding="wenxinModelComboBox">
             <constraints>
-              <grid row="34" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="35" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
@@ -735,7 +735,7 @@
           </component>
           <component id="c3dcc" class="javax.swing.JLabel" binding="wenxinApiKeyLabel">
             <constraints>
-              <grid row="35" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="36" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="ApiKey"/>
@@ -743,7 +743,7 @@
           </component>
           <component id="91792" class="javax.swing.JTextField" binding="wenxinApiKeyTextField">
             <constraints>
-              <grid row="35" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="36" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -753,7 +753,7 @@
           </component>
           <component id="ef74" class="javax.swing.JLabel" binding="wenxinApiSecretLabel">
             <constraints>
-              <grid row="36" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="37" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="ApiSecret"/>
@@ -761,7 +761,7 @@
           </component>
           <component id="11ca2" class="javax.swing.JPasswordField" binding="wenxinApiSecretPasswordField">
             <constraints>
-              <grid row="36" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="37" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -829,6 +829,24 @@
             </constraints>
             <properties>
               <text value=""/>
+            </properties>
+          </component>
+          <component id="ab3f3" class="javax.swing.JLabel" binding="customApiExampleLabel">
+            <constraints>
+              <grid row="29" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Api Example"/>
+            </properties>
+          </component>
+          <component id="2ec59" class="javax.swing.JTextArea" binding="customApiExampleTextArea">
+            <constraints>
+              <grid row="29" column="2" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="方式：POST application/json &#10;请求：&#10;{    &#10; &quot;source_lang&quot;:&quot;en&quot;,    &#10; &quot;target-lang&quot;:&quot;zh-CN&quot;,    &#10; &quot;text&quot;:&quot;Hello World&quot;&#10;} &#10;响应：&#10;{     &#10; &quot;detected_source_lang&quot;:&quot;en&quot;,    &#10; &quot;trans_result&quot;:&quot;你好，世界&quot;&#10;}"/>
             </properties>
           </component>
         </children>
