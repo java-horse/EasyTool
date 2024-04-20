@@ -317,11 +317,12 @@
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
         <applicationService serviceImplementation="easy.config.api.ApiDocConfigComponent"/>
-
         <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
+
+
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -468,11 +469,6 @@
             <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
-        <!--ApiDoc-->
-        <group id="DynamicApiDocActionGroups" class="easy.action.api.DynamicApiDocActionGroup" text="ApiDoc"
-               description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.LOGO"
-               popup="true" compact="true"/>
-
 
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -510,7 +506,6 @@
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
             <reference ref="PluginForUpdateAction"/>
-
         </group>
 
     </actions>

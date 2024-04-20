@@ -119,4 +119,14 @@ public class Constants {
         String DEFAULT_DATE_FORMAT = "yyyy/MM/dd HH:mm";
     }
 
+    /**
+     * 注解属性相关
+     */
+    public interface ANNOTATION_ATTR {
+        String VALUE = "value";
+        String NOTES = "notes";
+        String REQUIRED = "required";
+        String METHOD = "method";
+    }
+
 }

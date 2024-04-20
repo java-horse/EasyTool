@@ -177,9 +177,7 @@ public class CopyUrlHandler {
     public String getProjectServerPort(Project project, Module module) {
         ProjectConfigFileNameEnum[] configFileNameEnums = ProjectConfigFileNameEnum.values();
         for (ProjectConfigFileNameEnum configFileNameEnum : configFileNameEnums) {
-            System.out.println(configFileNameEnum.getName() + configFileNameEnum.getSuffix());
             String port = getPortByConfigFile(project, module, configFileNameEnum.getName(), configFileNameEnum.getPortKey(), configFileNameEnum.getSuffix(), false);
-            System.out.println("port=" + port);
             if (StringUtils.isNotBlank(port)) {
                 return port;
             }
@@ -233,7 +231,6 @@ public class CopyUrlHandler {
                 return null;
             }
             String active = getYamlValue(yamlFile, KEY_ACTIVE);
-            System.out.println("active=" + active);
             if (StringUtils.isNotBlank(active) && !last) {
                 String lastFileName = String.format("%s-%s", name, active);
                 String port = getPortByConfigFile(project, module, lastFileName, portKey, suffix, true);
