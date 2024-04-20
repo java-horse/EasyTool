@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
- * xxx
+ * cron工具
  *
- * @project: EasyTool
- * @package: easy.util
- * @author: mabin
- * @date: 2024/01/20 13:34:51
+ * @author mabin
+ * @project EasyTool
+ * @package easy.util
+ * @date 2024/04/20 15:19
  */
 public class CronUtil {
 

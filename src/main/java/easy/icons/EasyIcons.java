@@ -50,8 +50,6 @@ public class EasyIcons {
         Icon GREEN = IconLoader.getIcon("icons/green.svg", EasyIcons.class);
         Icon RED = IconLoader.getIcon("icons/red.svg", EasyIcons.class);
         Icon YELLOW = IconLoader.getIcon("icons/yellow.svg", EasyIcons.class);
-        Icon YAPI = IconLoader.getIcon("icons/yapi.svg", EasyIcons.class);
-        Icon APIFOX = IconLoader.getIcon("icons/apifox.svg", EasyIcons.class);
     }
 
 }
