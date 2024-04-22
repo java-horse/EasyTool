@@ -76,6 +76,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.7</h3>
+      <ul>
+        <li>Fix the problem of abnormal prompt when the automatic translation result is empty</li>
+        <li>-------------------------------</li>
+        <li>修复自动翻译结果为空时的异常提示问题</li>
+      </ul>
       <h3>v2.0.6</h3>
       <ul>
         <li>Support double-clicking the global search window of shift to quickly retrieve Controller API</li>
