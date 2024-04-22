@@ -16,6 +16,7 @@ import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.translate.TranslateService;
 import easy.util.LanguageUtil;
+import easy.util.PsiElementUtil;
 import easy.util.SwaggerCommentUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -94,10 +95,10 @@ public class SwaggerGenerateHandler {
      */
     private void generateSelection(PsiClass psiClass, String selectionText, boolean isController) {
         Map<String, PsiClass> psiClassMap = Maps.newHashMap();
-        psiClassMap.put(psiClass.getNameIdentifier().getText(), psiClass);
+        psiClassMap.put(PsiElementUtil.getPsiElementNameIdentifierText(psiClass), psiClass);
         if (!isController) {
             for (PsiClass innerClass : psiClass.getInnerClasses()) {
-                psiClassMap.put(innerClass.getNameIdentifier().getText(), innerClass);
+                psiClassMap.put(PsiElementUtil.getPsiElementNameIdentifierText(innerClass), innerClass);
             }
         }
         if (psiClassMap.containsKey(selectionText)) {
@@ -106,7 +107,7 @@ public class SwaggerGenerateHandler {
         }
         PsiMethod[] methods = psiClass.getMethods();
         for (PsiMethod psiMethod : methods) {
-            if (StringUtils.equals(selectionText, psiMethod.getNameIdentifier().getText())) {
+            if (StringUtils.equals(selectionText, PsiElementUtil.getPsiElementNameIdentifierText(psiMethod))) {
                 this.generateMethodAnnotation(psiMethod);
                 return;
             }
@@ -114,7 +115,7 @@ public class SwaggerGenerateHandler {
         List<PsiField> psiFieldList = Lists.newArrayList(psiClass.getAllFields());
         Arrays.stream(psiClass.getInnerClasses()).forEach(innerClass -> psiFieldList.addAll(Arrays.asList(innerClass.getAllFields())));
         for (PsiField psiField : psiFieldList) {
-            if (StringUtils.equals(selectionText, psiField.getNameIdentifier().getText())) {
+            if (StringUtils.equals(selectionText, PsiElementUtil.getPsiElementNameIdentifierText(psiField))) {
                 this.generateFieldAnnotation(psiField);
                 return;
             }
@@ -139,28 +140,25 @@ public class SwaggerGenerateHandler {
         }
         String attrValue;
         if (isController) {
-            PsiAnnotation apiExist = psiClass.getModifierList().findAnnotation(SwaggerAnnotationEnum.API.getClassPackage());
+            PsiAnnotation apiExist = psiClass.getAnnotation(SwaggerAnnotationEnum.API.getClassPackage());
             attrValue = this.getAttribute(apiExist, "tags", commentDesc);
             if (StringUtils.isNotBlank(attrValue) && StringUtils.containsAny(attrValue, "{", "}")) {
                 attrValue = StringUtils.substringBetween(attrValue, "{", "}");
             }
         } else {
-            PsiAnnotation apiModelExist = psiClass.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_MODEL.getClassPackage());
+            PsiAnnotation apiModelExist = psiClass.getAnnotation(SwaggerAnnotationEnum.API_MODEL.getClassPackage());
             attrValue = this.getAttribute(apiModelExist, "description", commentDesc);
         }
         attrValue = washSpecialChar(attrValue);
         if (StringUtils.isBlank(attrValue)) {
-            String className = psiClass.getNameIdentifier().getText();
+            String className = PsiElementUtil.getPsiElementNameIdentifierText(psiClass);
             attrValue = translateService.translate(className);
             if (StringUtils.isBlank(attrValue)) {
                 attrValue = isController ? className + SwaggerAnnotationEnum.API.getClassName() : className + SwaggerAnnotationEnum.API_MODEL.getClassName();
             }
         }
-        String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", SwaggerAnnotationEnum.API.getClassName(), attrValue)
-                : String.format("@%s(description = \"%s\")", SwaggerAnnotationEnum.API_MODEL.getClassName(), attrValue);
-        this.doWrite(isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName(),
-                isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage(),
-                annotationFromText, psiClass);
+        String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", SwaggerAnnotationEnum.API.getClassName(), attrValue) : String.format("@%s(description = \"%s\")", SwaggerAnnotationEnum.API_MODEL.getClassName(), attrValue);
+        this.doWrite(isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName(), isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage(), annotationFromText, psiClass);
     }
 
     /**
@@ -175,8 +173,7 @@ public class SwaggerGenerateHandler {
         String commentDesc = StringUtils.EMPTY;
         Map<String, String> methodParamCommentDesc = null;
         for (PsiElement tmpEle : psiMethod.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                PsiComment classComment = (PsiComment) tmpEle;
+            if (tmpEle instanceof PsiComment classComment) {
                 String tmpText = classComment.getText();
                 methodParamCommentDesc = SwaggerCommentUtil.getCommentMethodParam(tmpText);
                 commentDesc = SwaggerCommentUtil.getCommentDesc(tmpText);
@@ -184,27 +181,24 @@ public class SwaggerGenerateHandler {
         }
         // 如果存在注解，获取注解原本的value和notes内容
         PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
-        String apiOperationAttrValue = this.getAttribute(apiOperationExist, "value", commentDesc);
+        String apiOperationAttrValue = this.getAttribute(apiOperationExist, Constants.ANNOTATION_ATTR.VALUE, commentDesc);
         apiOperationAttrValue = washSpecialChar(apiOperationAttrValue);
-        String apiOperationAttrNotes = this.getAttribute(apiOperationExist, "notes", commentDesc);
+        String apiOperationAttrNotes = this.getAttribute(apiOperationExist, Constants.ANNOTATION_ATTR.NOTES, commentDesc);
         apiOperationAttrNotes = washSpecialChar(apiOperationAttrNotes);
         // 如果注解和注释都不存在, 尝试自动翻译方法名作为value值
         if (StringUtils.isBlank(apiOperationAttrValue)) {
-            apiOperationAttrValue = translateService.translate(psiMethod.getNameIdentifier().getText());
+            apiOperationAttrValue = translateService.translate(PsiElementUtil.getPsiElementNameIdentifierText(psiMethod));
         }
-        PsiAnnotation[] psiMethodAnnotations = psiMethod.getModifierList().getAnnotations();
-        String methodValue = this.getMappingAttribute(psiMethodAnnotations, "method");
+        String methodValue = this.getMappingAttribute(psiMethod.getAnnotations(), Constants.ANNOTATION_ATTR.METHOD);
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         if (StringUtils.isNotBlank(methodValue)) {
-            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
-                    .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
+            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName()).append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
                 apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
             }
             apiOperationAnnotationText.append(", ").append("httpMethod = ").append("\"").append(methodValue).append("\"").append(")");
         } else {
-            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
-                    .append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
+            apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName()).append("(value = ").append("\"").append(apiOperationAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiOperationAttrNotes)) {
                 apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationAttrNotes).append("\"");
             }
@@ -218,8 +212,9 @@ public class SwaggerGenerateHandler {
             String paramType = "query";
             String required = null;
             // 忽略生成 @ApiIgnore 注解的参数
-            PsiAnnotation[] psiParameterAnnotations = psiParameter.getModifierList().getAnnotations();
-            if (Arrays.stream(psiParameterAnnotations).anyMatch(psiAnnotation -> StringUtils.equals(psiAnnotation.getQualifiedName(), SwaggerAnnotationEnum.API_IGNORE.getClassPackage()))) {
+            PsiAnnotation[] psiParameterAnnotations = psiParameter.getAnnotations();
+            if (Arrays.stream(psiParameterAnnotations).anyMatch(psiAnnotation -> StringUtils.equals(psiAnnotation.getQualifiedName(),
+                    SwaggerAnnotationEnum.API_IGNORE.getClassPackage()))) {
                 continue;
             }
             for (PsiAnnotation psiAnnotation : psiParameterAnnotations) {
@@ -246,21 +241,19 @@ public class SwaggerGenerateHandler {
                             break;
                     }
                 }
-                required = this.getAttribute(psiAnnotation, "required", StringUtils.EMPTY);
+                required = this.getAttribute(psiAnnotation, Constants.ANNOTATION_ATTR.REQUIRED, StringUtils.EMPTY);
             }
             String dataType = SwaggerCommentUtil.getDataType(psiType.getCanonicalText(), psiType);
             if (StringUtils.equals(dataType, "file")) {
                 paramType = "form";
             }
             String paramDesc = StringUtils.EMPTY;
-            String paramName = psiParameter.getNameIdentifier().getText();
+            String paramName = PsiElementUtil.getPsiElementNameIdentifierText(psiParameter);
             if (methodParamCommentDesc != null) {
                 paramDesc = methodParamCommentDesc.get(paramName);
             }
             StringBuilder apiImplicitParamText = new StringBuilder();
-            apiImplicitParamText.append(Constants.AT).append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName())
-                    .append("(paramType = ").append("\"").append(paramType).append("\"")
-                    .append(", name = ").append("\"").append(paramName).append("\"");
+            apiImplicitParamText.append(Constants.AT).append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName()).append("(paramType = ").append("\"").append(paramType).append("\"").append(", name = ").append("\"").append(paramName).append("\"");
             if (StringUtils.isBlank(paramDesc)) {
                 paramDesc = translateService.translate(paramName);
             }
@@ -294,14 +287,15 @@ public class SwaggerGenerateHandler {
         }
 
         boolean complex = false;
-        String apiImplicitParamsAnnotationText;
-        if (CollectionUtils.isNotEmpty(apiImplicitParamList) && apiImplicitParamList.size() == 1) {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
-        } else {
-            apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
-            complex = true;
+        String apiImplicitParamsAnnotationText = null;
+        if (CollectionUtils.isNotEmpty(apiImplicitParamList)) {
+            if (apiImplicitParamList.size() == Constants.NUM.ONE) {
+                apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
+            } else {
+                apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
+                complex = true;
+            }
         }
-
         this.doWrite(SwaggerAnnotationEnum.API_OPERATION.getClassName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), apiOperationAnnotationText.toString(), psiMethod);
         if (StringUtils.isNotEmpty(apiImplicitParamsAnnotationText)) {
             if (complex) {
@@ -334,10 +328,10 @@ public class SwaggerGenerateHandler {
                     commentDesc = SwaggerCommentUtil.getCommentDesc(tmpEle.getText());
                 }
             }
-            PsiAnnotation apiModelPropertyExist = psiField.getModifierList().findAnnotation(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage());
-            String apiModelPropertyAttrValue = this.getAttribute(apiModelPropertyExist, "value", commentDesc);
+            PsiAnnotation apiModelPropertyExist = psiField.getAnnotation(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage());
+            String apiModelPropertyAttrValue = this.getAttribute(apiModelPropertyExist, Constants.ANNOTATION_ATTR.VALUE, commentDesc);
             apiModelPropertyAttrValue = washSpecialChar(apiModelPropertyAttrValue);
-            String apiModelPropertyAttrNotes = this.getAttribute(apiModelPropertyExist, "notes", StringUtils.EMPTY);
+            String apiModelPropertyAttrNotes = this.getAttribute(apiModelPropertyExist, Constants.ANNOTATION_ATTR.NOTES, StringUtils.EMPTY);
             apiModelPropertyAttrNotes = washSpecialChar(apiModelPropertyAttrNotes);
             if (StringUtils.isBlank(apiModelPropertyAttrValue)) {
                 apiModelPropertyAttrValue = translateService.translate(fieldName);
@@ -362,7 +356,7 @@ public class SwaggerGenerateHandler {
     }
 
     /**
-     * 属性上是否有必填校验注解
+     * 属性上是否有必填校验注解(EasyTool专属定制逻辑)
      *
      * @param psiAnnotation
      * @return boolean
@@ -376,9 +370,7 @@ public class SwaggerGenerateHandler {
         }
         for (PsiAnnotation annotation : psiAnnotation) {
             String qualifiedName = annotation.getQualifiedName();
-            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints")
-                    && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Null")
-                    && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Size")) {
+            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints") && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Null") && !StringUtils.equals(qualifiedName, "javax.validation.constraints.Size")) {
                 valid = true;
                 break;
             }
@@ -431,11 +423,10 @@ public class SwaggerGenerateHandler {
      * @param className      类名
      */
     private void addImport(PsiElementFactory elementFactory, PsiFile file, String className) {
-        if (!(file instanceof PsiJavaFile)) {
+        if (!(file instanceof PsiJavaFile javaFile)) {
             return;
         }
-        final PsiJavaFile javaFile = (PsiJavaFile) file;
-        final PsiImportList importList = javaFile.getImportList();
+        PsiImportList importList = javaFile.getImportList();
         if (Objects.isNull(importList)) {
             return;
         }
@@ -461,8 +452,7 @@ public class SwaggerGenerateHandler {
      * @return boolean
      */
     private boolean isController(PsiClass psiClass) {
-        PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
-        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+        for (PsiAnnotation psiAnnotation : psiClass.getAnnotations()) {
             if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName(),
                     SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName())) {
                 return true;
@@ -531,6 +521,9 @@ public class SwaggerGenerateHandler {
         PsiAnnotation psiAnnotationDeclare = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner);
         final PsiNameValuePair[] attributes = psiAnnotationDeclare.getParameterList().getAttributes();
         PsiModifierList modifierList = psiModifierListOwner.getModifierList();
+        if (Objects.isNull(modifierList)) {
+            return;
+        }
         PsiAnnotation existAnnotation = modifierList.findAnnotation(qualifiedName);
         if (Objects.nonNull(existAnnotation)) {
             existAnnotation.delete();

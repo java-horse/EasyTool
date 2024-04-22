@@ -1,6 +1,8 @@
 package easy.config.translate;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
+import easy.base.Constants;
 import easy.base.ModelConstants;
 import easy.enums.*;
 
@@ -176,6 +178,46 @@ public class TranslateConfig {
     private String tyKey;
 
     /**
+     * kimi大模型model
+     */
+    private String kimiModel;
+
+    /**
+     * kimi大模型密钥
+     */
+    private String kimiKey;
+
+    /**
+     * 文心一言模型model
+     */
+    private String wenxinModel;
+
+    /**
+     * 文心一言模型ApiKey
+     */
+    private String wenxinApiKey;
+
+    /**
+     * 文心一言模型ApiSecret
+     */
+    private String wenxinApiSecret;
+
+    /**
+     * 自定义API url
+     */
+    private String customApiUrl;
+
+    /**
+     * 自定义API最大字符长度, 默认:1000
+     */
+    private Integer customApiMaxCharLength;
+
+    /**
+     * 自定义支持语言文本字段
+     */
+    private String customSupportLanguage;
+
+    /**
      * 全局单词映射
      */
     private SortedMap<String, String> globalWordMap = new TreeMap<>();
@@ -215,12 +257,20 @@ public class TranslateConfig {
         hwAppId = null;
         hwAppSecret = null;
         openModelChannel = OpenModelTranslateEnum.TONG_YI.getModel();
-        tyModel = ModelConstants.TONG_YI.MAX.getModel();
+        tyModel = ModelConstants.TONG_YI.TURBO.getModel();
         tyKey = null;
         aliyunDomainCheckBox = Boolean.FALSE;
         aliyunDomainComboBox = AliYunTranslateDomainEnum.SOCIAL.getName();
         youdaoDomainCheckBox = Boolean.FALSE;
         youdaoDomainComboBox = YouDaoTranslateDomainEnum.COMPUTERS.getName();
+        kimiModel = null;
+        kimiKey = null;
+        wenxinModel = null;
+        wenxinApiKey = null;
+        wenxinApiSecret = null;
+        customApiUrl = null;
+        customApiMaxCharLength = Constants.NUM.ONE_THOUSAND;
+        customSupportLanguage = TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -490,41 +540,68 @@ public class TranslateConfig {
         this.youdaoDomainComboBox = youdaoDomainComboBox;
     }
 
-    @Override
-    public String toString() {
-        return "TranslateConfig{" +
-                "translateChannel='" + translateChannel + '\'' +
-                ", appId='" + appId + '\'' +
-                ", appSecret='" + appSecret + '\'' +
-                ", baiduDomainCheckBox=" + baiduDomainCheckBox +
-                ", baiduDomainComboBox='" + baiduDomainComboBox + '\'' +
-                ", secretId='" + secretId + '\'' +
-                ", secretKey='" + secretKey + '\'' +
-                ", youdaoDomainCheckBox=" + youdaoDomainCheckBox +
-                ", youdaoDomainComboBox='" + youdaoDomainComboBox + '\'' +
-                ", accessKeyId='" + accessKeyId + '\'' +
-                ", accessKeySecret='" + accessKeySecret + '\'' +
-                ", aliyunDomainCheckBox=" + aliyunDomainCheckBox +
-                ", aliyunDomainComboBox='" + aliyunDomainComboBox + '\'' +
-                ", tencentSecretId='" + tencentSecretId + '\'' +
-                ", tencentSecretKey='" + tencentSecretKey + '\'' +
-                ", volcanoSecretId='" + volcanoSecretId + '\'' +
-                ", volcanoSecretKey='" + volcanoSecretKey + '\'' +
-                ", xfAppId='" + xfAppId + '\'' +
-                ", xfApiSecret='" + xfApiSecret + '\'' +
-                ", xfApiKey='" + xfApiKey + '\'' +
-                ", googleSecretKey='" + googleSecretKey + '\'' +
-                ", microsoftKey='" + microsoftKey + '\'' +
-                ", niuApiKey='" + niuApiKey + '\'' +
-                ", caiyunToken='" + caiyunToken + '\'' +
-                ", hwProjectId='" + hwProjectId + '\'' +
-                ", hwAppId='" + hwAppId + '\'' +
-                ", hwAppSecret='" + hwAppSecret + '\'' +
-                ", thsAppId='" + thsAppId + '\'' +
-                ", thsAppSecret='" + thsAppSecret + '\'' +
-                ", openModelChannel='" + openModelChannel + '\'' +
-                ", tyModel='" + tyModel + '\'' +
-                ", tyKey='" + tyKey + '\'' +
-                '}';
+    public String getKimiModel() {
+        return kimiModel;
     }
+
+    public void setKimiModel(String kimiModel) {
+        this.kimiModel = kimiModel;
+    }
+
+    public String getKimiKey() {
+        return kimiKey;
+    }
+
+    public void setKimiKey(String kimiKey) {
+        this.kimiKey = kimiKey;
+    }
+
+    public String getWenxinModel() {
+        return wenxinModel;
+    }
+
+    public void setWenxinModel(String wenxinModel) {
+        this.wenxinModel = wenxinModel;
+    }
+
+    public String getWenxinApiKey() {
+        return wenxinApiKey;
+    }
+
+    public void setWenxinApiKey(String wenxinApiKey) {
+        this.wenxinApiKey = wenxinApiKey;
+    }
+
+    public String getWenxinApiSecret() {
+        return wenxinApiSecret;
+    }
+
+    public void setWenxinApiSecret(String wenxinApiSecret) {
+        this.wenxinApiSecret = wenxinApiSecret;
+    }
+
+    public String getCustomApiUrl() {
+        return customApiUrl;
+    }
+
+    public void setCustomApiUrl(String customApiUrl) {
+        this.customApiUrl = customApiUrl;
+    }
+
+    public Integer getCustomApiMaxCharLength() {
+        return customApiMaxCharLength;
+    }
+
+    public void setCustomApiMaxCharLength(Integer customApiMaxCharLength) {
+        this.customApiMaxCharLength = customApiMaxCharLength;
+    }
+
+    public String getCustomSupportLanguage() {
+        return customSupportLanguage;
+    }
+
+    public void setCustomSupportLanguage(String customSupportLanguage) {
+        this.customSupportLanguage = customSupportLanguage;
+    }
+
 }

@@ -47,10 +47,10 @@ public class SwaggerAction extends AnAction {
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
             if (MessageConstants.YES == confirmResult) {
-                execSwagger(e, project, psiFile, psiClass, selectedText);
+                execSwagger(project, psiFile, psiClass, selectedText);
             }
         } else if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmNoCheckBox())) {
-            execSwagger(e, project, psiFile, psiClass, selectedText);
+            execSwagger(project, psiFile, psiClass, selectedText);
         }
     }
 
@@ -66,7 +66,7 @@ public class SwaggerAction extends AnAction {
      * @author mabin
      * @date 2023/12/16 17:39
      */
-    private static void execSwagger(@NotNull AnActionEvent e, Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
+    private static void execSwagger(Project project, PsiFile psiFile, PsiClass psiClass, String selectedText) {
         new SwaggerGenerateHandler(project, psiFile, psiClass, selectedText).doGenerate();
     }
 

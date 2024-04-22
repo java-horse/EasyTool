@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.21"
@@ -6,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "2.0.5"
+version = "2.0.6"
 
 repositories {
     maven {
@@ -26,7 +25,7 @@ dependencies {
 intellij {
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java","markdown"))
+    plugins.set(listOf("com.intellij.java", "markdown", "properties", "org.jetbrains.plugins.yaml"))
 }
 
 tasks {

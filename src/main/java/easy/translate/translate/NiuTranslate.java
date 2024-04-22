@@ -2,6 +2,7 @@ package easy.translate.translate;
 
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
@@ -33,7 +34,7 @@ public class NiuTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "zh", "en");
+        return translate(chStr, TranslateLanguageEnum.ZH.lang, TranslateLanguageEnum.EN.lang);
     }
 
     /**
@@ -46,7 +47,7 @@ public class NiuTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "en", "zh");
+        return translate(enStr, TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH.lang);
     }
 
     /**

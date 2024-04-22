@@ -59,7 +59,7 @@ public class CopyUrlAction extends AnAction {
             return;
         }
         CopyPasteManager.getInstance().setContents(new StringSelection(copyUrl));
-        
+
     }
 
     @Override

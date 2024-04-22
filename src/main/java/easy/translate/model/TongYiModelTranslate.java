@@ -1,10 +1,9 @@
 package easy.translate.model;
 
 import cn.hutool.http.*;
-import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
-import easy.base.Constants;
 import easy.enums.OpenModelTranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,15 +22,14 @@ public class TongYiModelTranslate extends AbstractTranslate {
 
     private static final Logger log = Logger.getInstance(TongYiModelTranslate.class);
 
-
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "en");
+        return translate(chStr, TranslateLanguageEnum.ZH_CN.desc, TranslateLanguageEnum.EN.desc);
     }
 
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "zh");
+        return translate(enStr, TranslateLanguageEnum.EN.desc, TranslateLanguageEnum.ZH_CN.desc);
     }
 
     /**
@@ -43,20 +41,16 @@ public class TongYiModelTranslate extends AbstractTranslate {
      * @author mabin
      * @date 2023/11/28 13:44
      */
-    private String translate(String text, String target) {
-        JsonObject bodyObject = new JsonObject();
-        bodyObject.addProperty("model", getTranslateConfig().getTyModel());
-        JsonObject promptObject = new JsonObject();
-        promptObject.addProperty("prompt", String.format(Constants.PROMPT_TEMPLATE, text, target));
-        bodyObject.add("input", promptObject);
+    private String translate(String text, String source, String target) {
+        String bodyJson = String.format(OpenModelTranslateEnum.TONG_YI.getPrompt(), getTranslateConfig().getTyModel(), source, target, target, target, text);
         try (HttpResponse httpResponse = HttpRequest.post(OpenModelTranslateEnum.TONG_YI.getUrl())
                 .timeout(10000)
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.AUTHORIZATION, "Bearer " + getTranslateConfig().getTyKey())
-                .body(JsonUtil.toJson(bodyObject)).execute()) {
+                .body(bodyJson).execute()) {
             String response = httpResponse.body();
-            return JsonUtil.fromObject(Objects.requireNonNull(response)).get("output").getAsJsonObject().get("text").getAsString();
-        } catch (HttpException e) {
+            return replaceBackQuote(JsonUtil.fromObject(Objects.requireNonNull(response)).get("output").getAsJsonObject().get("text").getAsString());
+        } catch (Exception e) {
             log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
         }
         return StringUtils.EMPTY;

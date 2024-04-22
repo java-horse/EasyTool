@@ -4,6 +4,7 @@ import cn.hutool.http.*;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import org.apache.commons.lang3.StringUtils;
 
@@ -36,7 +37,7 @@ public class YouDaoFreeTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "auto", "ZH_CN2EN");
+        return translate(chStr, TranslateLanguageEnum.AUTO.lang, "ZH_CN2EN");
     }
 
     /**
@@ -49,7 +50,7 @@ public class YouDaoFreeTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "auto", "EN2ZH_CN");
+        return translate(enStr, TranslateLanguageEnum.AUTO.lang, "EN2ZH_CN");
     }
 
     /**

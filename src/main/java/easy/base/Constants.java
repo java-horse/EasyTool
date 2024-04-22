@@ -24,10 +24,11 @@ public class Constants {
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easytool/reviews";
     public static final Set<String> STOP_WORDS = Sets.newHashSet("the", "of");
     public static final String UID = "serialVersionUID";
-    public static final String PROMPT_TEMPLATE = "我希望你充当一个英语翻译助手。我会用任何语言与你交谈，你将自动分析并检测语言，并将语言翻译成 en(英文)，或者 zh(中文) 目标语言，只输出翻译结果且不需要标点符号。待翻译文本是：%s，目标语言是：%s";
     public static final String BREAK_LINE = "&br;";
     public static final Set<String> BASE_TYPE_SET = Sets.newHashSet("byte", "short", "int", "long", "char", "float", "double", "boolean");
     public static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
+    public static final String HTTP = "http://";
+    public static final String HTTPS = "https://";
 
     /**
      * 插件持久化变量
@@ -80,6 +81,13 @@ public class Constants {
             String CHANGE_SCOPE = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_change_scope";
         }
 
+        /**
+         * 开源大模型相关
+         */
+        public interface OPEN_MODEL {
+            String WEN_XIN_ACCESS_TOKEN = PLUGIN_NAME + "." + OPEN_MODEL.class.getSimpleName() + "access_token";
+        }
+
     }
 
     /**
@@ -100,6 +108,7 @@ public class Constants {
         int EIGHTY = 80;
         int HUNDRED = 100;
         int ONE_THOUSAND = 1000;
+        int TWO_THOUSAND = 2000;
     }
 
     /**
@@ -108,6 +117,16 @@ public class Constants {
     public interface JAVA_DOC {
         String DEFAULT_AUTHOR = StringUtils.isBlank(System.getProperty("user.name")) ? "admin" : System.getProperty("user.name");
         String DEFAULT_DATE_FORMAT = "yyyy/MM/dd HH:mm";
+    }
+
+    /**
+     * 注解属性相关
+     */
+    public interface ANNOTATION_ATTR {
+        String VALUE = "value";
+        String NOTES = "notes";
+        String REQUIRED = "required";
+        String METHOD = "method";
     }
 
 }

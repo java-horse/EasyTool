@@ -41,9 +41,11 @@
             <li>--<em>谷歌翻译(API)</em></li>
             <li>--<em>谷歌翻译(Free)</em></li>
         </ul>
-        <li>支持并接入多种开源大模型翻译引擎, 快捷键: <em>CTRL + \</em> </li>
+        <li>支持并接入多种开源大模型翻译引擎</li>
         <ul>
             <li>--<em>通义千问</em></li>
+            <li>--<em>文心一言</em></li>
+            <li>--<em>月之暗面-Kimi</em></li>
         </ul>
         <li>支持变量蛇形命名和驼峰命名格式互转, 快捷键: <em>CTRL + ALT + \</em> </li>
         <li>支持选中文本右键快捷Web搜索</li>
@@ -74,6 +76,18 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.6</h3>
+      <ul>
+        <li>Support double-clicking the global search window of shift to quickly retrieve Controller API</li>
+        <li>New online translation channels such as Baidu-Wen Xin Yi Yan and Moon Dark Face-Kimi</li>
+        <li>Optimize check plug-in latest version logic</li>
+        <li>Fix several bugs and greatly improve plug-in performance</li>
+        <li>-------------------------------</li>
+        <li>支持双击shift的全局搜索弹窗中快捷检索Controller Api</li>
+        <li>新增开源大模型 百度-文心一言、月之暗面-Kimi 等在线翻译渠道</li>
+        <li>优化检查插件最新版本逻辑</li>
+        <li>修复若干Bug, 适配新版本IDE, 大幅提升插件性能</li>
+      </ul>
       <h3>v2.0.5</h3>
       <ul>
         <li>Add Youdao Translation Free Channel</li>
@@ -290,6 +304,8 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.intellij.plugins.markdown</depends>
+    <depends>com.intellij.properties</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -306,11 +322,12 @@
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
-
+        <applicationService serviceImplementation="easy.config.api.ApiDocConfigComponent"/>
         <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
+
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -351,6 +368,10 @@
                                 implementationClass="easy.git.emoji.prompt.contributor.PlainTextCompletionContributor"/>
         <completion.contributor language="Markdown" order="first"
                                 implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
+
+        <searchEverywhereContributor
+                implementation="easy.restful.every.RestfulSearchEverywhereContributor"/>
+
     </extensions>
 
     <actions>
@@ -444,16 +465,16 @@
         <!--插件检查更新-->
         <action id="PluginForUpdateAction" class="easy.action.PluginForUpdateAction" text="ForUpdate"
                 description="EasyTool development assistance tools" icon="AllIcons.Ide.Notification.PluginUpdate"/>
-
         <!--工具栏快捷菜单-->
-        <group id="easy.char.tool.actions" class="easy.action.tool.DynamicToolWindowActionGroup"
+        <group id="DynamicToolWindowActionGroups" class="easy.action.tool.DynamicToolWindowActionGroup"
                text="EasyTool" icon="easy.icons.EasyIcons.ICON.LOGO" description="EasyTool development assistance tools"
                popup="true" compact="true">
             <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
+
         <!--编辑器右键菜单-->
-        <group id="easy.char.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
+        <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyToolEditorSubGroup"/>
@@ -472,8 +493,10 @@
             <reference ref="DynamicBackgroundImageActionGroups"/>
             <reference ref="PluginForUpdateAction"/>
         </group>
+
+
         <!--控制台右键菜单-->
-        <group id="easy.char.console.actions" text="EasyTool" description="EasyTool development assistance tools"
+        <group id="easy.tool.console.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
             <separator/>
             <group id="EasyToolConsoleSubGroup"/>
@@ -486,7 +509,6 @@
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
             <reference ref="PluginForUpdateAction"/>
-
         </group>
 
     </actions>

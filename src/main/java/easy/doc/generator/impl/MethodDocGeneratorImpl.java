@@ -274,7 +274,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
      * @return {@link String}
      */
     private String getLinkTypeReturnDoc(String returnName) {
-        return String.format("* @return {@link %s }", returnName) + StringUtils.LF;
+        return String.format("* @return {@link %s}", returnName) + StringUtils.LF;
     }
 
     /**

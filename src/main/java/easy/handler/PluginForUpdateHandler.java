@@ -9,6 +9,7 @@ import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import easy.base.Constants;
+import easy.util.EasyCommonUtil;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
 import easy.util.NotificationUtil;
@@ -52,6 +53,12 @@ public class PluginForUpdateHandler {
         String remoteVersion = JsonUtil.fromArray(response).get(0).getAsJsonObject().get("version").getAsString();
         // 比对版本信息
         if (StringUtils.equals(version, remoteVersion)) {
+            NotificationUtil.notify(String.format("🎉🎉🎉 %s 已是最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("👍 五星好评") {
+                @Override
+                public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
+                    EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL);
+                }
+            });
             return;
         }
         // 发送插件最新版本通知

@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,12 +32,12 @@ public class GoogleFreeTranslate extends AbstractTranslate {
 
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "zh_CN", "en_US");
+        return translate(chStr, TranslateLanguageEnum.ZH_CN.lang, TranslateLanguageEnum.EN_US.lang);
     }
 
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "en_US", "zh_CN");
+        return translate(enStr, TranslateLanguageEnum.EN_US.lang, TranslateLanguageEnum.ZH_CN.lang);
     }
 
     /**

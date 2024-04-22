@@ -3,6 +3,7 @@ package easy.translate.translate;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
@@ -25,12 +26,12 @@ public class CaiYunTranslate extends AbstractTranslate {
 
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr,"auto", "en");
+        return translate(chStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.EN.lang);
     }
 
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr,"auto", "zh");
+        return translate(enStr, TranslateLanguageEnum.AUTO.lang, TranslateLanguageEnum.ZH.lang);
     }
 
     /**

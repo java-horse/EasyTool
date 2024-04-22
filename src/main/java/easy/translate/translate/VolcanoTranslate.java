@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
+import easy.enums.TranslateLanguageEnum;
 import easy.translate.AbstractTranslate;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
@@ -65,7 +66,7 @@ public class VolcanoTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateCh2En(String chStr) {
-        return translate(chStr, "en");
+        return translate(chStr, TranslateLanguageEnum.EN.lang);
     }
 
     /**
@@ -78,7 +79,7 @@ public class VolcanoTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr, "zh");
+        return translate(enStr, TranslateLanguageEnum.ZH.lang);
     }
 
     /**
@@ -138,21 +139,11 @@ public class VolcanoTranslate extends AbstractTranslate {
         realQueryList.put("Version", "2020-06-01");
         StringBuilder query = new StringBuilder();
         for (Map.Entry<String, String> entry : realQueryList.entrySet()) {
-            query.append(signStringEncoder(entry.getKey()))
-                    .append("=")
-                    .append(signStringEncoder(entry.getValue()))
-                    .append("&");
+            query.append(signStringEncoder(entry.getKey())).append("=").append(signStringEncoder(entry.getValue())).append("&");
         }
         query.deleteCharAt(query.length() - 1);
 
-        String canonicalStringBuilder = method + "\n" + path + "\n" + query + "\n" +
-                "host:" + host + "\n" +
-                "x-date:" + xDate + "\n" +
-                "x-content-sha256:" + xContentSha256 + "\n" +
-                "content-type:" + contentType + "\n" +
-                "\n" +
-                signHeader + "\n" +
-                xContentSha256;
+        String canonicalStringBuilder = method + "\n" + path + "\n" + query + "\n" + "host:" + host + "\n" + "x-date:" + xDate + "\n" + "x-content-sha256:" + xContentSha256 + "\n" + "content-type:" + contentType + "\n" + "\n" + signHeader + "\n" + xContentSha256;
 
         String hashcanonicalString = hashSHA256(canonicalStringBuilder.getBytes());
         String credentialScope = shortXDate + "/" + region + "/" + service + "/request";
@@ -166,10 +157,7 @@ public class VolcanoTranslate extends AbstractTranslate {
         headersMap.put("X-Date", xDate);
         headersMap.put("X-Content-Sha256", xContentSha256);
         headersMap.put("Content-Type", contentType);
-        headersMap.put("Authorization", "HMAC-SHA256" +
-                " Credential=" + volcanoSecretId + "/" + credentialScope +
-                ", SignedHeaders=" + signHeader +
-                ", Signature=" + signature);
+        headersMap.put("Authorization", "HMAC-SHA256" + " Credential=" + volcanoSecretId + "/" + credentialScope + ", SignedHeaders=" + signHeader + ", Signature=" + signature);
         return HttpUtil.doPost(url + "?" + query, headersMap, paramJson);
     }
 
@@ -230,9 +218,7 @@ public class VolcanoTranslate extends AbstractTranslate {
 
         @Override
         public String toString() {
-            return "VolcanoResponse{" +
-                    "translationList=" + translationList +
-                    '}';
+            return "VolcanoResponse{" + "translationList=" + translationList + '}';
         }
     }
 
@@ -260,10 +246,7 @@ public class VolcanoTranslate extends AbstractTranslate {
 
         @Override
         public String toString() {
-            return "Translation{" +
-                    "translation='" + translation + '\'' +
-                    ", detectedSourceLanguage='" + detectedSourceLanguage + '\'' +
-                    '}';
+            return "Translation{" + "translation='" + translation + '\'' + ", detectedSourceLanguage='" + detectedSourceLanguage + '\'' + '}';
         }
     }
 

@@ -127,4 +127,16 @@ public abstract class AbstractTranslate implements Translate {
      **/
     protected abstract String translateEn2Ch(String enStr);
 
+    /**
+     * 截取替换反引号（解析获取翻译结果）
+     *
+     * @param result 结果
+     * @return {@link java.lang.String }
+     * @author mabin
+     * @date 2024/03/18 14:50
+     */
+    protected String replaceBackQuote(String result) {
+        return StringUtils.replace(StringUtils.substringBetween(result, "`", "`"), "`", StringUtils.EMPTY);
+    }
+
 }
