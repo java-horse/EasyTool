@@ -136,6 +136,9 @@ public abstract class AbstractTranslate implements Translate {
      * @date 2024/03/18 14:50
      */
     protected String replaceBackQuote(String result) {
+        if (StringUtils.isBlank(result)) {
+            return StringUtils.EMPTY;
+        }
         return StringUtils.replace(StringUtils.substringBetween(result, "`", "`"), "`", StringUtils.EMPTY);
     }
 

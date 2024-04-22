@@ -3,6 +3,7 @@ package easy.translate.translate;
 import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
@@ -83,7 +84,14 @@ public class HuaWeiTranslate extends AbstractTranslate {
                     .body(body)
                     .execute().body();
             JsonObject resObject = JsonUtil.fromObject(response);
-            return Objects.requireNonNull(resObject.get("translated_text")).getAsString();
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement transElement = resObject.get("translated_text");
+            if (Objects.isNull(transElement)) {
+                return StringUtils.EMPTY;
+            }
+            return transElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.HUAWEI.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

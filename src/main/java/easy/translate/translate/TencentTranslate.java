@@ -84,7 +84,11 @@ public class TencentTranslate extends AbstractTranslate {
                         && StringUtils.equals(tencentResult.getResponse().getError().getCode(), "RequestLimitExceeded"))) {
                     Thread.sleep(500);
                 } else {
-                    return tencentResult.getResponse().getTargetText();
+                    TencentResponse tencentResponse = tencentResult.getResponse();
+                    if (Objects.isNull(tencentResponse)) {
+                        return StringUtils.EMPTY;
+                    }
+                    return tencentResponse.getTargetText();
                 }
             }
         } catch (Exception e) {

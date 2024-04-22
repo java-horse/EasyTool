@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import cn.hutool.core.collection.CollUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
@@ -89,8 +90,18 @@ public class YouDaoTranslate extends AbstractTranslate {
                 }
             }
             String res = HttpUtil.doGet(TranslateEnum.YOUDAO.getUrl(), params);
+            if (StringUtils.isBlank(res)) {
+                return StringUtils.EMPTY;
+            }
             YouDaoAiResponse response = JsonUtil.fromJson(res, YouDaoAiResponse.class);
-            return Objects.isNull(response) ? StringUtils.EMPTY : response.getTranslation().get(0);
+            if (Objects.isNull(response)) {
+                return StringUtils.EMPTY;
+            }
+            List<String> translationList = response.getTranslation();
+            if (CollUtil.isEmpty(translationList)) {
+                return StringUtils.EMPTY;
+            }
+            return translationList.get(0);
         } catch (Exception e) {
             log.error(TranslateEnum.YOUDAO.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

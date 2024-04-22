@@ -1,6 +1,7 @@
 package easy.translate.translate;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
@@ -72,7 +73,22 @@ public class MicrosoftTranslate extends AbstractTranslate {
             headersMap.put("Ocp-Apim-Subscription-Key", getTranslateConfig().getMicrosoftKey());
             String res = HttpUtil.doPost(String.format(TranslateEnum.MICROSOFT.getUrl(), source, target), headersMap, JsonUtil.toJson(textArray));
             JsonArray resArray = JsonUtil.fromJson(res, JsonArray.class);
-            return Objects.requireNonNull(resArray).get(0).getAsJsonObject().get("translations").getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString();
+            if (Objects.isNull(resArray) || resArray.isEmpty()) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement transElement = resArray.get(0).getAsJsonObject().get("translations");
+            if (Objects.isNull(transElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement resultElement = transElement.getAsJsonArray().get(0);
+            if (Objects.isNull(resultElement)) {
+                return  StringUtils.EMPTY;
+            }
+            JsonElement textElement = resultElement.getAsJsonObject().get("text");
+            if (Objects.isNull(textElement)) {
+                return StringUtils.EMPTY;
+            }
+            return textElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.MICROSOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

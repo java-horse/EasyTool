@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
@@ -16,10 +17,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * 讯飞翻译服务
@@ -72,11 +70,24 @@ public class XfYunTranslate extends AbstractTranslate {
     private String translate(String text, String source, String target) {
         try {
             String res = HttpUtil.doPost(buildRequestUrl(), buildParam(text, source, target));
+            if (StringUtils.isBlank(res)) {
+                return StringUtils.EMPTY;
+            }
             JsonObject resObject = JsonUtil.fromJson(res, JsonObject.class);
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
             String decodeText = new String(Base64.getDecoder().decode(resObject.getAsJsonObject("payload")
                     .getAsJsonObject("result").get("text").getAsString()), StandardCharsets.UTF_8);
             JsonObject resultObject = JsonUtil.fromJson(decodeText, JsonObject.class);
-            return resultObject.getAsJsonObject("trans_result").get("dst").getAsString();
+            if (Objects.isNull(resultObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement dstElement = resultObject.getAsJsonObject("trans_result").get("dst");
+            if (Objects.isNull(dstElement)) {
+                return StringUtils.EMPTY;
+            }
+            return dstElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.XFYUN.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

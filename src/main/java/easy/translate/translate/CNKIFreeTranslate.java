@@ -6,6 +6,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -73,7 +75,15 @@ public class CNKIFreeTranslate extends AbstractTranslate {
             if (resObject.get("code").getAsInt() != HttpStatus.HTTP_OK) {
                 return StringUtils.EMPTY;
             }
-            return resObject.get("data").getAsJsonObject().get("mResult").getAsString();
+            JsonObject dataObject = resObject.get("data").getAsJsonObject();
+            if (Objects.isNull(dataObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement jsonElement = dataObject.get("mResult");
+            if (Objects.isNull(jsonElement)) {
+                return StringUtils.EMPTY;
+            }
+            return jsonElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.CNKI.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

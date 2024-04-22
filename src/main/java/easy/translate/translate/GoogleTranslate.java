@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * 谷歌翻译服务
@@ -47,7 +49,7 @@ public class GoogleTranslate extends AbstractTranslate {
      **/
     @Override
     protected String translateEn2Ch(String enStr) {
-        return translate(enStr,  TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH.lang);
+        return translate(enStr, TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH.lang);
     }
 
     /**
@@ -62,10 +64,22 @@ public class GoogleTranslate extends AbstractTranslate {
      */
     private String translate(String text, String source, String target) {
         try {
-            String res = HttpUtil.doGet(String.format(TranslateEnum.GOOGLE.getUrl(), URLEncoder.encode(text, StandardCharsets.UTF_8.name()), source, target, getTranslateConfig().getGoogleSecretKey()));
+            String res = HttpUtil.doGet(String.format(TranslateEnum.GOOGLE.getUrl(), URLEncoder.encode(text, StandardCharsets.UTF_8), source, target, getTranslateConfig().getGoogleSecretKey()));
             JsonObject resObject = JsonUtil.fromJson(res, JsonObject.class);
-            return resObject.get("data").getAsJsonObject().get("translations").getAsJsonArray().get(0).getAsJsonObject()
-                    .get("translatedText").getAsString();
+            JsonElement dataElement = resObject.get("data");
+            if (Objects.isNull(dataElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement transElement = dataElement.getAsJsonObject().get("translations");
+            if (Objects.isNull(transElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement resultElement = transElement.getAsJsonArray().get(0).getAsJsonObject()
+                    .get("translatedText");
+            if (Objects.isNull(resultElement)) {
+                return StringUtils.EMPTY;
+            }
+            return resultElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.GOOGLE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

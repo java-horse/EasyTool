@@ -4,6 +4,7 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.google.gson.JsonElement;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateLanguageEnum;
@@ -52,8 +53,22 @@ public class KimiModelTranslate extends AbstractTranslate {
                 .header(Header.AUTHORIZATION, "Bearer " + getTranslateConfig().getKimiKey())
                 .body(bodyJson).execute()) {
             String response = httpResponse.body();
-            return replaceBackQuote(JsonUtil.fromObject(Objects.requireNonNull(response)).get("choices").getAsJsonArray().get(0)
-                    .getAsJsonObject().get("message").getAsJsonObject().get("content").getAsString());
+            if (StringUtils.isBlank(response)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement choicesElement = JsonUtil.fromObject(response).get("choices");
+            if (Objects.isNull(choicesElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement messageElement = choicesElement.getAsJsonArray().get(0).getAsJsonObject().get("message");
+            if (Objects.isNull(messageElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement contentElement = messageElement.getAsJsonObject().get("content");
+            if (Objects.isNull(contentElement)) {
+                return StringUtils.EMPTY;
+            }
+            return replaceBackQuote(contentElement.getAsString());
         } catch (Exception e) {
             log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
         }

@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import cn.hutool.core.collection.CollUtil;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
@@ -103,7 +104,11 @@ public class BaiDuTranslate extends AbstractTranslate {
                 if (Objects.isNull(baiduResponse) || "54003".equals(baiduResponse.getErrorCode())) {
                     Thread.sleep(500);
                 } else {
-                    return baiduResponse.getTransResult().get(0).getDst();
+                    List<TransResult> transResultList = baiduResponse.getTransResult();
+                    if (CollUtil.isEmpty(transResultList)) {
+                        return StringUtils.EMPTY;
+                    }
+                    return transResultList.get(0).getDst();
                 }
             }
         } catch (Exception e) {
