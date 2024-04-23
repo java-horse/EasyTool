@@ -79,8 +79,10 @@
       <h3>v2.0.7</h3>
       <ul>
         <li>Cancel the abnormal prompt behavior when the translation result is empty</li>
+        <li>Fix the problem that the general setting item generation Swagger is automatically generated whether the second pop-up window cannot be canceled after confirmation.</li>
         <li>-------------------------------</li>
         <li>【优化】取消翻译结果为空时的异常提示行为</li>
+        <li>【修复】修复通用设置项生成Swagger自动生成是否二次弹窗确认无法取消关闭问题</li>
       </ul>
       <h3>v2.0.6</h3>
       <ul>
@@ -417,9 +419,9 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
         </action>
         <!--自动生成 Swagger2.x 注解-->
-        <action id="EasyToolSwaggerToolAction" class="easy.action.SwaggerAction" text="GenSwagger"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.SWAGGER">
-        </action>
+        <group id="EasyToolSwaggerDynamicActions" class="easy.action.swagger.DynamicSwaggerActionGroup"
+               text="Swagger" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.SWAGGER" popup="true" compact="true"/>
         <!--自动复制完整接口URL-->
         <group id="EasyToolCopyUrlDynamicActions" class="easy.action.copy.DynamicCopyUrlActionGroup" text="CopyUrl"
                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.COPY" popup="true"
@@ -487,7 +489,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolJavaDocAction"/>
-            <reference ref="EasyToolSwaggerToolAction"/>
+            <reference ref="EasyToolSwaggerDynamicActions"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>
             <reference ref="EasyToolCamelCaseAction"/>
             <reference ref="EasyToolSerialAction"/>

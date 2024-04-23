@@ -127,6 +127,8 @@ public class Constants {
         String NOTES = "notes";
         String REQUIRED = "required";
         String METHOD = "method";
+        String TAGS = "tags";
+        String DESCRIPTION = "description";
     }
 
 }

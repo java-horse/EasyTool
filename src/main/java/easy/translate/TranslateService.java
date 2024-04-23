@@ -1,6 +1,7 @@
 package easy.translate;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.intellij.ide.util.PropertiesComponent;
@@ -191,6 +192,10 @@ public class TranslateService {
      * @date 2023/9/4 21:19
      **/
     public void clearCache() {
+        // 判空处理, 避免空指针异常
+        if (MapUtil.isEmpty(translateMap)) {
+            return;
+        }
         translateMap.values().forEach(Translate::clearCache);
     }
 
