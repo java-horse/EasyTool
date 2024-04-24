@@ -129,6 +129,9 @@ public class Constants {
         String METHOD = "method";
         String TAGS = "tags";
         String DESCRIPTION = "description";
+        String MAX = "max";
+        String MIN = "min";
+        String SUMMARY = "summary";
     }
 
 }

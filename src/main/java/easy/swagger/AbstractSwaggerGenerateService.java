@@ -1,5 +1,6 @@
 package easy.swagger;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -7,9 +8,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import easy.base.Constants;
+import easy.enums.BaseTypeEnum;
+import easy.enums.ExtraPackageNameEnum;
+import easy.enums.RequestAnnotationEnum;
+import easy.enums.SpringAnnotationEnum;
 import easy.handler.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.PsiElementUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -138,14 +145,120 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         if (Objects.nonNull(existAnnotation)) {
             existAnnotation.delete();
         }
-        PsiNameValuePair[] attributes = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner)
-                .getParameterList().getAttributes();
+        PsiNameValuePair[] attributes = elementFactory.createAnnotationFromText(annotationText, psiModifierListOwner).getParameterList().getAttributes();
         addImport(elementFactory, psiFile, name);
         PsiAnnotation psiAnnotation = modifierList.addAnnotation(name);
         for (PsiNameValuePair pair : attributes) {
             psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
         }
     }
+
+    /**
+     * 获取http方法类型
+     *
+     * @param psiAnnotations psi注释
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/04/24 13:37
+     */
+    protected String getHttpMethodName(PsiAnnotation[] psiAnnotations) {
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return StringUtils.EMPTY;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            RequestAnnotationEnum requestAnnotationEnum = RequestAnnotationEnum.getEnumByQualifiedName(psiAnnotation.getQualifiedName());
+            if (Objects.isNull(requestAnnotationEnum)) {
+                continue;
+            }
+            if (Objects.equals(requestAnnotationEnum, RequestAnnotationEnum.REQUEST_MAPPING)) {
+                String attributeValue = PsiElementUtil.getAnnotationAttributeValue(psiAnnotation, List.of(Constants.ANNOTATION_ATTR.METHOD));
+                return StringUtils.isNotBlank(attributeValue) ? attributeValue : requestAnnotationEnum.getMethodName();
+            }
+            return requestAnnotationEnum.getMethodName();
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * 获取参数数据类型
+     *
+     * @param psiParameter psi参数
+     * @return {@link String}
+     * @author mabin
+     * @date 2024/04/24 14:10
+     */
+    protected String getDataType(PsiParameter psiParameter) {
+        PsiType psiType = psiParameter.getType();
+        String baseType = BaseTypeEnum.findBaseType(psiType.getCanonicalText());
+        if (StringUtils.isNotBlank(baseType)) {
+            return baseType;
+        }
+        if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(psiType.getCanonicalText()))) {
+            return psiType.getCanonicalText();
+        }
+        if (StringUtils.equalsAny(psiType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), ExtraPackageNameEnum.FILE.getName())) {
+            return "file";
+        }
+        for (PsiType superType : psiType.getSuperTypes()) {
+            if (StringUtils.equalsAny(superType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), ExtraPackageNameEnum.FILE.getName())) {
+                return "file";
+            }
+        }
+        return psiType.getPresentableText();
+    }
+
+    /**
+     * 获取参数类型
+     *
+     * @param psiParameter psi参数
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/04/24 14:29
+     */
+    protected String getParamType(PsiParameter psiParameter) {
+        PsiAnnotation[] psiAnnotations = psiParameter.getAnnotations();
+        String paramType = StringUtils.EMPTY;
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            paramType = SpringAnnotationEnum.REQUEST_PARAM_TEXT.getParamType();
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            String qualifiedName = psiAnnotation.getQualifiedName();
+            if (StringUtils.isBlank(qualifiedName)) {
+                break;
+            }
+            SpringAnnotationEnum annotationEnum = SpringAnnotationEnum.getEnum(qualifiedName);
+            if (Objects.nonNull(annotationEnum)) {
+                paramType = annotationEnum.getParamType();
+            }
+        }
+        if (StringUtils.equals(getDataType(psiParameter), "file")) {
+            paramType = "form";
+        }
+        return paramType;
+    }
+
+    /**
+     * 获取参数是否必填属性
+     *
+     * @param psiParameter psi参数
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/04/24 14:34
+     */
+    protected String getParamRequired(PsiParameter psiParameter) {
+        PsiAnnotation[] psiAnnotations = psiParameter.getAnnotations();
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return StringUtils.EMPTY;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            String requireValue = PsiElementUtil.getAnnotationAttributeValue(psiAnnotation, StringUtils.EMPTY, List.of(Constants.ANNOTATION_ATTR.REQUIRED));
+            if (StringUtils.isNotBlank(requireValue)) {
+                return requireValue;
+            }
+        }
+        return StringUtils.EMPTY;
+    }
+
 
     /**
      * 导入依赖
@@ -180,6 +293,70 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
             }
         }
         importList.add(elementFactory.createImportStatement(waiteImportClass));
+    }
+
+    /**
+     * 获取验证程序限制文本
+     *
+     * @param psiField psi场
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/04/24 15:26
+     */
+    protected String getValidatorLimitText(PsiField psiField) {
+        PsiAnnotation[] psiAnnotations = psiField.getAnnotations();
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return StringUtils.EMPTY;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            String qualifiedName = psiAnnotation.getQualifiedName();
+            if (StringUtils.equalsAny(qualifiedName, ExtraPackageNameEnum.SIZE.getName(), ExtraPackageNameEnum.LENGTH.getName())) {
+                String validatorText = StringUtils.EMPTY;
+                PsiAnnotationMemberValue minMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.MIN);
+                if (Objects.nonNull(minMember)) {
+                    validatorText = Constants.ANNOTATION_ATTR.MIN + "=" + minMember.getText() + StrUtil.COMMA;
+                }
+                PsiAnnotationMemberValue maxMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.MAX);
+                if (Objects.nonNull(maxMember)) {
+                    validatorText += Constants.ANNOTATION_ATTR.MAX + "=" + maxMember.getText();
+                }
+                validatorText = StringUtils.endsWith(validatorText, StrUtil.COMMA) ? validatorText.substring(0, validatorText.length() - 1) : validatorText;
+                return "(" + validatorText + ")";
+            }
+        }
+        return StringUtils.EMPTY;
+    }
+
+    /**
+     * 属性上是否有必填校验注解(EasyTool专属定制逻辑)
+     *
+     * @param psiField
+     * @return boolean
+     * @author mabin
+     * @date 2023/11/4 15:51
+     */
+    protected boolean isValidate(PsiField psiField) {
+        boolean valid = false;
+        PsiAnnotation[] psiAnnotations = psiField.getAnnotations();
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return valid;
+        }
+        for (PsiAnnotation annotation : psiAnnotations) {
+            String qualifiedName = annotation.getQualifiedName();
+            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints") && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.NULL.getName())
+                    && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.SIZE.getName())) {
+                valid = true;
+                break;
+            }
+            if (StringUtils.equalsAny(qualifiedName, ExtraPackageNameEnum.SIZE.getName(), ExtraPackageNameEnum.LENGTH.getName())) {
+                PsiAnnotationMemberValue minMember = annotation.findAttributeValue(Constants.ANNOTATION_ATTR.MIN);
+                if (Objects.nonNull(minMember) && Integer.parseInt(minMember.getText()) > 0) {
+                    valid = true;
+                    break;
+                }
+            }
+        }
+        return valid;
     }
 
     /**
