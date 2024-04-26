@@ -7,6 +7,7 @@ import easy.swagger.SwaggerGenerateService;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public enum SwaggerServiceEnum {
 
@@ -32,12 +33,25 @@ public enum SwaggerServiceEnum {
      * @date 2024/04/22 14:49
      */
     public static SwaggerGenerateService getSwaggerGenerateService(String name) {
+        SwaggerServiceEnum swaggerAnnotationEnum = getSwaggerAnnotationEnum(name);
+        return Objects.isNull(swaggerAnnotationEnum) ? null : swaggerAnnotationEnum.getSwaggerGenerateService();
+    }
+
+    /**
+     * 获取swagger注释枚举
+     *
+     * @param name 名称
+     * @return {@link easy.enums.SwaggerServiceEnum}
+     * @author mabin
+     * @date 2024/04/26 09:50
+     */
+    public static SwaggerServiceEnum getSwaggerAnnotationEnum(String name) {
         if (StringUtils.isBlank(name)) {
             return null;
         }
         for (SwaggerServiceEnum swaggerServiceEnum : values()) {
             if (swaggerServiceEnum.getName().equals(name)) {
-                return swaggerServiceEnum.getSwaggerGenerateService();
+                return swaggerServiceEnum;
             }
         }
         return null;

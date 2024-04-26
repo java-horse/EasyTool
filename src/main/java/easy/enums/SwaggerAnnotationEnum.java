@@ -16,7 +16,11 @@ public enum SwaggerAnnotationEnum {
     API_OPERATION("ApiOperation", "io.swagger.annotations.ApiOperation"),
     API_IMPLICIT_PARAM("ApiImplicitParam", "io.swagger.annotations.ApiImplicitParam"),
     API_IMPLICIT_PARAMS("ApiImplicitParams", "io.swagger.annotations.ApiImplicitParams"),
-    API_MODEL_PROPERTY("ApiModelProperty", "io.swagger.annotations.ApiModelProperty");
+    API_MODEL_PROPERTY("ApiModelProperty", "io.swagger.annotations.ApiModelProperty"),
+    TAG("Tag", "io.swagger.v3.oas.annotations.tags.Tag"),
+    OPERATION("Operation", "io.swagger.v3.oas.annotations.Operation"),
+    SCHEMA("Schema", "io.swagger.v3.oas.annotations.media.Schema"),
+    PARAMETER("Parameter", "io.swagger.v3.oas.annotations.Parameter");
 
 
     private final String className;

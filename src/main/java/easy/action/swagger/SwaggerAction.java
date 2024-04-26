@@ -46,8 +46,8 @@ public class SwaggerAction extends AnAction {
             return;
         }
         String actionText = e.getPresentation().getText();
-        SwaggerGenerateService swaggerGenerateService = SwaggerServiceEnum.getSwaggerGenerateService(actionText);
-        if (Objects.isNull(swaggerGenerateService)) {
+        SwaggerServiceEnum swaggerAnnotationEnum = SwaggerServiceEnum.getSwaggerAnnotationEnum(actionText);
+        if (Objects.isNull(swaggerAnnotationEnum)) {
             return;
         }
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
@@ -56,10 +56,10 @@ public class SwaggerAction extends AnAction {
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
             if (MessageConstants.YES == confirmResult) {
-                execSwagger(project, psiFile, psiClass, selectedText, swaggerGenerateService);
+                execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
             }
         } else if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmNoCheckBox())) {
-            execSwagger(project, psiFile, psiClass, selectedText, swaggerGenerateService);
+            execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
         }
     }
 
@@ -70,14 +70,14 @@ public class SwaggerAction extends AnAction {
      * @param psiFile
      * @param psiClass
      * @param selectedText
-     * @param swaggerGenerateService
+     * @param swaggerAnnotationEnum
      * @return void
      * @author mabin
      * @date 2023/12/16 17:39
      */
-    private static void execSwagger(Project project, PsiFile psiFile, PsiClass psiClass, String selectedText, SwaggerGenerateService swaggerGenerateService) {
-        swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, selectedText);
-        swaggerGenerateService.doGenerate();
+    private static void execSwagger(Project project, PsiFile psiFile, PsiClass psiClass, String selectedText, SwaggerServiceEnum swaggerAnnotationEnum) {
+        swaggerAnnotationEnum.getSwaggerGenerateService().initSwaggerConfig(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
+        swaggerAnnotationEnum.getSwaggerGenerateService().doGenerate();
     }
 
 }

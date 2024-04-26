@@ -132,6 +132,7 @@ public class Constants {
         String MAX = "max";
         String MIN = "min";
         String SUMMARY = "summary";
+        String NAME = "name";
     }
 
 }

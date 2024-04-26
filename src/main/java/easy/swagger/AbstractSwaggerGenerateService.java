@@ -9,10 +9,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import easy.base.Constants;
-import easy.enums.BaseTypeEnum;
-import easy.enums.ExtraPackageNameEnum;
-import easy.enums.RequestAnnotationEnum;
-import easy.enums.SpringAnnotationEnum;
+import easy.enums.*;
 import easy.handler.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.PsiElementUtil;
@@ -34,25 +31,28 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     protected PsiElementFactory elementFactory;
     protected String selectionText;
     protected Boolean isController;
+    protected SwaggerServiceEnum serviceEnum;
 
     /**
      * 初始Swagger配置
      *
-     * @param project       项目
-     * @param psiFile       psi文件
-     * @param psiClass      psi级
-     * @param selectionText 选择文本
+     * @param project               项目
+     * @param psiFile               psi文件
+     * @param psiClass              psi级
+     * @param selectionText         选择文本
+     * @param swaggerAnnotationEnum swagger版本枚举
      * @author mabin
      * @date 2024/04/22 15:14
      */
     @Override
-    public void initSwaggerConfig(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
+    public void initSwaggerConfig(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText, SwaggerServiceEnum swaggerAnnotationEnum) {
         this.project = project;
         this.psiFile = psiFile;
         this.psiClass = psiClass;
         this.selectionText = selectionText;
         this.elementFactory = JavaPsiFacade.getElementFactory(project);
         this.isController = PsiElementUtil.isController(psiClass);
+        this.serviceEnum = swaggerAnnotationEnum;
     }
 
     /**
@@ -257,6 +257,30 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
             }
         }
         return StringUtils.EMPTY;
+    }
+
+    /**
+     * 获取类@Api中或者@Tag的标签属性值
+     *
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/04/26 09:31
+     */
+    protected String getClassTagAttrValue() {
+        String tagValue;
+        switch (serviceEnum) {
+            case SWAGGER_2 ->
+                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.API.getClassPackage()),
+                            List.of(Constants.ANNOTATION_ATTR.TAGS));
+            case SWAGGER_3 ->
+                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.TAG.getClassPackage()),
+                            List.of(Constants.ANNOTATION_ATTR.NAME));
+            default -> tagValue = StringUtils.EMPTY;
+        }
+        if (StringUtils.isNotBlank(tagValue)) {
+            tagValue = StringUtils.substringBetween(tagValue, "{", "}");
+        }
+        return tagValue;
     }
 
 

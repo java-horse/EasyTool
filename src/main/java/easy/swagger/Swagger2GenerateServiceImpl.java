@@ -5,7 +5,6 @@ import easy.base.Constants;
 import easy.enums.BaseTypeEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.util.PsiElementUtil;
-import easy.util.SwaggerCommentUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,11 +24,8 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
     @Override
     protected void genClassAnnotation(PsiClass psiClass) {
         String commentDesc = StringUtils.EMPTY;
-        for (PsiElement tmpEle : psiClass.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                commentDesc = SwaggerCommentUtil.getCommentDesc(tmpEle.getText());
-                break;
-            }
+        if (Objects.nonNull(psiClass.getDocComment())) {
+            commentDesc = PsiElementUtil.parseJavaDocDesc(Arrays.asList(psiClass.getDocComment().getChildren()));
         }
         String attrValue;
         if (isController) {
@@ -197,20 +193,24 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
         if (StringUtils.isBlank(apiOperationValue)) {
             apiOperationValue = translateService.translate(PsiElementUtil.getPsiElementNameIdentifierText(psiMethod));
         }
-        String apiOperationNotes = PsiElementUtil.getAnnotationAttributeValue(apiOperation, List.of(Constants.ANNOTATION_ATTR.NOTES));
-        String apiOperationMethod = getHttpMethodName(psiMethod.getAnnotations());
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
                 .append("(value = ").append("\"").append(apiOperationValue).append("\"");
+        String apiOperationNotes = PsiElementUtil.getAnnotationAttributeValue(apiOperation, List.of(Constants.ANNOTATION_ATTR.NOTES));
         if (StringUtils.isNotBlank(apiOperationNotes)) {
             apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationNotes).append("\"");
         }
+        String apiOperationMethod = getHttpMethodName(psiMethod.getAnnotations());
         if (StringUtils.isNotBlank(apiOperationMethod)) {
-            apiOperationAnnotationText.append(", ").append("httpMethod = ").append("\"")
-                    .append(apiOperationMethod).append("\"").append(")");
-        } else {
-            apiOperationAnnotationText.append(")");
+            apiOperationAnnotationText.append(", httpMethod = ").append("\"")
+                    .append(apiOperationMethod).append("\"");
         }
+        String classTagAttrValue = getClassTagAttrValue();
+        if (StringUtils.isNotBlank(classTagAttrValue)) {
+            apiOperationAnnotationText.append(", tags = {").append("\"")
+                    .append(classTagAttrValue).append("\"}");
+        }
+        apiOperationAnnotationText.append(")");
         return apiOperationAnnotationText.toString();
     }
 
