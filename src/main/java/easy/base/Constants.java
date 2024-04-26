@@ -133,6 +133,7 @@ public class Constants {
         String MIN = "min";
         String SUMMARY = "summary";
         String NAME = "name";
+        String TITLE = "title";
     }
 
 }
