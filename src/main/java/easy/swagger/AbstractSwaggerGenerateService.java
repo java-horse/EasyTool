@@ -219,20 +219,31 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         PsiAnnotation[] psiAnnotations = psiParameter.getAnnotations();
         String paramType = StringUtils.EMPTY;
         if (ArrayUtils.isEmpty(psiAnnotations)) {
-            paramType = SpringAnnotationEnum.REQUEST_PARAM_TEXT.getParamType();
+            switch (serviceEnum) {
+                case SWAGGER_2 -> paramType = SpringAnnotationEnum.REQUEST_PARAM_TEXT.getParamType();
+                case SWAGGER_3 -> paramType = SpringAnnotationEnum.REQUEST_PARAM_TEXT.getParamIn();
+            }
+            return paramType;
         }
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
             String qualifiedName = psiAnnotation.getQualifiedName();
             if (StringUtils.isBlank(qualifiedName)) {
-                break;
+                continue;
             }
             SpringAnnotationEnum annotationEnum = SpringAnnotationEnum.getEnum(qualifiedName);
             if (Objects.nonNull(annotationEnum)) {
-                paramType = annotationEnum.getParamType();
+                switch (serviceEnum) {
+                    case SWAGGER_2 -> paramType = annotationEnum.getParamType();
+                    case SWAGGER_3 -> paramType = annotationEnum.getParamIn();
+                }
             }
         }
         if (StringUtils.equals(getDataType(psiParameter), "file")) {
             paramType = "form";
+            switch (serviceEnum) {
+                case SWAGGER_2 -> paramType = "form";
+                case SWAGGER_3 -> paramType = StringUtils.EMPTY;
+            }
         }
         return paramType;
     }
@@ -270,19 +281,27 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         String tagValue;
         switch (serviceEnum) {
             case SWAGGER_2 ->
-                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.API.getClassPackage()),
-                            List.of(Constants.ANNOTATION_ATTR.TAGS));
+                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.API.getClassPackage()), List.of(Constants.ANNOTATION_ATTR.TAGS));
             case SWAGGER_3 ->
-                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.TAG.getClassPackage()),
-                            List.of(Constants.ANNOTATION_ATTR.NAME));
+                    tagValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.TAG.getClassPackage()), List.of(Constants.ANNOTATION_ATTR.NAME));
             default -> tagValue = StringUtils.EMPTY;
         }
-        if (StringUtils.isNotBlank(tagValue)) {
+        if (StringUtils.isNotBlank(tagValue) && StringUtils.containsAny(tagValue, "{", "}")) {
             tagValue = StringUtils.substringBetween(tagValue, "{", "}");
         }
         return tagValue;
     }
 
+    /**
+     * 导入依赖
+     *
+     * @param className 类名
+     * @author mabin
+     * @date 2024/04/27 16:16
+     */
+    protected void addImport(String className) {
+        addImport(elementFactory, psiFile, className);
+    }
 
     /**
      * 导入依赖
@@ -293,7 +312,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
      * @author mabin
      * @date 2024/04/23 14:37
      */
-    private void addImport(PsiElementFactory elementFactory, PsiFile file, String className) {
+    protected void addImport(PsiElementFactory elementFactory, PsiFile file, String className) {
         if (!(file instanceof PsiJavaFile javaFile)) {
             return;
         }
@@ -337,19 +356,39 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
             if (StringUtils.equalsAny(qualifiedName, ExtraPackageNameEnum.SIZE.getName(), ExtraPackageNameEnum.LENGTH.getName())) {
                 String validatorText = StringUtils.EMPTY;
                 PsiAnnotationMemberValue minMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.MIN);
-                if (Objects.nonNull(minMember)) {
-                    validatorText = Constants.ANNOTATION_ATTR.MIN + "=" + minMember.getText() + StrUtil.COMMA;
-                }
                 PsiAnnotationMemberValue maxMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.MAX);
-                if (Objects.nonNull(maxMember)) {
-                    validatorText += Constants.ANNOTATION_ATTR.MAX + "=" + maxMember.getText();
+                if (Objects.equals(SwaggerServiceEnum.SWAGGER_2, serviceEnum)) {
+                    if (Objects.nonNull(minMember)) {
+                        validatorText = Constants.ANNOTATION_ATTR.MIN + "=" + minMember.getText() + StrUtil.COMMA;
+                    }
+                    if (Objects.nonNull(maxMember)) {
+                        validatorText += Constants.ANNOTATION_ATTR.MAX + "=" + maxMember.getText();
+                    }
+                    validatorText = StringUtils.endsWith(validatorText, StrUtil.COMMA) ? validatorText.substring(0, validatorText.length() - 1) : validatorText;
+                    return "(" + validatorText + ")";
+                } else if (Objects.equals(SwaggerServiceEnum.SWAGGER_3, serviceEnum)) {
+                    StringBuilder validBuilder = new StringBuilder(", ");
+                    if (Objects.nonNull(minMember)) {
+                        if (StringUtils.equals(qualifiedName, ExtraPackageNameEnum.SIZE.getName())) {
+                            validBuilder.append("minimum = \"").append(minMember.getText()).append("\"");
+                        } else if (StringUtils.equals(qualifiedName, ExtraPackageNameEnum.LENGTH.getName())) {
+                            validBuilder.append(", minLength = ").append(minMember.getText());
+                        }
+                    }
+                    if (Objects.nonNull(maxMember)) {
+                        if (StringUtils.equals(qualifiedName, ExtraPackageNameEnum.SIZE.getName())) {
+                            validBuilder.append("maximum = \"").append(maxMember.getText()).append("\"");
+                        } else if (StringUtils.equals(qualifiedName, ExtraPackageNameEnum.LENGTH.getName())) {
+                            validBuilder.append(", maxLength = ").append(maxMember.getText());
+                        }
+                    }
+                    return validBuilder.toString();
                 }
-                validatorText = StringUtils.endsWith(validatorText, StrUtil.COMMA) ? validatorText.substring(0, validatorText.length() - 1) : validatorText;
-                return "(" + validatorText + ")";
             }
         }
         return StringUtils.EMPTY;
     }
+
 
     /**
      * 属性上是否有必填校验注解(EasyTool专属定制逻辑)
@@ -367,8 +406,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         }
         for (PsiAnnotation annotation : psiAnnotations) {
             String qualifiedName = annotation.getQualifiedName();
-            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints") && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.NULL.getName())
-                    && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.SIZE.getName())) {
+            if (StringUtils.startsWith(qualifiedName, "javax.validation.constraints") && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.NULL.getName()) && !StringUtils.equals(qualifiedName, ExtraPackageNameEnum.SIZE.getName())) {
                 valid = true;
                 break;
             }

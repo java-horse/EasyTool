@@ -20,6 +20,8 @@ public enum SwaggerAnnotationEnum {
     TAG("Tag", "io.swagger.v3.oas.annotations.tags.Tag"),
     OPERATION("Operation", "io.swagger.v3.oas.annotations.Operation"),
     SCHEMA("Schema", "io.swagger.v3.oas.annotations.media.Schema"),
+    REQUEST_BODY("RequestBody", "io.swagger.v3.oas.annotations.parameters.RequestBody"),
+    PARAMETERS("Parameters", "io.swagger.v3.oas.annotations.Parameters"),
     PARAMETER("Parameter", "io.swagger.v3.oas.annotations.Parameter");
 
 

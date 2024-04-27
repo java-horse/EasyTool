@@ -30,7 +30,7 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
         String attrValue;
         if (isController) {
             attrValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.API.getClassPackage()), commentDesc, List.of(Constants.ANNOTATION_ATTR.TAGS));
-            if (StringUtils.isNotBlank(attrValue)) {
+            if (StringUtils.isNotBlank(attrValue) && StringUtils.containsAny(attrValue, "{", "}")) {
                 attrValue = StringUtils.substringBetween(attrValue, "{", "}");
             }
         } else {
@@ -109,7 +109,7 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     apiModelPropertyAttrNotes = validatorText;
                 }
             } else if (StringUtils.isNotBlank(validatorText) && !StringUtils.contains(apiModelPropertyAttrNotes, validatorText)) {
-                apiModelPropertyAttrNotes += "(" + validatorText + ")";
+                apiModelPropertyAttrNotes += " (" + validatorText + ")";
             }
             apiModelPropertyText.append("(value=\"").append(apiModelPropertyAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiModelPropertyAttrNotes)) {
