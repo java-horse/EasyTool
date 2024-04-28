@@ -8,7 +8,7 @@
       <h3><em>EasyTool</em> is a set of auxiliary tools that support the conversion and translation of Chinese and English characters, as well as the generation of Swagger2.x annotations, making it easy to develop</h3>
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
-        <li>Support generating Swagger2.x related annotations based on Javadoc</li>
+        <li>Support generating Swagger2.x、Swagger3.x related annotations based on Javadoc</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
@@ -17,10 +17,10 @@
         <li>Support insert Emoji identifier when supporting Git commit</li>
         <li>Support one-click generation of JavaDoc notes</li>
       </ul>
-	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
+	  <h3><em>EasyTool</em>是一个支持中英字符互转互译、<em>Swagger2.x</em>、<em>Swagger3.x</em> 注解生成等一系列便于开发的辅助工具集</h3>
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
-        <li>支持根据 Javadoc 生成 Swagger2.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
+        <li>支持根据 Javadoc 生成 Swagger2.x、Swagger3.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
@@ -422,7 +422,7 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta shift alt BACK_SLASH"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl shift alt BACK_SLASH"/>
         </action>
-        <!--自动生成 Swagger2.x 注解-->
+        <!--自动生成 Swagger2.x、Swagger3.x 注解-->
         <group id="EasyToolSwaggerDynamicActions" class="easy.action.swagger.DynamicSwaggerActionGroup"
                text="Swagger" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.SWAGGER" popup="true" compact="true"/>
