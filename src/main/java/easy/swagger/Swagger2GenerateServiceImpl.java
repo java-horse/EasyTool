@@ -58,21 +58,18 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
     protected void genMethodAnnotation(PsiMethod psiMethod) {
         String apiOperationAnnotationText = buildApiOperationAnnotation(psiMethod);
         List<String> apiImplicitParamList = buildApiImplicitParamsAnnotation(psiMethod);
-        boolean complex = false;
-        String apiImplicitParamsAnnotationText = null;
+
+        doWrite(SwaggerAnnotationEnum.API_OPERATION.getClassName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), apiOperationAnnotationText, psiMethod);
         if (CollectionUtils.isNotEmpty(apiImplicitParamList)) {
             if (apiImplicitParamList.size() == Constants.NUM.ONE) {
-                apiImplicitParamsAnnotationText = apiImplicitParamList.get(0);
+                doWrite(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName(), SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassPackage(),
+                        apiImplicitParamList.get(0), psiMethod);
             } else {
-                apiImplicitParamsAnnotationText = apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
-                complex = true;
+                doWrite(SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName(), SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassPackage(),
+                        apiImplicitParamList.stream().collect(Collectors.joining(",\n", Constants.AT +
+                                SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})")), psiMethod);
+                addImport(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName());
             }
-        }
-        doWrite(SwaggerAnnotationEnum.API_OPERATION.getClassName(), SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), apiOperationAnnotationText, psiMethod);
-        if (StringUtils.isNotEmpty(apiImplicitParamsAnnotationText)) {
-            doWrite(complex ? SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() : SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName(),
-                    complex ? SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassPackage() : SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassPackage(),
-                    apiImplicitParamsAnnotationText, psiMethod);
         }
     }
 

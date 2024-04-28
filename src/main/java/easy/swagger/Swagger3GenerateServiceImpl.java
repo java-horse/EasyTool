@@ -64,21 +64,17 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
     protected void genMethodAnnotation(PsiMethod psiMethod) {
         String operationText = buildOperationAnnotation(psiMethod);
         List<String> parameterList = buildParameterAnnotation(psiMethod);
-        boolean complex = false;
-        String parameterAnnotationText = null;
+
+        doWrite(SwaggerAnnotationEnum.OPERATION.getClassName(), SwaggerAnnotationEnum.OPERATION.getClassPackage(), operationText, psiMethod);
         if (CollectionUtils.isNotEmpty(parameterList)) {
             if (parameterList.size() == Constants.NUM.ONE) {
-                parameterAnnotationText = parameterList.get(0);
+                doWrite(SwaggerAnnotationEnum.PARAMETER.getClassName(), SwaggerAnnotationEnum.PARAMETER.getClassPackage(), parameterList.get(0), psiMethod);
             } else {
-                parameterAnnotationText = parameterList.stream().collect(Collectors.joining(",\n", Constants.AT + SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassName() + "({\n", "\n})"));
-                complex = true;
+                doWrite(SwaggerAnnotationEnum.PARAMETERS.getClassName(), SwaggerAnnotationEnum.PARAMETERS.getClassPackage(),
+                        parameterList.stream().collect(Collectors.joining(",\n", Constants.AT +
+                                SwaggerAnnotationEnum.PARAMETERS.getClassName() + "({\n", "\n})")), psiMethod);
+                addImport(SwaggerAnnotationEnum.PARAMETER.getClassName());
             }
-        }
-        doWrite(SwaggerAnnotationEnum.OPERATION.getClassName(), SwaggerAnnotationEnum.OPERATION.getClassPackage(), operationText, psiMethod);
-        if (StringUtils.isNotEmpty(parameterAnnotationText)) {
-            doWrite(complex ? SwaggerAnnotationEnum.PARAMETERS.getClassName() : SwaggerAnnotationEnum.PARAMETER.getClassName(),
-                    complex ? SwaggerAnnotationEnum.PARAMETERS.getClassPackage() : SwaggerAnnotationEnum.PARAMETER.getClassPackage(),
-                    parameterAnnotationText, psiMethod);
             addImport(ExtraPackageNameEnum.PARAMETER_IN.getClassName());
         }
     }
