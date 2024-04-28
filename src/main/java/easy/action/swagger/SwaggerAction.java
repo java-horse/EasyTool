@@ -15,7 +15,7 @@ import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerServiceEnum;
 import easy.handler.ServiceHelper;
-import easy.swagger.SwaggerGenerateService;
+import easy.ui.SwaggerSelectDialog;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -42,17 +42,20 @@ public class SwaggerAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile)) {
+        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
+        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile) || Objects.isNull(psiClass)) {
             return;
         }
-        String actionText = e.getPresentation().getText();
-        SwaggerServiceEnum swaggerAnnotationEnum = SwaggerServiceEnum.getSwaggerAnnotationEnum(actionText);
+        SwaggerServiceEnum swaggerAnnotationEnum = SwaggerServiceEnum.getSwaggerAnnotationEnum(e.getPresentation().getText());
         if (Objects.isNull(swaggerAnnotationEnum)) {
             return;
         }
-        PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
-        String selectedText = editor.getSelectionModel().getSelectedText();
+        if (Objects.equals(swaggerAnnotationEnum, SwaggerServiceEnum.SWAGGER_VIEW)) {
+            new SwaggerSelectDialog(project, psiClass, psiFile).show();
+            return;
+        }
         // 二次弹窗确认
+        String selectedText = editor.getSelectionModel().getSelectedText();
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
             if (MessageConstants.YES == confirmResult) {

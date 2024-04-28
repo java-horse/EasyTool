@@ -78,9 +78,13 @@
         <![CDATA[
       <h3>v2.0.7</h3>
       <ul>
+        <li>Support Swagger3.x annotation automatic generation function</li>
         <li>Cancel the abnormal prompt behavior when the translation result is empty</li>
+        <li>A new SwaggerView pop-up window supports free selection of classes, methods, and attributes that need to generate annotations</li>
         <li>Fix the problem that the general setting item generation Swagger is automatically generated whether the second pop-up window cannot be canceled after confirmation.</li>
         <li>-------------------------------</li>
+        <li>【新增】支持 Swagger3.x 注解自动生成功能</li>
+        <li>【新增】新增 SwaggerView 弹窗，支持自由选中需要生成注解的类、方法、属性</li>
         <li>【优化】取消翻译结果为空时的异常提示行为</li>
         <li>【修复】修复通用设置项生成Swagger自动生成是否二次弹窗确认无法取消关闭问题</li>
       </ul>

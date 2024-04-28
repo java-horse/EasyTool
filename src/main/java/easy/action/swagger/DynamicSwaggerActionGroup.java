@@ -18,7 +18,8 @@ public class DynamicSwaggerActionGroup extends DefaultActionGroup {
     public AnAction @NotNull [] getChildren(@Nullable AnActionEvent e) {
         return new AnAction[]{
                 new SwaggerAction(SwaggerServiceEnum.SWAGGER_2.getName(), SwaggerServiceEnum.SWAGGER_2.getIcon()),
-                new SwaggerAction(SwaggerServiceEnum.SWAGGER_3.getName(), SwaggerServiceEnum.SWAGGER_3.getIcon())
+                new SwaggerAction(SwaggerServiceEnum.SWAGGER_3.getName(), SwaggerServiceEnum.SWAGGER_3.getIcon()),
+                new SwaggerAction(SwaggerServiceEnum.SWAGGER_VIEW.getName(), SwaggerServiceEnum.SWAGGER_VIEW.getIcon())
         };
     }
 

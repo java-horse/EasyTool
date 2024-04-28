@@ -12,7 +12,8 @@ import java.util.Objects;
 public enum SwaggerServiceEnum {
 
     SWAGGER_2("Swagger2.x", new Swagger2GenerateServiceImpl(), EasyIcons.ICON.SWAGGER),
-    SWAGGER_3("Swagger3.x", new Swagger3GenerateServiceImpl(), EasyIcons.ICON.SWAGGER);
+    SWAGGER_3("Swagger3.x", new Swagger3GenerateServiceImpl(), EasyIcons.ICON.SWAGGER),
+    SWAGGER_VIEW("SwaggerView", null, EasyIcons.ICON.SWAGGER);
 
     private final String name;
     private final SwaggerGenerateService swaggerGenerateService;
