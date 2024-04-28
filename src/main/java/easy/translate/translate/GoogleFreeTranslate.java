@@ -65,8 +65,11 @@ public class GoogleFreeTranslate extends AbstractTranslate {
             }
             StringBuilder builder = new StringBuilder();
             for (JsonElement element : sentencesArray) {
-                JsonObject eleObject = element.getAsJsonObject();
-                String trans = eleObject.get("trans").getAsString();
+                JsonElement transElement = element.getAsJsonObject().get("trans");
+                if (Objects.isNull(transElement)) {
+                    continue;
+                }
+                String trans = transElement.getAsString();
                 if (StringUtils.isBlank(trans)) {
                     continue;
                 }

@@ -9,22 +9,35 @@ package easy.enums;
  * @date: 2024/01/20 10:23:53
  */
 public enum SpringAnnotationEnum {
-    REQUEST_PARAM_TEXT("org.springframework.web.bind.annotation.RequestParam"),
-    REQUEST_HEADER_TEXT("org.springframework.web.bind.annotation.RequestHeader"),
-    PATH_VARIABLE_TEXT("org.springframework.web.bind.annotation.PathVariable"),
-    REQUEST_BODY_TEXT("org.springframework.web.bind.annotation.RequestBody"),
-    CONTROLLER_ANNOTATION("org.springframework.stereotype.Controller"),
-    REST_CONTROLLER_ANNOTATION("org.springframework.web.bind.annotation.RestController"),
-    FEIGN_CLIENT_ANNOTATION("org.springframework.cloud.openfeign.FeignClient");
+    REQUEST_PARAM_TEXT("org.springframework.web.bind.annotation.RequestParam", "query", "ParameterIn.QUERY"),
+    REQUEST_HEADER_TEXT("org.springframework.web.bind.annotation.RequestHeader", "header", "ParameterIn.HEADER"),
+    COOKIE_VALUE("org.springframework.web.bind.annotation.CookieValue", "cookie", "ParameterIn.COOKIE"),
+    PATH_VARIABLE_TEXT("org.springframework.web.bind.annotation.PathVariable", "path", "ParameterIn.PATH"),
+    REQUEST_BODY_TEXT("org.springframework.web.bind.annotation.RequestBody", "body", ""),
+    CONTROLLER_ANNOTATION("org.springframework.stereotype.Controller", "", ""),
+    REST_CONTROLLER_ANNOTATION("org.springframework.web.bind.annotation.RestController", "", ""),
+    FEIGN_CLIENT_ANNOTATION("org.springframework.cloud.openfeign.FeignClient", "", "");
 
     private final String name;
+    private final String paramType;
+    private final String paramIn;
 
-    SpringAnnotationEnum(String name) {
+    SpringAnnotationEnum(String name, String paramType, String paramIn) {
         this.name = name;
+        this.paramType = paramType;
+        this.paramIn = paramIn;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getParamType() {
+        return paramType;
+    }
+
+    public String getParamIn() {
+        return paramIn;
     }
 
     public static SpringAnnotationEnum getEnum(String name) {

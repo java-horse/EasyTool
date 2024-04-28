@@ -4,6 +4,8 @@ import cn.hutool.http.ContentType;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
 import easy.enums.TranslateLanguageEnum;
@@ -13,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomTranslate extends AbstractTranslate {
 
@@ -67,7 +70,15 @@ public class CustomTranslate extends AbstractTranslate {
             if (StringUtils.isBlank(body)) {
                 return StringUtils.EMPTY;
             }
-            return JsonUtil.fromObject(body).get("trans_result").getAsString();
+            JsonObject resObject = JsonUtil.fromObject(body);
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement jsonElement = resObject.get("trans_result");
+            if (Objects.isNull(jsonElement)) {
+                return StringUtils.EMPTY;
+            }
+            return jsonElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.CUSTOM.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

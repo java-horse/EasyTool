@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 import com.intellij.openapi.diagnostic.Logger;
@@ -99,7 +100,14 @@ public class VolcanoTranslate extends AbstractTranslate {
             TranslateConfig translateConfig = getTranslateConfig();
             String res = sendPost(TranslateEnum.VOLCANO.getUrl(), paramsMap, translateConfig.getVolcanoSecretId(), translateConfig.getVolcanoSecretKey());
             VolcanoResponse responseVo = JsonUtil.fromJson(res, VolcanoResponse.class);
-            return Objects.requireNonNull(responseVo).getTranslationList().get(0).getTranslation();
+            if (Objects.isNull(responseVo)) {
+                return StringUtils.EMPTY;
+            }
+            List<Translation> translationList = responseVo.getTranslationList();
+            if (CollUtil.isEmpty(translationList)) {
+                return  StringUtils.EMPTY;
+            }
+            return translationList.get(0).getTranslation();
         } catch (Exception e) {
             log.error(TranslateEnum.VOLCANO.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

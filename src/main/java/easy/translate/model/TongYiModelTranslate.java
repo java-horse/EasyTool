@@ -1,6 +1,8 @@
 package easy.translate.model;
 
 import cn.hutool.http.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateLanguageEnum;
@@ -49,7 +51,22 @@ public class TongYiModelTranslate extends AbstractTranslate {
                 .header(Header.AUTHORIZATION, "Bearer " + getTranslateConfig().getTyKey())
                 .body(bodyJson).execute()) {
             String response = httpResponse.body();
-            return replaceBackQuote(JsonUtil.fromObject(Objects.requireNonNull(response)).get("output").getAsJsonObject().get("text").getAsString());
+            if (StringUtils.isBlank(response)) {
+                return StringUtils.EMPTY;
+            }
+            JsonObject resObject = JsonUtil.fromObject(response);
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement outputElement = resObject.get("output");
+            if (Objects.isNull(outputElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement textElement = outputElement.getAsJsonObject().get("text");
+            if (Objects.isNull(textElement)) {
+                return StringUtils.EMPTY;
+            }
+            return replaceBackQuote(textElement.getAsString());
         } catch (Exception e) {
             log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
         }

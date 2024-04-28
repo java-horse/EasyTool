@@ -6,6 +6,8 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.config.translate.TranslateConfig;
 import easy.enums.TranslateEnum;
@@ -70,8 +72,22 @@ public class THSTranslate extends AbstractTranslate {
                 .header("open-authorization", "Bearer" + getToken())
                 .form(paramsMap).execute()) {
             String body = httpResponse.body();
-            return JsonUtil.fromObject(Objects.requireNonNull(body)).get("data").getAsJsonObject()
-                    .get("trans_result").getAsJsonArray().get(0).getAsJsonObject().get("dst").getAsString();
+            if (StringUtils.isBlank(body)) {
+                return StringUtils.EMPTY;
+            }
+            JsonObject resObject = JsonUtil.fromObject(body);
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement transElement = resObject.get("data").getAsJsonObject().get("trans_result");
+            if (Objects.isNull(transElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement dstElement = transElement.getAsJsonArray().get(0).getAsJsonObject().get("dst");
+            if (Objects.isNull(dstElement)) {
+                return StringUtils.EMPTY;
+            }
+            return dstElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.THS_SOFT.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

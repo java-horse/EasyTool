@@ -127,6 +127,16 @@ public class Constants {
         String NOTES = "notes";
         String REQUIRED = "required";
         String METHOD = "method";
+        String TAGS = "tags";
+        String DESCRIPTION = "description";
+        String MAX = "max";
+        String MIN = "min";
+        String SUMMARY = "summary";
+        String NAME = "name";
+        String TITLE = "title";
+        String PATTERN = "pattern";
+        String HIDDEN = "hidden";
+        String IN = "in";
     }
 
 }

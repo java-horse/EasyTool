@@ -6,6 +6,8 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
@@ -61,8 +63,26 @@ public class MicrosoftFreeTranslate extends AbstractTranslate {
                 getToken();
                 response = getTranslateResult(text, source, target);
             }
-            return JsonUtil.fromArray(Objects.requireNonNull(response)).get(0).getAsJsonObject().get("translations")
-                    .getAsJsonArray().get(0).getAsJsonObject().get("text").getAsString();
+            if (StringUtils.isBlank(response)) {
+                return StringUtils.EMPTY;
+            }
+            JsonArray resArray = JsonUtil.fromArray(response);
+            if (Objects.isNull(resArray) || resArray.isEmpty()) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement transElement = resArray.get(0).getAsJsonObject().get("translations");
+            if (Objects.isNull(transElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement resultTransElement = transElement.getAsJsonArray().get(0);
+            if (Objects.isNull(resultTransElement)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement textElement = resultTransElement.getAsJsonObject().get("text");
+            if (Objects.isNull(textElement)) {
+                return StringUtils.EMPTY;
+            }
+            return textElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.MICROSOFT_FREE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

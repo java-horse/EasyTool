@@ -1,5 +1,6 @@
 package easy.translate.translate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.enums.TranslateEnum;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 彩云翻译
@@ -56,7 +58,18 @@ public class CaiYunTranslate extends AbstractTranslate {
             headersMap.put("Content-Type", "application/json;charset=utf-8");
             headersMap.put("x-authorization", "token " + getTranslateConfig().getCaiyunToken());
             String res = HttpUtil.doPost(TranslateEnum.CAIYUN.getUrl(), headersMap, JsonUtil.toJson(dataObject));
-            return JsonUtil.fromObject(res).get("target").getAsString();
+            if (StringUtils.isBlank(res)) {
+                return StringUtils.EMPTY;
+            }
+            JsonObject resObject = JsonUtil.fromObject(res);
+            if (Objects.isNull(resObject)) {
+                return StringUtils.EMPTY;
+            }
+            JsonElement jsonElement = resObject.get("target");
+            if (Objects.isNull(jsonElement)) {
+                return StringUtils.EMPTY;
+            }
+            return jsonElement.getAsString();
         } catch (Exception e) {
             log.error(TranslateEnum.CAIYUN.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
         }

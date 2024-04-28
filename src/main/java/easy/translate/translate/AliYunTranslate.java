@@ -86,7 +86,10 @@ public class AliYunTranslate extends AbstractTranslate {
             }
             String res = sendPost(url, paramsMap, translateConfig.getAccessKeyId(), translateConfig.getAccessKeySecret());
             AliYunResponseVO responseVO = JsonUtil.fromJson(res, AliYunResponseVO.class);
-            return Objects.requireNonNull(responseVO).getData().getTranslated();
+            if (Objects.isNull(responseVO) || Objects.isNull(responseVO.getData())) {
+                return StringUtils.EMPTY;
+            }
+            return responseVO.getData().getTranslated();
         } catch (Exception e) {
             log.error(TranslateEnum.ALIYUN.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
             return StringUtils.EMPTY;
