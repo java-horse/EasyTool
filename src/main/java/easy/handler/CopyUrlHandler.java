@@ -10,6 +10,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
+import easy.base.Constants;
 import easy.enums.ProjectConfigFileNameEnum;
 import easy.enums.RequestAnnotationEnum;
 import easy.enums.SpringAnnotationEnum;
@@ -82,23 +83,19 @@ public class CopyUrlHandler {
         if (Objects.isNull(psiClass)) {
             return StringUtils.EMPTY;
         }
-        PsiModifierList modifierList = psiClass.getModifierList();
-        if (Objects.isNull(modifierList)) {
-            return StringUtils.EMPTY;
-        }
-        PsiAnnotation controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName());
+        PsiAnnotation controllerAnnotation = psiClass.getAnnotation(SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName());
         if (Objects.isNull(controllerAnnotation)) {
-            controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName());
+            controllerAnnotation = psiClass.getAnnotation(SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName());
             if (Objects.isNull(controllerAnnotation)) {
-                controllerAnnotation = modifierList.findAnnotation(SpringAnnotationEnum.FEIGN_CLIENT_ANNOTATION.getName());
+                controllerAnnotation = psiClass.getAnnotation(SpringAnnotationEnum.FEIGN_CLIENT_ANNOTATION.getName());
             }
         }
         if (Objects.isNull(controllerAnnotation)) {
             return StringUtils.EMPTY;
         }
-        PsiAnnotation requestAnnotation = modifierList.findAnnotation(RequestAnnotationEnum.REQUEST_MAPPING.getQualifiedName());
+        PsiAnnotation requestAnnotation = psiClass.getAnnotation(RequestAnnotationEnum.REQUEST_MAPPING.getQualifiedName());
         if (Objects.isNull(requestAnnotation)) {
-            requestAnnotation = modifierList.findAnnotation(RequestAnnotationEnum.FEIGN_CLIENT.getQualifiedName());
+            requestAnnotation = psiClass.getAnnotation(RequestAnnotationEnum.FEIGN_CLIENT.getQualifiedName());
         }
         if (Objects.isNull(requestAnnotation)) {
             return StringUtils.EMPTY;
@@ -119,11 +116,11 @@ public class CopyUrlHandler {
         if (Objects.isNull(psiAnnotation)) {
             return url;
         }
-        PsiAnnotationMemberValue pathMember = psiAnnotation.findAttributeValue("path");
+        PsiAnnotationMemberValue pathMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.PATH);
         if (Objects.nonNull(pathMember) && Objects.nonNull(pathMember.getNode())) {
             url = pathMember.getNode().getText();
         } else {
-            PsiAnnotationMemberValue valueMember = psiAnnotation.findAttributeValue("value");
+            PsiAnnotationMemberValue valueMember = psiAnnotation.findAttributeValue(Constants.ANNOTATION_ATTR.VALUE);
             if (Objects.nonNull(valueMember) && Objects.nonNull(valueMember.getNode())) {
                 url = valueMember.getNode().getText();
             }
@@ -175,8 +172,7 @@ public class CopyUrlHandler {
      * @date 2024/03/26 13:56
      */
     public String getProjectServerPort(Project project, Module module) {
-        ProjectConfigFileNameEnum[] configFileNameEnums = ProjectConfigFileNameEnum.values();
-        for (ProjectConfigFileNameEnum configFileNameEnum : configFileNameEnums) {
+        for (ProjectConfigFileNameEnum configFileNameEnum : ProjectConfigFileNameEnum.values()) {
             String port = getPortByConfigFile(project, module, configFileNameEnum.getName(), configFileNameEnum.getPortKey(), configFileNameEnum.getSuffix(), false);
             if (StringUtils.isNotBlank(port)) {
                 return port;

@@ -137,6 +137,8 @@ public class Constants {
         String PATTERN = "pattern";
         String HIDDEN = "hidden";
         String IN = "in";
+        String CRON = "cron";
+        String PATH = "path";
     }
 
 }

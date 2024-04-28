@@ -2,6 +2,7 @@ package easy.translate;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.intellij.ide.util.PropertiesComponent;
@@ -43,6 +44,8 @@ public class TranslateService {
     private TranslateConfig translateConfig;
 
     private Map<String, Translate> translateMap;
+
+    private List<Translate> translateFreeList = new ArrayList<>();
 
     private static final Object LOCK = new Object();
 
@@ -92,38 +95,50 @@ public class TranslateService {
                     .put(OpenModelTranslateEnum.KIMI.getModel(), new KimiModelTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.WEN_XIN.getModel(), new WenXinModelTranslate().init(translateConfig))
                     .build();
+
+            translateFreeList.add(translateMap.get(TranslateEnum.THS_SOFT.getTranslate()));
+            translateFreeList.add(translateMap.get(TranslateEnum.YOUDAO_FREE.getTranslate()));
+            translateFreeList.add(translateMap.get(TranslateEnum.MICROSOFT_FREE.getTranslate()));
+            translateFreeList.add(translateMap.get(TranslateEnum.CNKI.getTranslate()));
+
             this.translateConfig = translateConfig;
         }
     }
 
     /**
-     * 中英互译
+     * 内部翻译实现
      *
-     * @param source
-     * @return java.lang.String
+     * @param source    来源
+     * @param translate 翻译
+     * @return {@link java.lang.String}
      * @author mabin
-     * @date 2023/9/4 20:59
-     **/
-    public String translate(String source) {
-        String translateChannel = translateConfig.getTranslateChannel();
-        if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
-            translateChannel = translateConfig.getOpenModelChannel();
+     * @date 2024/04/28 17:13
+     */
+    private String innerTranslate(String source, Translate translate) {
+        if (StringUtils.isBlank(source)) {
+            return StringUtils.EMPTY;
         }
-        String initTranslateChannel = translateChannel;
-        if (Boolean.TRUE.equals(keyConfigurationReminder())) {
-            translateChannel = TranslateEnum.KING_SOFT.getTranslate();
-            // 每3天检测一次是否弹窗通知
-            PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
-            long lastNoticeTime = propertiesComponent.getLong(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -8).getTime());
-            long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - lastNoticeTime > INTERVAL) {
-                NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
-                        NotificationType.WARNING, EasyCommonUtil.getPluginSettingAction());
-                propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
+        if (Objects.isNull(translate)) {
+            String translateChannel = translateConfig.getTranslateChannel();
+            if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
+                translateChannel = translateConfig.getOpenModelChannel();
             }
+            String initTranslateChannel = translateChannel;
+            if (Boolean.TRUE.equals(keyConfigurationReminder())) {
+                translateChannel = TranslateEnum.KING_SOFT.getTranslate();
+                // 每3天检测一次是否弹窗通知
+                PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+                long lastNoticeTime = propertiesComponent.getLong(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -8).getTime());
+                long currentTimeMillis = System.currentTimeMillis();
+                if (currentTimeMillis - lastNoticeTime > INTERVAL) {
+                    NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
+                            NotificationType.WARNING, EasyCommonUtil.getPluginSettingAction());
+                    propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
+                }
+            }
+            translate = translateMap.get(translateChannel);
         }
-        Translate translate = translateMap.get(translateChannel);
-        if (StringUtils.isBlank(source) || Objects.isNull(translate)) {
+        if (Objects.isNull(translate)) {
             return StringUtils.EMPTY;
         }
         // 过滤无效字符
@@ -139,8 +154,7 @@ public class TranslateService {
             if (CollectionUtils.isEmpty(chList)) {
                 return StringUtils.EMPTY;
             }
-            int size = chList.size();
-            if (size == 1) {
+            if (chList.size() == 1) {
                 return chList.get(0).toLowerCase();
             }
             StringBuilder builder = new StringBuilder();
@@ -181,6 +195,28 @@ public class TranslateService {
         } else {
             return translate.en2Ch(analysisWords);
         }
+    }
+
+    /**
+     * 中英互译(自动随机免费翻译渠道重试一次)
+     *
+     * @param source
+     * @return java.lang.String
+     * @author mabin
+     * @date 2023/9/4 20:59
+     **/
+    public String translate(String source) {
+        if (StringUtils.isBlank(source)) {
+            return StringUtils.EMPTY;
+        }
+        String result = innerTranslate(source, null);
+        if (StringUtils.isBlank(result)) {
+            Translate translate = translateFreeList.get(RandomUtil.randomInt(0, translateFreeList.size()));
+            if (Objects.nonNull(translate)) {
+                innerTranslate(source, translate);
+            }
+        }
+        return result;
     }
 
     /**

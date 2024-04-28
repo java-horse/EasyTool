@@ -93,8 +93,7 @@ public class PsiSearchUtil {
      */
     public static PsiJavaFile searchPsiJavaFileWithPackage(Project project, String packageName, String fileName) {
         return searchPsiFileByName(project, fileName, psiFile -> {
-            if (psiFile instanceof PsiJavaFile) {
-                PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
+            if (psiFile instanceof PsiJavaFile psiJavaFile) {
                 return psiJavaFile.getPackageName().equals(packageName);
             }
             return false;
@@ -103,13 +102,7 @@ public class PsiSearchUtil {
 
     @NotNull
     private static GlobalSearchScope getSearchScope(@NotNull Project project, boolean searchAll) {
-        GlobalSearchScope searchScope;
-        if (searchAll) {
-            searchScope = GlobalSearchScope.allScope(project);
-        } else {
-            searchScope = GlobalSearchScope.projectScope(project);
-        }
-        return searchScope;
+        return searchAll ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
     }
 
 }

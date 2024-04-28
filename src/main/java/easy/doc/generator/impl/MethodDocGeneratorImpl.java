@@ -52,22 +52,15 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
         PsiTypeElement returns = psiMethod.getReturnTypeElement() == null ? null : psiMethod.getReturnTypeElement();
         String returnName = returns == null ? StringUtils.EMPTY : returns.getType().getCanonicalText();
         List<PsiClassType> exceptionTypeList = Arrays.stream(psiMethod.getThrowsList().getReferencedTypes()).collect(Collectors.toList());
-        // 有注释，进行兼容处理
         if (psiMethod.getDocComment() != null) {
             List<PsiElement> elements = Lists.newArrayList(psiMethod.getDocComment().getChildren());
             List<String> startList = Lists.newArrayList();
             List<String> endList = Lists.newArrayList();
-            // 注释
             startList.add(buildDesc(elements, translateService.translate(psiMethod.getName())));
-            // 参数
             endList.addAll(buildParams(elements, paramNameList));
-            // 返回值
             endList.add(buildReturn(elements, returns));
-            // 异常
             endList.addAll(buildException(elements, exceptionTypeList, psiMethod.getProject()));
-            // 作者
             endList.add(buildAuthor(elements));
-            // 日期
             endList.add(buildDate(elements));
             List<String> commentItems = Lists.newLinkedList();
             for (PsiElement element : elements) {

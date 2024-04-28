@@ -13,6 +13,7 @@ import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.psi.*;
 import com.intellij.ui.awt.RelativePoint;
 import easy.base.Constants;
+import easy.enums.ExtraPackageNameEnum;
 import easy.icons.EasyIcons;
 import easy.util.CronUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -57,11 +58,11 @@ public class CronMarkerProvider implements LineMarkerProvider {
             if (!(psiElement instanceof PsiMethod psiMethod)) {
                 return;
             }
-            PsiAnnotation annotation = psiMethod.getModifierList().findAnnotation("org.springframework.scheduling.annotation.Scheduled");
+            PsiAnnotation annotation = psiMethod.getAnnotation(ExtraPackageNameEnum.SCHEDULED.getName());
             if (Objects.isNull(annotation)) {
                 return;
             }
-            PsiAnnotationMemberValue cronValue = annotation.findAttributeValue("cron");
+            PsiAnnotationMemberValue cronValue = annotation.findAttributeValue(Constants.ANNOTATION_ATTR.CRON);
             if (Objects.isNull(cronValue)) {
                 return;
             }
@@ -70,6 +71,9 @@ public class CronMarkerProvider implements LineMarkerProvider {
                 return;
             }
             Editor editor = CommonDataKeys.EDITOR.getData(DataManager.getInstance().getDataContext());
+            if (Objects.isNull(editor)) {
+                return;
+            }
             JLabel label = new JLabel();
             MessageType messageType = MessageType.INFO;
             if (!CronUtil.isCron(cron)) {
@@ -103,11 +107,11 @@ public class CronMarkerProvider implements LineMarkerProvider {
      * @date 2024/1/20 15:43
      */
     private boolean shouldShowMarker(@NotNull PsiMethod psiMethod) {
-        PsiAnnotation annotation = psiMethod.getModifierList().findAnnotation("org.springframework.scheduling.annotation.Scheduled");
+        PsiAnnotation annotation = psiMethod.getAnnotation(ExtraPackageNameEnum.SCHEDULED.getName());
         if (Objects.isNull(annotation)) {
             return false;
         }
-        PsiAnnotationMemberValue cronValue = annotation.findAttributeValue("cron");
+        PsiAnnotationMemberValue cronValue = annotation.findAttributeValue(Constants.ANNOTATION_ATTR.CRON);
         return Objects.nonNull(cronValue) && StringUtils.isNotBlank(cronValue.getText());
     }
 
