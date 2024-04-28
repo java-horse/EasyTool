@@ -166,7 +166,8 @@ public class SwaggerSelectDialog extends DialogWrapper {
             return attributeItemList;
         }
         String className = PsiElementUtil.getPsiElementNameIdentifierText(psiClass);
-        attributeItemList.add(new AttributeItem(className, AllIcons.Nodes.Class, false));
+        attributeItemList.add(new AttributeItem(className + (StringUtils.isNotBlank(psiClass.getQualifiedName())
+                ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
         if (PsiElementUtil.isController(psiClass)) {
             for (PsiMethod psiMethod : psiClass.getMethods()) {
                 for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
@@ -191,7 +192,8 @@ public class SwaggerSelectDialog extends DialogWrapper {
             if (ArrayUtils.isNotEmpty(innerClasses)) {
                 for (PsiClass innerClass : innerClasses) {
                     String innerClassName = PsiElementUtil.getPsiElementNameIdentifierText(innerClass);
-                    attributeItemList.add(new AttributeItem(innerClassName, AllIcons.Nodes.Class, false));
+                    attributeItemList.add(new AttributeItem(innerClassName + (StringUtils.isNotBlank(innerClass.getQualifiedName())
+                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
                     for (PsiField psiField : innerClass.getFields()) {
                         if (StringUtils.equals(psiField.getName(), Constants.UID)) {
                             continue;
