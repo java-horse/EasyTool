@@ -183,9 +183,6 @@ public class SwaggerSelectDialog extends DialogWrapper {
             }
         } else {
             for (PsiField psiField : psiClass.getFields()) {
-                if (StringUtils.equals(psiField.getName(), Constants.UID)) {
-                    continue;
-                }
                 attributeItemList.add(new AttributeItem(className + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
             }
             PsiClass[] innerClasses = psiClass.getInnerClasses();
@@ -195,9 +192,6 @@ public class SwaggerSelectDialog extends DialogWrapper {
                     attributeItemList.add(new AttributeItem(innerClassName + (StringUtils.isNotBlank(innerClass.getQualifiedName())
                             ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
                     for (PsiField psiField : innerClass.getFields()) {
-                        if (StringUtils.equals(psiField.getName(), Constants.UID)) {
-                            continue;
-                        }
                         attributeItemList.add(new AttributeItem(innerClassName + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
                     }
                 }
