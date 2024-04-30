@@ -91,7 +91,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
         String fieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
         StringBuilder schemaBuilder = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.SCHEMA.getClassName());
         if (StringUtils.equals(fieldName, Constants.UID)) {
-            schemaBuilder.append("(hidden = true)");
+            schemaBuilder.append(String.format("(%s = true)", Constants.ANNOTATION_ATTR.HIDDEN));
         } else {
             String fieldCommentDesc = StringUtils.EMPTY;
             if (Objects.nonNull(psiField.getDocComment())) {
@@ -106,20 +106,23 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     titleAttrValue = fieldName;
                 }
             }
-            schemaBuilder.append("(title = \"").append(titleAttrValue).append("\"");
+            schemaBuilder.append("(").append(", ").append(Constants.ANNOTATION_ATTR.TITLE).append(" = \"").append(titleAttrValue).append("\"");
             if (StringUtils.isNotBlank(descAttrValue)) {
-                schemaBuilder.append(", description=\"").append(descAttrValue).append("\"");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DESCRIPTION).append(" = \"").append(descAttrValue).append("\"");
             }
             String validatorLimitText = getValidatorLimitText(psiField);
             if (StringUtils.isNotBlank(validatorLimitText)) {
                 schemaBuilder.append(validatorLimitText);
             }
             if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.NULL.getName()))) {
-                schemaBuilder.append(", nullable = true");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.NULLABLE).append(" = true");
+            }
+            if (isDeprecated(psiField)) {
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DEPRECATED).append(" = true");
             }
             String patternValue = PsiElementUtil.getAnnotationAttributeValue(psiField.getAnnotation(ExtraPackageNameEnum.DATE_TIME_FORMAT.getName()), List.of(Constants.ANNOTATION_ATTR.PATTERN));
             if (StringUtils.isNotBlank(patternValue)) {
-                schemaBuilder.append(", pattern = \"").append(patternValue).append("\"");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.PATTERN).append(" = \"").append(patternValue).append("\"");
             }
 
             schemaBuilder.append(isValidate(psiField) ? ", requiredMode = Schema.RequiredMode.REQUIRED)" : ")");
@@ -164,6 +167,9 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
             operationBuilder.append(", ").append(Constants.ANNOTATION_ATTR.TAGS).append(" = {\"")
                     .append(classTagAttrValue).append("\"}");
         }
+        if (isDeprecated(psiMethod)) {
+            operationBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DEPRECATED).append(" = true");
+        }
         operationBuilder.append(")");
         return operationBuilder.toString();
     }
@@ -199,7 +205,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                 parameterBuilder.append(", ").append(Constants.ANNOTATION_ATTR.IN).append(" = ").append(paramIn);
             }
             if (StringUtils.equals(required, "true")) {
-                parameterBuilder.append(", required = true");
+                parameterBuilder.append(", ").append(Constants.ANNOTATION_ATTR.REQUIRED).append(" = true");
             }
             parameterBuilder.append(")");
             parameterList.add(parameterBuilder.toString());

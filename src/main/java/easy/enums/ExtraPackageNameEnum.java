@@ -9,7 +9,8 @@ public enum ExtraPackageNameEnum {
     DATE_TIME_FORMAT("org.springframework.format.annotation.DateTimeFormat", "DateTimeFormat"),
     PARAMETER_IN("io.swagger.v3.oas.annotations.enums.ParameterIn", "ParameterIn"),
     SCHEDULED("org.springframework.scheduling.annotation.Scheduled", "Scheduled"),
-    FILE("java.io.File", "File");
+    FILE("java.io.File", "File"),
+    DEPRECATED("java.lang.Deprecated", "Deprecated");
 
     private final String name;
     private final String className;

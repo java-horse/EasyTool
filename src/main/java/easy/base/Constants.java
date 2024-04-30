@@ -139,6 +139,8 @@ public class Constants {
         String IN = "in";
         String CRON = "cron";
         String PATH = "path";
+        String DEPRECATED = "deprecated";
+        String NULLABLE = "nullable";
     }
 
 }

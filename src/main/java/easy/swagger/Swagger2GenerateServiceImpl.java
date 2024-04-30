@@ -85,7 +85,7 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
         String fieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
         StringBuilder apiModelPropertyText = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName());
         if (StringUtils.equals(fieldName, Constants.UID)) {
-            apiModelPropertyText.append("(hidden = true)");
+            apiModelPropertyText.append(String.format("(%s = true)", Constants.ANNOTATION_ATTR.HIDDEN));
         } else {
             String fieldCommentDesc = StringUtils.EMPTY;
             if (Objects.nonNull(psiField.getDocComment())) {

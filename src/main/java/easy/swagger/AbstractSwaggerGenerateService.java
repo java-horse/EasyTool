@@ -422,6 +422,27 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     }
 
     /**
+     * 元素是否@Deprecated注解
+     *
+     * @param psiModifierListOwner psi修改器列表所有者
+     * @return boolean
+     * @author mabin
+     * @date 2024/04/30 14:32
+     */
+    protected boolean isDeprecated(PsiModifierListOwner psiModifierListOwner) {
+        PsiAnnotation[] psiAnnotations = psiModifierListOwner.getAnnotations();
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return false;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            if (StringUtils.equals(psiAnnotation.getQualifiedName(), ExtraPackageNameEnum.DEPRECATED.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 生成类注解
      *
      * @param psiClass psi级
