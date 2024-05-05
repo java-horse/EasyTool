@@ -134,6 +134,8 @@ public class TranslateSettingView {
     private JLabel customSupportLanguageTipLabel;
     private JLabel customApiExampleLabel;
     private JTextArea customApiExampleTextArea;
+    private JLabel libreServerUrlLabel;
+    private JComboBox libreServerUrlComboBox;
 
     /**
      * 在{@link #createUIComponents()}之后调用
@@ -411,6 +413,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.ALIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -478,6 +482,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.YOUDAO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -545,6 +551,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.TENCENT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -616,6 +624,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.VOLCANO.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -683,6 +693,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.XFYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -750,6 +762,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.GOOGLE.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -817,6 +831,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.MICROSOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -884,6 +900,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.NIU.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -951,6 +969,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CAIYUN.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1018,6 +1038,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.HUAWEI.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1085,6 +1107,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.THS_SOFT.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1152,6 +1176,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         } else if (Objects.equals(TranslateEnum.CUSTOM.getTranslate(), selectedItem)) {
             setCommonVisible();
             appIdLabel.setVisible(false);
@@ -1219,6 +1245,77 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(true);
             customApiExampleLabel.setVisible(true);
             customApiExampleTextArea.setVisible(true);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
+        } else if (Objects.equals(TranslateEnum.LIBRE.getTranslate(), selectedItem)) {
+            setCommonVisible();
+            appIdLabel.setVisible(false);
+            appIdTextField.setVisible(false);
+            appSecretLabel.setVisible(false);
+            appSecretTextField.setVisible(false);
+            baiduDomainLabel.setVisible(false);
+            baiduDomainCheckBox.setVisible(false);
+            baiduDomainComboBox.setVisible(false);
+            secretIdLabel.setVisible(false);
+            secretIdTextField.setVisible(false);
+            secretKeyLabel.setVisible(false);
+            secretKeyTextField.setVisible(false);
+            youdaoDomainLabel.setVisible(false);
+            youdaoDomainCheckBox.setVisible(false);
+            youdaoDomainComboBox.setVisible(false);
+            accessKeyIdLabel.setVisible(false);
+            accessKeyIdTextField.setVisible(false);
+            accessKeySecretLabel.setVisible(false);
+            accessKeySecretTextField.setVisible(false);
+            aliyunDomainLabel.setVisible(false);
+            aliyunDomainCheckBox.setVisible(false);
+            aliyunDomainComboBox.setVisible(false);
+            tencentSecretIdLabel.setVisible(false);
+            tencentSecretIdTextField.setVisible(false);
+            tencentSecretKeyLabel.setVisible(false);
+            tencentSecretKeyTextField.setVisible(false);
+            volcanoSecretIdLabel.setVisible(false);
+            volcanoSecretKeyLabel.setVisible(false);
+            volcanoSecretIdTextField.setVisible(false);
+            volcanoSecretKeyTextField.setVisible(false);
+            xfAppIdLabel.setVisible(false);
+            xfAppIdTextField.setVisible(false);
+            xfApiSecretLabel.setVisible(false);
+            xfApiSecretTextField.setVisible(false);
+            xfApiKeyLabel.setVisible(false);
+            xfApiKeyTextField.setVisible(false);
+            googleSecretKeyLabel.setVisible(false);
+            googleSecretKeyTextField.setVisible(false);
+            microsoftKeyLabel.setVisible(false);
+            microsoftKeyTextField.setVisible(false);
+            niuApiKeyLabel.setVisible(false);
+            niuApiKeyTextField.setVisible(false);
+            caiyunTokenLabel.setVisible(false);
+            caiyunTokenTextField.setVisible(false);
+            hwProjectIdLabel.setVisible(false);
+            hwProjectIdTextField.setVisible(false);
+            hwAppIdLabel.setVisible(false);
+            hwAppIdTextField.setVisible(false);
+            hwAppSecretLabel.setVisible(false);
+            hwAppSecretTextField.setVisible(false);
+            thsAppIdLabel.setVisible(false);
+            thsAppIdTextField.setVisible(false);
+            thsAppSecretLabel.setVisible(false);
+            thsAppSecretTextField.setVisible(false);
+            openModelLabel.setVisible(false);
+            openModelComboBox.setVisible(false);
+            customApiUrlLabel.setVisible(false);
+            customApiUrlTextField.setVisible(false);
+            customApiMaxCharLengthLabel.setVisible(false);
+            customApiMaxCharLengthTextField.setVisible(false);
+            customApiMaxCharLengthTipLabel.setVisible(false);
+            customSupportLanguageLabel.setVisible(false);
+            customSupportLanguageTextField.setVisible(false);
+            customSupportLanguageTipLabel.setVisible(false);
+            customApiExampleLabel.setVisible(false);
+            customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(true);
+            libreServerUrlComboBox.setVisible(true);
         } else if (Objects.equals(TranslateEnum.OPEN_BIG_MODEL.getTranslate(), selectedItem)) {
             appIdLabel.setVisible(false);
             appIdTextField.setVisible(false);
@@ -1286,6 +1383,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
             // 开元大模型UI设置
             setOpenModelVisible(openModelComboBox.getSelectedItem());
         } else {
@@ -1355,6 +1454,8 @@ public class TranslateSettingView {
             customSupportLanguageTipLabel.setVisible(false);
             customApiExampleLabel.setVisible(false);
             customApiExampleTextArea.setVisible(false);
+            libreServerUrlLabel.setVisible(false);
+            libreServerUrlComboBox.setVisible(false);
         }
     }
 
@@ -1408,6 +1509,7 @@ public class TranslateSettingView {
         setCustomApiUrlTextField(translateConfig.getCustomApiUrl());
         setCustomApiMaxCharLengthTextField(Integer.toString(translateConfig.getCustomApiMaxCharLength()));
         setCustomSupportLanguageTextField(translateConfig.getCustomSupportLanguage());
+        setLibreServerUrlComboBox(translateConfig.getLibreServerUrl());
     }
 
     private void refreshGlobalWordMap() {
@@ -2058,6 +2160,22 @@ public class TranslateSettingView {
 
     public void setCustomApiExampleTextArea(String customApiExampleTextArea) {
         this.customApiExampleTextArea.setText(customApiExampleTextArea);
+    }
+
+    public JLabel getLibreServerUrlLabel() {
+        return libreServerUrlLabel;
+    }
+
+    public void setLibreServerUrlLabel(JLabel libreServerUrlLabel) {
+        this.libreServerUrlLabel = libreServerUrlLabel;
+    }
+
+    public JComboBox getLibreServerUrlComboBox() {
+        return libreServerUrlComboBox;
+    }
+
+    public void setLibreServerUrlComboBox(String libreServerUrlComboBox) {
+        this.libreServerUrlComboBox.setSelectedItem(libreServerUrlComboBox);
     }
 
 }
