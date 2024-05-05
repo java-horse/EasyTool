@@ -43,7 +43,7 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
                 attrValue = isController ? className + SwaggerAnnotationEnum.API.getClassName() : className + SwaggerAnnotationEnum.API_MODEL.getClassName();
             }
         }
-        String annotationFromText = isController ? String.format("@%s(tags = {\"%s\"})", SwaggerAnnotationEnum.API.getClassName(), attrValue) : String.format("@%s(\"%s\")", SwaggerAnnotationEnum.API_MODEL.getClassName(), attrValue);
+        String annotationFromText = isController ? String.format("@%s(%s = {\"%s\"})", SwaggerAnnotationEnum.API.getClassName(), Constants.ANNOTATION_ATTR.TAGS, attrValue) : String.format("@%s(\"%s\")", SwaggerAnnotationEnum.API_MODEL.getClassName(), attrValue);
         doWrite(isController ? SwaggerAnnotationEnum.API.getClassName() : SwaggerAnnotationEnum.API_MODEL.getClassName(), isController ? SwaggerAnnotationEnum.API.getClassPackage() : SwaggerAnnotationEnum.API_MODEL.getClassPackage(), annotationFromText, psiClass);
     }
 
@@ -108,11 +108,11 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
             } else if (StringUtils.isNotBlank(validatorText) && !StringUtils.contains(apiModelPropertyAttrNotes, validatorText)) {
                 apiModelPropertyAttrNotes += " (" + validatorText + ")";
             }
-            apiModelPropertyText.append("(value=\"").append(apiModelPropertyAttrValue).append("\"");
+            apiModelPropertyText.append("(").append(Constants.ANNOTATION_ATTR.VALUE).append(" = \"").append(apiModelPropertyAttrValue).append("\"");
             if (StringUtils.isNotBlank(apiModelPropertyAttrNotes)) {
-                apiModelPropertyText.append(", notes=\"").append(apiModelPropertyAttrNotes).append("\"");
+                apiModelPropertyText.append(", ").append(Constants.ANNOTATION_ATTR.NOTES).append(" = \"").append(apiModelPropertyAttrNotes).append("\"");
             }
-            apiModelPropertyText.append(isValidate(psiField) ? ", required=true)" : ")");
+            apiModelPropertyText.append(isValidate(psiField) ? String.format(", %s=true)", Constants.ANNOTATION_ATTR.REQUIRED) : ")");
         }
         doWrite(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassName(), SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), apiModelPropertyText.toString(), psiField);
     }
@@ -140,14 +140,14 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
 
             StringBuilder apiImplicitParamText = new StringBuilder();
             apiImplicitParamText.append(Constants.AT).append(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassName())
-                    .append("(paramType = ").append("\"").append(paramType).append("\"")
-                    .append(", name = ").append("\"").append(paramName).append("\"")
-                    .append(", value = ").append("\"").append(paramDesc).append("\"");
+                    .append("(").append(Constants.ANNOTATION_ATTR.PARAM_TYPE).append(" = \"").append(paramType).append("\"")
+                    .append(", ").append(Constants.ANNOTATION_ATTR.NAME).append(" = \"").append(paramName).append("\"")
+                    .append(", ").append(Constants.ANNOTATION_ATTR.VALUE).append(" = \"").append(paramDesc).append("\"");
 
             if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(dataType)) || StringUtils.equalsAny(dataType, "file")) {
-                apiImplicitParamText.append(", dataType = ").append("\"").append(dataType).append("\"");
+                apiImplicitParamText.append(", ").append(Constants.ANNOTATION_ATTR.DATA_TYPE).append(" = \"").append(dataType).append("\"");
             } else {
-                apiImplicitParamText.append(", dataTypeClass = ");
+                apiImplicitParamText.append(", ").append(Constants.ANNOTATION_ATTR.DATA_TYPE_CLASS).append(" = ");
                 if (StringUtils.containsAny(dataType, "<", ">")) {
                     if (!StringUtils.containsAnyIgnoreCase(dataType, "map")) {
                         String collDataType = StringUtils.substringBetween(dataType, "<", ">");
@@ -155,16 +155,16 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     } else {
                         apiImplicitParamText.append("Map.class");
                     }
-                    apiImplicitParamText.append(", allowMultiple = true");
+                    apiImplicitParamText.append(", ").append(Constants.ANNOTATION_ATTR.ALLOW_MULTIPLE).append(" = true");
                 } else if (StringUtils.containsAny(dataType, "[", "]")) {
                     String collDataType = StringUtils.substringBefore(dataType, "[");
-                    apiImplicitParamText.append(collDataType).append(".class").append(", allowMultiple = true");
+                    apiImplicitParamText.append(collDataType).append(".class").append(", ").append(Constants.ANNOTATION_ATTR.ALLOW_MULTIPLE).append(" = true");
                 } else {
                     apiImplicitParamText.append(dataType).append(".class");
                 }
             }
             if (StringUtils.equals(required, "true")) {
-                apiImplicitParamText.append(", required = true");
+                apiImplicitParamText.append(", ").append(Constants.ANNOTATION_ATTR.REQUIRED).append(" = true");
             }
             apiImplicitParamText.append(")");
             apiImplicitParamList.add(apiImplicitParamText.toString());
@@ -192,20 +192,18 @@ public class Swagger2GenerateServiceImpl extends AbstractSwaggerGenerateService 
         }
         StringBuilder apiOperationAnnotationText = new StringBuilder();
         apiOperationAnnotationText.append(Constants.AT).append(SwaggerAnnotationEnum.API_OPERATION.getClassName())
-                .append("(value = ").append("\"").append(apiOperationValue).append("\"");
+                .append("(").append(Constants.ANNOTATION_ATTR.VALUE).append(" = \"").append(apiOperationValue).append("\"");
         String apiOperationNotes = PsiElementUtil.getAnnotationAttributeValue(apiOperation, List.of(Constants.ANNOTATION_ATTR.NOTES));
         if (StringUtils.isNotBlank(apiOperationNotes)) {
-            apiOperationAnnotationText.append(", notes = ").append("\"").append(apiOperationNotes).append("\"");
+            apiOperationAnnotationText.append(", ").append(Constants.ANNOTATION_ATTR.NOTES).append(" = \"").append(apiOperationNotes).append("\"");
         }
         String apiOperationMethod = getHttpMethodName(psiMethod.getAnnotations());
         if (StringUtils.isNotBlank(apiOperationMethod)) {
-            apiOperationAnnotationText.append(", httpMethod = ").append("\"")
-                    .append(apiOperationMethod).append("\"");
+            apiOperationAnnotationText.append(", ").append(Constants.ANNOTATION_ATTR.HTTP_METHOD).append(" = \"").append(apiOperationMethod).append("\"");
         }
         String classTagAttrValue = getClassTagAttrValue();
         if (StringUtils.isNotBlank(classTagAttrValue)) {
-            apiOperationAnnotationText.append(", tags = {").append("\"")
-                    .append(classTagAttrValue).append("\"}");
+            apiOperationAnnotationText.append(", ").append(Constants.ANNOTATION_ATTR.TAGS).append(" = {\"").append(classTagAttrValue).append("\"}");
         }
         apiOperationAnnotationText.append(")");
         return apiOperationAnnotationText.toString();

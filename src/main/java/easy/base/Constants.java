@@ -141,6 +141,12 @@ public class Constants {
         String PATH = "path";
         String DEPRECATED = "deprecated";
         String NULLABLE = "nullable";
+        String HTTP_METHOD = "httpMethod";
+        String PARAM_TYPE = "paramType";
+        String DATA_TYPE = "dataType";
+        String DATA_TYPE_CLASS = "dataTypeClass";
+        String ALLOW_MULTIPLE = "allowMultiple";
+        String REQUIRED_MODE = "requiredMode";
     }
 
 }

@@ -38,7 +38,8 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                 }
             }
             String descAttrValue = PsiElementUtil.getAnnotationAttributeValue(tagAnnotation, List.of(Constants.ANNOTATION_ATTR.DESCRIPTION));
-            String tagAnnotationText = String.format("%s%s(name = \"%s\", description = \"%s\")", Constants.AT, SwaggerAnnotationEnum.TAG.getClassName(), nameAttrValue, StringUtils.isBlank(descAttrValue) ? className : descAttrValue);
+            String tagAnnotationText = String.format("%s%s(%s = \"%s\", %s = \"%s\")", Constants.AT, SwaggerAnnotationEnum.TAG.getClassName(), Constants.ANNOTATION_ATTR.NAME,
+                    nameAttrValue, Constants.ANNOTATION_ATTR.DESCRIPTION, StringUtils.isBlank(descAttrValue) ? className : descAttrValue);
             doWrite(SwaggerAnnotationEnum.TAG.getClassName(), SwaggerAnnotationEnum.TAG.getClassPackage(), tagAnnotationText, psiClass);
         } else {
             String titleAttrValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.SCHEMA.getClassPackage()), commentDesc, List.of(Constants.ANNOTATION_ATTR.TITLE));
@@ -48,7 +49,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     titleAttrValue = className + SwaggerAnnotationEnum.SCHEMA.getClassName();
                 }
             }
-            String schemaAnnotationText = String.format("%s%s(title = \"%s\")", Constants.AT, SwaggerAnnotationEnum.SCHEMA.getClassName(), titleAttrValue);
+            String schemaAnnotationText = String.format("%s%s(%s = \"%s\")", Constants.AT, SwaggerAnnotationEnum.SCHEMA.getClassName(), Constants.ANNOTATION_ATTR.TITLE, titleAttrValue);
             doWrite(SwaggerAnnotationEnum.SCHEMA.getClassName(), SwaggerAnnotationEnum.SCHEMA.getClassPackage(), schemaAnnotationText, psiClass);
         }
     }
@@ -124,8 +125,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
             if (StringUtils.isNotBlank(patternValue)) {
                 schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.PATTERN).append(" = \"").append(patternValue).append("\"");
             }
-
-            schemaBuilder.append(isValidate(psiField) ? ", requiredMode = Schema.RequiredMode.REQUIRED)" : ")");
+            schemaBuilder.append(isValidate(psiField) ? String.format(", %s = Schema.RequiredMode.REQUIRED)", Constants.ANNOTATION_ATTR.REQUIRED_MODE) : ")");
         }
         doWrite(SwaggerAnnotationEnum.SCHEMA.getClassName(), SwaggerAnnotationEnum.SCHEMA.getClassPackage(), schemaBuilder.toString(), psiField);
     }

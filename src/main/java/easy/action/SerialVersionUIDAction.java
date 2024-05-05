@@ -46,22 +46,18 @@ public class SerialVersionUIDAction extends AnAction {
         PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
         PsiClass caretPsiClass = PsiTreeUtil.getContextOfType(psiElement, PsiClass.class);
         try {
-            boolean dingNotify = false;
             if (Objects.nonNull(caretPsiClass)) {
                 if (StringUtils.equals(psiClass.getQualifiedName(), caretPsiClass.getQualifiedName())) {
-                    dingNotify = genUID(caretPsiClass);
+                    genUID(caretPsiClass);
                     PsiClass[] innerClasses = psiClass.getInnerClasses();
                     for (PsiClass innerClass : innerClasses) {
-                        dingNotify = dingNotify || genUID(innerClass);
+                        genUID(innerClass);
                     }
                 } else {
                     if (Arrays.stream(psiClass.getInnerClasses()).anyMatch(innerItem -> StringUtils.equals(innerItem.getQualifiedName(), caretPsiClass.getQualifiedName()))) {
-                        dingNotify = genUID(caretPsiClass);
+                        genUID(caretPsiClass);
                     }
                 }
-            }
-            if (dingNotify) {
-                
             }
         } catch (Throwable ex) {
             log.error("serialVersionUID write editor exception!", ex);
@@ -110,14 +106,13 @@ public class SerialVersionUIDAction extends AnAction {
      * 生成UID
      *
      * @param psiClass
-     * @return boolean
      * @author mabin
      * @date 2023/11/15 15:02
      */
-    private boolean genUID(PsiClass psiClass) throws Throwable {
+    private void genUID(PsiClass psiClass) throws Throwable {
         if (Objects.isNull(psiClass) || Arrays.stream(psiClass.getFields()).anyMatch(field ->
                 StringUtils.equalsAny(field.getName(), Constants.UID))) {
-            return false;
+            return;
         }
         WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
             String insertStr = "private static final long serialVersionUID = " + UUID.randomUUID().getLeastSignificantBits() + "L;";
@@ -128,7 +123,6 @@ public class SerialVersionUIDAction extends AnAction {
                 psiClass.addBefore(psiStatement, lBrace.getNextSibling());
             }
         });
-        return true;
     }
 
 }

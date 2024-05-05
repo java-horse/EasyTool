@@ -46,7 +46,8 @@ public class CronMarkerProvider implements LineMarkerProvider {
                     EasyIcons.ICON.CLOCK,
                     null,
                     new CronNavigationHandler(),
-                    GutterIconRenderer.Alignment.RIGHT);
+                    GutterIconRenderer.Alignment.RIGHT,
+                    () -> "Cron Marker");
         }
         return null;
     }
