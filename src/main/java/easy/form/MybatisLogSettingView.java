@@ -165,7 +165,7 @@ public class MybatisLogSettingView extends DialogWrapper {
 
     @Override
     protected Action @NotNull [] createActions() {
-        return new Action[]{};
+        return new Action[]{getOKAction()};
     }
 
 }

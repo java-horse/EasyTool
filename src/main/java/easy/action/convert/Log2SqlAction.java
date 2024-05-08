@@ -29,8 +29,7 @@ public class Log2SqlAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
-        Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(project) || Objects.isNull(editor)) {
+        if (Objects.isNull(project)) {
             return;
         }
         ApplicationManager.getApplication().invokeLater(() -> e.getPresentation().setVisible(false));
