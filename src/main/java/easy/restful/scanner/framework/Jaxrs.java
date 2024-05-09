@@ -17,8 +17,8 @@ import easy.restful.annotation.JaxrsHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
 import easy.restful.scanner.IJavaFramework;
+import easy.restful.scanner.ScannerApiHelper;
 import easy.util.RestUtil;
-import easy.util.SystemUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -114,7 +114,7 @@ public class Jaxrs implements IJavaFramework {
         Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(
                 RestfulSearchAnnotationTypeEnum.JAVAX_PATH.getName(),
                 project,
-                SystemUtil.getModuleScope(module)
+                ScannerApiHelper.getModuleScope(module)
         );
         for (PsiAnnotation psiAnnotation : pathList) {
             PsiElement psiElement = psiAnnotation.getParent().getParent();

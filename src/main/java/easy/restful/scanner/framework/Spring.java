@@ -14,8 +14,8 @@ import easy.restful.annotation.SpringHttpMethodAnnotation;
 import easy.restful.api.ApiService;
 import easy.restful.api.HttpMethod;
 import easy.restful.scanner.IJavaFramework;
+import easy.restful.scanner.ScannerApiHelper;
 import easy.util.RestUtil;
-import easy.util.SystemUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -127,7 +127,7 @@ public class Spring implements IJavaFramework {
     @NotNull
     private List<PsiClass> getAllControllerClass(@NotNull Project project, @NotNull Module module) {
         List<PsiClass> allControllerClass = new ArrayList<>();
-        GlobalSearchScope moduleScope = SystemUtil.getModuleScope(module);
+        GlobalSearchScope moduleScope = ScannerApiHelper.getModuleScope(module);
         Collection<PsiAnnotation> pathList = JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.CONTROLLER.getName(), project, moduleScope);
         pathList.addAll(JavaAnnotationIndex.getInstance().get(RestfulSearchAnnotationTypeEnum.REST_CONTROLLER.getName(), project, moduleScope));
         for (PsiAnnotation psiAnnotation : pathList) {
@@ -201,11 +201,11 @@ public class Spring implements IJavaFramework {
             }
             Object value = RestUtil.getAttributeValue(attribute.getAttributeValue());
             if (value instanceof String) {
-                paths.add(SystemUtil.formatPath(value));
+                paths.add(ScannerApiHelper.formatPath(value));
             } else if (value instanceof List) {
                 //noinspection unchecked,rawtypes
                 List<Object> list = (List) value;
-                list.forEach(item -> paths.add(SystemUtil.formatPath(item)));
+                list.forEach(item -> paths.add(ScannerApiHelper.formatPath(item)));
             } else {
                 throw new IllegalArgumentException(String.format(
                         "Scan api: %s\n" +

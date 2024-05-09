@@ -1,7 +1,6 @@
 package easy.restful.api;
 
 import com.intellij.psi.NavigatablePsiElement;
-import easy.util.SystemUtil;
 import easy.restful.icons.Icons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
