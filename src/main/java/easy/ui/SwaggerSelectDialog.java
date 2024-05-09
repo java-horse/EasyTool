@@ -1,5 +1,6 @@
 package easy.ui;
 
+import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
@@ -164,32 +165,34 @@ public class SwaggerSelectDialog extends DialogWrapper {
         if (Objects.isNull(psiClass)) {
             return attributeItemList;
         }
-        attributeItemList.add(new AttributeItem(PsiElementUtil.getPsiElementNameIdentifierText(psiClass), AllIcons.Nodes.Class, false));
+        String className = PsiElementUtil.getPsiElementNameIdentifierText(psiClass);
+        attributeItemList.add(new AttributeItem(className + (StringUtils.isNotBlank(psiClass.getQualifiedName())
+                ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
         if (PsiElementUtil.isController(psiClass)) {
             for (PsiMethod psiMethod : psiClass.getMethods()) {
                 for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
                     if (Objects.isNull(RequestAnnotationEnum.getEnumByQualifiedName(psiAnnotation.getQualifiedName()))) {
                         continue;
                     }
-                    attributeItemList.add(new AttributeItem(PsiElementUtil.getPsiElementNameIdentifierText(psiMethod), AllIcons.Nodes.Method, false));
+                    List<String> paramList = new ArrayList<>();
+                    for (PsiParameter psiParameter : psiMethod.getParameterList().getParameters()) {
+                        paramList.add(psiParameter.getName() + ":" + StringUtils.split(psiParameter.getType().toString(), ":")[1]);
+                    }
+                    attributeItemList.add(new AttributeItem(className + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiMethod) + "(" + StringUtils.trim(String.join(", ", paramList)) + ")", AllIcons.Nodes.Method, false));
                 }
             }
         } else {
             for (PsiField psiField : psiClass.getFields()) {
-                if (StringUtils.equals(psiField.getName(), Constants.UID)) {
-                    continue;
-                }
-                attributeItemList.add(new AttributeItem(PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
+                attributeItemList.add(new AttributeItem(className + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
             }
             PsiClass[] innerClasses = psiClass.getInnerClasses();
             if (ArrayUtils.isNotEmpty(innerClasses)) {
                 for (PsiClass innerClass : innerClasses) {
-                    attributeItemList.add(new AttributeItem(PsiElementUtil.getPsiElementNameIdentifierText(innerClass), AllIcons.Nodes.Class, false));
+                    String innerClassName = PsiElementUtil.getPsiElementNameIdentifierText(innerClass);
+                    attributeItemList.add(new AttributeItem(innerClassName + (StringUtils.isNotBlank(innerClass.getQualifiedName())
+                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
                     for (PsiField psiField : innerClass.getFields()) {
-                        if (StringUtils.equals(psiField.getName(), Constants.UID)) {
-                            continue;
-                        }
-                        attributeItemList.add(new AttributeItem(PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
+                        attributeItemList.add(new AttributeItem(innerClassName + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
                     }
                 }
             }

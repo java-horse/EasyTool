@@ -43,18 +43,13 @@ public class ClassDocGeneratorImpl extends AbstractDocGenerator {
     }
 
     private String defaultGenerate(PsiClass psiClass) {
-        // 有注释，进行兼容处理
         if (psiClass.getDocComment() != null) {
             List<PsiElement> elements = Lists.newArrayList(psiClass.getDocComment().getChildren());
             List<String> startList = Lists.newArrayList();
             List<String> endList = Lists.newArrayList();
-            // 注释
             startList.add(buildDesc(elements, translateService.translate(psiClass.getName())));
-            // 作者
             endList.add(buildAuthor(elements));
-            // 日期
             endList.add(buildDate(elements));
-
             List<String> commentItems = Lists.newLinkedList();
             for (PsiElement element : elements) {
                 commentItems.add(element.getText());

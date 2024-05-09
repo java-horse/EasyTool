@@ -34,7 +34,8 @@ public enum TranslateEnum {
     THS_SOFT("同花顺翻译", "https://b2b-api.10jqka.com.cn/gateway/arsenal/machineTranslation/batch/get/result", "", ""),
     CNKI("CNKI学术翻译", "https://dict.cnki.net/fyzs-front-api/translate/literaltranslation", "", ""),
     OPEN_BIG_MODEL("开源大模型", "", "", ""),
-    CUSTOM("自定义API", "", "", "");
+    CUSTOM("自定义API", "", "", ""),
+    LIBRE("Libre翻译", "", "", "");
 
     private final String translate;
     private final String url;

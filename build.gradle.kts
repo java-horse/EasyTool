@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "2.0.7"
+version = "2.0.8"
 
 repositories {
     maven {
@@ -37,7 +37,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("222.3345.118")
-        untilBuild.set("233.*")
+        untilBuild.set("241.*")
     }
 
     signPlugin {

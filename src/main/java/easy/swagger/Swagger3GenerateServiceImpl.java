@@ -38,7 +38,8 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                 }
             }
             String descAttrValue = PsiElementUtil.getAnnotationAttributeValue(tagAnnotation, List.of(Constants.ANNOTATION_ATTR.DESCRIPTION));
-            String tagAnnotationText = String.format("%s%s(name = \"%s\", description = \"%s\")", Constants.AT, SwaggerAnnotationEnum.TAG.getClassName(), nameAttrValue, StringUtils.isBlank(descAttrValue) ? className : descAttrValue);
+            String tagAnnotationText = String.format("%s%s(%s = \"%s\", %s = \"%s\")", Constants.AT, SwaggerAnnotationEnum.TAG.getClassName(), Constants.ANNOTATION_ATTR.NAME,
+                    nameAttrValue, Constants.ANNOTATION_ATTR.DESCRIPTION, StringUtils.isBlank(descAttrValue) ? className : descAttrValue);
             doWrite(SwaggerAnnotationEnum.TAG.getClassName(), SwaggerAnnotationEnum.TAG.getClassPackage(), tagAnnotationText, psiClass);
         } else {
             String titleAttrValue = PsiElementUtil.getAnnotationAttributeValue(psiClass.getAnnotation(SwaggerAnnotationEnum.SCHEMA.getClassPackage()), commentDesc, List.of(Constants.ANNOTATION_ATTR.TITLE));
@@ -48,7 +49,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     titleAttrValue = className + SwaggerAnnotationEnum.SCHEMA.getClassName();
                 }
             }
-            String schemaAnnotationText = String.format("%s%s(title = \"%s\")", Constants.AT, SwaggerAnnotationEnum.SCHEMA.getClassName(), titleAttrValue);
+            String schemaAnnotationText = String.format("%s%s(%s = \"%s\")", Constants.AT, SwaggerAnnotationEnum.SCHEMA.getClassName(), Constants.ANNOTATION_ATTR.TITLE, titleAttrValue);
             doWrite(SwaggerAnnotationEnum.SCHEMA.getClassName(), SwaggerAnnotationEnum.SCHEMA.getClassPackage(), schemaAnnotationText, psiClass);
         }
     }
@@ -91,7 +92,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
         String fieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
         StringBuilder schemaBuilder = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.SCHEMA.getClassName());
         if (StringUtils.equals(fieldName, Constants.UID)) {
-            schemaBuilder.append("(hidden = true)");
+            schemaBuilder.append(String.format("(%s = true)", Constants.ANNOTATION_ATTR.HIDDEN));
         } else {
             String fieldCommentDesc = StringUtils.EMPTY;
             if (Objects.nonNull(psiField.getDocComment())) {
@@ -106,23 +107,25 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                     titleAttrValue = fieldName;
                 }
             }
-            schemaBuilder.append("(title = \"").append(titleAttrValue).append("\"");
+            schemaBuilder.append("(").append(", ").append(Constants.ANNOTATION_ATTR.TITLE).append(" = \"").append(titleAttrValue).append("\"");
             if (StringUtils.isNotBlank(descAttrValue)) {
-                schemaBuilder.append(", description=\"").append(descAttrValue).append("\"");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DESCRIPTION).append(" = \"").append(descAttrValue).append("\"");
             }
             String validatorLimitText = getValidatorLimitText(psiField);
             if (StringUtils.isNotBlank(validatorLimitText)) {
                 schemaBuilder.append(validatorLimitText);
             }
             if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.NULL.getName()))) {
-                schemaBuilder.append(", nullable = true");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.NULLABLE).append(" = true");
+            }
+            if (isDeprecated(psiField)) {
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DEPRECATED).append(" = true");
             }
             String patternValue = PsiElementUtil.getAnnotationAttributeValue(psiField.getAnnotation(ExtraPackageNameEnum.DATE_TIME_FORMAT.getName()), List.of(Constants.ANNOTATION_ATTR.PATTERN));
             if (StringUtils.isNotBlank(patternValue)) {
-                schemaBuilder.append(", pattern = \"").append(patternValue).append("\"");
+                schemaBuilder.append(", ").append(Constants.ANNOTATION_ATTR.PATTERN).append(" = \"").append(patternValue).append("\"");
             }
-
-            schemaBuilder.append(isValidate(psiField) ? ", requiredMode = Schema.RequiredMode.REQUIRED)" : ")");
+            schemaBuilder.append(isValidate(psiField) ? String.format(", %s = Schema.RequiredMode.REQUIRED)", Constants.ANNOTATION_ATTR.REQUIRED_MODE) : ")");
         }
         doWrite(SwaggerAnnotationEnum.SCHEMA.getClassName(), SwaggerAnnotationEnum.SCHEMA.getClassPackage(), schemaBuilder.toString(), psiField);
     }
@@ -164,6 +167,9 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
             operationBuilder.append(", ").append(Constants.ANNOTATION_ATTR.TAGS).append(" = {\"")
                     .append(classTagAttrValue).append("\"}");
         }
+        if (isDeprecated(psiMethod)) {
+            operationBuilder.append(", ").append(Constants.ANNOTATION_ATTR.DEPRECATED).append(" = true");
+        }
         operationBuilder.append(")");
         return operationBuilder.toString();
     }
@@ -199,7 +205,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
                 parameterBuilder.append(", ").append(Constants.ANNOTATION_ATTR.IN).append(" = ").append(paramIn);
             }
             if (StringUtils.equals(required, "true")) {
-                parameterBuilder.append(", required = true");
+                parameterBuilder.append(", ").append(Constants.ANNOTATION_ATTR.REQUIRED).append(" = true");
             }
             parameterBuilder.append(")");
             parameterList.add(parameterBuilder.toString());

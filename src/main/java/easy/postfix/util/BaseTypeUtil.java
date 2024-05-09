@@ -1,9 +1,9 @@
 package easy.postfix.util;
 
+import cn.hutool.core.util.RandomUtil;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiType;
 import easy.base.Constants;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -242,7 +242,7 @@ public class BaseTypeUtil {
         Date now = new Date();
         String pattern = commentInfo.getSingleStr(MoreCommentTagEnum.JSON_FORMAT.getTag(), "yyyy-MM-dd'T'HH:mm:ss.SSS+0000");
         pattern = commentInfo.getSingleStr(MoreCommentTagEnum.DATE_FORMAT.getTag(), pattern);
-        now.setTime(System.currentTimeMillis() + RandomUtils.nextLong(0, 86400000));
+        now.setTime(System.currentTimeMillis() + RandomUtil.randomLong(0, 86400000));
         return DateFormatUtils.format(now, pattern);
     }
 
@@ -256,7 +256,7 @@ public class BaseTypeUtil {
         // 强指定随机或字段无任何描述时, 随机生成
         //   否则使用描述加随机数字后缀组成示例值
         if (random || StringUtils.isBlank(fieldDesc)) {
-            int length = RandomUtils.nextInt(5, 20);
+            int length = RandomUtil.randomInt(5, 20);
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < length; i++) {
                 stringBuilder.append(randomChar(false));
@@ -266,51 +266,51 @@ public class BaseTypeUtil {
             if (fieldDesc.contains(Constants.BREAK_LINE)) {
                 fieldDesc = fieldDesc.substring(0, fieldDesc.indexOf(Constants.BREAK_LINE));
             }
-            return fieldDesc + RandomUtils.nextInt(1, 128);
+            return fieldDesc + RandomUtil.randomInt(1, 128);
         }
     }
 
     private static long randomLong() {
-        return RandomUtils.nextLong(10, 1000);
+        return RandomUtil.randomLong(10, 1000);
     }
 
     private static float randomFloat() {
-        return RandomUtils.nextFloat(10, 100);
+        return RandomUtil.randomFloat(10, 100);
     }
 
     private static int randomInt() {
-        return RandomUtils.nextInt(1, 1024);
+        return RandomUtil.randomInt(1, 1024);
     }
 
     private static short randomShort() {
-        return (short) RandomUtils.nextInt(1, 100);
+        return (short) RandomUtil.randomInt(1, 100);
     }
 
     private static byte randomByte() {
 
-        return RandomUtils.nextBytes(1)[0];
+        return RandomUtil.randomBytes(1)[0];
     }
 
     private static boolean randomBoolean() {
-        return RandomUtils.nextBoolean();
+        return RandomUtil.randomBoolean();
     }
 
     private static double randomDouble() {
-        return RandomUtils.nextDouble(50, 1000);
+        return RandomUtil.randomDouble(50, 1000);
     }
 
     private static char randomChar() {
-        boolean en = RandomUtils.nextBoolean();
+        boolean en = RandomUtil.randomBoolean();
         return randomChar(en);
     }
 
     private static char randomChar(boolean en) {
         if (en) {
-            boolean upper = RandomUtils.nextBoolean();
+            boolean upper = RandomUtil.randomBoolean();
             if (upper) {
-                return (char) RandomUtils.nextInt(65, 90);
+                return (char) RandomUtil.randomInt(65, 90);
             } else {
-                return (char) RandomUtils.nextInt(97, 122);
+                return (char) RandomUtil.randomInt(97, 122);
             }
         } else {
             String str = "";

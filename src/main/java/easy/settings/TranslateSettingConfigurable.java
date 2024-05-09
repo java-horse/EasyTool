@@ -84,7 +84,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getKimiKey(), String.valueOf(translateSettingView.getKimiKeyPasswordField().getPassword()))
                 || !Objects.equals(translateConfig.getWenxinModel(), translateSettingView.getWenxinModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getWenxinApiKey(), translateSettingView.getWenxinApiKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getWenxinApiSecret(), String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()));
+                || !StringUtils.equals(translateConfig.getWenxinApiSecret(), String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()))
+                || !StringUtils.equals(translateConfig.getLibreServerUrl(), String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()));
     }
 
     @Override
@@ -138,6 +139,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setWenxinModel(String.valueOf(translateSettingView.getWenxinModelComboBox().getSelectedItem()));
         translateConfig.setWenxinApiKey(translateSettingView.getWenxinApiKeyTextField().getText());
         translateConfig.setWenxinApiSecret(String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()));
+        translateConfig.setLibreServerUrl(String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()));
         // 配置检查
         checkTranslateConfig();
     }
@@ -210,6 +212,9 @@ public class TranslateSettingConfigurable implements Configurable {
                 ValidatorUtil.isTrue(StringUtils.isNoneBlank(translateConfig.getWenxinApiKey(), translateConfig.getWenxinApiSecret(),
                         translateConfig.getWenxinModel()), OpenModelTranslateEnum.KIMI.getModel() + "配置不能为空");
             }
+        }
+        if (TranslateEnum.LIBRE.getTranslate().equals(translateConfig.getTranslateChannel())) {
+            ValidatorUtil.isTrue(Objects.nonNull(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()), TranslateEnum.LIBRE.getTranslate() + "翻译URL不能为空");
         }
     }
 

@@ -218,6 +218,11 @@ public class TranslateConfig {
     private String customSupportLanguage;
 
     /**
+     * libreTranslate服务地址
+     */
+    private String libreServerUrl;
+
+    /**
      * 全局单词映射
      */
     private SortedMap<String, String> globalWordMap = new TreeMap<>();
@@ -271,6 +276,7 @@ public class TranslateConfig {
         customApiUrl = null;
         customApiMaxCharLength = Constants.NUM.ONE_THOUSAND;
         customSupportLanguage = TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang;
+        libreServerUrl = null;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -602,6 +608,14 @@ public class TranslateConfig {
 
     public void setCustomSupportLanguage(String customSupportLanguage) {
         this.customSupportLanguage = customSupportLanguage;
+    }
+
+    public String getLibreServerUrl() {
+        return libreServerUrl;
+    }
+
+    public void setLibreServerUrl(String libreServerUrl) {
+        this.libreServerUrl = libreServerUrl;
     }
 
 }

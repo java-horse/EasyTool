@@ -37,17 +37,9 @@ public class HttpUtil {
     private static final Logger log = Logger.getInstance(HttpUtil.class);
 
     private HttpUtil() {
-
     }
 
-    /**
-     * 设置连接超时时间，单位毫秒
-     */
     private static final int CONNECT_TIMEOUT = 10000;
-
-    /**
-     * 请求获取数据的超时时间(即响应时间)，单位毫秒
-     */
     private static final int SOCKET_TIMEOUT = 10000;
 
 

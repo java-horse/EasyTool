@@ -85,10 +85,9 @@ public class ConvertHandler implements TypedActionHandler {
         String enChar = EN_ZH_CHAR_MAP.get(cStr);
         if (lastChar == Constants.PREFIX_CHAR && enChar != null) {
             Document document = editor.getDocument();
-            Project project = editor.getProject();
             Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
             int caretOffset = primaryCaret.getOffset();
-            WriteCommandAction.runWriteCommandAction(project, () -> {
+            WriteCommandAction.runWriteCommandAction(editor.getProject(), () -> {
                 document.deleteString(caretOffset - 1, caretOffset);
                 document.insertString(caretOffset - 1, cStr);
                 primaryCaret.moveToOffset(caretOffset);

@@ -1,6 +1,9 @@
 package easy.util;
 
-import com.intellij.notification.*;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
+import com.intellij.notification.NotificationListener;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
 import easy.base.Constants;
 import easy.icons.EasyIcons;
@@ -74,9 +77,9 @@ public class NotificationUtil {
      * @date 2023/12/16 16:05
      */
     public static void notify(String title, String content, NotificationType type, AnAction... actions) {
-        NotificationGroupManager groupManager = NotificationGroupManager.getInstance();
-        NotificationGroup notificationGroup = groupManager.getNotificationGroup("easy.tool.notify.group");
-        Notification notification = notificationGroup.createNotification(title, content, type)
+        Notification notification = NotificationGroupManager.getInstance()
+                .getNotificationGroup("easy.tool.notify.group")
+                .createNotification(title, content, type)
                 .setDisplayId(Constants.PLUGIN_NAME)
                 .setIcon(EasyIcons.ICON.LOGO)
                 .setListener(NotificationListener.URL_OPENING_LISTENER);
