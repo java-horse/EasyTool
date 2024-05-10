@@ -355,7 +355,7 @@
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
-        <applicationService serviceImplementation="easy.config.api.ApiDocConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.api.YApiConfigComponent"/>
         <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
@@ -386,6 +386,8 @@
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.api.yapi" displayName="YApi"
+                                 instance="easy.settings.api.YApiSettingConfigurable"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
