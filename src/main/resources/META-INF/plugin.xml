@@ -379,6 +379,11 @@
             <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
                           instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
         </applicationConfigurable>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.apidoc" displayName="ApiDoc"
+                                 instance="easy.settings.api.ApiDocSettingConfigurable">
+            <configurable id="easy.tool.settings.apidoc.yapi" displayName="YApi"
+                          instance="easy.settings.api.YApiSettingConfigurable"/>
+        </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
@@ -386,8 +391,7 @@
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
-        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.api.yapi" displayName="YApi"
-                                 instance="easy.settings.api.YApiSettingConfigurable"/>
+
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 

@@ -76,7 +76,7 @@ public class YApiSettingView {
             if (new YApiTokenAddDialog().showAndGet()) {
                 // TODO 请求YApi获取项目信息
                 String projectId = "512" + RandomUtil.randomInt(5);
-                yApiConfig.getYapiTableMap().put(projectId, new YApiTableDTO(projectId, "自动开票" + projectId, "xxx"));
+                yApiConfig.getYapiTableMap().put(projectId, new YApiTableDTO(projectId, "自动开票" + projectId, "56dcea6baf09d79b419078db471a42cd1695ed2eecff2bd98605667364ad825e"));
                 refreshYapiTable();
             }
         });
