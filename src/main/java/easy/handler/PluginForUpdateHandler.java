@@ -16,7 +16,7 @@ import easy.ui.CommonNotifyDialog;
 import easy.util.EasyCommonUtil;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,7 +61,7 @@ public class PluginForUpdateHandler {
         String notes = pluginObject.get("notes").getAsString();
         // 比对版本信息
         if (StringUtils.equals(version, remoteVersion)) {
-            NotificationUtil.notify(String.format("🎉🎉🎉 %s 已是最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("👍 五星好评") {
+            NotifyUtil.notify(String.format("🎉🎉🎉 %s 已是最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("👍 五星好评") {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
                     EasyCommonUtil.confirmOpenLink(Constants.JETBRAINS_URL);
@@ -70,7 +70,7 @@ public class PluginForUpdateHandler {
             return;
         }
         // 发送插件最新版本通知
-        NotificationUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("😎 立即更新") {
+        NotifyUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion), new NotificationAction("😎 立即更新") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
                 ShowSettingsUtil.getInstance().showSettingsDialog(project, "Plugins");

@@ -11,7 +11,7 @@ import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
 import easy.form.SupportView;
 import easy.util.EasyCommonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -79,7 +79,7 @@ public class AppActiveListener implements ApplicationActivationListener {
                 new SupportView().show();
             }
         };
-        NotificationUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
+        NotifyUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
         PropertiesComponent.getInstance().setValue(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
     }
 

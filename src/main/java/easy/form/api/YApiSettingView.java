@@ -2,18 +2,21 @@ package easy.form.api;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.OnOffButton;
 import com.intellij.ui.table.JBTable;
-import easy.api.YApiTableDTO;
+import easy.api.model.yapi.YApiTableDTO;
+import easy.api.sdk.yapi.model.ApiProject;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.handler.ServiceHelper;
 import easy.icons.EasyIcons;
+import easy.util.NotifyUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +28,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 public class YApiSettingView {
@@ -73,14 +77,24 @@ public class YApiSettingView {
         // 设置带有工具栏的表格
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(yapiTable);
         toolbarDecorator.setAddAction(button -> {
-            if (new YApiTokenAddDialog().showAndGet()) {
-                // TODO 请求YApi获取项目信息
-                String projectId = "512" + RandomUtil.randomInt(5);
-                yApiConfig.getYapiTableMap().put(projectId, new YApiTableDTO(projectId, "自动开票" + projectId, "56dcea6baf09d79b419078db471a42cd1695ed2eecff2bd98605667364ad825e"));
+            if (StringUtils.isBlank(yapiServerUrlTextField.getText()) || !Boolean.TRUE.equals(yapiEnableButton.isSelected())) {
+                NotifyUtil.notify("请先配置YApi服务器地址和开启YApi开关", NotificationType.ERROR);
+                return;
+            }
+            YApiTokenAddDialog apiTokenAddDialog = new YApiTokenAddDialog(yapiServerUrlTextField.getText());
+            if (apiTokenAddDialog.showAndGet()) {
+                // 请求YApi获取项目信息
+                ApiProject apiProject = apiTokenAddDialog.getApiProject();
+                if (Objects.isNull(apiProject)) {
+                    NotifyUtil.notify("获取YApi项目信息异常, 请确认Token及服务器地址是否合法", NotificationType.ERROR);
+                    return;
+                }
+                String projectId = Integer.toString(apiProject.getId());
+                yApiConfig.getYapiTableMap().put(projectId, new YApiTableDTO(projectId, apiProject.getName(), apiProject.getToken()));
                 refreshYapiTable();
             }
         });
-        toolbarDecorator.setRemoveAction(anActionButton -> {
+        toolbarDecorator.setRemoveAction(button -> {
             yApiConfig.getYapiTableMap().remove(yapiTable.getValueAt(yapiTable.getSelectedRow(), 1).toString());
             refreshYapiTable();
         });

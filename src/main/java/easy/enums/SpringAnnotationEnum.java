@@ -11,6 +11,7 @@ package easy.enums;
 public enum SpringAnnotationEnum {
     REQUEST_PARAM_TEXT("org.springframework.web.bind.annotation.RequestParam", "query", "ParameterIn.QUERY"),
     REQUEST_HEADER_TEXT("org.springframework.web.bind.annotation.RequestHeader", "header", "ParameterIn.HEADER"),
+    REQUEST_ATTRIBUTE("org.springframework.web.bind.annotation.RequestAttribute", "", ""),
     COOKIE_VALUE("org.springframework.web.bind.annotation.CookieValue", "cookie", "ParameterIn.COOKIE"),
     PATH_VARIABLE_TEXT("org.springframework.web.bind.annotation.PathVariable", "path", "ParameterIn.PATH"),
     REQUEST_BODY_TEXT("org.springframework.web.bind.annotation.RequestBody", "body", ""),

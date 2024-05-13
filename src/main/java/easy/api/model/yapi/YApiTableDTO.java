@@ -1,4 +1,4 @@
-package easy.api;
+package easy.api.model.yapi;
 
 import java.io.Serial;
 import java.io.Serializable;

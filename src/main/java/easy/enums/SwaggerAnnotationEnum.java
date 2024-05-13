@@ -14,6 +14,7 @@ public enum SwaggerAnnotationEnum {
     API_IGNORE("ApiIgnore", "springfox.documentation.annotations.ApiIgnore"),
     API_MODEL("ApiModel", "io.swagger.annotations.ApiModel"),
     API_OPERATION("ApiOperation", "io.swagger.annotations.ApiOperation"),
+    API_PARAM("ApiParam", "io.swagger.annotations.ApiParam"),
     API_IMPLICIT_PARAM("ApiImplicitParam", "io.swagger.annotations.ApiImplicitParam"),
     API_IMPLICIT_PARAMS("ApiImplicitParams", "io.swagger.annotations.ApiImplicitParams"),
     API_MODEL_PROPERTY("ApiModelProperty", "io.swagger.annotations.ApiModelProperty"),

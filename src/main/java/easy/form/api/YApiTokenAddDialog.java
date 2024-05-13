@@ -4,18 +4,24 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
+import easy.api.sdk.yapi.YApiClient;
+import easy.api.sdk.yapi.model.ApiProject;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class YApiTokenAddDialog extends DialogWrapper {
 
+    private String apiServerUrl;
     private JTextField tokenTextField;
 
-    public YApiTokenAddDialog() {
+    public YApiTokenAddDialog(String apiServerUrl) {
         super(ProjectManagerEx.getInstance().getDefaultProject());
+        this.apiServerUrl = apiServerUrl;
         setTitle("请填写YApi项目Token");
         init();
     }
@@ -42,6 +48,25 @@ public class YApiTokenAddDialog extends DialogWrapper {
     @Override
     protected Action @NotNull [] createActions() {
         return new Action[]{getOKAction()};
+    }
+
+    /**
+     * 获取YApi项目信息
+     *
+     * @return {@link easy.api.sdk.yapi.model.ApiProject}
+     * @author mabin
+     * @date 2024/05/11 17:22
+     */
+    public ApiProject getApiProject() {
+        String token = tokenTextField.getText();
+        if (StringUtils.isAnyBlank(apiServerUrl, token)) {
+            return null;
+        }
+        ApiProject apiProject = new YApiClient(apiServerUrl, token).getProject();
+        if (Objects.nonNull(apiProject)) {
+            apiProject.setToken(token);
+        }
+        return apiProject;
     }
 
 }

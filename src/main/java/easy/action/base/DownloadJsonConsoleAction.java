@@ -15,7 +15,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import easy.util.BundleUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,10 +65,10 @@ public class DownloadJsonConsoleAction extends AnAction {
         Path filePath = Paths.get(prefixPath, fileName);
         try {
             Files.write(filePath, text.getBytes());
-            NotificationUtil.notify("file: " + prefixPath + FileUtil.FILE_SEPARATOR + fileName + " download success!");
+            NotifyUtil.notify("file: " + prefixPath + FileUtil.FILE_SEPARATOR + fileName + " download success!");
         } catch (Exception ex) {
             log.error("download file error!", ex);
-            NotificationUtil.notify("file download error: " + ex.getMessage(), NotificationType.ERROR);
+            NotifyUtil.notify("file download error: " + ex.getMessage(), NotificationType.ERROR);
         }
     }
 

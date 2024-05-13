@@ -1,6 +1,6 @@
 package easy.config.api;
 
-import easy.api.YApiTableDTO;
+import easy.api.model.yapi.YApiTableDTO;
 
 import java.util.Map;
 

@@ -15,7 +15,7 @@ import com.intellij.openapi.util.SystemInfo;
 import easy.util.EasyCommonUtil;
 import easy.util.HttpUtil;
 import easy.util.JsonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.ThreadUtils;
@@ -175,7 +175,7 @@ public abstract class AbstractGiteeErrorReportSubmitter extends AbstractErrorRep
                 EasyCommonUtil.confirmOpenLink(generateUrlByIssueId(issueId));
             }
         };
-        NotificationUtil.notify("Submitted success. Thank you for your feedback!", issueAction);
+        NotifyUtil.notify("Submitted success. Thank you for your feedback!", issueAction);
     }
 
 }

@@ -14,11 +14,10 @@ import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
-import easy.doc.generator.DocGenerator;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -153,7 +152,7 @@ public class ClassDocGeneratorImpl extends AbstractDocGenerator {
         try {
             return DateUtil.format(new Date(), javaDocConfig.getDateFormat());
         } catch (Exception e) {
-            NotificationUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
+            NotifyUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
             return DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
         }
     }

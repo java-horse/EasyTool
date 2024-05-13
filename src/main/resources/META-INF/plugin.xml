@@ -9,6 +9,7 @@
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support generating Swagger2.x、Swagger3.x related annotations based on Javadoc</li>
+        <li>Support one-click import of YApi interface documents, including the YApi project UI configuration page, and is compatible with import of various granularity ranges</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
@@ -21,6 +22,7 @@
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x、Swagger3.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
+        <li>支持一键导入YApi接口文档, 包括YApi项目UI配置页面, 兼容各颗粒度范围导入(文件、类、接口)</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
@@ -79,9 +81,9 @@
         <![CDATA[
       <h3>v2.0.9</h3>
       <ul>
-        <li>xxx</li>
+        <li>Added one-click import of YApi interface documents</li>
         <li>-------------------------------</li>
-        <li>xxx</li>
+        <li>【新增】新增一键导入YApi接口文档功能</li>
       </ul>
       <h3>v2.0.8</h3>
       <ul>
@@ -511,7 +513,10 @@
             <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
-
+        <!--ApiDoc生成-->
+        <group id="EasyToolApiDocDynamicActions" class="easy.action.api.ApiDocDynamicActionGroup"
+               text="ApiDoc" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.JAVA" popup="true" compact="true"/>
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
@@ -520,6 +525,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolJavaDocAction"/>
+            <reference ref="EasyToolApiDocDynamicActions"/>
             <reference ref="EasyToolSwaggerDynamicActions"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>
             <reference ref="EasyToolCamelCaseAction"/>
