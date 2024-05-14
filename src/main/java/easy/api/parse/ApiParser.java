@@ -62,12 +62,11 @@ public class ApiParser {
             return data;
         }
         ClassLevelApiInfo classLevelApiInfo = doParseClassLevelApiInfo(psiClass);
+        data.setDeclaredCategory(classLevelApiInfo.getDeclareCategory());
         List<PsiMethod> methods = filterMethodsToParse(psiClass);
         List<MethodApiData> methodApiDataList = methods.stream()
                 .map(method -> doParseMethod(method, classLevelApiInfo))
                 .collect(Collectors.toList());
-
-        data.setDeclaredCategory(classLevelApiInfo.getDeclareCategory());
         data.setMethodDataList(methodApiDataList);
         return data;
     }

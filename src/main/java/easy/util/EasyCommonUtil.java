@@ -10,6 +10,10 @@ import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.JavaSdk;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.projectRoots.impl.JavaSdkImpl;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
@@ -156,6 +160,23 @@ public class EasyCommonUtil {
         }
         Long year = diffTime / ONE_YEAR;
         return year + " years ago";
+    }
+
+    /**
+     * 获取项目jdk版本
+     *
+     * @param project 项目
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/05/14 10:22
+     */
+    public static String getProjectJdkVersion(Project project) {
+        ProjectRootManager rootManager = ProjectRootManager.getInstance(project);
+        Sdk sdk = rootManager.getProjectSdk();
+        if (Objects.isNull(sdk) || StringUtils.isBlank(sdk.getHomePath()) || !JavaSdk.getInstance().isValidSdkHome(sdk.getHomePath())) {
+            return null;
+        }
+        return JavaSdkImpl.getInstance().getVersionString(sdk.getHomePath());
     }
 
 }

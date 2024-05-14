@@ -3,13 +3,19 @@ package easy.api.parse.model;
 import com.google.common.collect.Lists;
 import easy.api.model.common.Api;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * 接口解析结果
  */
-public class ClassApiData {
+public class ClassApiData implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7227722693519160528L;
+
 
     /**
      * 有效的类

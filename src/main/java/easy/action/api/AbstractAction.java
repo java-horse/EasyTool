@@ -130,12 +130,12 @@ public abstract class AbstractAction extends AnAction {
             if (!controllerData.isValid()) {
                 continue;
             }
-            if (config.isStrict() && StringUtils.isEmpty(controllerData.getDeclaredCategory())) {
+            if (config.isStrict() && StringUtils.isBlank(controllerData.getDeclaredCategory())) {
                 continue;
             }
             List<Api> controllerApis = controllerData.getApis();
             if (config.isStrict()) {
-                controllerApis = controllerApis.stream().filter(o -> StringUtils.isNotEmpty(o.getSummary())).toList();
+                controllerApis = controllerApis.stream().filter(o -> StringUtils.isNotBlank(o.getSummary())).toList();
             }
             apis.addAll(controllerApis);
         }
