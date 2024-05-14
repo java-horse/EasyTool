@@ -7,6 +7,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.PsiShortNamesCache;
 import easy.enums.SpringAnnotationEnum;
 import org.apache.commons.lang3.StringUtils;
 
@@ -237,8 +239,43 @@ public class PsiElementUtil {
         return psiClassList;
     }
 
-
-
+    /**
+     * 添加导入宝依赖
+     *
+     * @param project   项目
+     * @param psiFile   psi文件
+     * @param className 类名
+     * @author mabin
+     * @date 2024/05/14 10:37
+     */
+    public static void addImport(Project project, PsiFile psiFile, String className) {
+        if (!(psiFile instanceof PsiJavaFile javaFile)) {
+            return;
+        }
+        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
+        if (Objects.isNull(elementFactory)) {
+            return;
+        }
+        PsiImportList importList = javaFile.getImportList();
+        if (Objects.isNull(importList)) {
+            return;
+        }
+        PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));
+        if (psiClasses.length != 1) {
+            return;
+        }
+        PsiClass waiteImportClass = psiClasses[0];
+        for (PsiImportStatementBase is : importList.getAllImportStatements()) {
+            PsiJavaCodeReferenceElement importReference = is.getImportReference();
+            if (Objects.isNull(importReference)) {
+                continue;
+            }
+            if (StringUtils.equals(waiteImportClass.getQualifiedName(), importReference.getQualifiedName())) {
+                return;
+            }
+        }
+        importList.add(elementFactory.createImportStatement(waiteImportClass));
+    }
 
 
     /**
