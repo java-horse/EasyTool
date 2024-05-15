@@ -43,7 +43,7 @@ public class YapiUploader {
                 // 循环多级菜单，判断是否存在，如果不存在就创建
                 //  解决多级菜单创建问题
                 Integer parent_id = -1;
-                Integer now_id = null;
+                Integer now_id;
                 for (int i = 0; i < menus.length; i++) {
                     if (Strings.isNullOrEmpty(menus[i])) {
                         continue;
@@ -81,13 +81,18 @@ public class YapiUploader {
      */
     private void addOrUpdate(ApiInterface api) {
         ApiInterface originApi = findInterface(api);
-        if (originApi != null) {
+        if (Objects.nonNull(originApi)) {
             api.setId(originApi.getId());
             if (!YapiInterfaceModifyJudge.isModify(originApi, api)) {
                 return;
             }
         }
+        // 新增接口之后未返回id, 此处重新遍历查询接口id
         client.saveApiInterface(api);
+        ApiInterface currentApi = findInterface(api);
+        if (Objects.nonNull(currentApi)) {
+            api.setId(currentApi.getId());
+        }
     }
 
     private ApiInterface findInterface(ApiInterface apiInterface) {

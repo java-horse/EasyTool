@@ -13,6 +13,7 @@ import easy.api.model.yapi.YApiTableDTO;
 import easy.api.sdk.yapi.model.ApiProject;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
+import easy.enums.ApiDocTypeEnum;
 import easy.handler.ServiceHelper;
 import easy.icons.EasyIcons;
 import easy.util.NotifyUtil;
@@ -25,6 +26,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
@@ -50,6 +53,14 @@ public class YApiSettingView {
 
     public YApiSettingView() {
         yapiIconLabel.setIcon(EasyIcons.ICON.YAPI);
+        yapiEnableButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.DESELECTED) {
+                    NotifyUtil.notify(String.format("请注意: %s文档同步服务将不可用", ApiDocTypeEnum.YAPI.getTitle()), NotificationType.WARNING);
+                }
+            }
+        });
     }
 
     private void createUIComponents() {
@@ -226,6 +237,8 @@ public class YApiSettingView {
         column.setPreferredWidth(columnWidth + 30);
         column.setMaxWidth(columnWidth + 30);
         column.setMinWidth(columnWidth);
+        TableColumn oneColumn = yapiTable.getColumnModel().getColumn(1);
+        oneColumn.setPreferredWidth(Convert.toInt(yapiTable.getWidth() * 0.1));
     }
 
     public void reset() {

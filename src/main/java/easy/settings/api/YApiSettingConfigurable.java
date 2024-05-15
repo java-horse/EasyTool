@@ -3,10 +3,13 @@ package easy.settings.api;
 import cn.hutool.core.map.MapUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import easy.base.Constants;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
+import easy.enums.ApiDocTypeEnum;
 import easy.form.api.YApiSettingView;
 import easy.handler.ServiceHelper;
+import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +26,7 @@ public class YApiSettingConfigurable implements Configurable {
     @Nls(capitalization = Nls.Capitalization.Title)
     @Override
     public String getDisplayName() {
-        return "YApi";
+        return ApiDocTypeEnum.YAPI.getTitle();
     }
 
     @Override
@@ -50,6 +53,9 @@ public class YApiSettingConfigurable implements Configurable {
         if (MapUtil.isEmpty(yApiConfig.getYapiTableMap())) {
             yApiConfig.setYapiTableMap(new TreeMap<>());
         }
+        ValidatorUtil.isTrue(StringUtils.startsWithAny(yApiConfig.getApiServerUrl(), Constants.HTTPS, Constants.HTTPS),
+                String.format("【%s】必须以%s或%s开头", yApiSettingView.getYapiServerUrlLabel().getText(), Constants.HTTPS, Constants.HTTP),
+                Constants.PLUGIN_NAME);
     }
 
 }

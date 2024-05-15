@@ -196,7 +196,7 @@ public abstract class AbstractAction extends AnAction {
                         });
                         futures.add(future);
                     }
-                    urls = waitFuturesSilence(futures).stream().filter(Objects::nonNull).collect(Collectors.toList());
+                    urls = waitFuturesSilence(futures).stream().filter(Objects::nonNull).toList();
                 } catch (InterruptedException e) {
                     // ignore
                 } finally {

@@ -101,12 +101,10 @@ public class YApiService {
         }
         apiInterface.setToken(token);
         String paramJson = JsonUtil.toJson(apiInterface);
-        System.out.println("paramJson=" + paramJson);
         String response = HttpUtil.doPost(url + "/api/interface/save", paramJson);
         if (StringUtils.isBlank(response)) {
             return Response.fail();
         }
-        System.out.println("response=" + response);
         return JsonUtil.fromJson(response, new TypeToken<Response<List<CreateInterfaceResponseItem>>>() {
         }.getType());
     }

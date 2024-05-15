@@ -518,7 +518,7 @@
         <!--ApiDoc生成-->
         <group id="EasyToolApiDocDynamicActions" class="easy.action.api.ApiDocDynamicActionGroup"
                text="ApiDoc" description="EasyTool development assistance tools"
-               icon="easy.icons.EasyIcons.ICON.JAVA" popup="true" compact="true"/>
+               icon="easy.icons.EasyIcons.ICON.API" popup="true" compact="true"/>
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
