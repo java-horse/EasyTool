@@ -3,6 +3,7 @@ package easy.util;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,6 @@ import java.util.Map;
 public class JsonUtil {
 
     private static final Gson GSON = new GsonBuilder()
-            .serializeNulls()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
 
@@ -48,6 +48,13 @@ public class JsonUtil {
             return null;
         }
         return GSON.fromJson(json, clazz);
+    }
+
+    public static <T> T fromJson(String json, Type type) {
+        if (json == null) {
+            return null;
+        }
+        return GSON.fromJson(json, type);
     }
 
     public static <T> Map<String, T> fromMap(String json) {

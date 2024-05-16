@@ -18,7 +18,7 @@ import easy.translate.model.WenXinModelTranslate;
 import easy.translate.translate.*;
 import easy.util.EasyCommonUtil;
 import easy.util.LanguageUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -132,7 +132,7 @@ public class TranslateService {
                 long lastNoticeTime = propertiesComponent.getLong(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -8).getTime());
                 long currentTimeMillis = System.currentTimeMillis();
                 if (currentTimeMillis - lastNoticeTime > INTERVAL) {
-                    NotificationUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
+                    NotifyUtil.notify("已为您自动切换免费翻译引擎【" + translateChannel + "】，请及时配置当前翻译引擎【" + initTranslateChannel + "】密钥",
                             NotificationType.WARNING, EasyCommonUtil.getPluginSettingAction());
                     propertiesComponent.setValue(Constants.Persistence.COMMON.TRANSLATE_CONFIG_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
                 }

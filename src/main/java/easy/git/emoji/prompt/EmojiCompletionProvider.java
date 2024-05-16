@@ -49,7 +49,6 @@ public class EmojiCompletionProvider extends CompletionProvider<CompletionParame
             return;
         }
         for (GitEmojiData emojiData : emojiDataList) {
-            // todo 新增 entry 属性，以及搜索的时候要将 desc 的中英文都包含在内
             LookupElementBuilder lookupElementBuilder = LookupElementBuilder.create(emojiData.getCode() + StringUtils.SPACE + emojiData.getDescription()
                             + StringUtils.SPACE + emojiData.getEmoji())
                     .withIcon(emojiData.getIcon())

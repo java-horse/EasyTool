@@ -147,6 +147,29 @@ public class Constants {
         String DATA_TYPE_CLASS = "dataTypeClass";
         String ALLOW_MULTIPLE = "allowMultiple";
         String REQUIRED_MODE = "requiredMode";
+        String DEFAULT_VALUE = "defaultValue";
+    }
+
+    /**
+     * JavaDoc文档标签
+     *
+     * @author mabin
+     * @project EasyTool
+     * @package easy.base.Constants
+     * @date 2024/05/13 11:03
+     */
+    public interface DOC_TAG {
+        String CATEGORY = "menu";
+        String MODULE = "module";
+        String DESCRIPTION = "description";
+        String DESCRIPTION_UP = "Description";
+        String DEPRECATED = "deprecated";
+        String PARAM = "param";
+        String MOCK = "mock";
+        String IGNORE = "ignore";
+        String SEE = "see";
+        String LINK = "link";
+        String TAGS = "tags";
     }
 
 }

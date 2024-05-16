@@ -19,7 +19,7 @@ import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import easy.util.VcsUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -255,7 +255,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
         try {
             return DateUtil.format(new Date(), javaDocConfig.getDateFormat());
         } catch (Exception e) {
-            NotificationUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
+            NotifyUtil.notify("您配置的日期格式【" + javaDocConfig.getDateFormat() + "】错误, 请及时修改!", NotificationType.ERROR, EasyCommonUtil.getPluginSettingAction());
             return DateUtil.format(new Date(), Constants.JAVA_DOC.DEFAULT_DATE_FORMAT);
         }
     }

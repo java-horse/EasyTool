@@ -16,6 +16,7 @@ import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -196,11 +197,11 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         if (Boolean.TRUE.equals(BaseTypeEnum.isBaseType(psiType.getCanonicalText()))) {
             return psiType.getCanonicalText();
         }
-        if (StringUtils.equalsAny(psiType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), ExtraPackageNameEnum.FILE.getName())) {
+        if (StringUtils.equalsAny(psiType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), File.class.getName())) {
             return "file";
         }
         for (PsiType superType : psiType.getSuperTypes()) {
-            if (StringUtils.equalsAny(superType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), ExtraPackageNameEnum.FILE.getName())) {
+            if (StringUtils.equalsAny(superType.getCanonicalText(), ExtraPackageNameEnum.MULTIPART_FILE.getName(), File.class.getName())) {
                 return "file";
             }
         }
@@ -435,7 +436,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
             return false;
         }
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
-            if (StringUtils.equals(psiAnnotation.getQualifiedName(), ExtraPackageNameEnum.DEPRECATED.getName())) {
+            if (StringUtils.equals(psiAnnotation.getQualifiedName(), Deprecated.class.getName())) {
                 return true;
             }
         }

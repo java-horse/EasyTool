@@ -18,9 +18,9 @@ import java.util.Arrays;
  * @project EasyChar
  * @date 2023/09/01 14:28
  **/
-public class NotificationUtil {
+public class NotifyUtil {
 
-    private NotificationUtil() {
+    private NotifyUtil() {
     }
 
 

@@ -9,7 +9,6 @@ import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
-import easy.base.Constants;
 import easy.enums.RequestAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
@@ -142,7 +141,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
         for (int i = 0; i < attributesList.getModel().getSize(); i++) {
             AttributeItem item = attributesList.getModel().getElementAt(i);
             if (item.isSelected()) {
-                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getName(), swaggerServiceEnum);
+                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
                 swaggerGenerateService.doGenerate();
             }
         }
@@ -167,7 +166,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
         }
         String className = PsiElementUtil.getPsiElementNameIdentifierText(psiClass);
         attributeItemList.add(new AttributeItem(className + (StringUtils.isNotBlank(psiClass.getQualifiedName())
-                ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
+                ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY), className, AllIcons.Nodes.Class, false));
         if (PsiElementUtil.isController(psiClass)) {
             for (PsiMethod psiMethod : psiClass.getMethods()) {
                 for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
@@ -178,21 +177,26 @@ public class SwaggerSelectDialog extends DialogWrapper {
                     for (PsiParameter psiParameter : psiMethod.getParameterList().getParameters()) {
                         paramList.add(psiParameter.getName() + ":" + StringUtils.split(psiParameter.getType().toString(), ":")[1]);
                     }
-                    attributeItemList.add(new AttributeItem(className + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiMethod) + "(" + StringUtils.trim(String.join(", ", paramList)) + ")", AllIcons.Nodes.Method, false));
+                    String psiMethodName = PsiElementUtil.getPsiElementNameIdentifierText(psiMethod);
+                    attributeItemList.add(new AttributeItem(className + StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")",
+                            psiMethodName, AllIcons.Nodes.Method, false));
                 }
             }
         } else {
             for (PsiField psiField : psiClass.getFields()) {
-                attributeItemList.add(new AttributeItem(className + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
+                String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
+                attributeItemList.add(new AttributeItem(className + StrUtil.DOT + psiFieldName, psiFieldName, AllIcons.Nodes.Field, false));
             }
             PsiClass[] innerClasses = psiClass.getInnerClasses();
             if (ArrayUtils.isNotEmpty(innerClasses)) {
                 for (PsiClass innerClass : innerClasses) {
                     String innerClassName = PsiElementUtil.getPsiElementNameIdentifierText(innerClass);
                     attributeItemList.add(new AttributeItem(innerClassName + (StringUtils.isNotBlank(innerClass.getQualifiedName())
-                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), AllIcons.Nodes.Class, false));
+                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), innerClassName, AllIcons.Nodes.Class, false));
                     for (PsiField psiField : innerClass.getFields()) {
-                        attributeItemList.add(new AttributeItem(innerClassName + StrUtil.DOT + PsiElementUtil.getPsiElementNameIdentifierText(psiField), AllIcons.Nodes.Field, false));
+                        String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
+                        attributeItemList.add(new AttributeItem(innerClassName + StrUtil.DOT + psiFieldName,
+                                psiFieldName, AllIcons.Nodes.Field, false));
                     }
                 }
             }
@@ -201,7 +205,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
     }
 
     /**
-     * 被选中Swagger版本名称
+     * 识别并自动选中Swagger版本名称
      *
      * @param psiClass psi级
      * @return {@link java.lang.String}
@@ -243,11 +247,13 @@ public class SwaggerSelectDialog extends DialogWrapper {
      */
     private static class AttributeItem {
         private String name;
+        private String realName;
         private Icon icon;
         private boolean selected;
 
-        public AttributeItem(String name, Icon icon, boolean selected) {
+        public AttributeItem(String name, String realName, Icon icon, boolean selected) {
             this.name = name;
+            this.realName = realName;
             this.icon = icon;
             this.selected = selected;
         }
@@ -274,6 +280,14 @@ public class SwaggerSelectDialog extends DialogWrapper {
 
         public void setSelected(boolean selected) {
             this.selected = selected;
+        }
+
+        public String getRealName() {
+            return realName;
+        }
+
+        public void setRealName(String realName) {
+            this.realName = realName;
         }
     }
 

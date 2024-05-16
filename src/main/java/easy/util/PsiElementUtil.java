@@ -1,11 +1,18 @@
 package easy.util;
 
 import cn.hutool.core.map.MapUtil;
+import com.google.common.collect.Lists;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
+import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.PsiShortNamesCache;
 import easy.enums.SpringAnnotationEnum;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -183,6 +190,93 @@ public class PsiElementUtil {
         }
         return paramMap;
     }
+
+
+    /**
+     * 获取Java文件
+     *
+     * @param project  项目
+     * @param psiFiles psi文件
+     * @return {@link java.util.List<com.intellij.psi.PsiJavaFile>}
+     * @author mabin
+     * @date 2024/05/11 14:12
+     */
+    public static List<PsiJavaFile> getPsiJavaFiles(Project project, VirtualFile[] psiFiles) {
+        List<PsiJavaFile> files = Lists.newArrayListWithExpectedSize(psiFiles.length);
+        PsiManager psiManager = PsiManager.getInstance(project);
+        for (VirtualFile f : psiFiles) {
+            if (f.isDirectory()) {
+                VirtualFile[] children = f.getChildren();
+                List<PsiJavaFile> theFiles = getPsiJavaFiles(project, children);
+                files.addAll(theFiles);
+                continue;
+            }
+            PsiFile file = psiManager.findFile(f);
+            if (file instanceof PsiJavaFileImpl) {
+                files.add((PsiJavaFileImpl) file);
+            }
+        }
+        return files;
+    }
+
+    /**
+     * 获取PsiClass
+     *
+     * @param psiJavaFiles psi java文件
+     * @return {@link List< PsiClass>}
+     * @author mabin
+     * @date 2024/05/11 14:12
+     */
+    public static List<PsiClass> getPsiClassByFile(List<PsiJavaFile> psiJavaFiles) {
+        List<PsiClass> psiClassList = Lists.newArrayListWithCapacity(psiJavaFiles.size());
+        for (PsiJavaFile psiJavaFile : psiJavaFiles) {
+            Arrays.stream(psiJavaFile.getClasses())
+                    .filter(o -> !o.isInterface()
+                            && o.getModifierList() != null
+                            && o.getModifierList().hasModifierProperty(PsiModifier.PUBLIC))
+                    .findFirst().ifPresent(psiClassList::add);
+        }
+        return psiClassList;
+    }
+
+    /**
+     * 添加导入宝依赖
+     *
+     * @param project   项目
+     * @param psiFile   psi文件
+     * @param className 类名
+     * @author mabin
+     * @date 2024/05/14 10:37
+     */
+    public static void addImport(Project project, PsiFile psiFile, String className) {
+        if (!(psiFile instanceof PsiJavaFile javaFile)) {
+            return;
+        }
+        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
+        if (Objects.isNull(elementFactory)) {
+            return;
+        }
+        PsiImportList importList = javaFile.getImportList();
+        if (Objects.isNull(importList)) {
+            return;
+        }
+        PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));
+        if (psiClasses.length != 1) {
+            return;
+        }
+        PsiClass waiteImportClass = psiClasses[0];
+        for (PsiImportStatementBase is : importList.getAllImportStatements()) {
+            PsiJavaCodeReferenceElement importReference = is.getImportReference();
+            if (Objects.isNull(importReference)) {
+                continue;
+            }
+            if (StringUtils.equals(waiteImportClass.getQualifiedName(), importReference.getQualifiedName())) {
+                return;
+            }
+        }
+        importList.add(elementFactory.createImportStatement(waiteImportClass));
+    }
+
 
     /**
      * 清洗特殊字符

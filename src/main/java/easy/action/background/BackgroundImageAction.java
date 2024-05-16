@@ -11,7 +11,7 @@ import easy.background.RandomBackgroundTask;
 import easy.base.Constants;
 import easy.enums.BackgroundImageActionEnum;
 import easy.util.EasyCommonUtil;
-import easy.util.NotificationUtil;
+import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +38,7 @@ public class BackgroundImageAction extends AnAction {
         // 背景图片文件夹是否定义
         String folder = propertiesComponent.getValue(Constants.Persistence.BACKGROUND_IMAGE.FOLDER);
         if (StringUtils.isBlank(folder)) {
-            NotificationUtil.notify("Background image folder not set", EasyCommonUtil.getPluginSettingAction());
+            NotifyUtil.notify("Background image folder not set", EasyCommonUtil.getPluginSettingAction());
             return;
         }
         String actionText = e.getPresentation().getText();

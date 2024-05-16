@@ -9,6 +9,7 @@
       <ul>
         <li>Support automatic conversion of Chinese characters to English characters</li>
         <li>Support generating Swagger2.x、Swagger3.x related annotations based on Javadoc</li>
+        <li>Support one-click import of YApi interface documents, including the YApi project UI configuration page, and is compatible with import of various granularity ranges</li>
         <li>Support mutual translation between Chinese and English, and supports setting up multiple translation engines</li>
         <li>Support snakeCase format to camelCase format</li>
         <li>Support right-click shortcut network search</li>
@@ -21,6 +22,7 @@
       <ul>
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x、Swagger3.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
+        <li>支持一键导入YApi接口文档, 包括YApi项目UI配置页面, 兼容各颗粒度范围导入(文件、类、接口)</li>
         <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
         <ul>
             <li>--<em>百度翻译</em></li>
@@ -77,6 +79,16 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.0.9</h3>
+      <ul>
+        <li>Added one-click import of YApi interface documents</li>
+        <li>Support one-click generation of standard serialVersionUID values based on JDK version</li>
+        <li>Fix the problem that the pop-up window is SwaggerView and the automatically generated annotation does not take effect</li>
+        <li>-------------------------------</li>
+        <li>【新增】新增一键导入YApi接口文档功能</li>
+        <li>【优化】支持根据JDK版本一键生成规范的serialVersionUID值</li>
+        <li>【修复】修复 SwaggerView 弹窗，自动生成注解不生效问题</li>
+      </ul>
       <h3>v2.0.8</h3>
       <ul>
         <li>Optimize the SwaggerView pop-up window display and add the class names of attributes and methods in front of each other to avoid the problem that it is not easy to distinguish the same names of internal class attributes and overloaded methods</li>
@@ -349,7 +361,7 @@
         <applicationService serviceImplementation="easy.config.common.CommonConfigComponent"/>
         <applicationService serviceImplementation="easy.config.emoji.GitEmojiConfigComponent"/>
         <applicationService serviceImplementation="easy.config.doc.JavaDocConfigComponent"/>
-        <applicationService serviceImplementation="easy.config.api.ApiDocConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.api.YApiConfigComponent"/>
         <applicationService serviceImplementation="easy.translate.TranslateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
@@ -373,6 +385,11 @@
             <configurable id="easy.tool.settings.javadoc.field.template" displayName="FieldDoc"
                           instance="easy.settings.doc.template.JavaDocFieldSettingsConfigurable"/>
         </applicationConfigurable>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.apidoc" displayName="ApiDoc"
+                                 instance="easy.settings.api.ApiDocSettingConfigurable">
+            <configurable id="easy.tool.settings.apidoc.yapi" displayName="YApi"
+                          instance="easy.settings.api.YApiSettingConfigurable"/>
+        </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
@@ -380,6 +397,7 @@
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
+
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
@@ -499,7 +517,10 @@
             <group id="EasyToolToolSubGroup"/>
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
-
+        <!--ApiDoc生成-->
+        <group id="EasyToolApiDocDynamicActions" class="easy.action.api.ApiDocDynamicActionGroup"
+               text="ApiDoc" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.API" popup="true" compact="true"/>
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
@@ -508,6 +529,7 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolJavaDocAction"/>
+            <reference ref="EasyToolApiDocDynamicActions"/>
             <reference ref="EasyToolSwaggerDynamicActions"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>
             <reference ref="EasyToolCamelCaseAction"/>
