@@ -7,7 +7,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTypesUtil;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.config.BeanCustom;
 import easy.api.model.common.DataTypes;
 import easy.api.model.common.Property;
@@ -30,14 +30,14 @@ public class KernelParser {
 
     private final Project project;
     private final Module module;
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
     private final MockParser mockParser;
     private final DataTypeParser dataTypeParser;
     private final DateParser dateParser;
     private final ParseHelper parseHelper;
     private final boolean isResponse;
 
-    public KernelParser(Project project, Module module, ApidocxConfig settings, boolean isResponse) {
+    public KernelParser(Project project, Module module, ApiDocConfig settings, boolean isResponse) {
         this.project = project;
         this.module = module;
         this.settings = settings;

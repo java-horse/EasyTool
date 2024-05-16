@@ -7,7 +7,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiTypesUtil;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.model.common.Property;
 import easy.api.parse.util.PsiGenericUtils;
 import easy.api.parse.util.PsiTypeUtils;
@@ -26,11 +26,11 @@ public class ResponseParser {
 
     private final Project project;
     private final Module module;
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
     private final KernelParser kernelParser;
     private final ParseHelper parseHelper;
 
-    public ResponseParser(Project project, Module module, ApidocxConfig settings) {
+    public ResponseParser(Project project, Module module, ApiDocConfig settings) {
         this.project = project;
         this.module = module;
         this.settings = settings;

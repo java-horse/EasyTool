@@ -18,7 +18,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.model.common.Api;
 import easy.api.parse.ApiParser;
 import easy.api.parse.model.ClassApiData;
@@ -37,7 +37,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -50,7 +49,7 @@ public abstract class AbstractAction extends AnAction {
         if (!data.shouldHandle()) {
             return;
         }
-        StepResult<ApidocxConfig> configResult = resolveConfig();
+        StepResult<ApiDocConfig> configResult = resolveConfig();
         if (!configResult.isContinue()) {
             return;
         }
@@ -90,7 +89,7 @@ public abstract class AbstractAction extends AnAction {
     /**
      * 解析文档模型数据
      */
-    private StepResult<List<Api>> parse(EventData data, ApidocxConfig config) {
+    private StepResult<List<Api>> parse(EventData data, ApiDocConfig config) {
         ApiParser parser = new ApiParser(data.project, data.module, config);
         // 选中方法
         if (Objects.nonNull(data.selectedMethod)) {
@@ -145,12 +144,12 @@ public abstract class AbstractAction extends AnAction {
     /**
      * 获取内部配置
      *
-     * @return {@link easy.action.api.AbstractAction.StepResult<easy.api.config.ApidocxConfig>}
+     * @return {@link easy.action.api.AbstractAction.StepResult< ApiDocConfig >}
      * @author mabin
      * @date 2024/05/11 16:00
      */
-    private StepResult<ApidocxConfig> resolveConfig() {
-        ApidocxConfig config = ApidocxConfig.fromProperties(PropertiesUtil.getProperties(ApiDocConstants.CONFIG_FILE.ROOT_CONFIG));
+    private StepResult<ApiDocConfig> resolveConfig() {
+        ApiDocConfig config = ApiDocConfig.fromProperties(PropertiesUtil.getProperties(ApiDocConstants.CONFIG_FILE.ROOT_CONFIG));
         return StepResult.ok(config);
     }
 

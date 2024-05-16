@@ -69,7 +69,7 @@ public class PsiAnnotationUtils {
      * 获取指定元素注解的value属性值
      */
     public static String getStringAttributeValue(PsiModifierListOwner element, String fqn) {
-        return getStringAttributeValue(element, fqn, "value");
+        return getStringAttributeValue(element, fqn, Constants.ANNOTATION_ATTR.VALUE);
     }
 
     /**
@@ -144,8 +144,7 @@ public class PsiAnnotationUtils {
             }
         }
 
-        if (memberValue instanceof PsiClassObjectAccessExpression) {
-            PsiClassObjectAccessExpression expression = (PsiClassObjectAccessExpression) memberValue;
+        if (memberValue instanceof PsiClassObjectAccessExpression expression) {
             PsiTypeElement typeElement = expression.getOperand();
             return typeElement.getType().getCanonicalText();
         }

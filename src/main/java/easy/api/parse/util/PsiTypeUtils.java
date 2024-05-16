@@ -7,6 +7,7 @@ import com.intellij.psi.impl.source.PsiClassReferenceType;
 import com.intellij.psi.util.PsiTypesUtil;
 import easy.api.model.common.DataTypes;
 import easy.api.parse.parser.DataTypeParser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class PsiTypeUtils {
      * 是否为空类型
      */
     public static boolean isVoid(String name) {
-        return Objects.equals(name, "void") || Objects.equals(name, "java.lang.Void");
+        return StringUtils.equalsIgnoreCase(name, Void.class.getSimpleName()) || Objects.equals(name, Void.class.getName());
     }
 
     /**
@@ -85,8 +86,7 @@ public class PsiTypeUtils {
         } else if (isArray(type)) {
             PsiArrayType arrayType = (PsiArrayType) type;
             enumType = arrayType.getComponentType();
-        } else if (type instanceof PsiClassReferenceType && isCollection(type, project, module)) {
-            PsiClassReferenceType type1 = (PsiClassReferenceType) type;
+        } else if (type instanceof PsiClassReferenceType type1 && isCollection(type, project, module)) {
             enumType = type1.getParameters().length > 0 ? type1.getParameters()[0] : null;
         }
         if (enumType == null) {

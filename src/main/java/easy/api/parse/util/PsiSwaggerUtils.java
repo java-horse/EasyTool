@@ -63,7 +63,7 @@ public class PsiSwaggerUtils {
         }
         PsiAnnotation schema = PsiAnnotationUtils.getAnnotation(psiField, SwaggerAnnotationEnum.SCHEMA.getClassPackage());
         if (schema != null) {
-            return PsiAnnotationUtils.getStringAttributeValueByAnnotation(schema, "description");
+            return PsiAnnotationUtils.getStringAttributeValueByAnnotation(schema, Constants.ANNOTATION_ATTR.DESCRIPTION);
         }
         return null;
     }
@@ -71,7 +71,7 @@ public class PsiSwaggerUtils {
     public static boolean isFieldIgnore(PsiField psiField) {
         PsiAnnotation apiModelProperty = PsiAnnotationUtils.getAnnotation(psiField, SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage());
         if (apiModelProperty != null) {
-            Boolean hidden = AnnotationUtil.getBooleanAttributeValue(apiModelProperty, "hidden");
+            Boolean hidden = AnnotationUtil.getBooleanAttributeValue(apiModelProperty, Constants.ANNOTATION_ATTR.HIDDEN);
             return Boolean.TRUE.equals(hidden);
         }
         return false;

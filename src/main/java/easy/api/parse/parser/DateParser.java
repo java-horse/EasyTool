@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.model.common.DataTypes;
 import easy.api.model.common.Property;
 import easy.api.parse.util.PsiAnnotationUtils;
@@ -18,9 +18,9 @@ import java.util.Set;
  */
 public class DateParser {
 
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
 
-    public DateParser(ApidocxConfig settings) {
+    public DateParser(ApiDocConfig settings) {
         this.settings = settings;
     }
 

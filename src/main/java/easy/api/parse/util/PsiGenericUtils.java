@@ -29,7 +29,7 @@ public class PsiGenericUtils {
         PsiTypeParameter[] parameters = clazz.getTypeParameters();
         for (int i = 0; i < parameters.length; i++) {
             String key = parameters[i].getText().split("\\s")[0];
-            String value = (i < generics.length) ? generics[i].trim() : "java.lang.Object";
+            String value = (i < generics.length) ? generics[i].trim() : Object.class.getName();
             genericMap.put(key, value);
         }
 
@@ -124,7 +124,7 @@ public class PsiGenericUtils {
                 inGeneric = false;
             }
         }
-        if (sb.length() > 0) {
+        if (!sb.isEmpty()) {
             list.add(sb.toString());
         }
         String[] array = new String[list.size()];

@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.searches.SuperMethodsSearch;
 import com.intellij.psi.util.MethodSignatureBackedByPsiMethod;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.model.common.Api;
 import easy.api.parse.model.*;
 import easy.api.parse.parser.ParseHelper;
@@ -38,9 +38,9 @@ public class ApiParser {
     private final ParseHelper parseHelper;
     private final Project project;
     private final Module module;
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
 
-    public ApiParser(Project project, Module module, ApidocxConfig settings) {
+    public ApiParser(Project project, Module module, ApiDocConfig settings) {
         checkNotNull(project);
         checkNotNull(module);
         checkNotNull(settings);

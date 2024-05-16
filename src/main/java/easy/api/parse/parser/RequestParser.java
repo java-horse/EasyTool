@@ -8,8 +8,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
-import easy.api.config.ApidocxConfig;
-import easy.api.config.ApidocxConfig.RequestBodyParamType;
+import easy.api.config.ApiDocConfig;
+import easy.api.config.ApiDocConfig.RequestBodyParamType;
 import easy.api.model.common.*;
 import easy.api.parse.model.Jsr303Info;
 import easy.api.parse.model.RequestInfo;
@@ -36,12 +36,12 @@ import java.util.stream.Collectors;
  */
 public class RequestParser {
 
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
     private final KernelParser kernelParser;
     private final ParseHelper parseHelper;
     private final DateParser dateParser;
 
-    public RequestParser(Project project, Module module, ApidocxConfig settings) {
+    public RequestParser(Project project, Module module, ApiDocConfig settings) {
         this.settings = settings;
         this.kernelParser = new KernelParser(project, module, settings, false);
         this.dateParser = new DateParser(settings);

@@ -54,14 +54,14 @@ public class PsiUtils {
     public static PsiClass findPsiClassByShortName(Project project, Module module, String shortName) {
         PsiClass psiClass = null;
         if (module != null) {
-            psiClass = Optional.ofNullable(PsiShortNamesCache.getInstance(project)
+            psiClass = Optional.of(PsiShortNamesCache.getInstance(project)
                             .getClassesByName(shortName, GlobalSearchScope.moduleWithDependenciesAndLibrariesScope(module, false)))
                     .filter(it -> it.length >= 1)
                     .map(it -> it[0])
                     .orElse(null);
         }
         if (psiClass == null) {
-            psiClass = Optional.ofNullable(PsiShortNamesCache.getInstance(project)
+            psiClass = Optional.of(PsiShortNamesCache.getInstance(project)
                             .getClassesByName(shortName, GlobalSearchScope.projectScope(project)))
                     .filter(it -> it.length >= 1)
                     .map(it -> it[0])

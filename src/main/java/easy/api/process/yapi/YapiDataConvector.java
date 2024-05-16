@@ -1,5 +1,6 @@
 package easy.api.process.yapi;
 
+import cn.hutool.http.Header;
 import com.google.common.collect.Sets;
 import easy.api.model.common.Api;
 import easy.api.model.common.ParameterIn;
@@ -10,6 +11,7 @@ import easy.api.sdk.yapi.model.ApiInterface;
 import easy.api.sdk.yapi.model.ApiParameter;
 import easy.api.sdk.yapi.model.ApiProperty;
 import easy.api.sdk.yapi.model.ApiProperty.Mock;
+import easy.base.Constants;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -79,7 +81,7 @@ public class YapiDataConvector {
         // 请求头
         if (in == ParameterIn.header && api.getRequestBodyType() != null) {
             ApiParameter contentType = new ApiParameter();
-            contentType.setName("Content-Type");
+            contentType.setName(Header.CONTENT_TYPE.getValue());
             contentType.setValue(api.getRequestBodyType().getContentType());
             data.add(contentType);
         }

@@ -5,7 +5,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiType;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.config.MockRule;
 import easy.api.model.common.DataTypes;
 import easy.api.model.common.Property;
@@ -30,9 +30,9 @@ public class MockParser {
 
     private final Project project;
     private final Module module;
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
 
-    public MockParser(Project project, Module module, ApidocxConfig settings) {
+    public MockParser(Project project, Module module, ApiDocConfig settings) {
         this.project = project;
         this.module = module;
         this.settings = settings;

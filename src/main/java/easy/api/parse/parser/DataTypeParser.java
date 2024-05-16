@@ -3,7 +3,7 @@ package easy.api.parse.parser;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiType;
-import easy.api.config.ApidocxConfig;
+import easy.api.config.ApiDocConfig;
 import easy.api.model.common.DataTypes;
 import easy.base.ApiDocConstants;
 import easy.api.parse.util.PsiTypeUtils;
@@ -18,9 +18,9 @@ import java.util.Properties;
 public final class DataTypeParser {
     private final Project project;
     private final Module module;
-    private final ApidocxConfig settings;
+    private final ApiDocConfig settings;
 
-    public DataTypeParser(Project project, Module module, ApidocxConfig settings) {
+    public DataTypeParser(Project project, Module module, ApiDocConfig settings) {
         this.project = project;
         this.module = module;
         this.settings = settings;

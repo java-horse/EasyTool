@@ -2,11 +2,9 @@ package easy.api.config;
 
 import cn.hutool.core.convert.Convert;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
 import easy.util.JsonUtil;
-import easy.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -25,7 +23,7 @@ import java.util.regex.Pattern;
  * @package easy.api.config
  * @date 2024/05/11 14:32
  */
-public class ApidocxConfig {
+public class ApiDocConfig {
 
     /**
      * 严格模式: 未指定分类、接口名不处理
@@ -175,11 +173,11 @@ public class ApidocxConfig {
      * 解析配置
      *
      * @param properties 属性
-     * @return {@link easy.api.config.ApidocxConfig}
+     * @return {@link ApiDocConfig}
      * @author mabin
      * @date 2024/05/11 15:59
      */
-    public static ApidocxConfig fromProperties(Properties properties) {
+    public static ApiDocConfig fromProperties(Properties properties) {
         String strict = properties.getProperty("strict", StringUtils.EMPTY);
         String path = properties.getProperty("path", null);
         String returnWrapType = properties.getProperty("returnWrapType", StringUtils.EMPTY);
@@ -192,7 +190,7 @@ public class ApidocxConfig {
         String timeFormat = properties.getProperty("timeFormat", StringUtils.EMPTY);
         String requestBodyParamType = properties.getProperty("requestBodyParamType", StringUtils.EMPTY);
 
-        ApidocxConfig config = new ApidocxConfig();
+        ApiDocConfig config = new ApiDocConfig();
         config.strict = Convert.toBool(strict, Boolean.FALSE);
         config.path = path;
         config.returnWrapType = StringUtils.trim(returnWrapType);
