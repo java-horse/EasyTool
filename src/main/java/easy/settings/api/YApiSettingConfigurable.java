@@ -53,7 +53,7 @@ public class YApiSettingConfigurable implements Configurable {
         if (MapUtil.isEmpty(yApiConfig.getYapiTableMap())) {
             yApiConfig.setYapiTableMap(new TreeMap<>());
         }
-        ValidatorUtil.isTrue(StringUtils.startsWithAny(yApiConfig.getApiServerUrl(), Constants.HTTPS, Constants.HTTPS),
+        ValidatorUtil.isTrue(StringUtils.startsWithAny(yApiConfig.getApiServerUrl(), Constants.HTTPS, Constants.HTTP),
                 String.format("【%s】必须以%s或%s开头", yApiSettingView.getYapiServerUrlLabel().getText(), Constants.HTTPS, Constants.HTTP),
                 Constants.PLUGIN_NAME);
     }

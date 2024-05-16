@@ -291,7 +291,9 @@ public class PsiElementUtil {
             return StringUtils.EMPTY;
         }
         value = StringUtils.equals(value, "\"\"") ? StringUtils.EMPTY : value;
-        return StringUtils.contains(value, "\"") ? StringUtils.replace(value, "\"", StringUtils.EMPTY) : value;
+        value = StringUtils.contains(value, "\"") ? StringUtils.replace(value, "\"", StringUtils.EMPTY) : value;
+        value = StringUtils.contains(value, "{") ? StringUtils.replace(value, "{", StringUtils.EMPTY) : value;
+        return StringUtils.contains(value, "}") ? StringUtils.replace(value, "}", StringUtils.EMPTY) : value;
     }
 
 }

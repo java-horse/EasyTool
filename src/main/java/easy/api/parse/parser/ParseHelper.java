@@ -1,5 +1,6 @@
 package easy.api.parse.parser;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -20,6 +21,7 @@ import easy.api.parse.util.*;
 import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SwaggerAnnotationEnum;
+import easy.util.PsiElementUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -126,11 +128,22 @@ public class ParseHelper {
      */
     public List<String> getApiTags(PsiMethod method) {
         String tagsContent = PsiDocCommentUtils.getDocCommentTagText(method, Constants.DOC_TAG.TAGS);
+        if (StringUtils.isBlank(tagsContent)) {
+            PsiAnnotation operationAnnotation = method.getAnnotation(SwaggerAnnotationEnum.OPERATION.getClassPackage());
+            if (Objects.nonNull(operationAnnotation)) {
+                tagsContent = PsiElementUtil.getAnnotationAttributeValue(operationAnnotation, List.of(Constants.ANNOTATION_ATTR.TAGS));
+            }
+            if (StringUtils.isBlank(tagsContent)) {
+                PsiAnnotation apiOperationAnnotation = method.getAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage());
+                if (Objects.nonNull(apiOperationAnnotation)) {
+                    tagsContent = PsiElementUtil.getAnnotationAttributeValue(apiOperationAnnotation, List.of(Constants.ANNOTATION_ATTR.TAGS));
+                }
+            }
+        }
         if (StringUtils.isNotBlank(tagsContent)) {
-            return Splitter.on(",").trimResults().omitEmptyStrings().splitToList(tagsContent)
+            return Splitter.on(StrUtil.COMMA).trimResults().omitEmptyStrings().splitToList(tagsContent)
                     .stream().distinct().collect(Collectors.toList());
         }
-        // TODO 获取Swagger的@Apioperation/@Operation中的tag标签属性值
         return Collections.emptyList();
     }
 
