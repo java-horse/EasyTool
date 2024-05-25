@@ -79,6 +79,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.0</h3>
+      <ul>
+        <li>Optimize SwaggerView pop-up window display timing</li>
+        <li>-------------------------------</li>
+        <li>【优化】优化`SwaggerView`弹窗显示时机</li>
+      </ul>
       <h3>v2.0.9</h3>
       <ul>
         <li>Added one-click import of YApi interface documents</li>

@@ -3,14 +3,16 @@ package easy.action.swagger;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public class DynamicSwaggerActionGroup extends DefaultActionGroup {
 
@@ -29,8 +31,17 @@ public class DynamicSwaggerActionGroup extends DefaultActionGroup {
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && Objects.nonNull(psiFile) && Objects.nonNull(psiClass) && editor.getDocument().isWritable());
+        if (ObjectUtils.anyNull(project, editor, psiFile, psiClass)) {
+            e.getPresentation().setEnabledAndVisible(false);
+            return;
+        }
+        for (PsiAnnotation psiAnnotation : psiClass.getAnnotations()) {
+            if (StringUtils.equalsAnyIgnoreCase(psiAnnotation.getQualifiedName(), SpringAnnotationEnum.SERVICE.getName()
+                    , SpringAnnotationEnum.COMPONENT.getName(), SpringAnnotationEnum.REPOSITORY.getName())) {
+                e.getPresentation().setEnabledAndVisible(false);
+                return;
+            }
+        }
     }
 
     @Override
