@@ -8,6 +8,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.projectRoots.JavaSdkVersion;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
@@ -123,7 +124,8 @@ public class SerialVersionUIDAction extends AnAction {
             String uid = UUID.randomUUID().getLeastSignificantBits() + "L;";
             String insertStr = String.format("%s %s %s long %s = %s", PsiModifier.PRIVATE, PsiModifier.STATIC, PsiModifier.FINAL, Constants.UID, uid);
             boolean isHighVersion = false;
-            if (StringUtils.equals(EasyCommonUtil.getProjectJdkVersion(project), "17")) {
+            JavaSdkVersion projectJdkVersion = EasyCommonUtil.getProjectJdkVersion(project);
+            if (Objects.nonNull(projectJdkVersion) && projectJdkVersion.isAtLeast(JavaSdkVersion.JDK_17)) {
                 insertStr = String.format("%s%s" + StringUtils.LF + "%s", Constants.AT, Serial.class.getSimpleName(), insertStr);
                 isHighVersion = true;
             }
