@@ -82,8 +82,10 @@
       <h3>v2.1.0</h3>
       <ul>
         <li>Optimize SwaggerView pop-up window display timing</li>
+        <li>Fix duplicate semicolon printed in MyBatisLog console SQL</li>
         <li>-------------------------------</li>
         <li>【优化】优化`SwaggerView`弹窗显示时机</li>
+        <li>【修复】修复MyBatisLog控制台SQL打印分号重复问题</li>
       </ul>
       <h3>v2.0.9</h3>
       <ul>
