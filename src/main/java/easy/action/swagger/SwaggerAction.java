@@ -16,6 +16,7 @@ import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerServiceEnum;
 import easy.handler.ServiceHelper;
 import easy.ui.SwaggerSelectDialog;
+import easy.util.BundleUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -57,7 +58,7 @@ public class SwaggerAction extends AnAction {
         // 二次弹窗确认
         String selectedText = editor.getSelectionModel().getSelectedText();
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
-            int confirmResult = Messages.showYesNoDialog("Confirm Swagger Generation?", Constants.PLUGIN_NAME, Messages.getQuestionIcon());
+            int confirmResult = Messages.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"), Constants.PLUGIN_NAME, Messages.getQuestionIcon());
             if (MessageConstants.YES == confirmResult) {
                 execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
             }
