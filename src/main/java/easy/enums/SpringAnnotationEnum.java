@@ -19,6 +19,9 @@ public enum SpringAnnotationEnum {
     SERVICE("org.springframework.stereotype.Service", "", ""),
     COMPONENT("org.springframework.stereotype.Component", "", ""),
     REPOSITORY("org.springframework.stereotype.Repository", "", ""),
+    SPRING_BOOT_APPLICATION("org.springframework.boot.autoconfigure.SpringBootApplication", "", ""),
+    SPRING_BOOT_TEST("org.springframework.boot.test.context.SpringBootTest", "", ""),
+    CONFIGURATION("org.springframework.context.annotation.Configuration", "", ""),
     REST_CONTROLLER_ANNOTATION("org.springframework.web.bind.annotation.RestController", "", ""),
     FEIGN_CLIENT_ANNOTATION("org.springframework.cloud.openfeign.FeignClient", "", "");
 

@@ -42,7 +42,9 @@ public enum ExtraPackageNameEnum {
     JSON_IGNORE("com.fasterxml.jackson.annotation.JsonIgnore", "JsonIgnore"),
     JSON_IGNORE_PROPERTIES("com.fasterxml.jackson.annotation.JsonIgnoreProperties", "JsonIgnoreProperties"),
     JSON_INCLUDE_PROPERTIES("com.fasterxml.jackson.annotation.JsonIncludeProperties", "JsonIncludeProperties"),
-    VALIDATED("org.springframework.validation.annotation.Validated", "Validated");
+    VALIDATED("org.springframework.validation.annotation.Validated", "Validated"),
+    RUN_WITH("org.junit.runner.RunWith", "RunWith"),
+    ;
 
     private final String name;
     private final String className;
