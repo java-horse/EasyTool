@@ -185,6 +185,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
                     String psiMethodName = PsiElementUtil.getPsiElementNameIdentifierText(psiMethod);
                     attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")"),
                             psiMethodName, getIcon(psiAnnotations, methodSwaggerList, AllIcons.Nodes.Method), false));
+                    break;
                 }
             }
         } else {
