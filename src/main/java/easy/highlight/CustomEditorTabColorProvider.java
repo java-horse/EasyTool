@@ -26,7 +26,8 @@ public class CustomEditorTabColorProvider implements EditorTabColorProvider {
         FileEditorManagerEx fileEditorManagerEx = FileEditorManagerEx.getInstanceEx(project);
         FileColorManager fileColorManager = FileColorManager.getInstance(project);
         EditorWindow activeWindow = fileEditorManagerEx.getCurrentWindow();
-        if (Objects.nonNull(activeWindow)) {
+        // 是否开启Tab选项卡高亮配置
+        if (Objects.nonNull(activeWindow) && (Boolean.TRUE.equals(commonConfig.getTabHighlightEnableCheckBox()))) {
             EditorComposite selectedComposite = activeWindow.getSelectedComposite();
             if (Objects.nonNull(selectedComposite) && Objects.equals(virtualFile, selectedComposite.getFile())) {
                 return commonConfig.getPersistentColor().getColor();

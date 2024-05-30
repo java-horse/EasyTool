@@ -68,7 +68,7 @@ public class TongYiModelTranslate extends AbstractTranslate {
             }
             return replaceBackQuote(textElement.getAsString());
         } catch (Exception e) {
-            log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流", e);
+            log.error(OpenModelTranslateEnum.TONG_YI.getModel() + "接口异常: 网络超时或被渠道服务限流, 请稍后重试", e);
         }
         return StringUtils.EMPTY;
     }

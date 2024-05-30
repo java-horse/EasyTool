@@ -79,7 +79,7 @@ public class YouDaoFreeTranslate extends AbstractTranslate {
                 return StringUtils.trim(HtmlUtil.unwrapHtmlTag(group, "li")).replace(StringUtils.LF, StringUtils.EMPTY);
             }
         } catch (Exception e) {
-            log.error(TranslateEnum.YOUDAO_FREE.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
+            log.error(TranslateEnum.YOUDAO_FREE.getTranslate() + "接口异常: 网络超时或被渠道服务限流, 请稍后重试", e);
         }
         return StringUtils.EMPTY;
     }
