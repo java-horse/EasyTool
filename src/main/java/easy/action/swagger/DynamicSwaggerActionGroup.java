@@ -20,9 +20,9 @@ public class DynamicSwaggerActionGroup extends DefaultActionGroup {
     @Override
     public AnAction @NotNull [] getChildren(@Nullable AnActionEvent e) {
         return new AnAction[]{
-                new SwaggerAction(SwaggerServiceEnum.SWAGGER_2.getName(), SwaggerServiceEnum.SWAGGER_2.getIcon()),
-                new SwaggerAction(SwaggerServiceEnum.SWAGGER_3.getName(), SwaggerServiceEnum.SWAGGER_3.getIcon()),
-                new SwaggerAction(SwaggerServiceEnum.SWAGGER_VIEW.getName(), SwaggerServiceEnum.SWAGGER_VIEW.getIcon())
+                new SwaggerAction(SwaggerServiceEnum.SWAGGER_VIEW.getName(), SwaggerServiceEnum.SWAGGER_VIEW.getIcon(), SwaggerServiceEnum.SWAGGER_VIEW.getKeyboardShortcut()),
+                new SwaggerAction(SwaggerServiceEnum.SWAGGER_2.getName(), SwaggerServiceEnum.SWAGGER_2.getIcon(), SwaggerServiceEnum.SWAGGER_2.getKeyboardShortcut()),
+                new SwaggerAction(SwaggerServiceEnum.SWAGGER_3.getName(), SwaggerServiceEnum.SWAGGER_3.getIcon(), SwaggerServiceEnum.SWAGGER_3.getKeyboardShortcut())
         };
     }
 

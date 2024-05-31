@@ -1,9 +1,8 @@
 package easy.action.swagger;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.keymap.KeymapManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
@@ -34,8 +33,17 @@ public class SwaggerAction extends AnAction {
 
     private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
-    public SwaggerAction(String title, Icon icon) {
+    public SwaggerAction(String title, Icon icon, KeyboardShortcut keyboardShortcut) {
         super(title, title, icon);
+        // 设置全局快捷键
+        CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
+        setShortcutSet(shortcutSet);
+        String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
+        ActionManager actionManager = ActionManager.getInstance();
+        if (Objects.isNull(actionManager.getAction(actionId))) {
+            actionManager.registerAction(actionId, this);
+        }
+        KeymapManager.getInstance().getActiveKeymap().addShortcut(actionId, shortcutSet.getShortcuts()[0]);
     }
 
     @Override
