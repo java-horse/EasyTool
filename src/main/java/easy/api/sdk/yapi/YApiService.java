@@ -177,4 +177,29 @@ public class YApiService {
         }.getType());
     }
 
+    /**
+     * 导入API数据
+     *
+     * @param importDataRequest 导入数据请求
+     * @return {@link easy.api.sdk.yapi.model.Response<?>}
+     * @author mabin
+     * @date 2024/05/31 14:25
+     */
+    public Response<?> importApiData(ImportDataRequest importDataRequest) {
+        if (Objects.isNull(importDataRequest)) {
+            return Response.fail();
+        }
+        Map<String, Object> paramMap = new HashMap<>(16);
+        paramMap.put(TOKEN, token);
+        paramMap.put("type", importDataRequest.getType());
+        paramMap.put("merge", importDataRequest.getMerge());
+        paramMap.put("json", importDataRequest.getJson());
+        String response = HttpUtil.doPost(url + "/api/open/import_data", paramMap);
+        if (StringUtils.isBlank(response)) {
+            return Response.fail();
+        }
+        return JsonUtil.fromJson(response, new TypeToken<Response<?>>() {
+        }.getType());
+    }
+
 }

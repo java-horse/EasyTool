@@ -3,6 +3,7 @@ package easy.api.sdk.yapi;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import easy.api.sdk.yapi.model.*;
+import easy.base.Constants;
 
 import java.util.List;
 import java.util.Objects;
@@ -95,6 +96,22 @@ public class YApiClient {
         } else {
             apiService.updateInterface(apiInterface);
         }
+    }
+
+    /**
+     * 导入API数据
+     *
+     * @param importDataRequest 导入数据请求
+     * @return {@link java.lang.Boolean}
+     * @author mabin
+     * @date 2024/05/31 14:36
+     */
+    public Boolean importApiInterface(ImportDataRequest importDataRequest) {
+        if (Objects.isNull(importDataRequest)) {
+            return Boolean.FALSE;
+        }
+        Response<?> response = apiService.importApiData(importDataRequest);
+        return Objects.equals(response.getErrorCode(), Constants.NUM.ZERO);
     }
 
     /**
