@@ -34,7 +34,7 @@ public class YApiTokenAddDialog extends DialogWrapper {
         tokenTextField = new JTextField();
         panel.add(tokenTextField);
         Dimension size = panel.getPreferredSize();
-        setSize(Math.max(size.width, 500), size.height);
+        setSize(Math.max(size.width, 500), Math.min(size.height, 200));
         return panel;
     }
 

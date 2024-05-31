@@ -85,7 +85,7 @@
         <li>Fix duplicate semicolon printed in MyBatisLog console SQL</li>
         <li>Fix Tab Gradient Color Switch Off Color Still Display Problem</li>
         <li>-------------------------------</li>
-        <li>【优化】优化SwaggerView弹窗显示UI, 设置Swagger注解自动生成全局/局部快捷键(`CTRL+ALT+1`|`CTRL+ALT+2`|`CTRL+ALT+3`)</li>
+        <li>【优化】优化SwaggerView弹窗显示UI, 支持同步生成JavaDoc注释, 设置Swagger注解自动生成全局/局部快捷键(`CTRL+ALT+1`|`CTRL+ALT+2`|`CTRL+ALT+3`)</li>
         <li>【修复】修复MyBatisLog控制台SQL打印分号重复问题</li>
         <li>【修复】修复Tab选项卡渐变颜色开关关闭后颜色仍显示问题</li>
       </ul>

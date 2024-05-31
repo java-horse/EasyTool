@@ -1,6 +1,5 @@
 package easy.action;
 
-import cn.hutool.core.text.CharPool;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -10,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import easy.base.Constants;
 import easy.doc.service.JavaDocGenerateService;
 import easy.doc.service.JavaDocWriterService;
 import org.apache.commons.lang3.ObjectUtils;
@@ -39,30 +39,7 @@ public class JavaDocAction extends AnAction {
         if (StringUtils.isBlank(comment)) {
             return;
         }
-        javaDocWriterService.writeJavadoc(project, psiElement, comment, endCount(comment, CharPool.LF));
-    }
-
-    /**
-     * 统计字符串结尾为某指定字符的数量
-     *
-     * @param str 字符串
-     * @param c   字符
-     * @return int
-     */
-    private int endCount(String str, char c) {
-        if (str == null || str.isEmpty()) {
-            return 0;
-        }
-        char[] chars = str.toCharArray();
-        int count = 0;
-        for (int i = chars.length - 1; i >= 0; i--) {
-            if (chars[i] == c) {
-                count++;
-            } else {
-                break;
-            }
-        }
-        return count;
+        javaDocWriterService.writeJavadoc(project, psiElement, comment, Constants.NUM.ZERO);
     }
 
     @Override
