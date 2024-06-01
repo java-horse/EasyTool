@@ -14,7 +14,7 @@ import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerServiceEnum;
 import easy.handler.ServiceHelper;
-import easy.ui.SwaggerSelectDialog;
+import easy.ui.SwaggerViewDialog;
 import easy.util.BundleUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +60,7 @@ public class SwaggerAction extends AnAction {
             return;
         }
         if (Objects.equals(swaggerAnnotationEnum, SwaggerServiceEnum.SWAGGER_VIEW)) {
-            new SwaggerSelectDialog(project, psiClass, psiFile).show();
+            new SwaggerViewDialog(project, psiClass, psiFile).show();
             return;
         }
         // 二次弹窗确认

@@ -44,6 +44,7 @@ public enum ExtraPackageNameEnum {
     JSON_INCLUDE_PROPERTIES("com.fasterxml.jackson.annotation.JsonIncludeProperties", "JsonIncludeProperties"),
     VALIDATED("org.springframework.validation.annotation.Validated", "Validated"),
     RUN_WITH("org.junit.runner.RunWith", "RunWith"),
+    AUTOWIRED("org.springframework.beans.factory.annotation.Autowired", "Autowired"),
     ;
 
     private final String name;

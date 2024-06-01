@@ -1,6 +1,5 @@
 package easy.ui;
 
-import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
@@ -34,7 +33,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 
-public class SwaggerSelectDialog extends DialogWrapper {
+public class SwaggerViewDialog extends DialogWrapper {
 
     private final JavaDocGenerateService JavaDocGenerateService = ServiceHelper.getService(JavaDocGenerateService.class);
     private final JavaDocWriterService javaDocWriterService = ServiceHelper.getService(JavaDocWriterService.class);
@@ -50,7 +49,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
     private JCheckBox allCheckbox;
     private JCheckBox syncGenJavaDocCheckBox;
 
-    public SwaggerSelectDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
+    public SwaggerViewDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle(SwaggerServiceEnum.SWAGGER_VIEW.getName());
         this.project = project;
@@ -139,7 +138,7 @@ public class SwaggerSelectDialog extends DialogWrapper {
         centerPanel.add(checkBoxPanel, BorderLayout.SOUTH);
 
         Dimension size = centerPanel.getPreferredSize();
-        setSize(Math.max(size.width, 600), Math.max(size.height, 300));
+        setSize(Math.max(size.width, 700), Math.max(size.height, 400));
         return centerPanel;
     }
 
@@ -181,9 +180,9 @@ public class SwaggerSelectDialog extends DialogWrapper {
     }
 
     /**
-     * 获取属性列表
+     * 获取属性
      *
-     * @return {@link java.util.List<easy.ui.SwaggerSelectDialog.AttributeItem>}
+     * @return {@link List<AttributeItem>}
      * @author mabin
      * @date 2024/04/27 17:24
      */
@@ -320,70 +319,6 @@ public class SwaggerSelectDialog extends DialogWrapper {
             }
         }
         return SwaggerServiceEnum.SWAGGER_2.getName();
-    }
-
-    /**
-     * 属性项
-     *
-     * @author mabin
-     * @project EasyTool
-     * @package easy.ui.SwaggerSelectDialog
-     * @date 2024/04/27 17:06
-     */
-    private static class AttributeItem {
-        private String name;
-        private String realName;
-        private Icon icon;
-        private boolean selected;
-        private PsiElement psiElement;
-
-        public AttributeItem(String name, String realName, Icon icon, PsiElement psiElement, boolean selected) {
-            this.name = name;
-            this.realName = realName;
-            this.icon = icon;
-            this.psiElement = psiElement;
-            this.selected = selected;
-        }
-
-        public Icon getIcon() {
-            return icon;
-        }
-
-        public void setIcon(Icon icon) {
-            this.icon = icon;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
-
-        public String getRealName() {
-            return realName;
-        }
-
-        public void setRealName(String realName) {
-            this.realName = realName;
-        }
-
-        public PsiElement getPsiElement() {
-            return psiElement;
-        }
-
-        public void setPsiElement(PsiElement psiElement) {
-            this.psiElement = psiElement;
-        }
     }
 
 }
