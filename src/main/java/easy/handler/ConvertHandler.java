@@ -1,5 +1,6 @@
 package easy.handler;
 
+import cn.hutool.core.text.StrPool;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -9,16 +10,12 @@ import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
-import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +28,11 @@ import java.util.Map;
  **/
 
 public class ConvertHandler implements TypedActionHandler {
-    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private static final Logger log = Logger.getInstance(ConvertHandler.class);
+    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
     public static Map<String, String> EN_ZH_CHAR_MAP = new HashMap<>(16);
     private final TypedActionHandler orignTypedActionHandler;
-    private char lastChar = ' ';
+    private char lastChar = StrPool.C_SPACE;
 
     static {
         reload();
@@ -66,7 +64,7 @@ public class ConvertHandler implements TypedActionHandler {
     }
 
     /**
-     * 中英文字符自动替换处理: 每次在编辑器中按键都会触发此方法
+     * 中英文字符自动替换处理: 每次在编辑器中按键都会触发
      *
      * @param editor
      * @param c
@@ -77,27 +75,31 @@ public class ConvertHandler implements TypedActionHandler {
      **/
     @Override
     public void execute(@NotNull Editor editor, char c, @NotNull DataContext dataContext) {
-        if (Boolean.FALSE.equals(commonConfig.getConvertCharEnableCheckBox())) {
-            orignTypedActionHandler.execute(editor, c, dataContext);
-            return;
+        try {
+            if (Boolean.FALSE.equals(commonConfig.getConvertCharEnableCheckBox())) {
+                orignTypedActionHandler.execute(editor, c, dataContext);
+                return;
+            }
+            String cStr = String.valueOf(c);
+            String enChar = EN_ZH_CHAR_MAP.get(cStr);
+            if (lastChar == Constants.PREFIX_CHAR && enChar != null) {
+                Document document = editor.getDocument();
+                Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
+                int caretOffset = primaryCaret.getOffset();
+                WriteCommandAction.runWriteCommandAction(editor.getProject(), () -> {
+                    document.deleteString(caretOffset - 1, caretOffset);
+                    document.insertString(caretOffset - 1, cStr);
+                    primaryCaret.moveToOffset(caretOffset);
+                });
+            } else if (enChar != null) {
+                orignTypedActionHandler.execute(editor, enChar.charAt(0), dataContext);
+            } else {
+                orignTypedActionHandler.execute(editor, c, dataContext);
+            }
+            this.lastChar = c;
+        } catch (Exception e) {
+            log.warn("Automatic replacement of Chinese and English characters exception: " + e.getMessage());
         }
-        String cStr = String.valueOf(c);
-        String enChar = EN_ZH_CHAR_MAP.get(cStr);
-        if (lastChar == Constants.PREFIX_CHAR && enChar != null) {
-            Document document = editor.getDocument();
-            Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-            int caretOffset = primaryCaret.getOffset();
-            WriteCommandAction.runWriteCommandAction(editor.getProject(), () -> {
-                document.deleteString(caretOffset - 1, caretOffset);
-                document.insertString(caretOffset - 1, cStr);
-                primaryCaret.moveToOffset(caretOffset);
-            });
-        } else if (enChar != null) {
-            orignTypedActionHandler.execute(editor, enChar.charAt(0), dataContext);
-        } else {
-            orignTypedActionHandler.execute(editor, c, dataContext);
-        }
-        this.lastChar = c;
     }
 
 }

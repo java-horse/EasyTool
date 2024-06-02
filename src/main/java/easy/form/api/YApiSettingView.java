@@ -89,7 +89,7 @@ public class YApiSettingView {
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(yapiTable);
         toolbarDecorator.setAddAction(button -> {
             if (StringUtils.isBlank(yapiServerUrlTextField.getText()) || !Boolean.TRUE.equals(yapiEnableButton.isSelected())) {
-                NotifyUtil.notify("请先配置YApi服务器地址和开启YApi开关", NotificationType.ERROR);
+                NotifyUtil.notify(String.format("请先配置%s服务器地址并开启", ApiDocTypeEnum.YAPI.getTitle()), NotificationType.ERROR);
                 return;
             }
             YApiTokenAddDialog apiTokenAddDialog = new YApiTokenAddDialog(yapiServerUrlTextField.getText());
@@ -97,7 +97,7 @@ public class YApiSettingView {
                 // 请求YApi获取项目信息
                 ApiProject apiProject = apiTokenAddDialog.getApiProject();
                 if (Objects.isNull(apiProject)) {
-                    NotifyUtil.notify("获取YApi项目信息异常, 请确认Token及服务器地址是否合法", NotificationType.ERROR);
+                    NotifyUtil.notify(String.format("获取%s项目信息异常, 请确认Token及服务器地址是否正确", ApiDocTypeEnum.YAPI.getTitle()), NotificationType.ERROR);
                     return;
                 }
                 String projectId = Integer.toString(apiProject.getId());

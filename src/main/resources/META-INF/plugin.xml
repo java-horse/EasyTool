@@ -79,6 +79,20 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.0</h3>
+      <ul>
+        <li>Optimize SwaggerView pop-up window display timing</li>
+        <li>Fix duplicate semicolon printed in MyBatisLog console SQL</li>
+        <li>Fix Tab Gradient Color Switch Off Color Still Display Problem</li>
+        <li>Added JavaDocView pop-up window, supports free selection of classes, methods, and attributes to be JavaDoc, and supports synchronous generation of Swagger annotations</li>
+        <li>Added YApi Import View pop-up window to support one-click import of JSON files on Swagger/Postman platforms</li>
+        <li>-------------------------------</li>
+        <li>【优化】优化SwaggerView弹窗显示UI, 支持同步生成JavaDoc注释, 设置Swagger注解自动生成全局/局部快捷键(`CTRL+ALT+1`|`CTRL+ALT+2`|`CTRL+ALT+3`)</li>
+        <li>【修复】修复MyBatisLog控制台SQL打印分号重复问题</li>
+        <li>【修复】修复Tab选项卡渐变颜色开关关闭后颜色仍显示问题</li>
+        <li>【新增】新增JavaDocView弹窗, 支持自由选中需要生成JavaDoc的类、方法、属性, 支持同步生成Swagger注解</li>
+        <li>【新增】新增YApi Import View弹窗, 支持Swagger/Postman平台的JSON文件一键导入</li>
+      </ul>
       <h3>v2.0.9</h3>
       <ul>
         <li>Added one-click import of YApi interface documents</li>
@@ -496,13 +510,25 @@
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
         <!--JavaDoc注释生成-->
-        <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="JavaDoc"
+        <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="GenJavaDoc"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
         </action>
+        <action id="EasyToolJavaDocViewAction" class="easy.action.JavaDocAction" text="JavaDocView"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 4"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 4"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 4"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 4"/>
+        </action>
+        <group id="EasyToolJavaDocActionGroups" text="JavaDoc" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.JAVA" popup="true" compact="true">
+            <reference ref="EasyToolJavaDocAction"/>
+            <reference ref="EasyToolJavaDocViewAction"/>
+        </group>
         <!--Background Image 背景图动态切换-->
         <group id="DynamicBackgroundImageActionGroups" class="easy.action.background.DynamicBackgroundImageActionGroup"
                text="BackgroundImage" description="EasyTool development assistance tools"
@@ -528,7 +554,7 @@
             <group id="EasyToolEditorSubGroup"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <reference ref="EasyToolTranslateAction"/>
-            <reference ref="EasyToolJavaDocAction"/>
+            <reference ref="EasyToolJavaDocActionGroups"/>
             <reference ref="EasyToolApiDocDynamicActions"/>
             <reference ref="EasyToolSwaggerDynamicActions"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>

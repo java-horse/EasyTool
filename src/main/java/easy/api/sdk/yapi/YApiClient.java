@@ -3,6 +3,7 @@ package easy.api.sdk.yapi;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import easy.api.sdk.yapi.model.*;
+import easy.base.Constants;
 
 import java.util.List;
 import java.util.Objects;
@@ -98,6 +99,21 @@ public class YApiClient {
     }
 
     /**
+     * 导入API数据
+     *
+     * @param importDataRequest 导入数据请求
+     * @return {@link java.lang.Boolean}
+     * @author mabin
+     * @date 2024/05/31 14:36
+     */
+    public Response<?> importApiInterface(ImportDataRequest importDataRequest) {
+        if (Objects.isNull(importDataRequest)) {
+            return Response.fail();
+        }
+        return apiService.importApiData(importDataRequest);
+    }
+
+    /**
      * 获取分类菜单下所有接口
      *
      * @param catId 卡特彼勒id
@@ -106,6 +122,18 @@ public class YApiClient {
      */
     public ListInterfaceResponse getCatInterfaces(Integer catId) {
         return apiService.getCatInterfaces(catId).getData();
+    }
+
+    /**
+     * 组装项目访问地址
+     *
+     * @param projectId 项目id
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/06/02 15:21
+     */
+    public String genProjectUrl(Integer projectId) {
+        return String.format("%s/project/%d/interface/api", url, projectId);
     }
 
 

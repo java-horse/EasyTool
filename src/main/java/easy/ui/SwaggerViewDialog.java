@@ -9,9 +9,13 @@ import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
+import easy.base.Constants;
+import easy.doc.service.JavaDocGenerateService;
+import easy.doc.service.JavaDocWriterService;
 import easy.enums.RequestAnnotationEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
+import easy.handler.ServiceHelper;
 import easy.swagger.SwaggerGenerateService;
 import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -29,7 +33,10 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 
-public class SwaggerSelectDialog extends DialogWrapper {
+public class SwaggerViewDialog extends DialogWrapper {
+
+    private final JavaDocGenerateService JavaDocGenerateService = ServiceHelper.getService(JavaDocGenerateService.class);
+    private final JavaDocWriterService javaDocWriterService = ServiceHelper.getService(JavaDocWriterService.class);
 
     private JBList<AttributeItem> attributesList;
     private List<AttributeItem> attributes;
@@ -40,9 +47,10 @@ public class SwaggerSelectDialog extends DialogWrapper {
     private JRadioButton swagger3RadioButton;
     private ButtonGroup swaggerButtonGroup;
     private JCheckBox allCheckbox;
+    private JCheckBox syncGenJavaDocCheckBox;
 
-    public SwaggerSelectDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
-        super(ProjectManagerEx.getInstance().getDefaultProject());
+    public SwaggerViewDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
+        super(project);
         setTitle(SwaggerServiceEnum.SWAGGER_VIEW.getName());
         this.project = project;
         this.psiClass = psiClass;
@@ -107,6 +115,8 @@ public class SwaggerSelectDialog extends DialogWrapper {
         JScrollPane scrollPane = new JScrollPane(attributesList);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // 创建横向的复选框组
+        JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         // 创建是否全选复选框
         allCheckbox = new JCheckBox("Select All");
         allCheckbox.addItemListener(e -> {
@@ -115,10 +125,20 @@ public class SwaggerSelectDialog extends DialogWrapper {
             }
             attributesList.repaint();
         });
-        centerPanel.add(allCheckbox, BorderLayout.SOUTH);
+        checkBoxPanel.add(allCheckbox);
+        // 创建是否同步生成JavaDoc复选框
+        JPanel syncGenJavaDocPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        syncGenJavaDocCheckBox = new JCheckBox("Sync Gen JavaDoc");
+        syncGenJavaDocPanel.add(syncGenJavaDocCheckBox);
+        JLabel syncGenJavaDocTipLabel = new JLabel(AllIcons.General.ContextHelp);
+        syncGenJavaDocTipLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        syncGenJavaDocTipLabel.setToolTipText("Both Swagger Annotation and JavaDoc notes will be generated");
+        syncGenJavaDocPanel.add(syncGenJavaDocTipLabel);
+        checkBoxPanel.add(syncGenJavaDocPanel);
+        centerPanel.add(checkBoxPanel, BorderLayout.SOUTH);
 
         Dimension size = centerPanel.getPreferredSize();
-        setSize(Math.max(size.width, 600), Math.max(size.height, 300));
+        setSize(Math.max(size.width, 700), Math.max(size.height, 400));
         return centerPanel;
     }
 
@@ -137,12 +157,19 @@ public class SwaggerSelectDialog extends DialogWrapper {
             return;
         }
         SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-        // 遍历生成选中属性swagger注解
         for (int i = 0; i < attributesList.getModel().getSize(); i++) {
             AttributeItem item = attributesList.getModel().getElementAt(i);
             if (item.isSelected()) {
+                // 生成Swagger
                 swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
                 swaggerGenerateService.doGenerate();
+                // 生成JavaDoc
+                if (Boolean.TRUE.equals(syncGenJavaDocCheckBox.isSelected())) {
+                    String comment = JavaDocGenerateService.generate(item.getPsiElement());
+                    if (StringUtils.isNotBlank(comment)) {
+                        javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+                    }
+                }
             }
         }
     }
@@ -153,9 +180,9 @@ public class SwaggerSelectDialog extends DialogWrapper {
     }
 
     /**
-     * 获取属性列表
+     * 获取属性
      *
-     * @return {@link java.util.List<easy.ui.SwaggerSelectDialog.AttributeItem>}
+     * @return {@link List<AttributeItem>}
      * @author mabin
      * @date 2024/04/27 17:24
      */
@@ -165,11 +192,15 @@ public class SwaggerSelectDialog extends DialogWrapper {
             return attributeItemList;
         }
         String className = PsiElementUtil.getPsiElementNameIdentifierText(psiClass);
-        attributeItemList.add(new AttributeItem(className + (StringUtils.isNotBlank(psiClass.getQualifiedName())
-                ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY), className, AllIcons.Nodes.Class, false));
         if (PsiElementUtil.isController(psiClass)) {
+            List<String> classSwaggerList = List.of(SwaggerAnnotationEnum.API.getClassPackage(), SwaggerAnnotationEnum.TAG.getClassPackage());
+            attributeItemList.add(new AttributeItem(String.format(getBoldText(className), (StringUtils.isNotBlank(psiClass.getQualifiedName())
+                    ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY)), className,
+                    getIcon(psiClass.getAnnotations(), classSwaggerList, AllIcons.Nodes.Controller), psiClass, false));
+            List<String> methodSwaggerList = List.of(SwaggerAnnotationEnum.API_OPERATION.getClassPackage(), SwaggerAnnotationEnum.OPERATION.getClassPackage());
             for (PsiMethod psiMethod : psiClass.getMethods()) {
-                for (PsiAnnotation psiAnnotation : psiMethod.getAnnotations()) {
+                PsiAnnotation[] psiAnnotations = psiMethod.getAnnotations();
+                for (PsiAnnotation psiAnnotation : psiAnnotations) {
                     if (Objects.isNull(RequestAnnotationEnum.getEnumByQualifiedName(psiAnnotation.getQualifiedName()))) {
                         continue;
                     }
@@ -178,25 +209,34 @@ public class SwaggerSelectDialog extends DialogWrapper {
                         paramList.add(psiParameter.getName() + ":" + StringUtils.split(psiParameter.getType().toString(), ":")[1]);
                     }
                     String psiMethodName = PsiElementUtil.getPsiElementNameIdentifierText(psiMethod);
-                    attributeItemList.add(new AttributeItem(className + StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")",
-                            psiMethodName, AllIcons.Nodes.Method, false));
+                    attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")"),
+                            psiMethodName, getIcon(psiAnnotations, methodSwaggerList, AllIcons.Nodes.Method), psiMethod, false));
+                    break;
                 }
             }
         } else {
+            List<String> classSwaggerList = List.of(SwaggerAnnotationEnum.API_MODEL.getClassPackage(), SwaggerAnnotationEnum.SCHEMA.getClassPackage());
+            attributeItemList.add(new AttributeItem(String.format(getBoldText(className), (StringUtils.isNotBlank(psiClass.getQualifiedName())
+                    ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY)), className, getIcon(psiClass.getAnnotations(), classSwaggerList, AllIcons.Nodes.Class), psiClass, false));
+            List<String> fieldSwaggerList = List.of(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), SwaggerAnnotationEnum.SCHEMA.getClassPackage());
             for (PsiField psiField : psiClass.getFields()) {
                 String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
-                attributeItemList.add(new AttributeItem(className + StrUtil.DOT + psiFieldName, psiFieldName, AllIcons.Nodes.Field, false));
+                attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiFieldName), psiFieldName,
+                        getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(psiFieldName, Constants.UID)
+                                ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field), psiField, false));
             }
             PsiClass[] innerClasses = psiClass.getInnerClasses();
             if (ArrayUtils.isNotEmpty(innerClasses)) {
                 for (PsiClass innerClass : innerClasses) {
                     String innerClassName = PsiElementUtil.getPsiElementNameIdentifierText(innerClass);
-                    attributeItemList.add(new AttributeItem(innerClassName + (StringUtils.isNotBlank(innerClass.getQualifiedName())
-                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY), innerClassName, AllIcons.Nodes.Class, false));
+                    attributeItemList.add(new AttributeItem(String.format(getBoldText(innerClassName), (StringUtils.isNotBlank(innerClass.getQualifiedName())
+                            ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY)), innerClassName, getIcon(innerClass.getAnnotations(),
+                            classSwaggerList, AllIcons.Nodes.Class), innerClass, false));
                     for (PsiField psiField : innerClass.getFields()) {
                         String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
-                        attributeItemList.add(new AttributeItem(innerClassName + StrUtil.DOT + psiFieldName,
-                                psiFieldName, AllIcons.Nodes.Field, false));
+                        attributeItemList.add(new AttributeItem(String.format(getBoldText(innerClassName), StrUtil.DOT + psiFieldName),
+                                psiFieldName, getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(Constants.UID, psiFieldName)
+                                ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field), psiField, false));
                     }
                 }
             }
@@ -205,7 +245,44 @@ public class SwaggerSelectDialog extends DialogWrapper {
     }
 
     /**
-     * 识别并自动选中Swagger版本名称
+     * 识别并返回更贴切的图标
+     *
+     * @param psiAnnotations psi注释
+     * @param swaggerList    招摇列表
+     * @param defaultIcon    默认图标
+     * @return {@link Icon}
+     * @author mabin
+     * @date 2024/05/30 09:51
+     */
+    private Icon getIcon(PsiAnnotation[] psiAnnotations, List<String> swaggerList, @NotNull Icon defaultIcon) {
+        if (ArrayUtils.isEmpty(psiAnnotations)) {
+            return defaultIcon;
+        }
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            if (swaggerList.contains(psiAnnotation.getQualifiedName())) {
+                return AllIcons.Nodes.AnonymousClass;
+            }
+        }
+        return defaultIcon;
+    }
+
+    /**
+     * 获取粗体文本
+     *
+     * @param text 文本
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/05/30 10:46
+     */
+    private String getBoldText(String text) {
+        if (StringUtils.isBlank(text)) {
+            return StringUtils.EMPTY;
+        }
+        return String.format("<html><strong>%s</strong>", text) + "%s</html>";
+    }
+
+    /**
+     * 识别并自动选中Swagger版本名称(简单识别, 仅支持2.0和3.0)
      *
      * @param psiClass psi级
      * @return {@link java.lang.String}
@@ -225,70 +302,23 @@ public class SwaggerSelectDialog extends DialogWrapper {
         }
         for (PsiMethod psiMethod : psiClass.getMethods()) {
             if (Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.API_OPERATION.getClassPackage()))
-                    || Objects.nonNull(psiClass.getAnnotation(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage()))) {
+                    || Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.API_IMPLICIT_PARAMS.getClassPackage()))
+                    || Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.API_IMPLICIT_PARAM.getClassPackage()))) {
                 return SwaggerServiceEnum.SWAGGER_2.getName();
             } else if (Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.OPERATION.getClassPackage()))
-                    || Objects.nonNull(psiClass.getAnnotation(SwaggerAnnotationEnum.SCHEMA.getClassPackage()))
-                    || Objects.nonNull(psiClass.getAnnotation(SwaggerAnnotationEnum.PARAMETER.getClassPackage()))
-                    || Objects.nonNull(psiClass.getAnnotation(SwaggerAnnotationEnum.PARAMETERS.getClassPackage()))) {
+                    || Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.PARAMETER.getClassPackage()))
+                    || Objects.nonNull(psiMethod.getAnnotation(SwaggerAnnotationEnum.PARAMETERS.getClassPackage()))) {
+                return SwaggerServiceEnum.SWAGGER_3.getName();
+            }
+        }
+        for (PsiField psiField : psiClass.getFields()) {
+            if (Objects.nonNull(psiField.getAnnotation(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage()))) {
+                return SwaggerServiceEnum.SWAGGER_2.getName();
+            } else if (Objects.nonNull(psiField.getAnnotation(SwaggerAnnotationEnum.SCHEMA.getClassPackage()))) {
                 return SwaggerServiceEnum.SWAGGER_3.getName();
             }
         }
         return SwaggerServiceEnum.SWAGGER_2.getName();
-    }
-
-    /**
-     * 属性项
-     *
-     * @author mabin
-     * @project EasyTool
-     * @package easy.ui.SwaggerSelectDialog
-     * @date 2024/04/27 17:06
-     */
-    private static class AttributeItem {
-        private String name;
-        private String realName;
-        private Icon icon;
-        private boolean selected;
-
-        public AttributeItem(String name, String realName, Icon icon, boolean selected) {
-            this.name = name;
-            this.realName = realName;
-            this.icon = icon;
-            this.selected = selected;
-        }
-
-        public Icon getIcon() {
-            return icon;
-        }
-
-        public void setIcon(Icon icon) {
-            this.icon = icon;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
-        }
-
-        public String getRealName() {
-            return realName;
-        }
-
-        public void setRealName(String realName) {
-            this.realName = realName;
-        }
     }
 
 }

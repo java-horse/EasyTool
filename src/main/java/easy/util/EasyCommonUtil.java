@@ -11,6 +11,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.JavaSdk;
+import com.intellij.openapi.projectRoots.JavaSdkVersion;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.impl.JavaSdkImpl;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -18,6 +19,7 @@ import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.ant.taskdefs.Java;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -170,13 +172,14 @@ public class EasyCommonUtil {
      * @author mabin
      * @date 2024/05/14 10:22
      */
-    public static String getProjectJdkVersion(Project project) {
+    public static JavaSdkVersion getProjectJdkVersion(Project project) {
         ProjectRootManager rootManager = ProjectRootManager.getInstance(project);
         Sdk sdk = rootManager.getProjectSdk();
-        if (Objects.isNull(sdk) || StringUtils.isBlank(sdk.getHomePath()) || !JavaSdk.getInstance().isValidSdkHome(sdk.getHomePath())) {
+        JavaSdk javaSdk = JavaSdkImpl.getInstance();
+        if (Objects.isNull(sdk) || StringUtils.isBlank(sdk.getHomePath()) || !javaSdk.isValidSdkHome(sdk.getHomePath())) {
             return null;
         }
-        return JavaSdkImpl.getInstance().getVersionString(sdk.getHomePath());
+        return javaSdk.getVersion(sdk);
     }
 
 }

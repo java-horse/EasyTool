@@ -78,7 +78,7 @@ public class NiuTranslate extends AbstractTranslate {
             }
             return textElement.getAsString();
         } catch (Exception e) {
-            log.error(TranslateEnum.NIU.getTranslate() + "接口异常: 网络超时或被渠道服务限流", e);
+            log.error(TranslateEnum.NIU.getTranslate() + "接口异常: 网络超时或被渠道服务限流, 请稍后重试", e);
         }
         return StringUtils.EMPTY;
     }

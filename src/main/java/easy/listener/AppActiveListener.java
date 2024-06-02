@@ -26,8 +26,8 @@ import java.util.Date;
 
 public class AppActiveListener implements ApplicationActivationListener {
 
-    // 通知时间间隔 (15天之内打开项目只弹窗一次提示)
-    private static final long INTERVAL = 15 * 24 * 60 * 60 * 1000L;
+    // 通知时间间隔 (30天之内打开项目只弹窗一次提示)
+    private static final long INTERVAL = 30 * 24 * 60 * 60 * 1000L;
 
     @Override
     public synchronized void applicationActivated(@NotNull IdeFrame ideFrame) {

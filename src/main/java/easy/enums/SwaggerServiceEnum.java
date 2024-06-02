@@ -1,5 +1,6 @@
 package easy.enums;
 
+import com.intellij.openapi.actionSystem.KeyboardShortcut;
 import easy.icons.EasyIcons;
 import easy.swagger.Swagger2GenerateServiceImpl;
 import easy.swagger.Swagger3GenerateServiceImpl;
@@ -7,17 +8,36 @@ import easy.swagger.SwaggerGenerateService;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 public enum SwaggerServiceEnum {
 
-    SWAGGER_2("Swagger2.x", new Swagger2GenerateServiceImpl(), EasyIcons.ICON.SWAGGER),
-    SWAGGER_3("Swagger3.x", new Swagger3GenerateServiceImpl(), EasyIcons.ICON.SWAGGER),
-    SWAGGER_VIEW("SwaggerView", null, EasyIcons.ICON.SWAGGER);
+    SWAGGER_VIEW("SwaggerView", null, EasyIcons.ICON.SWAGGER) {
+        @Override
+        public KeyboardShortcut getKeyboardShortcut() {
+            return new KeyboardShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK), null);
+        }
+    },
+    SWAGGER_2("Swagger2.x", new Swagger2GenerateServiceImpl(), EasyIcons.ICON.SWAGGER) {
+        @Override
+        public KeyboardShortcut getKeyboardShortcut() {
+            return new KeyboardShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK), null);
+        }
+    },
+    SWAGGER_3("Swagger3.x", new Swagger3GenerateServiceImpl(), EasyIcons.ICON.SWAGGER) {
+        @Override
+        public KeyboardShortcut getKeyboardShortcut() {
+            return new KeyboardShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK), null);
+        }
+    };
 
     private final String name;
     private final SwaggerGenerateService swaggerGenerateService;
     private final Icon icon;
+
+    public abstract KeyboardShortcut getKeyboardShortcut();
 
     SwaggerServiceEnum(String name, SwaggerGenerateService swaggerGenerateService, Icon icon) {
         this.name = name;

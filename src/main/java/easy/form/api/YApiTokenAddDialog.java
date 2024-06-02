@@ -6,6 +6,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import easy.api.sdk.yapi.YApiClient;
 import easy.api.sdk.yapi.model.ApiProject;
+import easy.enums.ApiDocTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,14 +34,14 @@ public class YApiTokenAddDialog extends DialogWrapper {
         tokenTextField = new JTextField();
         panel.add(tokenTextField);
         Dimension size = panel.getPreferredSize();
-        setSize(Math.max(size.width, 500), size.height);
+        setSize(Math.max(size.width, 500), Math.min(size.height, 200));
         return panel;
     }
 
     @Override
     protected ValidationInfo doValidate() {
         if (StrUtil.isBlank(tokenTextField.getText()) || tokenTextField.getText().length() < 64) {
-            return new ValidationInfo("请输入正确的YApi的项目Token", tokenTextField);
+            return new ValidationInfo(String.format("请输入正确的%s的项目Token", ApiDocTypeEnum.YAPI.getTitle()), tokenTextField);
         }
         return super.doValidate();
     }

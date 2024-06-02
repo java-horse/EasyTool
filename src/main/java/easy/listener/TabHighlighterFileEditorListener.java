@@ -42,7 +42,7 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
                     highlightQueue.add(file);
                     handleSelectionChange(file);
                 } else {
-                    unhighlightQueueFile();
+                    unHighlightQueueFile();
                 }
             });
         }
@@ -62,7 +62,7 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
             if (Boolean.TRUE.equals(commonConfig.getTabHighlightEnableCheckBox())) {
                 handleSelectionChange(fileEditorManagerEvent.getNewFile());
             } else {
-                unhighlightQueueFile();
+                unHighlightQueueFile();
             }
         }
     }
@@ -76,7 +76,7 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
         if (highlightQueue.size() + Constants.NUM.ONE > Convert.toInt(commonConfig.getTabHighlightSizeComboBox())) {
             VirtualFile virtualFile = highlightQueue.removeFirst();
             for (EditorWindow editorWindow : manager.getWindows()) {
-                unhighlightSafe(fileColorManager, virtualFile, editorWindow);
+                unHighlightSafe(fileColorManager, virtualFile, editorWindow);
             }
         }
         highlightQueue.add(newFile);
@@ -94,9 +94,9 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
         }
     }
 
-    private void unhighlightSafe(FileColorManager fileColorManager, VirtualFile oldFile, EditorWindow editorWindow) {
+    private void unHighlightSafe(FileColorManager fileColorManager, VirtualFile oldFile, EditorWindow editorWindow) {
         if (Objects.nonNull(oldFile) && Objects.nonNull(editorWindow.getComposite(oldFile))) {
-            unhighlight(fileColorManager, oldFile, editorWindow);
+            unHighlight(fileColorManager, oldFile, editorWindow);
         }
     }
 
@@ -109,7 +109,7 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
         setTabColor(new JBColor(Color.MAGENTA, new Color(red, green, blue)), file, editorWindow);
     }
 
-    private void unhighlight(@NotNull FileColorManager fileColorManager, VirtualFile file, EditorWindow editorWindow) {
+    private void unHighlight(@NotNull FileColorManager fileColorManager, VirtualFile file, EditorWindow editorWindow) {
         setTabColor(fileColorManager.getFileColor(file), file, editorWindow);
     }
 
@@ -133,15 +133,15 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
      * @author mabin
      * @date 2023/12/22 14:14
      */
-    public void unhighlightQueueFile() {
-        if (highlightQueue.size() <= Constants.NUM.ZERO) {
+    public void unHighlightQueueFile() {
+        if (highlightQueue.isEmpty()) {
             return;
         }
         FileEditorManagerEx manager = FileEditorManagerEx.getInstanceEx(project);
         FileColorManager fileColorManager = FileColorManager.getInstance(project);
         for (EditorWindow editorWindow : manager.getWindows()) {
             for (VirtualFile virtualFile : highlightQueue) {
-                unhighlightSafe(fileColorManager, virtualFile, editorWindow);
+                unHighlightSafe(fileColorManager, virtualFile, editorWindow);
             }
         }
     }

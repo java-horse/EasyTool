@@ -186,7 +186,8 @@ public class MyBatisLogManager implements Disposable {
     public void println(String logPrefix, String sql, int rgb) {
         ConsoleViewContentType consoleViewContentType = consoleViewContentTypes.computeIfAbsent(rgb, k -> new ConsoleViewContentType(Integer.toString(rgb), new TextAttributes(new JBColor(rgb, rgb), null, null, null, Font.PLAIN)));
         consoleView.print(String.format("--> %s <-- ==> %s", counter.incrementAndGet(), logPrefix) + StringUtils.LF, ConsoleViewContentType.USER_INPUT);
-        consoleView.print(String.format("%s", isFormat() ? FORMATTER.format(sql) : sql) + ";" + StringUtils.LF, consoleViewContentType);
+        String formatSql = String.format("%s", isFormat() ? FORMATTER.format(sql) : sql);
+        consoleView.print((StringUtils.endsWith(formatSql, ";") ? formatSql : formatSql + ";") + StringUtils.LF, consoleViewContentType);
     }
 
     private boolean isFormat() {
