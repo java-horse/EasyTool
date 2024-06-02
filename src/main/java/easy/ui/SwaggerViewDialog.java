@@ -50,7 +50,7 @@ public class SwaggerViewDialog extends DialogWrapper {
     private JCheckBox syncGenJavaDocCheckBox;
 
     public SwaggerViewDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
-        super(ProjectManagerEx.getInstance().getDefaultProject());
+        super(project);
         setTitle(SwaggerServiceEnum.SWAGGER_VIEW.getName());
         this.project = project;
         this.psiClass = psiClass;

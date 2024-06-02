@@ -47,7 +47,7 @@ public class JavaDocViewDialog extends DialogWrapper {
     private JCheckBox syncGenSwagger3CheckBox;
 
     public JavaDocViewDialog(Project project, PsiClass psiClass, PsiFile psiFile) {
-        super(ProjectManagerEx.getInstance().getDefaultProject());
+        super(project);
         setTitle("JavaDocView");
         this.project = project;
         this.psiClass = psiClass;

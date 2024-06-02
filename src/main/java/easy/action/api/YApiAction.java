@@ -34,11 +34,6 @@ public class YApiAction extends AbstractAction {
         Presentation presentation = e.getPresentation();
         presentation.setText(ApiDocTypeEnum.YAPI.getTitle());
         presentation.setIcon(ApiDocTypeEnum.YAPI.getIcon());
-        // 是否Java文件
-        VirtualFile virtualFile = e.getDataContext().getData(CommonDataKeys.VIRTUAL_FILE);
-        if (Objects.nonNull(virtualFile) && !virtualFile.isDirectory() && !StrUtil.equals("java", virtualFile.getExtension())) {
-            e.getPresentation().setVisible(false);
-        }
     }
 
     /**

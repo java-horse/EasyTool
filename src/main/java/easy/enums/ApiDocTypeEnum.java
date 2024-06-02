@@ -4,6 +4,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import easy.action.api.ApiDocSettingAction;
 import easy.action.api.YApiAction;
+import easy.action.api.YApiImportAction;
 import easy.icons.EasyIcons;
 
 import javax.swing.*;
@@ -20,6 +21,12 @@ public enum ApiDocTypeEnum {
         @Override
         public AnAction getAction() {
             return new YApiAction();
+        }
+    },
+    YAPI_IMPORT("YApi Import", AllIcons.Actions.Upload) {
+        @Override
+        public AnAction getAction() {
+            return new YApiImportAction();
         }
     };
 

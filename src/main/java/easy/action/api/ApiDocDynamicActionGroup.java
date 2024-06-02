@@ -1,9 +1,11 @@
 package easy.action.api;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
@@ -21,6 +23,7 @@ public class ApiDocDynamicActionGroup extends DefaultActionGroup {
 
     static {
         ACTION_MAP.put(ApiDocTypeEnum.SETTING.getTitle(), ApiDocTypeEnum.SETTING.getAction());
+        ACTION_MAP.put(ApiDocTypeEnum.YAPI_IMPORT.getTitle(),  ApiDocTypeEnum.YAPI_IMPORT.getAction());
     }
 
     @Override
@@ -35,6 +38,11 @@ public class ApiDocDynamicActionGroup extends DefaultActionGroup {
         if (Objects.isNull(project) || Objects.isNull(module)) {
             e.getPresentation().setVisible(false);
             return;
+        }
+        // 是否Java文件
+        VirtualFile virtualFile = e.getDataContext().getData(CommonDataKeys.VIRTUAL_FILE);
+        if (Objects.nonNull(virtualFile) && !virtualFile.isDirectory() && !StrUtil.equals("java", virtualFile.getExtension())) {
+            e.getPresentation().setVisible(false);
         }
         // 动态设置Action
         if (Objects.nonNull(yApiConfig)) {

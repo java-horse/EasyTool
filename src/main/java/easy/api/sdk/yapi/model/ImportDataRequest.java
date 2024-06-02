@@ -46,4 +46,12 @@ public class ImportDataRequest extends YApiBase implements Serializable {
         this.json = json;
     }
 
+    @Override
+    public String toString() {
+        return "ImportDataRequest{" +
+                "type='" + type + '\'' +
+                ", merge='" + merge + '\'' +
+                ", json='" + json + '\'' +
+                '}';
+    }
 }

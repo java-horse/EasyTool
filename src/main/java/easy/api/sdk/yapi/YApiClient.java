@@ -106,12 +106,11 @@ public class YApiClient {
      * @author mabin
      * @date 2024/05/31 14:36
      */
-    public Boolean importApiInterface(ImportDataRequest importDataRequest) {
+    public Response<?> importApiInterface(ImportDataRequest importDataRequest) {
         if (Objects.isNull(importDataRequest)) {
-            return Boolean.FALSE;
+            return Response.fail();
         }
-        Response<?> response = apiService.importApiData(importDataRequest);
-        return Objects.equals(response.getErrorCode(), Constants.NUM.ZERO);
+        return apiService.importApiData(importDataRequest);
     }
 
     /**
@@ -123,6 +122,18 @@ public class YApiClient {
      */
     public ListInterfaceResponse getCatInterfaces(Integer catId) {
         return apiService.getCatInterfaces(catId).getData();
+    }
+
+    /**
+     * 组装项目访问地址
+     *
+     * @param projectId 项目id
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/06/02 15:21
+     */
+    public String genProjectUrl(Integer projectId) {
+        return String.format("%s/project/%d/interface/api", url, projectId);
     }
 
 
