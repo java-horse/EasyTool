@@ -386,7 +386,7 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocGenerateService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
-
+        <applicationService serviceImplementation="easy.config.screenshot.CodeScreenshotConfigComponent"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -414,6 +414,8 @@
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.CodeScreenshot" displayName="CodeScreenshot"
+                                 instance="easy.settings.CodeScreenshotSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
@@ -423,7 +425,6 @@
 
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
-
         <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
                                         implementationClass="easy.provider.CronMarkerProvider"/>
 

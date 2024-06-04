@@ -37,7 +37,7 @@ public class SwaggerAction extends AnAction {
         super(title, title, icon);
         // 设置全局快捷键
         CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
-        setShortcutSet(shortcutSet);
+        registerCustomShortcutSet(shortcutSet, null);
         String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
         ActionManager actionManager = ActionManager.getInstance();
         if (Objects.isNull(actionManager.getAction(actionId))) {
