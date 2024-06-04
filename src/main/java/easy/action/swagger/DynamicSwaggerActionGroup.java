@@ -49,7 +49,7 @@ public class DynamicSwaggerActionGroup extends DefaultActionGroup {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return super.getActionUpdateThread();
+        return ActionUpdateThread.EDT;
     }
 
 }

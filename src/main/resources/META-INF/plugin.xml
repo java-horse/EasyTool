@@ -81,9 +81,9 @@
         <![CDATA[
       <h3>v2.1.1</h3>
       <ul>
-        <li>xxx</li>
+        <li>Added code block one-click screenshot function</li>
         <li>-------------------------------</li>
-        <li>【优化】xxx</li>
+        <li>【新增】新增选中代码块一键截图功能, 提供图片各项参数配置界面</li>
       </ul>
       <h3>v2.1.0</h3>
       <ul>
@@ -414,7 +414,8 @@
                                  instance="easy.settings.ConvertSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
-        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.CodeScreenshot" displayName="CodeScreenshot"
+        <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.CodeScreenshot"
+                                 displayName="CodeScreenshot"
                                  instance="easy.settings.CodeScreenshotSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
@@ -554,6 +555,10 @@
         <group id="EasyToolApiDocDynamicActions" class="easy.action.api.ApiDocDynamicActionGroup"
                text="ApiDoc" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.API" popup="true" compact="true"/>
+        <!--代码截图-->
+        <action id="EasyToolCodeScreenshotAction" class="easy.action.CodeScreenshotAction" text="CodeScreenshot"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CODE_SCREENSHOT"/>
+
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.LOGO" popup="true" compact="true">
@@ -565,6 +570,7 @@
             <reference ref="EasyToolApiDocDynamicActions"/>
             <reference ref="EasyToolSwaggerDynamicActions"/>
             <reference ref="EasyToolCopyUrlDynamicActions"/>
+            <reference ref="EasyToolCodeScreenshotAction"/>
             <reference ref="EasyToolCamelCaseAction"/>
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
