@@ -60,6 +60,7 @@
         <li>支持 Git Commit 时添加 Emoji 标识, 以及在 Git Commit Message 消息输入框中输入英文冒号<em>:</em> + Emoji英文字符 自动提示功能</li>
         <li>支持一键生成 JavaDoc 注释</li>
         <li>支持Markdown、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
+        <li>支持选中代码块一键截图功能, 快捷键: <em>CTRL + ALT + 5</em> </li>
       </ul>
       <h3>Getting started</h3>
       <ul>
