@@ -134,7 +134,7 @@ public class MyBatisLogManager implements Disposable {
 
             @Override
             public @NotNull ActionUpdateThread getActionUpdateThread() {
-                return super.getActionUpdateThread();
+                return ActionUpdateThread.EDT;
             }
         });
         actionGroup.add(new ScrollToTheEndToolbarAction(consoleView.getEditor()));
