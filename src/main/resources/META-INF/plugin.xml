@@ -557,7 +557,12 @@
                icon="easy.icons.EasyIcons.ICON.API" popup="true" compact="true"/>
         <!--代码截图-->
         <action id="EasyToolCodeScreenshotAction" class="easy.action.CodeScreenshotAction" text="CodeScreenshot"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CODE_SCREENSHOT"/>
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CODE_SCREENSHOT">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 5"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 5"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 5"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 5"/>
+        </action>
 
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
