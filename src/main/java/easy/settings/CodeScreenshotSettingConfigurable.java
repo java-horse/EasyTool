@@ -7,6 +7,7 @@ import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.form.CodeScreenshotSettingView;
 import easy.handler.ServiceHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +31,17 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        return !Objects.equals(Convert.toInt(codeScreenshotConfig.getScale()), codeScreenshotSettingView.getScaleSlider().getValue()) || !Objects.equals(Convert.toInt(codeScreenshotConfig.getInnerPadding()), codeScreenshotSettingView.getInnerPaddingSlider().getValue()) || !Objects.equals(Convert.toInt(codeScreenshotConfig.getOuterPadding()), codeScreenshotSettingView.getOuterPaddingSlider().getValue()) || !Objects.equals(codeScreenshotConfig.getWindowRoundness(), codeScreenshotSettingView.getWindowRoundnessSlider().getValue()) || !Objects.equals(codeScreenshotConfig.getBackgroundColor(), codeScreenshotSettingView.getInitBackgroundColor().getRGB()) || !Objects.equals(codeScreenshotConfig.getRemoveIndentation(), codeScreenshotSettingView.getRemoveIndentationCheckBox().isSelected()) || !Objects.equals(codeScreenshotConfig.getShowWindowIcons(), codeScreenshotSettingView.getShowWindowIconsCheckBox().isSelected());
+        return !Objects.equals(Convert.toInt(codeScreenshotConfig.getScale()), codeScreenshotSettingView.getScaleSlider().getValue())
+                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getInnerPadding()), codeScreenshotSettingView.getInnerPaddingSlider().getValue())
+                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getOuterPadding()), codeScreenshotSettingView.getOuterPaddingSlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getWindowRoundness(), codeScreenshotSettingView.getWindowRoundnessSlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getBackgroundColor(), codeScreenshotSettingView.getInitBackgroundColor().getRGB())
+                || !Objects.equals(codeScreenshotConfig.getRemoveIndentation(), codeScreenshotSettingView.getRemoveIndentationCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getShowWindowIcons(), codeScreenshotSettingView.getShowWindowIconsCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getAutoCopyPayboard(), codeScreenshotSettingView.getAutoCopyPayboardCheckBox().isSelected())
+                || !StringUtils.equals(codeScreenshotConfig.getCustomFileName(), codeScreenshotSettingView.getCustomFileNameTextField().getText())
+                || !Objects.equals(codeScreenshotConfig.getCustomFileNameFormat(), codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem())
+                || !Objects.equals(codeScreenshotConfig.getCustomFileNameSuffix(), codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem());
     }
 
     @Override
@@ -47,6 +58,10 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
         codeScreenshotConfig.setRemoveIndentation(codeScreenshotSettingView.getRemoveIndentationCheckBox().isSelected());
         codeScreenshotConfig.setShowWindowIcons(codeScreenshotSettingView.getShowWindowIconsCheckBox().isSelected());
         codeScreenshotConfig.setBackgroundColor(codeScreenshotSettingView.getInitBackgroundColor().getRGB());
+        codeScreenshotConfig.setAutoCopyPayboard(codeScreenshotSettingView.getAutoCopyPayboardCheckBox().isSelected());
+        codeScreenshotConfig.setCustomFileName(codeScreenshotSettingView.getCustomFileNameTextField().getText());
+        codeScreenshotConfig.setCustomFileNameFormat(String.valueOf(codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem()));
+        codeScreenshotConfig.setCustomFileNameSuffix(String.valueOf(codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem()));
     }
 
 }

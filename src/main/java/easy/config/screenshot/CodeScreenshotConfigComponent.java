@@ -1,5 +1,6 @@
 package easy.config.screenshot;
 
+import cn.hutool.core.date.DatePattern;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -26,6 +27,10 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setBackgroundColor(0xffabb8c3);
             codeScreenshotConfig.setRemoveIndentation(Boolean.TRUE);
             codeScreenshotConfig.setShowWindowIcons(Boolean.TRUE);
+            codeScreenshotConfig.setAutoCopyPayboard(Boolean.TRUE);
+            codeScreenshotConfig.setCustomFileName("screenshot_");
+            codeScreenshotConfig.setCustomFileNameFormat(DatePattern.PURE_DATETIME_PATTERN);
+            codeScreenshotConfig.setCustomFileNameSuffix("png");
         } else {
             codeScreenshotConfig.setScale(Objects.isNull(codeScreenshotConfig.getScale()) ? 1.5D : codeScreenshotConfig.getScale());
             codeScreenshotConfig.setInnerPadding(Objects.isNull(codeScreenshotConfig.getInnerPadding()) ? 16D : codeScreenshotConfig.getInnerPadding());
@@ -34,6 +39,10 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setBackgroundColor(Objects.isNull(codeScreenshotConfig.getBackgroundColor()) ? 0xffabb8c3 : codeScreenshotConfig.getBackgroundColor());
             codeScreenshotConfig.setRemoveIndentation(Objects.isNull(codeScreenshotConfig.getRemoveIndentation()) ? Boolean.TRUE : codeScreenshotConfig.getRemoveIndentation());
             codeScreenshotConfig.setShowWindowIcons(Objects.isNull(codeScreenshotConfig.getShowWindowIcons()) ? Boolean.TRUE : codeScreenshotConfig.getShowWindowIcons());
+            codeScreenshotConfig.setAutoCopyPayboard(Objects.isNull(codeScreenshotConfig.getAutoCopyPayboard()) ? Boolean.TRUE : codeScreenshotConfig.getAutoCopyPayboard());
+            codeScreenshotConfig.setCustomFileName(Objects.isNull(codeScreenshotConfig.getCustomFileName()) ? "screenshot_" : codeScreenshotConfig.getCustomFileName());
+            codeScreenshotConfig.setCustomFileNameFormat(Objects.isNull(codeScreenshotConfig.getCustomFileNameFormat()) ? DatePattern.PURE_DATETIME_PATTERN : codeScreenshotConfig.getCustomFileNameFormat());
+            codeScreenshotConfig.setCustomFileNameSuffix(Objects.isNull(codeScreenshotConfig.getCustomFileNameSuffix()) ? "png" : codeScreenshotConfig.getCustomFileNameSuffix());
         }
         return codeScreenshotConfig;
     }

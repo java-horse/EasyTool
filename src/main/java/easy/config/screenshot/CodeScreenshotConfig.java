@@ -16,6 +16,10 @@ public class CodeScreenshotConfig {
     private Integer backgroundColor;
     private Boolean removeIndentation;
     private Boolean showWindowIcons;
+    private Boolean autoCopyPayboard;
+    private String customFileName;
+    private String customFileNameFormat;
+    private String customFileNameSuffix;
 
     public Double getScale() {
         return scale;
@@ -73,16 +77,36 @@ public class CodeScreenshotConfig {
         this.showWindowIcons = showWindowIcons;
     }
 
-    @Override
-    public String toString() {
-        return "CodeScreenshotConfig{" +
-                "scale=" + scale +
-                ", innerPadding=" + innerPadding +
-                ", outerPadding=" + outerPadding +
-                ", windowRoundness=" + windowRoundness +
-                ", backgroundColor=" + backgroundColor +
-                ", removeIndentation=" + removeIndentation +
-                ", showWindowIcons=" + showWindowIcons +
-                '}';
+    public Boolean getAutoCopyPayboard() {
+        return autoCopyPayboard;
     }
+
+    public void setAutoCopyPayboard(Boolean autoCopyPayboard) {
+        this.autoCopyPayboard = autoCopyPayboard;
+    }
+
+    public String getCustomFileName() {
+        return customFileName;
+    }
+
+    public void setCustomFileName(String customFileName) {
+        this.customFileName = customFileName;
+    }
+
+    public String getCustomFileNameFormat() {
+        return customFileNameFormat;
+    }
+
+    public void setCustomFileNameFormat(String customFileNameFormat) {
+        this.customFileNameFormat = customFileNameFormat;
+    }
+
+    public String getCustomFileNameSuffix() {
+        return customFileNameSuffix;
+    }
+
+    public void setCustomFileNameSuffix(String customFileNameSuffix) {
+        this.customFileNameSuffix = customFileNameSuffix;
+    }
+
 }

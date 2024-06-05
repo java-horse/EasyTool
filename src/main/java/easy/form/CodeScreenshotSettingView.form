@@ -8,23 +8,6 @@
     <properties/>
     <border type="none" title="CodeScreenshot设置"/>
     <children>
-      <component id="12d67" class="javax.swing.JLabel" binding="scaleLabel">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Scale(比例)"/>
-        </properties>
-      </component>
-      <vspacer id="13083">
-        <constraints>
-          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="14"/>
-          </grid>
-        </constraints>
-      </vspacer>
       <component id="d6858" class="javax.swing.JSlider" binding="scaleSlider">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -170,6 +153,80 @@
         <properties>
           <selected value="true"/>
           <text value="Show Window Icons(显示窗口图标)"/>
+        </properties>
+      </component>
+      <grid id="a158a" layout-manager="GridLayoutManager" row-count="3" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="e7741" class="javax.swing.JCheckBox" binding="autoCopyPayboardCheckBox">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Auto Copy Payboard(自动复制粘贴板)"/>
+            </properties>
+          </component>
+          <vspacer id="65253">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="195fa" class="javax.swing.JLabel" binding="customFileNameLabel">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Custom File Name"/>
+            </properties>
+          </component>
+          <component id="974da" class="javax.swing.JTextField" binding="customFileNameTextField">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text value="screenshot_"/>
+            </properties>
+          </component>
+          <component id="75a30" class="javax.swing.JComboBox" binding="customFileNameFormatComboBox">
+            <constraints>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="yyyyMMddHHmmss"/>
+                <item value="yyyyMMddHHmmssSSS"/>
+                <item value="yyyy年MM月dd日HH时mm分ss秒"/>
+              </model>
+            </properties>
+          </component>
+          <component id="d43b2" class="javax.swing.JComboBox" binding="customFileNameSuffixComboBox">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="png"/>
+              </model>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <component id="12d67" class="javax.swing.JLabel" binding="scaleLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="245" height="17"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Scale(比例)"/>
         </properties>
       </component>
     </children>

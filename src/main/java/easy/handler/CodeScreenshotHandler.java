@@ -1,23 +1,37 @@
 package easy.handler;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.StrPool;
 import com.intellij.codeInsight.hint.EditorFragmentComponent;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.FileSaverDialog;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.scale.JBUIScale;
 import easy.base.Constants;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
+import easy.util.NotifyUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.Objects;
 
 public class CodeScreenshotHandler {
@@ -63,8 +77,7 @@ public class CodeScreenshotHandler {
             Double scale = config.getScale();
             newTransform.scale(scale, scale);
             paint(contentComponent, newTransform, 1, 1, JBColor.BLACK, config, 0);
-            String text = document.getText(range);
-            Rectangle2D r = getSelectionRectangle(range, text, config, editor);
+            Rectangle2D r = getSelectionRectangle(range, document.getText(range), config, editor);
             newTransform.translate(-r.getX(), -r.getY());
             return paint(contentComponent, newTransform, (int) (r.getWidth() * scale), (int) (r.getHeight() * scale),
                     EditorFragmentComponent.getBackgroundColor(editor, false), config, (int) (config.getInnerPadding() * scale));
@@ -74,6 +87,39 @@ public class CodeScreenshotHandler {
             state.restore(editor);
         }
         return null;
+    }
+
+    /**
+     * 保存图像
+     *
+     * @param image   图像
+     * @param project 项目
+     * @param config
+     * @author mabin
+     * @date 2024/06/05 09:32
+     */
+    public static void saveImage(BufferedImage image, Project project, CodeScreenshotConfig config) {
+        FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Code Screenshot Save", Constants.PLUGIN_NAME),
+                "Select a location to save the code screenshot", config.getCustomFileNameSuffix());
+        FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, project);
+        String filePrefixName = StringUtils.isBlank(config.getCustomFileName()) ? "screenshot_" : config.getCustomFileName();
+        String fileFormatName = StringUtils.EMPTY;
+        try {
+            fileFormatName = StringUtils.isNotBlank(config.getCustomFileNameFormat())
+                    ? DateUtil.format(new Date(), config.getCustomFileNameFormat())
+                    : DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN);
+        } catch (Exception ignored) {
+        }
+        VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(filePrefixName + fileFormatName + StrPool.DOT + config.getCustomFileNameSuffix());
+        if (Objects.isNull(virtualFileWrapper)) {
+            return;
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(virtualFileWrapper.getFile())) {
+            ImageIO.write(image, config.getCustomFileNameSuffix(), outputStream);
+        } catch (Throwable t) {
+            NotifyUtil.notify("Code screenshot file save error, please try again later!", NotificationType.ERROR);
+        }
+
     }
 
     /**
@@ -149,8 +195,7 @@ public class CodeScreenshotHandler {
                 g.setPaint(jbColor);
                 g.fillOval((int) (outerPaddingHoriMapped + windowControlsPadding + xOffset),
                         (int) (outerPaddingVertMapped + windowControlsPadding),
-                        (int) indicatorDimensions,
-                        (int) indicatorDimensions);
+                        (int) indicatorDimensions, (int) indicatorDimensions);
                 xOffset += indicatorDimensions + windowControlsPadding;
             }
         }

@@ -82,6 +82,7 @@ public class NotifyUtil {
                 .createNotification(title, content, type)
                 .setDisplayId(Constants.PLUGIN_NAME)
                 .setIcon(EasyIcons.ICON.LOGO)
+                .setImportant(true)
                 .setListener(NotificationListener.URL_OPENING_LISTENER);
         if (ArrayUtils.isNotEmpty(actions)) {
             Arrays.stream(actions).forEach(notification::addAction);

@@ -1,9 +1,9 @@
 package easy.form;
 
 import cn.hutool.core.convert.Convert;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
-import com.intellij.ui.*;
+import com.intellij.ui.ColorChooserService;
+import com.intellij.ui.JBColor;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.handler.ServiceHelper;
@@ -11,12 +11,9 @@ import easy.handler.ServiceHelper;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Objects;
 
 public class CodeScreenshotSettingView {
-
-    private static final Logger log = Logger.getInstance(CodeScreenshotSettingView.class);
 
     /**
      * 滑块刻度
@@ -42,6 +39,11 @@ public class CodeScreenshotSettingView {
     private JButton colorButton;
     private JCheckBox removeIndentationCheckBox;
     private JCheckBox showWindowIconsCheckBox;
+    private JCheckBox autoCopyPayboardCheckBox;
+    private JTextField customFileNameTextField;
+    private JComboBox customFileNameFormatComboBox;
+    private JComboBox customFileNameSuffixComboBox;
+    private JLabel customFileNameLabel;
     private Color initBackgroundColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
 
     public CodeScreenshotSettingView() {
@@ -74,6 +76,10 @@ public class CodeScreenshotSettingView {
         setShowWindowIconsCheckBox(codeScreenshotConfig.getShowWindowIcons());
         setInitBackgroundColor(new JBColor(new Color(codeScreenshotConfig.getBackgroundColor(), true), new Color(codeScreenshotConfig.getBackgroundColor(), true)));
         updateBackgroundColorText();
+        setAutoCopyPayboardCheckBox(codeScreenshotConfig.getAutoCopyPayboard());
+        setCustomFileNameTextField(codeScreenshotConfig.getCustomFileName());
+        setCustomFileNameFormatComboBox(codeScreenshotConfig.getCustomFileNameFormat());
+        setCustomFileNameSuffixComboBox(codeScreenshotConfig.getCustomFileNameSuffix());
     }
 
     private void updateBackgroundColorText() {
@@ -139,6 +145,38 @@ public class CodeScreenshotSettingView {
 
     public void setInitBackgroundColor(Color initBackgroundColor) {
         this.initBackgroundColor = initBackgroundColor;
+    }
+
+    public JCheckBox getAutoCopyPayboardCheckBox() {
+        return autoCopyPayboardCheckBox;
+    }
+
+    public void setAutoCopyPayboardCheckBox(Boolean autoCopyPayboardCheckBox) {
+        this.autoCopyPayboardCheckBox.setSelected(autoCopyPayboardCheckBox);
+    }
+
+    public JTextField getCustomFileNameTextField() {
+        return customFileNameTextField;
+    }
+
+    public void setCustomFileNameTextField(String customFileNameTextField) {
+        this.customFileNameTextField.setText(customFileNameTextField);
+    }
+
+    public JComboBox getCustomFileNameFormatComboBox() {
+        return customFileNameFormatComboBox;
+    }
+
+    public void setCustomFileNameFormatComboBox(String customFileNameFormatComboBox) {
+        this.customFileNameFormatComboBox.setSelectedItem(customFileNameFormatComboBox);
+    }
+
+    public JComboBox getCustomFileNameSuffixComboBox() {
+        return customFileNameSuffixComboBox;
+    }
+
+    public void setCustomFileNameSuffixComboBox(String customFileNameSuffixComboBox) {
+        this.customFileNameSuffixComboBox.setSelectedItem(customFileNameSuffixComboBox);
     }
 
 }
