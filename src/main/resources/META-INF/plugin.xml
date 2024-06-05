@@ -80,6 +80,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.2</h3>
+      <ul>
+        <li>xxx</li>
+        <li>-------------------------------</li>
+        <li>【新增】xxx</li>
+      </ul>
       <h3>v2.1.1</h3>
       <ul>
         <li>Added code block one-click screenshot function</li>
