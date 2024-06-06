@@ -62,6 +62,6 @@ public class CopyConsoleAction extends AnAction {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return super.getActionUpdateThread();
     }
 }

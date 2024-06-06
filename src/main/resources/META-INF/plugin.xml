@@ -82,9 +82,9 @@
         <![CDATA[
       <h3>v2.1.2</h3>
       <ul>
-        <li>xxx</li>
+        <li>Fix the problem that some function button operations under the right key are not displayed</li>
         <li>-------------------------------</li>
-        <li>【新增】xxx</li>
+        <li>【修复】修复右键下某些功能按钮操作不显示问题</li>
       </ul>
       <h3>v2.1.1</h3>
       <ul>

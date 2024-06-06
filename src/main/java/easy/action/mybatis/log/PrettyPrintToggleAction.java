@@ -33,7 +33,7 @@ public class PrettyPrintToggleAction extends ToggleAction {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return super.getActionUpdateThread();
     }
 
 }

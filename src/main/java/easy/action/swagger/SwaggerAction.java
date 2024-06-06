@@ -36,14 +36,14 @@ public class SwaggerAction extends AnAction {
     public SwaggerAction(String title, Icon icon, KeyboardShortcut keyboardShortcut) {
         super(title, title, icon);
         // 设置全局快捷键
-        CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
-        registerCustomShortcutSet(shortcutSet, null);
-        String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
-        ActionManager actionManager = ActionManager.getInstance();
-        if (Objects.isNull(actionManager.getAction(actionId))) {
-            actionManager.registerAction(actionId, this);
-        }
-        KeymapManager.getInstance().getActiveKeymap().addShortcut(actionId, shortcutSet.getShortcuts()[0]);
+//        CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
+//        registerCustomShortcutSet(shortcutSet, null);
+//        String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
+//        ActionManager actionManager = ActionManager.getInstance();
+//        if (Objects.isNull(actionManager.getAction(actionId))) {
+//            actionManager.registerAction(actionId, this);
+//        }
+//        KeymapManager.getInstance().getActiveKeymap().addShortcut(actionId, shortcutSet.getShortcuts()[0]);
     }
 
     @Override

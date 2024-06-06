@@ -56,7 +56,7 @@ public class ApiDocDynamicActionGroup extends DefaultActionGroup {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return super.getActionUpdateThread();
     }
 
 }
