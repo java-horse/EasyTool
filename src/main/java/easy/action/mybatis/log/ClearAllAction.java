@@ -41,7 +41,7 @@ public class ClearAllAction extends DumbAwareAction {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return super.getActionUpdateThread();
     }
 
 }

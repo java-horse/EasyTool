@@ -34,7 +34,7 @@ public class DynamicConvertActionGroup extends DefaultActionGroup {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return super.getActionUpdateThread();
     }
 
 }
