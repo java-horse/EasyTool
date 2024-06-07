@@ -99,12 +99,19 @@ public class CommonSettingView {
         restfulDisplayApiCommentTipLabel.setIcon(AllIcons.General.ContextHelp);
 
         swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
+        swaggerConfirmModelTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
+        searchApiTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         translateConfirmInputModelTipsLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
+        translateConfirmInputModelTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
+        tabBackgroundTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
+        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
+        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         restfulDisplayApiCommentTipLabel.setToolTipText("开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
+        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     /**
