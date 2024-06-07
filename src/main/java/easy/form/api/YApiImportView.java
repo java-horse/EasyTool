@@ -12,8 +12,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class YApiImportView extends DialogWrapper {
+
+    private static final String TIP_TEXT = "Please enter data in json format...";
+
     private JPanel panel;
     private JLabel importTypeLabel;
     private JComboBox ImportTypeComboBox;
@@ -33,6 +38,24 @@ public class YApiImportView extends DialogWrapper {
 
     @Override
     protected @Nullable JComponent createCenterPanel() {
+        // 设置提示语
+        dataSourcePasteTextArea.setDisabledTextColor(Color.GRAY);
+        dataSourcePasteTextArea.setText(TIP_TEXT);
+        dataSourcePasteTextArea.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (StringUtils.equals(dataSourcePasteTextArea.getText(), TIP_TEXT)) {
+                    dataSourcePasteTextArea.setText(StringUtils.EMPTY);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (StringUtils.isBlank(dataSourcePasteTextArea.getText())) {
+                    dataSourcePasteTextArea.setText(TIP_TEXT);
+                }
+            }
+        });
+        // 设置窗体大小
         Dimension size = panel.getPreferredSize();
         setSize(Math.max(size.width, 700), Math.max(size.height, 400));
         return panel;
@@ -42,7 +65,7 @@ public class YApiImportView extends DialogWrapper {
     protected @Nullable ValidationInfo doValidate() {
         String pasteJsonText = dataSourcePasteTextArea.getText();
         if (StringUtils.isBlank(pasteJsonText) || !JsonUtil.isJson(pasteJsonText)) {
-            return new ValidationInfo("Please enter data in JSON format", dataSourcePasteTextArea);
+            return new ValidationInfo(TIP_TEXT, dataSourcePasteTextArea);
         }
         return super.doValidate();
     }
@@ -50,6 +73,10 @@ public class YApiImportView extends DialogWrapper {
     @Override
     protected void doOKAction() {
         super.doOKAction();
+        // 二次校验JSON格式
+        if (!JsonUtil.isJson(dataSourcePasteTextArea.getText())) {
+            return;
+        }
         this.importDataRequest = new ImportDataRequest();
         importDataRequest.setJson(dataSourcePasteTextArea.getText());
         importDataRequest.setMerge(YApiImportDataSyncTypeEnum.getCode(String.valueOf(syncTypeComboBox.getSelectedItem())));
