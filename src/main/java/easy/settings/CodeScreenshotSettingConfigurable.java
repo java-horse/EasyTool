@@ -1,12 +1,14 @@
 package easy.settings;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.NumberUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.form.CodeScreenshotSettingView;
 import easy.handler.ServiceHelper;
+import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +43,16 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
                 || !Objects.equals(codeScreenshotConfig.getAutoCopyPayboard(), codeScreenshotSettingView.getAutoCopyPayboardCheckBox().isSelected())
                 || !StringUtils.equals(codeScreenshotConfig.getCustomFileName(), codeScreenshotSettingView.getCustomFileNameTextField().getText())
                 || !Objects.equals(codeScreenshotConfig.getCustomFileNameFormat(), codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem())
-                || !Objects.equals(codeScreenshotConfig.getCustomFileNameSuffix(), codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem());
+                || !Objects.equals(codeScreenshotConfig.getCustomFileNameSuffix(), codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem())
+                || !Objects.equals(codeScreenshotConfig.getWaterMarkFontFamily(), codeScreenshotSettingView.getFontFamilyFontComboBox().getSelectedItem())
+                || !Objects.equals(codeScreenshotConfig.getWaterMarkFontStyle(),
+                codeScreenshotSettingView.getFontStyleComboBox().getSelectedItem())
+                || !StringUtils.equals(codeScreenshotConfig.getWaterMarkFontSize(),
+                codeScreenshotSettingView.getFontSizeTextField().getText())
+                || !StringUtils.equals(codeScreenshotConfig.getWaterMarkFontText(),
+                codeScreenshotSettingView.getFontWaterMarkTextField().getText())
+                || !Objects.equals(codeScreenshotConfig.getWaterMarkFontColor(),
+                codeScreenshotSettingView.getInitFontColor().getRGB());
     }
 
     @Override
@@ -51,6 +62,7 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        // 赋值
         codeScreenshotConfig.setScale(codeScreenshotSettingView.getScaleSlider().getValue() * CodeScreenshotSettingView.SLIDER_SCALE);
         codeScreenshotConfig.setInnerPadding(Convert.toDouble(codeScreenshotSettingView.getInnerPaddingSlider().getValue()));
         codeScreenshotConfig.setOuterPadding(Convert.toDouble(codeScreenshotSettingView.getOuterPaddingSlider().getValue()));
@@ -62,6 +74,15 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
         codeScreenshotConfig.setCustomFileName(codeScreenshotSettingView.getCustomFileNameTextField().getText());
         codeScreenshotConfig.setCustomFileNameFormat(String.valueOf(codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem()));
         codeScreenshotConfig.setCustomFileNameSuffix(String.valueOf(codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem()));
+        codeScreenshotConfig.setWaterMarkFontFamily(String.valueOf(codeScreenshotSettingView.getFontFamilyFontComboBox().getSelectedItem()));
+        codeScreenshotConfig.setWaterMarkFontStyle(String.valueOf(codeScreenshotSettingView.getFontStyleComboBox().getSelectedItem()));
+        codeScreenshotConfig.setWaterMarkFontSize(codeScreenshotSettingView.getFontSizeTextField().getText());
+        codeScreenshotConfig.setWaterMarkFontText(codeScreenshotSettingView.getFontWaterMarkTextField().getText());
+        codeScreenshotConfig.setWaterMarkFontColor(codeScreenshotSettingView.getInitFontColor().getRGB());
+
+        // 校验
+        ValidatorUtil.isTrue(NumberUtil.isNumber(codeScreenshotConfig.getWaterMarkFontSize()), String.format("Font " +
+                "Size 的值【%s】非合法整数, 请重新配置", codeScreenshotConfig.getWaterMarkFontSize()));
     }
 
 }

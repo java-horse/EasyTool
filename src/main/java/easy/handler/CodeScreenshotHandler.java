@@ -1,5 +1,6 @@
 package easy.handler;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrPool;
@@ -19,6 +20,7 @@ import com.intellij.ui.scale.JBUIScale;
 import easy.base.Constants;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
+import easy.enums.FontStyleEnum;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +121,41 @@ public class CodeScreenshotHandler {
         } catch (Throwable t) {
             NotifyUtil.notify("Code screenshot file save error, please try again later!", NotificationType.ERROR);
         }
+    }
 
+    /**
+     * 添加图像水印
+     *
+     * @param targetImg 目标img
+     * @param config    配置
+     * @author mabin
+     * @date 2024/06/11 16:38
+     */
+    public static BufferedImage addImageWaterMark(BufferedImage targetImg, CodeScreenshotConfig config) {
+        try {
+            int width = targetImg.getWidth();
+            int height = targetImg.getHeight();
+            BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+            Graphics2D g = bufferedImage.createGraphics();
+            g.drawImage(targetImg, 0, 0, width, height, null);
+            Integer fontSize = Convert.toInt(config.getWaterMarkFontSize());
+            int x = width - (config.getWaterMarkFontText().length() + 1) * fontSize;
+            int y = height - fontSize * 2;
+            // 设置颜色
+            g.setColor(new JBColor(config.getWaterMarkFontColor(), config.getWaterMarkFontColor()));
+            // 设置透明度
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));
+            // 设置字体
+            g.setFont(new Font(config.getWaterMarkFontFamily(), FontStyleEnum.getFontStyle(config.getWaterMarkFontStyle()), fontSize));
+            // 设置水印
+            g.drawString(config.getWaterMarkFontText(), x, y);
+            // 释放资源
+            g.dispose();
+            return bufferedImage;
+        } catch (Exception e) {
+            log.error(String.format("%s generate code screenshot add water mark handle exception", Constants.PLUGIN_NAME), e);
+        }
+        return null;
     }
 
     /**

@@ -47,23 +47,25 @@ public class CodeScreenshotAction extends AnAction {
             NotifyUtil.notify(String.format("%s action generate code image fail", e.getPresentation().getText()), NotificationType.ERROR);
             return;
         }
+        // 添加水印
+        BufferedImage waterMarkImage = CodeScreenshotHandler.addImageWaterMark(image, config);
         // 保存至粘贴板
         if (Boolean.TRUE.equals(config.getAutoCopyPayboard())) {
-            copyImage(image);
+            copyImage(waterMarkImage);
         }
         // 提示保存截图
         List<AnAction> actionList = new ArrayList<>();
         actionList.add(new NotificationAction("Click save") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                CodeScreenshotHandler.saveImage(image, project, config);
+                CodeScreenshotHandler.saveImage(waterMarkImage, project, config);
             }
         });
         if (Boolean.FALSE.equals(config.getAutoCopyPayboard())) {
             actionList.add(new NotificationAction("Click copy") {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                    copyImage(image);
+                    copyImage(waterMarkImage);
                 }
             });
         }

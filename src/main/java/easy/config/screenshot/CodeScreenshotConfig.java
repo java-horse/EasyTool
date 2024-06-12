@@ -20,6 +20,11 @@ public class CodeScreenshotConfig {
     private String customFileName;
     private String customFileNameFormat;
     private String customFileNameSuffix;
+    private String waterMarkFontFamily;
+    private String waterMarkFontSize;
+    private String waterMarkFontStyle;
+    private String waterMarkFontText;
+    private Integer waterMarkFontColor;
 
     public Double getScale() {
         return scale;
@@ -107,6 +112,46 @@ public class CodeScreenshotConfig {
 
     public void setCustomFileNameSuffix(String customFileNameSuffix) {
         this.customFileNameSuffix = customFileNameSuffix;
+    }
+
+    public String getWaterMarkFontFamily() {
+        return waterMarkFontFamily;
+    }
+
+    public void setWaterMarkFontFamily(String waterMarkFontFamily) {
+        this.waterMarkFontFamily = waterMarkFontFamily;
+    }
+
+    public String getWaterMarkFontSize() {
+        return waterMarkFontSize;
+    }
+
+    public void setWaterMarkFontSize(String waterMarkFontSize) {
+        this.waterMarkFontSize = waterMarkFontSize;
+    }
+
+    public String getWaterMarkFontStyle() {
+        return waterMarkFontStyle;
+    }
+
+    public void setWaterMarkFontStyle(String waterMarkFontStyle) {
+        this.waterMarkFontStyle = waterMarkFontStyle;
+    }
+
+    public String getWaterMarkFontText() {
+        return waterMarkFontText;
+    }
+
+    public void setWaterMarkFontText(String waterMarkFontText) {
+        this.waterMarkFontText = waterMarkFontText;
+    }
+
+    public Integer getWaterMarkFontColor() {
+        return waterMarkFontColor;
+    }
+
+    public void setWaterMarkFontColor(Integer waterMarkFontColor) {
+        this.waterMarkFontColor = waterMarkFontColor;
     }
 
 }

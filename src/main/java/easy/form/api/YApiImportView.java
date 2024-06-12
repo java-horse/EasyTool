@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import easy.api.sdk.yapi.model.ImportDataRequest;
 import easy.enums.YApiImportDataSyncTypeEnum;
+import easy.util.EasyCommonUtil;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -12,12 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class YApiImportView extends DialogWrapper {
-
-    private static final String TIP_TEXT = "Please enter data in json format...";
 
     private JPanel panel;
     private JLabel importTypeLabel;
@@ -39,22 +36,7 @@ public class YApiImportView extends DialogWrapper {
     @Override
     protected @Nullable JComponent createCenterPanel() {
         // 设置提示语
-        dataSourcePasteTextArea.setDisabledTextColor(Color.GRAY);
-        dataSourcePasteTextArea.setText(TIP_TEXT);
-        dataSourcePasteTextArea.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (StringUtils.equals(dataSourcePasteTextArea.getText(), TIP_TEXT)) {
-                    dataSourcePasteTextArea.setText(StringUtils.EMPTY);
-                }
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (StringUtils.isBlank(dataSourcePasteTextArea.getText())) {
-                    dataSourcePasteTextArea.setText(TIP_TEXT);
-                }
-            }
-        });
+        EasyCommonUtil.customBackgroundText(dataSourcePasteTextArea, "Please enter data in json format...");
         // 设置窗体大小
         Dimension size = panel.getPreferredSize();
         setSize(Math.max(size.width, 700), Math.max(size.height, 400));
@@ -65,7 +47,7 @@ public class YApiImportView extends DialogWrapper {
     protected @Nullable ValidationInfo doValidate() {
         String pasteJsonText = dataSourcePasteTextArea.getText();
         if (StringUtils.isBlank(pasteJsonText) || !JsonUtil.isJson(pasteJsonText)) {
-            return new ValidationInfo(TIP_TEXT, dataSourcePasteTextArea);
+            return new ValidationInfo("Please enter data in json format...", dataSourcePasteTextArea);
         }
         return super.doValidate();
     }

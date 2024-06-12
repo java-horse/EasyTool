@@ -3,10 +3,12 @@ package easy.form;
 import cn.hutool.core.convert.Convert;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.ui.ColorChooserService;
+import com.intellij.ui.FontComboBox;
 import com.intellij.ui.JBColor;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.handler.ServiceHelper;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +46,21 @@ public class CodeScreenshotSettingView {
     private JComboBox customFileNameFormatComboBox;
     private JComboBox customFileNameSuffixComboBox;
     private JLabel customFileNameLabel;
+    private FontComboBox fontFamilyFontComboBox;
+    private JTextField fontSizeTextField;
+    private JComboBox fontStyleComboBox;
+    private JTextField fontWaterMarkTextField;
+    private JLabel fontFamilyLabel;
+    private JLabel fontSizeLabel;
+    private JLabel fontStyleLabel;
+    private JLabel fontWaterMarkLabel;
+    private JPanel filePanel;
+    private JTextField fontColorTextField;
+    private JButton fontColorButton;
+    private JLabel fontColorLabel;
+
     private Color initBackgroundColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
+    private Color initFontColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
 
     public CodeScreenshotSettingView() {
         scaleSlider.addChangeListener(e -> scaleSliderValueLabel.setText(String.format("%.2f", scaleSlider.getValue() * SLIDER_SCALE)));
@@ -60,6 +76,16 @@ public class CodeScreenshotSettingView {
             updateBackgroundColorText();
         });
         updateBackgroundColorText();
+        fontColorButton.addActionListener(e -> {
+            Color chooseFontColor = ColorChooserService.getInstance().showDialog(ProjectManagerEx.getInstanceEx().getDefaultProject(), panel,
+                    "Choose Font Color", initFontColor, true, Collections.emptyList(), true);
+            if (Objects.nonNull(chooseFontColor)) {
+                initFontColor = chooseFontColor;
+            }
+            updateFontColorText();
+        });
+        updateFontColorText();
+        EasyCommonUtil.customBackgroundText(fontWaterMarkTextField, "请输入水印字符...");
     }
 
 
@@ -80,11 +106,36 @@ public class CodeScreenshotSettingView {
         setCustomFileNameTextField(codeScreenshotConfig.getCustomFileName());
         setCustomFileNameFormatComboBox(codeScreenshotConfig.getCustomFileNameFormat());
         setCustomFileNameSuffixComboBox(codeScreenshotConfig.getCustomFileNameSuffix());
+        setFontFamilyFontComboBox(codeScreenshotConfig.getWaterMarkFontFamily());
+        setFontSizeTextField(codeScreenshotConfig.getWaterMarkFontSize());
+        setFontStyleComboBox(codeScreenshotConfig.getWaterMarkFontStyle());
+        setFontWaterMarkTextField(codeScreenshotConfig.getWaterMarkFontText());
+        setInitFontColor(new JBColor(new Color(codeScreenshotConfig.getWaterMarkFontColor(), true), new Color(codeScreenshotConfig.getWaterMarkFontColor(), true)));
+        updateFontColorText();
     }
 
+    /**
+     * 更新背景颜色文本
+     *
+     * @author mabin
+     * @date 2024/06/12 10:59
+     */
     private void updateBackgroundColorText() {
-        formattedTextField.setText(String.format("A: %02.0f%%, R: %02.0f%%, G: %02.0f%%, B: %02.0f%%", initBackgroundColor.getAlpha() / 255f * 100, initBackgroundColor.getRed() / 255f * 100, initBackgroundColor.getGreen() / 255f * 100, initBackgroundColor.getBlue() / 255f * 100));
+        formattedTextField.setText(String.format("Hex: %s, A: %02.0f%%, R: %02.0f%%, G: %02.0f%%, B: %02.0f%%", String.format("#%06X", (0xFFFFFF & initBackgroundColor.getRGB())),
+                initBackgroundColor.getAlpha() / 255f * 100, initBackgroundColor.getRed() / 255f * 100, initBackgroundColor.getGreen() / 255f * 100, initBackgroundColor.getBlue() / 255f * 100));
         formattedTextField.setForeground(new JBColor(new Color(initBackgroundColor.getRed(), initBackgroundColor.getGreen(), initBackgroundColor.getBlue()), new Color(initBackgroundColor.getRed(), initBackgroundColor.getGreen(), initBackgroundColor.getBlue())));
+    }
+
+    /**
+     * 更新字体颜色文本
+     *
+     * @author mabin
+     * @date 2024/06/12 10:59
+     */
+    private void updateFontColorText() {
+        fontColorTextField.setText(String.format("#%06X", (0xFFFFFF & initFontColor.getRGB())));
+        fontColorTextField.setForeground(new JBColor(new Color(initFontColor.getRed(), initFontColor.getGreen(),
+                initFontColor.getBlue()), new Color(initFontColor.getRed(), initFontColor.getGreen(), initFontColor.getBlue())));
     }
 
     public JComponent getComponent() {
@@ -179,4 +230,43 @@ public class CodeScreenshotSettingView {
         this.customFileNameSuffixComboBox.setSelectedItem(customFileNameSuffixComboBox);
     }
 
+    public FontComboBox getFontFamilyFontComboBox() {
+        return fontFamilyFontComboBox;
+    }
+
+    public void setFontFamilyFontComboBox(String fontFamilyFontComboBox) {
+        this.fontFamilyFontComboBox.setFontName(fontFamilyFontComboBox);
+    }
+
+    public JTextField getFontSizeTextField() {
+        return fontSizeTextField;
+    }
+
+    public void setFontSizeTextField(String fontSizeTextField) {
+        this.fontSizeTextField.setText(fontSizeTextField);
+    }
+
+    public JComboBox getFontStyleComboBox() {
+        return fontStyleComboBox;
+    }
+
+    public void setFontStyleComboBox(String fontStyleComboBox) {
+        this.fontStyleComboBox.setSelectedItem(fontStyleComboBox);
+    }
+
+    public JTextField getFontWaterMarkTextField() {
+        return fontWaterMarkTextField;
+    }
+
+    public void setFontWaterMarkTextField(String fontWaterMarkTextField) {
+        this.fontWaterMarkTextField.setText(fontWaterMarkTextField);
+    }
+
+    public Color getInitFontColor() {
+        return initFontColor;
+    }
+
+    public void setInitFontColor(Color initFontColor) {
+        this.initFontColor = initFontColor;
+    }
 }
