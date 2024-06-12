@@ -42,7 +42,7 @@ public class CodeScreenshotAction extends AnAction {
             return;
         }
         // 创建代码截图
-        BufferedImage image = CodeScreenshotHandler.createImage(editor);
+        BufferedImage image = CodeScreenshotHandler.createImage(editor, config);
         if (Objects.isNull(image)) {
             NotifyUtil.notify(String.format("%s action generate code image fail", e.getPresentation().getText()), NotificationType.ERROR);
             return;

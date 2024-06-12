@@ -51,11 +51,12 @@ public class CodeScreenshotHandler {
      * 创建图像
      *
      * @param editor 编辑
+     * @param config 配置
      * @return {@link java.awt.image.BufferedImage}
      * @author mabin
      * @date 2024/06/04 14:46
      */
-    public static BufferedImage createImage(@NotNull Editor editor) {
+    public static BufferedImage createImage(@NotNull Editor editor, CodeScreenshotConfig config) {
         TextRange range = getRange(editor);
         Document document = editor.getDocument();
         EditorState state = EditorState.from(editor);
@@ -66,12 +67,6 @@ public class CodeScreenshotHandler {
                 editorEx.setCaretEnabled(false);
             }
             editor.getSettings().setCaretRowShown(false);
-
-            CodeScreenshotConfig config = ServiceHelper.getService(CodeScreenshotConfigComponent.class).getState();
-            if (Objects.isNull(config)) {
-                return null;
-            }
-
             JComponent contentComponent = editor.getContentComponent();
             Graphics2D contentGraphics = (Graphics2D) contentComponent.getGraphics();
             AffineTransform currentTransform = contentGraphics.getTransform();
