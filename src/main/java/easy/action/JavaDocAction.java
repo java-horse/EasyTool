@@ -1,5 +1,6 @@
 package easy.action;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -44,6 +45,7 @@ public class JavaDocAction extends AnAction {
         }
         PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
         if (Objects.isNull(psiElement) || Objects.isNull(psiElement.getNode())) {
+            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should be placed on the class name, method name, property name");
             return;
         }
         String comment = JavaDocGenerateService.generate(psiElement);

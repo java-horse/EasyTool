@@ -42,6 +42,7 @@ public class CamelCaseAction extends AnAction {
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
         if (StringUtils.isBlank(selectedText)) {
+            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the code");
             return;
         }
         String convertText;
