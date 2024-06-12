@@ -48,7 +48,7 @@ public class CodeScreenshotAction extends AnAction {
             return;
         }
         // 添加水印
-        BufferedImage waterMarkImage = CodeScreenshotHandler.addImageWaterMark(image, config);
+        BufferedImage waterMarkImage = Boolean.TRUE.equals(config.getAutoAddWaterMark()) ? CodeScreenshotHandler.addImageWaterMark(image, config) : image;
         // 保存至粘贴板
         if (Boolean.TRUE.equals(config.getAutoCopyPayboard())) {
             copyImage(waterMarkImage);

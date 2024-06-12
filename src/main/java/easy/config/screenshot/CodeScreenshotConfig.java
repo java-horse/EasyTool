@@ -25,6 +25,7 @@ public class CodeScreenshotConfig {
     private String waterMarkFontStyle;
     private String waterMarkFontText;
     private Integer waterMarkFontColor;
+    private Boolean autoAddWaterMark;
 
     public Double getScale() {
         return scale;
@@ -154,4 +155,11 @@ public class CodeScreenshotConfig {
         this.waterMarkFontColor = waterMarkFontColor;
     }
 
+    public Boolean getAutoAddWaterMark() {
+        return autoAddWaterMark;
+    }
+
+    public void setAutoAddWaterMark(Boolean autoAddWaterMark) {
+        this.autoAddWaterMark = autoAddWaterMark;
+    }
 }

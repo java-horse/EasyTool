@@ -37,6 +37,7 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setWaterMarkFontStyle(FontStyleEnum.PLAIN.getName());
             codeScreenshotConfig.setWaterMarkFontText(Constants.PLUGIN_NAME);
             codeScreenshotConfig.setWaterMarkFontColor(0xffabb8c3);
+            codeScreenshotConfig.setAutoAddWaterMark(Boolean.FALSE);
         } else {
             codeScreenshotConfig.setScale(Objects.isNull(codeScreenshotConfig.getScale()) ? 1.5D : codeScreenshotConfig.getScale());
             codeScreenshotConfig.setInnerPadding(Objects.isNull(codeScreenshotConfig.getInnerPadding()) ? 16D : codeScreenshotConfig.getInnerPadding());
@@ -54,6 +55,7 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setWaterMarkFontStyle(Objects.isNull(codeScreenshotConfig.getWaterMarkFontStyle()) ? FontStyleEnum.PLAIN.getName() : codeScreenshotConfig.getWaterMarkFontStyle());
             codeScreenshotConfig.setWaterMarkFontText(Objects.isNull(codeScreenshotConfig.getWaterMarkFontText()) ? Constants.PLUGIN_NAME : codeScreenshotConfig.getWaterMarkFontText());
             codeScreenshotConfig.setWaterMarkFontColor(Objects.isNull(codeScreenshotConfig.getWaterMarkFontColor()) ? 0xffabb8c3 : codeScreenshotConfig.getWaterMarkFontColor());
+            codeScreenshotConfig.setAutoAddWaterMark(Objects.isNull(codeScreenshotConfig.getAutoAddWaterMark()) ? Boolean.FALSE : codeScreenshotConfig.getAutoAddWaterMark());
         }
         return codeScreenshotConfig;
     }

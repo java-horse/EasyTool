@@ -33,18 +33,30 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        return !Objects.equals(Convert.toInt(codeScreenshotConfig.getScale()), codeScreenshotSettingView.getScaleSlider().getValue())
-                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getInnerPadding()), codeScreenshotSettingView.getInnerPaddingSlider().getValue())
-                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getOuterPadding()), codeScreenshotSettingView.getOuterPaddingSlider().getValue())
-                || !Objects.equals(codeScreenshotConfig.getWindowRoundness(), codeScreenshotSettingView.getWindowRoundnessSlider().getValue())
-                || !Objects.equals(codeScreenshotConfig.getBackgroundColor(), codeScreenshotSettingView.getInitBackgroundColor().getRGB())
-                || !Objects.equals(codeScreenshotConfig.getRemoveIndentation(), codeScreenshotSettingView.getRemoveIndentationCheckBox().isSelected())
-                || !Objects.equals(codeScreenshotConfig.getShowWindowIcons(), codeScreenshotSettingView.getShowWindowIconsCheckBox().isSelected())
-                || !Objects.equals(codeScreenshotConfig.getAutoCopyPayboard(), codeScreenshotSettingView.getAutoCopyPayboardCheckBox().isSelected())
-                || !StringUtils.equals(codeScreenshotConfig.getCustomFileName(), codeScreenshotSettingView.getCustomFileNameTextField().getText())
-                || !Objects.equals(codeScreenshotConfig.getCustomFileNameFormat(), codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem())
-                || !Objects.equals(codeScreenshotConfig.getCustomFileNameSuffix(), codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem())
-                || !Objects.equals(codeScreenshotConfig.getWaterMarkFontFamily(), codeScreenshotSettingView.getFontFamilyFontComboBox().getSelectedItem())
+        return !Objects.equals(Convert.toInt(codeScreenshotConfig.getScale()),
+                codeScreenshotSettingView.getScaleSlider().getValue())
+                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getInnerPadding()),
+                codeScreenshotSettingView.getInnerPaddingSlider().getValue())
+                || !Objects.equals(Convert.toInt(codeScreenshotConfig.getOuterPadding()),
+                codeScreenshotSettingView.getOuterPaddingSlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getWindowRoundness(),
+                codeScreenshotSettingView.getWindowRoundnessSlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getBackgroundColor(),
+                codeScreenshotSettingView.getInitBackgroundColor().getRGB())
+                || !Objects.equals(codeScreenshotConfig.getRemoveIndentation(),
+                codeScreenshotSettingView.getRemoveIndentationCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getShowWindowIcons(),
+                codeScreenshotSettingView.getShowWindowIconsCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getAutoCopyPayboard(),
+                codeScreenshotSettingView.getAutoCopyPayboardCheckBox().isSelected())
+                || !StringUtils.equals(codeScreenshotConfig.getCustomFileName(),
+                codeScreenshotSettingView.getCustomFileNameTextField().getText())
+                || !Objects.equals(codeScreenshotConfig.getCustomFileNameFormat(),
+                codeScreenshotSettingView.getCustomFileNameFormatComboBox().getSelectedItem())
+                || !Objects.equals(codeScreenshotConfig.getCustomFileNameSuffix(),
+                codeScreenshotSettingView.getCustomFileNameSuffixComboBox().getSelectedItem())
+                || !Objects.equals(codeScreenshotConfig.getWaterMarkFontFamily(),
+                codeScreenshotSettingView.getFontFamilyFontComboBox().getSelectedItem())
                 || !Objects.equals(codeScreenshotConfig.getWaterMarkFontStyle(),
                 codeScreenshotSettingView.getFontStyleComboBox().getSelectedItem())
                 || !StringUtils.equals(codeScreenshotConfig.getWaterMarkFontSize(),
@@ -52,7 +64,9 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
                 || !StringUtils.equals(codeScreenshotConfig.getWaterMarkFontText(),
                 codeScreenshotSettingView.getFontWaterMarkTextField().getText())
                 || !Objects.equals(codeScreenshotConfig.getWaterMarkFontColor(),
-                codeScreenshotSettingView.getInitFontColor().getRGB());
+                codeScreenshotSettingView.getInitFontColor().getRGB())
+                || !Objects.equals(codeScreenshotConfig.getAutoAddWaterMark(),
+                codeScreenshotSettingView.getAutoAddWaterMarkCheckBox().isSelected());
     }
 
     @Override
@@ -79,7 +93,7 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
         codeScreenshotConfig.setWaterMarkFontSize(codeScreenshotSettingView.getFontSizeTextField().getText());
         codeScreenshotConfig.setWaterMarkFontText(codeScreenshotSettingView.getFontWaterMarkTextField().getText());
         codeScreenshotConfig.setWaterMarkFontColor(codeScreenshotSettingView.getInitFontColor().getRGB());
-
+        codeScreenshotConfig.setAutoAddWaterMark(codeScreenshotSettingView.getAutoAddWaterMarkCheckBox().isSelected());
         // 校验
         ValidatorUtil.isTrue(NumberUtil.isNumber(codeScreenshotConfig.getWaterMarkFontSize()), String.format("Font " +
                 "Size 的值【%s】非合法整数, 请重新配置", codeScreenshotConfig.getWaterMarkFontSize()));

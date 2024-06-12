@@ -12,6 +12,7 @@ import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -58,6 +59,7 @@ public class CodeScreenshotSettingView {
     private JTextField fontColorTextField;
     private JButton fontColorButton;
     private JLabel fontColorLabel;
+    private JCheckBox autoAddWaterMarkCheckBox;
 
     private Color initBackgroundColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
     private Color initFontColor = new JBColor(new Color(171, 184, 195), new Color(171, 184, 195));
@@ -86,6 +88,15 @@ public class CodeScreenshotSettingView {
         });
         updateFontColorText();
         EasyCommonUtil.customBackgroundText(fontWaterMarkTextField, "请输入水印字符...");
+        autoAddWaterMarkCheckBox.addItemListener(e -> {
+            boolean selectResult = e.getStateChange() == ItemEvent.SELECTED;
+            fontFamilyFontComboBox.setEnabled(selectResult);
+            fontSizeTextField.setEnabled(selectResult);
+            fontStyleComboBox.setEnabled(selectResult);
+            fontWaterMarkTextField.setEnabled(selectResult);
+            fontColorTextField.setEnabled(selectResult);
+            fontColorButton.setEnabled(selectResult);
+        });
     }
 
 
@@ -112,6 +123,7 @@ public class CodeScreenshotSettingView {
         setFontWaterMarkTextField(codeScreenshotConfig.getWaterMarkFontText());
         setInitFontColor(new JBColor(new Color(codeScreenshotConfig.getWaterMarkFontColor(), true), new Color(codeScreenshotConfig.getWaterMarkFontColor(), true)));
         updateFontColorText();
+        setAutoAddWaterMarkCheckBox(codeScreenshotConfig.getAutoAddWaterMark());
     }
 
     /**
@@ -269,4 +281,13 @@ public class CodeScreenshotSettingView {
     public void setInitFontColor(Color initFontColor) {
         this.initFontColor = initFontColor;
     }
+
+    public JCheckBox getAutoAddWaterMarkCheckBox() {
+        return autoAddWaterMarkCheckBox;
+    }
+
+    public void setAutoAddWaterMarkCheckBox(Boolean autoAddWaterMarkCheckBox) {
+        this.autoAddWaterMarkCheckBox.setSelected(autoAddWaterMarkCheckBox);
+    }
+
 }
