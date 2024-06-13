@@ -2,7 +2,6 @@ package easy.form;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
@@ -20,8 +19,6 @@ import java.util.Objects;
  * @date: 2023/12/17 11:01:56
  */
 public class CommonSettingView {
-
-    private static final Logger log = Logger.getInstance(CommonSettingView.class);
 
     private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
 
@@ -69,12 +66,13 @@ public class CommonSettingView {
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
-        tabHighlightEnableCheckBox.addChangeListener(e -> {
+        tabHighlightEnableCheckBox.addItemListener(e -> {
             boolean selected = ((JCheckBox) e.getSource()).isSelected();
             tabBackgroundColorPanel.setEnabled(selected);
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
+        tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
     }
 
     private void createUIComponents() {
@@ -109,9 +107,9 @@ public class CommonSettingView {
         tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
         tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
-        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        tabHighlightGradientStepTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         restfulDisplayApiCommentTipLabel.setToolTipText("开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
-        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        restfulDisplayApiCommentTipLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     /**

@@ -1,7 +1,6 @@
 package easy.form;
 
 import com.google.common.collect.Lists;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.ui.MessageConstants;
@@ -174,14 +173,16 @@ public class TranslateSettingView {
             translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(selectedItem)));
         });
         baiduDomainCheckBox.addActionListener(e -> baiduDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        baiduDomainCheckBox.setSelected(translateConfig.getBaiduDomainCheckBox());
         aliyunDomainCheckBox.addActionListener(e -> aliyunDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        aliyunDomainCheckBox.setSelected(translateConfig.getAliyunDomainCheckBox());
+        youdaoDomainCheckBox.addActionListener(e -> youdaoDomainComboBox.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+        youdaoDomainCheckBox.setSelected(translateConfig.getYoudaoDomainCheckBox());
+
         // 设置温馨提示
-        translateChannelTipLabel.setIcon(AllIcons.General.ContextHelp);
-        translateChannelTipLabel.setToolTipText(TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
-        customApiMaxCharLengthTipLabel.setIcon(AllIcons.General.ContextHelp);
-        customApiMaxCharLengthTipLabel.setToolTipText("每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
-        customSupportLanguageTipLabel.setIcon(AllIcons.General.ContextHelp);
-        customSupportLanguageTipLabel.setToolTipText(String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
+        EasyCommonUtil.customLabelTipText(translateChannelTipLabel, TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
+        EasyCommonUtil.customLabelTipText(customApiMaxCharLengthTipLabel, "每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
+        EasyCommonUtil.customLabelTipText(customSupportLanguageTipLabel, String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
     }
 
 

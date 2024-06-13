@@ -14,6 +14,7 @@ import com.intellij.openapi.wm.impl.IdeBackgroundUtil;
 import easy.background.BackgroundService;
 import easy.base.Constants;
 import easy.enums.BackgroundImageChangeScopeEnum;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -51,16 +52,12 @@ public class BackgroundImageSettingView implements Configurable {
     @Override
     public @Nullable JComponent createComponent() {
         // 设置功能提示
-        changeSwitchTipLabel.setIcon(AllIcons.General.Warning);
-        changeSwitchTipLabel.setToolTipText("开启IDE背景轮播会消耗一定内存，请谨慎开启！");
-        imageFolderTipLabel.setIcon(AllIcons.General.ContextHelp);
-        imageFolderTipLabel.setToolTipText("建议文件夹中背景图片不宜过多");
-        changeModelTipLabel.setIcon(AllIcons.General.ContextHelp);
-        changeModelTipLabel.setToolTipText("建议背景轮播间隔单位为：分钟（MINUTES）");
-        changeScopeTipLabel.setIcon(AllIcons.General.ContextHelp);
-        changeScopeTipLabel.setToolTipText("建议背景图展示范围为：BOTH（IDE可视范围内背景全覆盖）");
-        imageCountTipLabel.setIcon(AllIcons.General.ContextHelp);
-        imageCountTipLabel.setToolTipText("背景轮播图数量限制，建议控制在10张以内（无论文件夹有多少图片，都只会读取此限制数量的图片）");
+        EasyCommonUtil.customLabelTipText(changeSwitchTipLabel,"开启IDE背景轮播会消耗一定内存，请谨慎开启！");
+        EasyCommonUtil.customLabelTipText(imageFolderTipLabel,"建议文件夹中背景图片不宜过多");
+        EasyCommonUtil.customLabelTipText(changeModelTipLabel,"建议背景轮播间隔单位为：分钟（MINUTES）");
+        EasyCommonUtil.customLabelTipText(changeScopeTipLabel,"建议背景图展示范围为：BOTH（IDE可视范围内背景全覆盖）");
+        EasyCommonUtil.customLabelTipText(imageCountTipLabel,"背景轮播图数量限制，建议控制在10张以内（无论文件夹有多少图片，都只会读取此限制数量的图片）");
+
         // 默认不开启背景轮播功能
         changeSwitchEnableCheckBox.setSelected(false);
         changeSwitchEnableCheckBox.addActionListener(e -> {

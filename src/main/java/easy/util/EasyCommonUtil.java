@@ -2,6 +2,7 @@ package easy.util;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.intellij.icons.AllIcons;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -230,6 +231,23 @@ public class EasyCommonUtil {
                 }
             });
         }
+    }
+
+    /**
+     * 自定义标签提示文本
+     *
+     * @param label   组件
+     * @param tipText 提示文本
+     * @author mabin
+     * @date 2024/06/13 10:37
+     */
+    public static void customLabelTipText(@NotNull JLabel label, String tipText) {
+        if (Objects.isNull(tipText) || tipText.isBlank()) {
+            return;
+        }
+        label.setIcon(AllIcons.General.ContextHelp);
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        label.setToolTipText(tipText);
     }
 
 }
