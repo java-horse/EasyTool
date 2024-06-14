@@ -220,6 +220,9 @@ public class SwaggerViewDialog extends DialogWrapper {
                     ? (" (" + psiClass.getQualifiedName() + ")") : StringUtils.EMPTY)), className, getIcon(psiClass.getAnnotations(), classSwaggerList, AllIcons.Nodes.Class), psiClass, false));
             List<String> fieldSwaggerList = List.of(SwaggerAnnotationEnum.API_MODEL_PROPERTY.getClassPackage(), SwaggerAnnotationEnum.SCHEMA.getClassPackage());
             for (PsiField psiField : psiClass.getFields()) {
+                if (!psiField.isPhysical()) {
+                    continue;
+                }
                 String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                 attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiFieldName), psiFieldName,
                         getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(psiFieldName, Constants.UID)
@@ -233,6 +236,9 @@ public class SwaggerViewDialog extends DialogWrapper {
                             ? (" (" + innerClass.getQualifiedName() + ")") : StringUtils.EMPTY)), innerClassName, getIcon(innerClass.getAnnotations(),
                             classSwaggerList, AllIcons.Nodes.Class), innerClass, false));
                     for (PsiField psiField : innerClass.getFields()) {
+                        if (!psiField.isPhysical()) {
+                            continue;
+                        }
                         String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                         attributeItemList.add(new AttributeItem(String.format(getBoldText(innerClassName), StrUtil.DOT + psiFieldName),
                                 psiFieldName, getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(Constants.UID, psiFieldName)

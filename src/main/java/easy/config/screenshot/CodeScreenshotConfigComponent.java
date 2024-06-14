@@ -22,8 +22,8 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
         if (Objects.isNull(codeScreenshotConfig)) {
             codeScreenshotConfig = new CodeScreenshotConfig();
             codeScreenshotConfig.setScale(1.5D);
-            codeScreenshotConfig.setInnerPadding(16D);
-            codeScreenshotConfig.setOuterPadding(10D);
+            codeScreenshotConfig.setInnerPadding(5D);
+            codeScreenshotConfig.setOuterPadding(5D);
             codeScreenshotConfig.setWindowRoundness(10);
             codeScreenshotConfig.setBackgroundColor(0xffabb8c3);
             codeScreenshotConfig.setRemoveIndentation(Boolean.TRUE);
@@ -40,8 +40,8 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setAutoAddWaterMark(Boolean.FALSE);
         } else {
             codeScreenshotConfig.setScale(Objects.isNull(codeScreenshotConfig.getScale()) ? 1.5D : codeScreenshotConfig.getScale());
-            codeScreenshotConfig.setInnerPadding(Objects.isNull(codeScreenshotConfig.getInnerPadding()) ? 16D : codeScreenshotConfig.getInnerPadding());
-            codeScreenshotConfig.setOuterPadding(Objects.isNull(codeScreenshotConfig.getOuterPadding()) ? 10D : codeScreenshotConfig.getOuterPadding());
+            codeScreenshotConfig.setInnerPadding(Objects.isNull(codeScreenshotConfig.getInnerPadding()) ? 5D : codeScreenshotConfig.getInnerPadding());
+            codeScreenshotConfig.setOuterPadding(Objects.isNull(codeScreenshotConfig.getOuterPadding()) ? 5D : codeScreenshotConfig.getOuterPadding());
             codeScreenshotConfig.setWindowRoundness(Objects.isNull(codeScreenshotConfig.getWindowRoundness()) ? 10 : codeScreenshotConfig.getWindowRoundness());
             codeScreenshotConfig.setBackgroundColor(Objects.isNull(codeScreenshotConfig.getBackgroundColor()) ? 0xffabb8c3 : codeScreenshotConfig.getBackgroundColor());
             codeScreenshotConfig.setRemoveIndentation(Objects.isNull(codeScreenshotConfig.getRemoveIndentation()) ? Boolean.TRUE : codeScreenshotConfig.getRemoveIndentation());

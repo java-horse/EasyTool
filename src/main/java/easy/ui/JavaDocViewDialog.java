@@ -3,7 +3,6 @@ package easy.ui;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
@@ -217,6 +216,10 @@ public class JavaDocViewDialog extends DialogWrapper {
                     if (Arrays.stream(psiField.getAnnotations()).anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(), Resource.class.getName(), ExtraPackageNameEnum.AUTOWIRED.getName()))) {
                         continue;
                     }
+                    // 属性是否物理存在的(可排除lombok动态生成的)
+                    if (!psiField.isPhysical()) {
+                        continue;
+                    }
                     String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                     attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiFieldName), psiFieldName,
                             Objects.isNull(psiField.getDocComment()) ? ((psiField.hasModifierProperty(PsiModifier.STATIC) || psiField.hasModifierProperty(PsiModifier.FINAL))) ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field : AllIcons.Nodes.AnonymousClass, psiField, false));
@@ -226,6 +229,9 @@ public class JavaDocViewDialog extends DialogWrapper {
             PsiMethod[] psiMethods = psiClass.getMethods();
             if (ArrayUtils.isNotEmpty(psiMethods)) {
                 for (PsiMethod psiMethod : psiMethods) {
+                    if (!psiMethod.isPhysical()) {
+                        continue;
+                    }
                     List<String> paramList = Arrays.stream(psiMethod.getParameterList().getParameters()).map(psiParameter -> psiParameter.getName() + ":" + StringUtils.split(psiParameter.getType().toString(), ":")[1]).toList();
                     String psiMethodName = PsiElementUtil.getPsiElementNameIdentifierText(psiMethod);
                     attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")"), psiMethodName, Objects.isNull(psiMethod.getDocComment()) ? AllIcons.Nodes.Method : AllIcons.Nodes.AnonymousClass, psiMethod, false));
