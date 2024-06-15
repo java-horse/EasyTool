@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="776" height="1690"/>
+      <xy x="20" y="20" width="776" height="1710"/>
     </constraints>
     <properties>
       <toolTipText value=""/>
@@ -101,16 +101,6 @@
               <text value="SecretKey"/>
             </properties>
           </component>
-          <component id="65aa6" class="javax.swing.JTextField" binding="secretKeyTextField">
-            <constraints>
-              <grid row="5" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="492" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入SecretKey"/>
-            </properties>
-          </component>
           <component id="ed31a" class="javax.swing.JLabel" binding="accessKeyIdLabel">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -138,16 +128,6 @@
               <toolTipText value=""/>
             </properties>
           </component>
-          <component id="d1fac" class="javax.swing.JTextField" binding="accessKeySecretTextField">
-            <constraints>
-              <grid row="8" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="492" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入AccessKeySecret"/>
-            </properties>
-          </component>
           <component id="5574c" class="javax.swing.JTextField" binding="appIdTextField">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -156,16 +136,6 @@
             </constraints>
             <properties>
               <toolTipText value="请输入AppId"/>
-            </properties>
-          </component>
-          <component id="6760e" class="javax.swing.JTextField" binding="appSecretTextField">
-            <constraints>
-              <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="492" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入AppSecret"/>
             </properties>
           </component>
           <component id="615ea" class="javax.swing.JLabel">
@@ -252,16 +222,6 @@
               <toolTipText value="请输入TencentSecretId"/>
             </properties>
           </component>
-          <component id="988f0" class="javax.swing.JTextField" binding="tencentSecretKeyTextField">
-            <constraints>
-              <grid row="11" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入TencentSecretKey"/>
-            </properties>
-          </component>
           <component id="df12a" class="javax.swing.JLabel" binding="volcanoSecretIdLabel">
             <constraints>
               <grid row="12" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -288,16 +248,6 @@
               <toolTipText value="请输入volcanoSecretId"/>
             </properties>
           </component>
-          <component id="6fe98" class="javax.swing.JTextField" binding="volcanoSecretKeyTextField">
-            <constraints>
-              <grid row="13" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入volcanoSecretKey"/>
-            </properties>
-          </component>
           <component id="792dd" class="javax.swing.JLabel" binding="xfAppIdLabel">
             <constraints>
               <grid row="14" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -318,38 +268,10 @@
           </component>
           <component id="d3249" class="javax.swing.JLabel" binding="xfApiSecretLabel">
             <constraints>
-              <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="ApiSecret"/>
-            </properties>
-          </component>
-          <component id="77185" class="javax.swing.JTextField" binding="xfApiSecretTextField">
-            <constraints>
-              <grid row="15" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入xfApiSecretTextField"/>
-            </properties>
-          </component>
-          <component id="9103c" class="javax.swing.JLabel" binding="xfApiKeyLabel">
-            <constraints>
               <grid row="16" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="ApiKey"/>
-            </properties>
-          </component>
-          <component id="3978c" class="javax.swing.JTextField" binding="xfApiKeyTextField">
-            <constraints>
-              <grid row="16" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入xfApiKeyTextField"/>
+              <text value="ApiSecret"/>
             </properties>
           </component>
           <component id="d1a74" class="javax.swing.JLabel" binding="googleSecretKeyLabel">
@@ -360,32 +282,12 @@
               <text value="SecretKey"/>
             </properties>
           </component>
-          <component id="4386b" class="javax.swing.JTextField" binding="googleSecretKeyTextField">
-            <constraints>
-              <grid row="17" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入googleSecretKey"/>
-            </properties>
-          </component>
           <component id="17fae" class="javax.swing.JLabel" binding="microsoftKeyLabel">
             <constraints>
               <grid row="18" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="MicrosoftKey"/>
-            </properties>
-          </component>
-          <component id="4349d" class="javax.swing.JTextField" binding="microsoftKeyTextField">
-            <constraints>
-              <grid row="18" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入microsoftKey"/>
             </properties>
           </component>
           <component id="3dfbc" class="javax.swing.JLabel" binding="niuApiKeyLabel">
@@ -396,32 +298,12 @@
               <text value="ApiKey"/>
             </properties>
           </component>
-          <component id="bf381" class="javax.swing.JTextField" binding="niuApiKeyTextField">
-            <constraints>
-              <grid row="19" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入niuApiKey"/>
-            </properties>
-          </component>
           <component id="6537" class="javax.swing.JLabel" binding="caiyunTokenLabel">
             <constraints>
               <grid row="20" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Token"/>
-            </properties>
-          </component>
-          <component id="174" class="javax.swing.JTextField" binding="caiyunTokenTextField">
-            <constraints>
-              <grid row="20" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入caiyunToken"/>
             </properties>
           </component>
           <component id="494df" class="javax.swing.JLabel" binding="hwProjectIdLabel">
@@ -467,16 +349,6 @@
               <toolTipText value=""/>
             </properties>
           </component>
-          <component id="d40f6" class="javax.swing.JTextField" binding="hwAppSecretTextField">
-            <constraints>
-              <grid row="23" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <toolTipText value="请输入hwAppSecret"/>
-            </properties>
-          </component>
           <component id="22def" class="javax.swing.JLabel" binding="thsAppIdLabel">
             <constraints>
               <grid row="24" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -500,14 +372,6 @@
             <properties>
               <text value="AppSecret"/>
             </properties>
-          </component>
-          <component id="61994" class="javax.swing.JTextField" binding="thsAppSecretTextField">
-            <constraints>
-              <grid row="25" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-            </constraints>
-            <properties/>
           </component>
           <component id="55a98" class="javax.swing.JLabel" binding="openModelLabel">
             <constraints>
@@ -699,14 +563,6 @@
             </constraints>
             <properties/>
           </component>
-          <component id="23c65" class="javax.swing.JButton" binding="viewOpenModelKeyButton">
-            <constraints>
-              <grid row="31" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="预览秘钥"/>
-            </properties>
-          </component>
           <component id="c93f6" class="javax.swing.JPasswordField" binding="tyKeyTextField">
             <constraints>
               <grid row="33" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -868,6 +724,130 @@
                 <item value="translate.terraprint.co"/>
                 <item value="trans.zillyhuhn.com"/>
               </model>
+            </properties>
+          </component>
+          <component id="b976a" class="javax.swing.JPasswordField" binding="appSecretTextField">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="63c1" class="javax.swing.JPasswordField" binding="secretKeyTextField">
+            <constraints>
+              <grid row="5" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="a6a04" class="javax.swing.JPasswordField" binding="accessKeySecretTextField">
+            <constraints>
+              <grid row="8" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="d9d2f" class="javax.swing.JPasswordField" binding="tencentSecretKeyTextField">
+            <constraints>
+              <grid row="11" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="f9a73" class="javax.swing.JPasswordField" binding="volcanoSecretKeyTextField">
+            <constraints>
+              <grid row="13" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="9103c" class="javax.swing.JLabel" binding="xfApiKeyLabel">
+            <constraints>
+              <grid row="15" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="ApiKey"/>
+            </properties>
+          </component>
+          <component id="3978c" class="javax.swing.JTextField" binding="xfApiKeyTextField">
+            <constraints>
+              <grid row="15" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <toolTipText value="请输入xfApiKeyTextField"/>
+            </properties>
+          </component>
+          <component id="43b0a" class="javax.swing.JPasswordField" binding="xfApiSecretTextField">
+            <constraints>
+              <grid row="16" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="f6537" class="javax.swing.JPasswordField" binding="googleSecretKeyTextField">
+            <constraints>
+              <grid row="17" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="8529f" class="javax.swing.JPasswordField" binding="microsoftKeyTextField">
+            <constraints>
+              <grid row="18" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="397e" class="javax.swing.JPasswordField" binding="niuApiKeyTextField">
+            <constraints>
+              <grid row="19" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="65a3b" class="javax.swing.JPasswordField" binding="caiyunTokenTextField">
+            <constraints>
+              <grid row="20" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="cdb53" class="javax.swing.JPasswordField" binding="hwAppSecretTextField">
+            <constraints>
+              <grid row="23" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="8dfa5" class="javax.swing.JPasswordField" binding="thsAppSecretTextField">
+            <constraints>
+              <grid row="25" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="b816f" class="javax.swing.JLabel" binding="previewSecretLabel">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <icon value="actions/preview.png"/>
+              <text value=""/>
+              <toolTipText value="点击预览密钥"/>
             </properties>
           </component>
         </children>
