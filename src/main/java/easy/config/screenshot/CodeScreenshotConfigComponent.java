@@ -38,6 +38,10 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setWaterMarkFontText(Constants.PLUGIN_NAME);
             codeScreenshotConfig.setWaterMarkFontColor(0xffabb8c3);
             codeScreenshotConfig.setAutoAddWaterMark(Boolean.FALSE);
+            codeScreenshotConfig.setAutoFullScreenWatermark(Boolean.FALSE);
+            codeScreenshotConfig.setFontWaterMarkTransparency(2);
+            codeScreenshotConfig.setFontWaterMarkRotate(20);
+            codeScreenshotConfig.setFontWaterMarkSparsity(2);
         } else {
             codeScreenshotConfig.setScale(Objects.isNull(codeScreenshotConfig.getScale()) ? 1.5D : codeScreenshotConfig.getScale());
             codeScreenshotConfig.setInnerPadding(Objects.isNull(codeScreenshotConfig.getInnerPadding()) ? 5D : codeScreenshotConfig.getInnerPadding());
@@ -56,6 +60,10 @@ public class CodeScreenshotConfigComponent implements PersistentStateComponent<C
             codeScreenshotConfig.setWaterMarkFontText(Objects.isNull(codeScreenshotConfig.getWaterMarkFontText()) ? Constants.PLUGIN_NAME : codeScreenshotConfig.getWaterMarkFontText());
             codeScreenshotConfig.setWaterMarkFontColor(Objects.isNull(codeScreenshotConfig.getWaterMarkFontColor()) ? 0xffabb8c3 : codeScreenshotConfig.getWaterMarkFontColor());
             codeScreenshotConfig.setAutoAddWaterMark(Objects.isNull(codeScreenshotConfig.getAutoAddWaterMark()) ? Boolean.FALSE : codeScreenshotConfig.getAutoAddWaterMark());
+            codeScreenshotConfig.setAutoFullScreenWatermark(Objects.isNull(codeScreenshotConfig.getAutoFullScreenWatermark()) ? Boolean.FALSE : codeScreenshotConfig.getAutoFullScreenWatermark());
+            codeScreenshotConfig.setFontWaterMarkTransparency(Objects.isNull(codeScreenshotConfig.getFontWaterMarkTransparency()) ? 2 : codeScreenshotConfig.getFontWaterMarkTransparency());
+            codeScreenshotConfig.setFontWaterMarkRotate(Objects.isNull(codeScreenshotConfig.getFontWaterMarkRotate()) ? 20 : codeScreenshotConfig.getFontWaterMarkRotate());
+            codeScreenshotConfig.setFontWaterMarkSparsity(Objects.isNull(codeScreenshotConfig.getFontWaterMarkSparsity()) ? 2 : codeScreenshotConfig.getFontWaterMarkSparsity());
         }
         return codeScreenshotConfig;
     }

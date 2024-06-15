@@ -66,7 +66,17 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
                 || !Objects.equals(codeScreenshotConfig.getWaterMarkFontColor(),
                 codeScreenshotSettingView.getInitFontColor().getRGB())
                 || !Objects.equals(codeScreenshotConfig.getAutoAddWaterMark(),
-                codeScreenshotSettingView.getAutoAddWaterMarkCheckBox().isSelected());
+                codeScreenshotSettingView.getAutoAddWaterMarkCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getAutoFullScreenWatermark(),
+                codeScreenshotSettingView.getAutoFullScreenWatermarkCheckBox().isSelected())
+                || !Objects.equals(codeScreenshotConfig.getFontWaterMarkTransparency(),
+                codeScreenshotSettingView.getFontWaterMarkTransparencySlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getFontWaterMarkSparsity(),
+                codeScreenshotSettingView.getFontWaterMarkSparsitySlider().getValue())
+                || !Objects.equals(codeScreenshotConfig.getFontWaterMarkRotate(),
+                codeScreenshotSettingView.getFontWaterMarkRotateSlider().getValue());
+
+
     }
 
     @Override
@@ -94,6 +104,10 @@ public class CodeScreenshotSettingConfigurable implements Configurable {
         codeScreenshotConfig.setWaterMarkFontText(codeScreenshotSettingView.getFontWaterMarkTextField().getText());
         codeScreenshotConfig.setWaterMarkFontColor(codeScreenshotSettingView.getInitFontColor().getRGB());
         codeScreenshotConfig.setAutoAddWaterMark(codeScreenshotSettingView.getAutoAddWaterMarkCheckBox().isSelected());
+        codeScreenshotConfig.setAutoFullScreenWatermark(codeScreenshotSettingView.getAutoFullScreenWatermarkCheckBox().isSelected());
+        codeScreenshotConfig.setFontWaterMarkTransparency(codeScreenshotSettingView.getFontWaterMarkTransparencySlider().getValue());
+        codeScreenshotConfig.setFontWaterMarkSparsity(codeScreenshotSettingView.getFontWaterMarkSparsitySlider().getValue());
+        codeScreenshotConfig.setFontWaterMarkRotate(codeScreenshotSettingView.getFontWaterMarkRotateSlider().getValue());
         // 校验
         ValidatorUtil.isTrue(NumberUtil.isNumber(codeScreenshotConfig.getWaterMarkFontSize()), String.format("Font " +
                 "Size 的值【%s】非合法整数, 请重新配置", codeScreenshotConfig.getWaterMarkFontSize()));

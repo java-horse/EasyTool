@@ -19,7 +19,6 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.scale.JBUIScale;
 import easy.base.Constants;
 import easy.config.screenshot.CodeScreenshotConfig;
-import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.enums.FontStyleEnum;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +32,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Objects;
 
@@ -134,16 +135,32 @@ public class CodeScreenshotHandler {
             Graphics2D g = bufferedImage.createGraphics();
             g.drawImage(targetImg, 0, 0, width, height, null);
             Integer fontSize = Convert.toInt(config.getWaterMarkFontSize());
-            int x = width - (config.getWaterMarkFontText().length() + 1) * fontSize;
-            int y = height - fontSize * 2;
             // 设置颜色
             g.setColor(new JBColor(config.getWaterMarkFontColor(), config.getWaterMarkFontColor()));
             // 设置透明度
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));
+            float alpha = BigDecimal.valueOf(config.getFontWaterMarkTransparency()).divide(BigDecimal.valueOf(10), 2, RoundingMode.HALF_UP).floatValue();
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
             // 设置字体
             g.setFont(new Font(config.getWaterMarkFontFamily(), FontStyleEnum.getFontStyle(config.getWaterMarkFontStyle()), fontSize));
             // 设置水印
-            g.drawString(config.getWaterMarkFontText(), x, y);
+            if (config.getAutoFullScreenWatermark()) {
+                // 设置旋转角度
+                g.rotate(Math.toRadians(config.getFontWaterMarkRotate()));
+                // 全屏自适应平铺水印
+                int lineSpacing = fontSize * 2;
+                int xWidth = getWaterMarkWidth(config.getWaterMarkFontText(), fontSize);
+                int xCanNum = width / xWidth + 1;
+                int yCanNum = height / fontSize + 1;
+                for (int i = 1; i <= yCanNum; i += config.getFontWaterMarkSparsity()) {
+                    int y = fontSize * i + lineSpacing * i;
+                    for (int j = 0; j < xCanNum; j += config.getFontWaterMarkSparsity()) {
+                        g.drawString(config.getWaterMarkFontText(), xWidth * j + lineSpacing * j, y - (fontSize + lineSpacing) * j);
+                    }
+                }
+            } else {
+                // 右下角水印
+                g.drawString(config.getWaterMarkFontText(), width - (config.getWaterMarkFontText().length() + 1) * fontSize, height - fontSize * 2);
+            }
             // 释放资源
             g.dispose();
             return bufferedImage;
@@ -299,5 +316,26 @@ public class CodeScreenshotHandler {
             selectionModel.setSelection(range.getStartOffset(), range.getEndOffset());
         }
     }
+
+
+    /**
+     * 获取水印文字占用宽度
+     *
+     * @param markText markText
+     * @param fontSize 字体大小
+     * @return int
+     * @author mabin
+     * @date 2024/06/14 13:59
+     */
+    private static int getWaterMarkWidth(String markText, int fontSize) {
+        char[] chars = markText.toCharArray();
+        int fontSize2 = fontSize / 2;
+        int width = 0;
+        for (char c : chars) {
+            width += String.valueOf(c).getBytes().length != 1 ? fontSize : fontSize2;
+        }
+        return width;
+    }
+
 
 }
