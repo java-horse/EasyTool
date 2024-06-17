@@ -1,10 +1,25 @@
 package easy.form;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.StrPool;
+import cn.hutool.core.text.csv.CsvUtil;
+import cn.hutool.core.text.csv.CsvWriter;
+import cn.hutool.core.util.CharsetUtil;
 import com.google.common.collect.Lists;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.ListCellRendererWrapper;
 import com.intellij.ui.ToolbarDecorator;
@@ -20,12 +35,14 @@ import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -324,10 +341,51 @@ public class TranslateSettingView {
         });
         toolbarDecorator.disableUpDownActions();
         toolbarDecorator.setRemoveAction(anActionButton -> {
+            // TODO 二次确认删除
             Map<String, String> typeMap = translateConfig.getGlobalWordMap();
             typeMap.remove(globalWordMapList.getSelectedValue().getKey());
             refreshGlobalWordMap();
         });
+        DefaultActionGroup defaultActionGroup = new DefaultActionGroup();
+        defaultActionGroup.addSeparator();
+        defaultActionGroup.addAction(new AnAction(AllIcons.ToolbarDecorator.Export) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                // 创建文件保存弹窗
+                FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Global Word Mapping", Constants.PLUGIN_NAME),
+                        "Select a location to save the word mapping", "csv");
+                FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
+                VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + StrPool.UNDERLINE + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
+                if (Objects.isNull(virtualFileWrapper)) {
+                    return;
+                }
+                // 组装并导出csv文件
+                CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
+                csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.source.word.text"));
+                if (Objects.nonNull(globalWordMapList) && !globalWordMapList.isEmpty()) {
+                    int size = globalWordMapList.getModel().getSize();
+                    for (int i = 0; i < size; i++) {
+                        Entry<String, String> entry = globalWordMapList.getModel().getElementAt(i);
+                        csvWriter.writeLine(entry.getKey(), entry.getValue());
+                    }
+                    csvWriter.close();
+                }
+            }
+        });
+        defaultActionGroup.addAction(new AnAction(AllIcons.ToolbarDecorator.Import) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                // TODO 导入CSV文件
+            }
+        });
+        defaultActionGroup.addSeparator();
+        defaultActionGroup.addAction(new AnAction(AllIcons.Actions.Download) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                // TODO 导出CSV模板文件
+            }
+        });
+        toolbarDecorator.setActionGroup(defaultActionGroup);
         globalWordMappingPanel = toolbarDecorator.createPanel();
     }
 
