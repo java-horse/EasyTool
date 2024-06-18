@@ -9,6 +9,7 @@ import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocTemplateConfig.CustomValue;
 import easy.enums.JavaDocInnerVariableEnum;
 import easy.settings.doc.template.AbstractJavaDocTemplateSettingView;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -93,8 +94,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
     public FieldSettingsView(JavaDocConfig config) {
         super(config);
         // 添加提示标签
-        defaultRadioTipLabel.setIcon(AllIcons.General.ContextHelp);
-        defaultRadioTipLabel.setToolTipText("默认注释模板：<br>" +
+        EasyCommonUtil.customLabelTipText(defaultRadioTipLabel, "默认注释模板：<br>" +
                 "/**<br>" +
                 " * $DOC$<br>" +
                 " */");

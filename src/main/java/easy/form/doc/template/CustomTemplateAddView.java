@@ -1,10 +1,10 @@
 package easy.form.doc.template;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.enums.JavaDocVariableTypeEnum;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,10 +32,8 @@ public class CustomTemplateAddView extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        methodNameTipLabel.setIcon(AllIcons.General.ContextHelp);
-        methodNameTipLabel.setToolTipText("请输入变量名，并用$前后包裹，例如:$AUTHOR$");
-        customValueTipLabel.setIcon(AllIcons.General.ContextHelp);
-        customValueTipLabel.setToolTipText("请选择下方Groovy脚本名称填入，例如:className");
+        EasyCommonUtil.customLabelTipText(methodNameTipLabel, "请输入变量名，并用$前后包裹，例如:$AUTHOR$");
+        EasyCommonUtil.customLabelTipText(customValueTipLabel, "请选择下方Groovy脚本名称填入，例如:className");
         return panel;
     }
 

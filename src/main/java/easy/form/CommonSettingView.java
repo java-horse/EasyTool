@@ -7,6 +7,7 @@ import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,28 +89,13 @@ public class CommonSettingView {
      * @date 2023/12/27 15:43
      */
     private void setTipsLabel() {
-        swaggerConfirmModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        searchApiTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        translateConfirmInputModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabBackgroundTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabHighlightSizeTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabHighlightGradientStepTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        restfulDisplayApiCommentTipLabel.setIcon(AllIcons.General.ContextHelp);
-
-        swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
-        swaggerConfirmModelTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
-        searchApiTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        translateConfirmInputModelTipsLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
-        translateConfirmInputModelTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
-        tabBackgroundTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
-        tabHighlightSizeTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
-        tabHighlightGradientStepTipsLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        restfulDisplayApiCommentTipLabel.setToolTipText("开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
-        restfulDisplayApiCommentTipLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        EasyCommonUtil.customLabelTipText(swaggerConfirmModelTipsLabel, BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(searchApiTipsLabel, BundleUtil.getI18n("search.api.icon.tip.text"));
+        EasyCommonUtil.customLabelTipText(translateConfirmInputModelTipsLabel, BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabBackgroundTipsLabel, BundleUtil.getI18n("tab.background.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabHighlightSizeTipsLabel, BundleUtil.getI18n("tab.highlight.size.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabHighlightGradientStepTipsLabel, BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
+        EasyCommonUtil.customLabelTipText(restfulDisplayApiCommentTipLabel, "开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
     }
 
     /**
