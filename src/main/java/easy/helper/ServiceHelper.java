@@ -1,4 +1,4 @@
-package easy.handler;
+package easy.helper;
 
 import com.intellij.openapi.application.ApplicationManager;
 

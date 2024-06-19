@@ -12,7 +12,7 @@ import com.intellij.openapi.project.Project;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.handler.CodeScreenshotHandler;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.NotifyUtil;
 import org.jetbrains.annotations.NotNull;
 

@@ -7,7 +7,7 @@ import com.intellij.ui.FontComboBox;
 import com.intellij.ui.JBColor;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.EasyCommonUtil;
 
 import javax.swing.*;

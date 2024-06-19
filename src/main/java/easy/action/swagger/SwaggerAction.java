@@ -14,7 +14,7 @@ import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerServiceEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.ui.SwaggerViewDialog;
 import easy.util.BundleUtil;
 import org.apache.commons.lang3.StringUtils;

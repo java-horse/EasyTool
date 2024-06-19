@@ -7,7 +7,7 @@ import com.intellij.openapi.options.ConfigurationException;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.config.screenshot.CodeScreenshotConfigComponent;
 import easy.form.CodeScreenshotSettingView;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;

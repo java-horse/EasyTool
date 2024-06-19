@@ -14,7 +14,7 @@ import easy.doc.service.JavaDocWriterService;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.swagger.SwaggerGenerateService;
 import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;
