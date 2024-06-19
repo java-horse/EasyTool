@@ -582,6 +582,18 @@
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 5"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 5"/>
         </action>
+        <!--Widget工具小组件-->
+        <action id="EasyToolWidgetToolAnnotationViewAction" class="easy.action.WidgetToolAnnotationAction" text="Annotation"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.WIDGET">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 6"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 6"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 6"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 6"/>
+        </action>
+        <group id="EasyToolWidgetToolActionGroups" text="WidgetTool" description="EasyTool development assistance tools"
+               icon="easy.icons.EasyIcons.ICON.WIDGET" popup="true" compact="true">
+            <reference ref="EasyToolWidgetToolAnnotationViewAction"/>
+        </group>
 
         <!--编辑器右键菜单-->
         <group id="easy.tool.editor.actions" text="EasyTool" description="EasyTool development assistance tools"
@@ -599,6 +611,7 @@
             <reference ref="EasyToolSerialAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
+            <reference ref="EasyToolWidgetToolActionGroups"/>
             <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>

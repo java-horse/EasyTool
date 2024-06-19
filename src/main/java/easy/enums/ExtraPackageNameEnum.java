@@ -45,6 +45,8 @@ public enum ExtraPackageNameEnum {
     VALIDATED("org.springframework.validation.annotation.Validated", "Validated"),
     RUN_WITH("org.junit.runner.RunWith", "RunWith"),
     AUTOWIRED("org.springframework.beans.factory.annotation.Autowired", "Autowired"),
+    MAPPER("org.apache.ibatis.annotations.Mapper", "Mapper"),
+    SERIALIZED_NAME("com.google.gson.annotations.SerializedName", "SerializedName"),
     ;
 
     private final String name;
