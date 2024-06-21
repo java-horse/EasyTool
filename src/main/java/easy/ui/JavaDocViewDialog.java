@@ -160,9 +160,15 @@ public class JavaDocViewDialog extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        // 是否至少选了一个
-        if (CollectionUtils.isEmpty(attributesList.getSelectedValuesList().stream()
-                .filter(AttributeItem::isSelected).toList())) {
+        // 是否存在选择属性
+        List<AttributeItem> selectedItemList = new ArrayList<>();
+        for (int i = 0; i < attributesList.getModel().getSize(); i++) {
+            AttributeItem item = attributesList.getModel().getElementAt(i);
+            if (Objects.nonNull(item) && item.isSelected()) {
+                selectedItemList.add(item);
+            }
+        }
+        if (CollectionUtils.isEmpty(selectedItemList)) {
             Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
             return;
         }
@@ -173,20 +179,17 @@ public class JavaDocViewDialog extends DialogWrapper {
         } else if (syncGenSwagger3CheckBox.isSelected()) {
             swaggerServiceEnum = SwaggerServiceEnum.SWAGGER_3;
         }
-        for (int i = 0; i < attributesList.getModel().getSize(); i++) {
-            AttributeItem item = attributesList.getModel().getElementAt(i);
-            if (item.isSelected()) {
-                // 生成JavaDoc
-                String comment = JavaDocGenerateService.generate(item.getPsiElement());
-                if (StringUtils.isNotBlank(comment)) {
-                    javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
-                }
-                // 生成Swagger
-                if (Objects.nonNull(swaggerServiceEnum)) {
-                    SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-                    swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
-                    swaggerGenerateService.doGenerate();
-                }
+        for (AttributeItem item : selectedItemList) {
+            // 生成JavaDoc
+            String comment = JavaDocGenerateService.generate(item.getPsiElement());
+            if (StringUtils.isNotBlank(comment)) {
+                javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+            }
+            // 生成Swagger
+            if (Objects.nonNull(swaggerServiceEnum)) {
+                SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
+                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
+                swaggerGenerateService.doGenerate();
             }
         }
         super.doOKAction();
