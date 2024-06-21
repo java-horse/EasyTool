@@ -49,6 +49,7 @@ public enum ExtraPackageNameEnum {
     SERIALIZED_NAME("com.google.gson.annotations.SerializedName", "SerializedName"),
     JSON_FIELD("com.alibaba.fastjson2.annotation.JSONField", "JSONField"),
     EXCEL_PROPERTY("com.alibaba.excel.annotation.ExcelProperty", "ExcelProperty"),
+    RESOURCE("javax.annotation.Resource", "Resource"),
     ;
 
     private final String name;

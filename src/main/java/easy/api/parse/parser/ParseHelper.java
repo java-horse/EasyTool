@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.intellij.lang.jvm.JvmParameter;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -23,6 +22,7 @@ import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.util.PsiElementUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -363,7 +363,10 @@ public class ParseHelper {
                 // 解析枚举表达式
                 int fieldIndex = -1;
                 for (PsiMethod constructor : psiClass.getConstructors()) {
-                    JvmParameter[] parameters = constructor.getParameters();
+                    PsiParameter[] parameters = constructor.getParameterList().getParameters();
+                    if (ArrayUtils.isEmpty(parameters)) {
+                        continue;
+                    }
                     for (int i = 0; i < parameters.length; i++) {
                         if (parameters[i].getName().equals(fieldName)) {
                             fieldIndex = i;

@@ -24,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Resource;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -264,7 +263,8 @@ public class WidgetToolViewDialog extends DialogWrapper {
             }
             for (PsiField psiField : psiFields) {
                 // 排除注入Spring容器的Bean
-                if (Arrays.stream(psiField.getAnnotations()).anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(), Resource.class.getName(), ExtraPackageNameEnum.AUTOWIRED.getName()))) {
+                if (Arrays.stream(psiField.getAnnotations()).anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(),
+                        ExtraPackageNameEnum.RESOURCE.getName(), ExtraPackageNameEnum.AUTOWIRED.getName()))) {
                     continue;
                 }
                 // 属性是否物理存在的(可排除lombok动态生成的)

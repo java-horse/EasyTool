@@ -1,6 +1,5 @@
 package easy.api.parse.util;
 
-import com.intellij.lang.jvm.JvmModifier;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -8,6 +7,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 public class PsiUtils {
@@ -25,7 +25,8 @@ public class PsiUtils {
 
 
     public static boolean isNeedField(PsiField field) {
-        return !field.hasModifier(JvmModifier.STATIC);
+        PsiModifierList psiModifierList = field.getModifierList();
+        return Objects.nonNull(psiModifierList) && !psiModifierList.hasModifierProperty(PsiModifier.STATIC);
     }
 
     /**
@@ -43,7 +44,11 @@ public class PsiUtils {
     public static PsiField[] getStaticOrFinalFields(PsiClass t) {
         PsiField[] fields = t.getAllFields();
         return Arrays.stream(fields)
-                .filter(f -> f.hasModifier(JvmModifier.STATIC) || f.hasModifier(JvmModifier.FINAL))
+                .filter(f -> {
+                    PsiModifierList psiModifierList = f.getModifierList();
+                    return Objects.nonNull(psiModifierList) && (psiModifierList.hasModifierProperty(PsiModifier.STATIC)
+                            || psiModifierList.hasModifierProperty(PsiModifier.FINAL));
+                })
                 .toArray(PsiField[]::new);
     }
 
