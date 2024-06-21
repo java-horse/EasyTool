@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
@@ -16,7 +17,9 @@ import easy.enums.SwaggerAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
 import easy.helper.ServiceHelper;
 import easy.swagger.SwaggerGenerateService;
+import easy.util.BundleUtil;
 import easy.util.PsiElementUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -143,7 +146,12 @@ public class SwaggerViewDialog extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        super.doOKAction();
+        // 是否至少选了一个
+        if (CollectionUtils.isEmpty(attributesList.getSelectedValuesList().stream()
+                .filter(AttributeItem::isSelected).toList())) {
+            Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
+            return;
+        }
         // 获取选中swagger版本
         SwaggerServiceEnum swaggerServiceEnum = null;
         for (Enumeration<AbstractButton> buttons = swaggerButtonGroup.getElements(); buttons.hasMoreElements(); ) {
@@ -171,6 +179,7 @@ public class SwaggerViewDialog extends DialogWrapper {
                 }
             }
         }
+        super.doOKAction();
     }
 
     @Override

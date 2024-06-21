@@ -4,17 +4,21 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
+import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.WidgetAnnotationRuleEnum;
 import easy.enums.WidgetToolEnum;
+import easy.util.BundleUtil;
 import easy.util.PsiElementUtil;
 import easy.widget.annotation.DoAnnotationService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +35,15 @@ import java.util.*;
 
 public class WidgetToolViewDialog extends DialogWrapper {
 
+    private static final String ADD = "Add";
+    private static final String REMOVE = "Remove";
+
     private JBList<AttributeItem> attributesList;
     private List<AttributeItem> attributes;
     private Project project;
     private PsiFile psiFile;
     private PsiClass psiClass;
+    private ButtonGroup operateButtonGroup;
     private ButtonGroup jsonButtonGroup;
     private ButtonGroup ruleButtonGroup;
     private JCheckBox allCheckbox;
@@ -55,6 +63,18 @@ public class WidgetToolViewDialog extends DialogWrapper {
         JPanel centerPanel = new JPanel(new BorderLayout());
         // 创建顶部工具按钮
         JPanel toolPanel = new JPanel(new BorderLayout());
+        operateButtonGroup = new ButtonGroup();
+        JRadioButton addRadioButton = new JRadioButton(ADD);
+        addRadioButton.setSelected(true);
+        JRadioButton removeRadioButton = new JRadioButton(REMOVE);
+        removeRadioButton.setSelected(false);
+        operateButtonGroup.add(addRadioButton);
+        operateButtonGroup.add(removeRadioButton);
+        JPanel operateRadioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        operateRadioPanel.add(addRadioButton);
+        operateRadioPanel.add(removeRadioButton);
+        toolPanel.add(operateRadioPanel, BorderLayout.NORTH);
+
         jsonButtonGroup = new ButtonGroup();
         JRadioButton jacksonRadioButton = new JRadioButton(WidgetToolEnum.JACKSON.getName());
         jacksonRadioButton.setSelected(true);
@@ -73,7 +93,7 @@ public class WidgetToolViewDialog extends DialogWrapper {
         jsonRadioPanel.add(fastJsonRadioButton);
         jsonRadioPanel.add(gsonRadioButton);
         jsonRadioPanel.add(easyExcelRadioButton);
-        toolPanel.add(jsonRadioPanel, BorderLayout.NORTH);
+        toolPanel.add(jsonRadioPanel, BorderLayout.CENTER);
 
         ruleButtonGroup = new ButtonGroup();
         JRadioButton camelCaseRadioButton = new JRadioButton(WidgetAnnotationRuleEnum.CAMEL_CASE.getRule());
@@ -100,6 +120,18 @@ public class WidgetToolViewDialog extends DialogWrapper {
         toolPanel.add(ruleRadioPanel, BorderLayout.SOUTH);
         centerPanel.add(toolPanel, BorderLayout.NORTH);
 
+        removeRadioButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                ruleRadioPanel.setVisible(false);
+            }
+        });
+        addRadioButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                ruleRadioPanel.setVisible(true);
+            }
+        });
+
+        // 显示属性列表
         attributesList = new JBList<>(attributes);
         attributesList.setCellRenderer((list, attributeItem, index, isSelected, cellHasFocus) -> {
             JPanel panel = new JPanel(new BorderLayout());
@@ -160,8 +192,21 @@ public class WidgetToolViewDialog extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        super.doOKAction();
-        // 处理类型
+        // 是否至少选了一个
+        if (CollectionUtils.isEmpty(attributesList.getSelectedValuesList().stream()
+                .filter(AttributeItem::isSelected).toList())) {
+            Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
+            return;
+        }
+        // 操作类型
+        String operate = StringUtils.EMPTY;
+        for (Enumeration<AbstractButton> buttons = operateButtonGroup.getElements(); buttons.hasMoreElements(); ) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                operate = button.getText();
+            }
+        }
+        // 注解类型
         WidgetToolEnum typeEnum = null;
         for (Enumeration<AbstractButton> buttons = jsonButtonGroup.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
@@ -184,9 +229,13 @@ public class WidgetToolViewDialog extends DialogWrapper {
         for (int i = 0; i < attributesList.getModel().getSize(); i++) {
             AttributeItem item = attributesList.getModel().getElementAt(i);
             if (item.isSelected()) {
-                annotationService.addAnnotation(project, psiFile, item.getPsiElement(), ruleEnum.genName(item.getRealName()));
+                switch (operate) {
+                    case ADD -> annotationService.addAnnotation(project, psiFile, item.getPsiElement(), ruleEnum.genName(item.getRealName()));
+                    case REMOVE -> annotationService.removeAnnotation(item.getPsiElement());
+                }
             }
         }
+        super.doOKAction();
     }
 
     /**

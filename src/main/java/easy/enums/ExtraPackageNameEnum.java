@@ -47,6 +47,8 @@ public enum ExtraPackageNameEnum {
     AUTOWIRED("org.springframework.beans.factory.annotation.Autowired", "Autowired"),
     MAPPER("org.apache.ibatis.annotations.Mapper", "Mapper"),
     SERIALIZED_NAME("com.google.gson.annotations.SerializedName", "SerializedName"),
+    JSON_FIELD("com.alibaba.fastjson2.annotation.JSONField", "JSONField"),
+    EXCEL_PROPERTY("com.alibaba.excel.annotation.ExcelProperty", "ExcelProperty"),
     ;
 
     private final String name;

@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
@@ -13,6 +14,39 @@ public abstract class DoAbstractAnnotationService implements DoAnnotationService
     protected Project project;
     protected PsiFile psiFile;
     protected PsiElementFactory elementFactory;
+
+    /**
+     * 添加注解
+     *
+     * @param project     项目
+     * @param psiFile     psi文件
+     * @param psiElement  psi元素
+     * @param elementName 元素名称
+     * @author mabin
+     * @date 2024/06/19 17:43
+     */
+    @Override
+    public void addAnnotation(Project project, PsiFile psiFile, PsiElement psiElement, String elementName) {
+        if (ObjectUtils.anyNull(project, psiFile, psiElement) || StringUtils.isBlank(elementName)) {
+            return;
+        }
+        this.project = project;
+        this.psiFile = psiFile;
+        this.elementFactory = JavaPsiFacade.getElementFactory(project);
+        writeAnnotation(project, psiFile, psiElement, elementName);
+    }
+
+    /**
+     * 写入注解
+     *
+     * @param project     项目
+     * @param psiFile     psi文件
+     * @param psiElement  psi元素
+     * @param elementName 元素名称
+     * @author mabin
+     * @date 2024/06/21 13:43
+     */
+    protected abstract void writeAnnotation(Project project, PsiFile psiFile, PsiElement psiElement, String elementName);
 
     /**
      * 写入代码
@@ -38,6 +72,26 @@ public abstract class DoAbstractAnnotationService implements DoAnnotationService
         PsiAnnotation psiAnnotation = modifierList.addAnnotation(name);
         for (PsiNameValuePair pair : attributes) {
             psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
+        }
+    }
+
+    /**
+     * 删除
+     *
+     * @param qualifiedName        限定名称
+     * @param psiModifierListOwner psi修饰符列表业主
+     * @author mabin
+     * @date 2024/06/21 15:20
+     */
+    protected void doRemove(String qualifiedName, PsiModifierListOwner psiModifierListOwner) {
+        PsiModifierList modifierList = psiModifierListOwner.getModifierList();
+        if (Objects.isNull(modifierList)) {
+            return;
+        }
+        // 移除注解(import xxx 自行处理)
+        PsiAnnotation existAnnotation = modifierList.findAnnotation(qualifiedName);
+        if (Objects.nonNull(existAnnotation)) {
+            existAnnotation.delete();
         }
     }
 

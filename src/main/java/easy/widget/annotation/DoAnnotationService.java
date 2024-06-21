@@ -19,4 +19,13 @@ public interface DoAnnotationService {
      */
     void addAnnotation(Project project, PsiFile psiFile, PsiElement psiElement, String elementName);
 
+    /**
+     * 删除注解
+     *
+     * @param psiElement psi元素
+     * @author mabin
+     * @date 2024/06/21 15:26
+     */
+    void removeAnnotation(PsiElement psiElement);
+
 }

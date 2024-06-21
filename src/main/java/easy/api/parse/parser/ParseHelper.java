@@ -204,10 +204,18 @@ public class ParseHelper {
     //---------------------- 字段相关 ------------------------------//
 
     /**
-     * 获取字段名
+     * 获取字段名: 优先解析JSON注解, Jackson -> FastJson2 -> Gson -> fieldName
      */
     public String getFieldName(PsiField field) {
         String property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.JSON_PROPERTY.getName());
+        if (StringUtils.isNotBlank(property)) {
+            return property;
+        }
+        property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.JSON_FIELD.getName());
+        if (StringUtils.isNotBlank(property)) {
+            return property;
+        }
+        property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.SERIALIZED_NAME.getName());
         if (StringUtils.isNotBlank(property)) {
             return property;
         }
@@ -220,7 +228,6 @@ public class ParseHelper {
     public String getFieldDescription(PsiField field, List<Value> values) {
         // 优先级: @ApiModelProperty > 文档注释标记@description >  文档注释第一行
         String summary = PsiSwaggerUtils.getFieldDescription(field);
-
         PsiDocComment comment = field.getDocComment();
         if (comment != null) {
             if (StringUtils.isEmpty(summary)) {
@@ -260,7 +267,7 @@ public class ParseHelper {
             }
 
             List<String> groups = PsiAnnotationUtils.getStringArrayAttribute(target, "groups");
-            boolean validateJsr303 = CollectionUtils.isEmpty(validateGroups) || CollectionUtils.intersection(groups, validateGroups).size() > 0;
+            boolean validateJsr303 = CollectionUtils.isEmpty(validateGroups) || !CollectionUtils.intersection(groups, validateGroups).isEmpty();
             if (validateJsr303) {
                 return true;
             }
@@ -290,7 +297,7 @@ public class ParseHelper {
                     .toArray(PsiDocTag[]::new);
             for (PsiDocTag tag : linkTags) {
                 List<Value> tagValues = doGetFieldValueByTag(tag);
-                if (tagValues.size() > 0) {
+                if (Objects.nonNull(tagValues) && !tagValues.isEmpty()) {
                     values.addAll(tagValues);
                 }
             }
@@ -300,7 +307,7 @@ public class ParseHelper {
         PsiDocTag[] tags = PsiDocCommentUtils.findTagsByName(field, Constants.DOC_TAG.SEE);
         for (PsiDocTag tag : tags) {
             List<Value> tagValues = doGetFieldValueByTag(tag);
-            if (tagValues.size() > 0) {
+            if (Objects.nonNull(tagValues) && !tagValues.isEmpty()) {
                 values.addAll(tagValues);
             }
         }
