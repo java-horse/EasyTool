@@ -2,6 +2,7 @@ package easy.util;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.intellij.icons.AllIcons;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -19,10 +20,12 @@ import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.taskdefs.Java;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.net.URI;
 import java.util.Date;
 import java.util.Objects;
@@ -180,6 +183,71 @@ public class EasyCommonUtil {
             return null;
         }
         return javaSdk.getVersion(sdk);
+    }
+
+    /**
+     * 自定义背景提示文本
+     *
+     * @param component 组件
+     * @param text      文本
+     * @author mabin
+     * @date 2024/06/12 10:27
+     */
+    public static void customBackgroundText(JComponent component, String text) {
+        if (component instanceof JTextArea textArea) {
+            textArea.setDisabledTextColor(Color.GRAY);
+            textArea.setText(text);
+            textArea.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if (StringUtils.equals(textArea.getText(), text)) {
+                        textArea.setText(StringUtils.EMPTY);
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (StringUtils.isBlank(textArea.getText())) {
+                        textArea.setText(text);
+                    }
+                }
+            });
+        } else if (component instanceof JTextField textField) {
+            textField.setDisabledTextColor(Color.GRAY);
+            textField.setText(text);
+            textField.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if (StringUtils.equals(textField.getText(), text)) {
+                        textField.setText(StringUtils.EMPTY);
+                    }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (StringUtils.isBlank(textField.getText())) {
+                        textField.setText(text);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 自定义标签提示文本
+     *
+     * @param label   组件
+     * @param tipText 提示文本
+     * @author mabin
+     * @date 2024/06/13 10:37
+     */
+    public static void customLabelTipText(@NotNull JLabel label, String tipText) {
+        if (Objects.isNull(tipText) || tipText.isBlank()) {
+            return;
+        }
+        label.setIcon(AllIcons.General.ContextHelp);
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        label.setToolTipText(tipText);
     }
 
 }

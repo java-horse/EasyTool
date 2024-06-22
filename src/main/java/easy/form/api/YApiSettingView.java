@@ -14,7 +14,7 @@ import easy.api.sdk.yapi.model.ApiProject;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;

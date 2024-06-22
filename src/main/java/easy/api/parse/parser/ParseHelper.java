@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.intellij.lang.jvm.JvmParameter;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -23,6 +22,7 @@ import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SwaggerAnnotationEnum;
 import easy.util.PsiElementUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -204,10 +204,18 @@ public class ParseHelper {
     //---------------------- 字段相关 ------------------------------//
 
     /**
-     * 获取字段名
+     * 获取字段名: 优先解析JSON注解, Jackson -> FastJson2 -> Gson -> fieldName
      */
     public String getFieldName(PsiField field) {
         String property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.JSON_PROPERTY.getName());
+        if (StringUtils.isNotBlank(property)) {
+            return property;
+        }
+        property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.JSON_FIELD.getName());
+        if (StringUtils.isNotBlank(property)) {
+            return property;
+        }
+        property = PsiAnnotationUtils.getStringAttributeValue(field, ExtraPackageNameEnum.SERIALIZED_NAME.getName());
         if (StringUtils.isNotBlank(property)) {
             return property;
         }
@@ -220,7 +228,6 @@ public class ParseHelper {
     public String getFieldDescription(PsiField field, List<Value> values) {
         // 优先级: @ApiModelProperty > 文档注释标记@description >  文档注释第一行
         String summary = PsiSwaggerUtils.getFieldDescription(field);
-
         PsiDocComment comment = field.getDocComment();
         if (comment != null) {
             if (StringUtils.isEmpty(summary)) {
@@ -260,7 +267,7 @@ public class ParseHelper {
             }
 
             List<String> groups = PsiAnnotationUtils.getStringArrayAttribute(target, "groups");
-            boolean validateJsr303 = CollectionUtils.isEmpty(validateGroups) || CollectionUtils.intersection(groups, validateGroups).size() > 0;
+            boolean validateJsr303 = CollectionUtils.isEmpty(validateGroups) || !CollectionUtils.intersection(groups, validateGroups).isEmpty();
             if (validateJsr303) {
                 return true;
             }
@@ -290,7 +297,7 @@ public class ParseHelper {
                     .toArray(PsiDocTag[]::new);
             for (PsiDocTag tag : linkTags) {
                 List<Value> tagValues = doGetFieldValueByTag(tag);
-                if (tagValues.size() > 0) {
+                if (Objects.nonNull(tagValues) && !tagValues.isEmpty()) {
                     values.addAll(tagValues);
                 }
             }
@@ -300,7 +307,7 @@ public class ParseHelper {
         PsiDocTag[] tags = PsiDocCommentUtils.findTagsByName(field, Constants.DOC_TAG.SEE);
         for (PsiDocTag tag : tags) {
             List<Value> tagValues = doGetFieldValueByTag(tag);
-            if (tagValues.size() > 0) {
+            if (Objects.nonNull(tagValues) && !tagValues.isEmpty()) {
                 values.addAll(tagValues);
             }
         }
@@ -356,7 +363,10 @@ public class ParseHelper {
                 // 解析枚举表达式
                 int fieldIndex = -1;
                 for (PsiMethod constructor : psiClass.getConstructors()) {
-                    JvmParameter[] parameters = constructor.getParameters();
+                    PsiParameter[] parameters = constructor.getParameterList().getParameters();
+                    if (ArrayUtils.isEmpty(parameters)) {
+                        continue;
+                    }
                     for (int i = 0; i < parameters.length; i++) {
                         if (parameters[i].getName().equals(fieldName)) {
                             fieldIndex = i;

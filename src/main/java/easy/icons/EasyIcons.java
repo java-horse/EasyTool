@@ -53,6 +53,8 @@ public class EasyIcons {
         Icon YAPI = IconLoader.getIcon("icons/yapi.svg", EasyIcons.class);
         Icon APIFOX = IconLoader.getIcon("icons/apifox.svg", EasyIcons.class);
         Icon CODE_SCREENSHOT = IconLoader.getIcon("icons/code_screenshot.svg", EasyIcons.class);
+        Icon WIDGET = IconLoader.getIcon("icons/widget.svg", EasyIcons.class);
+        Icon PUZZLE = IconLoader.getIcon("icons/puzzle.svg", EasyIcons.class);
     }
 
 }

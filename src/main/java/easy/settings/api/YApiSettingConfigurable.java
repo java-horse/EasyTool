@@ -8,7 +8,7 @@ import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
 import easy.form.api.YApiSettingView;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;

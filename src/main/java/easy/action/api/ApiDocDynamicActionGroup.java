@@ -9,7 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

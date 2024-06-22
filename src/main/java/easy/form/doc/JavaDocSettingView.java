@@ -1,14 +1,12 @@
 package easy.form.doc;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 
 import javax.swing.*;
 
 public class JavaDocSettingView {
-    private static final Logger log = Logger.getInstance(JavaDocSettingView.class);
     private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
 
     private JPanel panel;

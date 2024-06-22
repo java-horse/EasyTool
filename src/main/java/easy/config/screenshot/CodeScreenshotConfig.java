@@ -1,5 +1,7 @@
 package easy.config.screenshot;
 
+import javax.swing.*;
+
 /**
  * 代码截图配置
  *
@@ -20,6 +22,16 @@ public class CodeScreenshotConfig {
     private String customFileName;
     private String customFileNameFormat;
     private String customFileNameSuffix;
+    private String waterMarkFontFamily;
+    private String waterMarkFontSize;
+    private String waterMarkFontStyle;
+    private String waterMarkFontText;
+    private Integer waterMarkFontColor;
+    private Boolean autoAddWaterMark;
+    private Boolean autoFullScreenWatermark;
+    private Integer fontWaterMarkTransparency;
+    private Integer fontWaterMarkRotate;
+    private Integer fontWaterMarkSparsity;
 
     public Double getScale() {
         return scale;
@@ -109,4 +121,83 @@ public class CodeScreenshotConfig {
         this.customFileNameSuffix = customFileNameSuffix;
     }
 
+    public String getWaterMarkFontFamily() {
+        return waterMarkFontFamily;
+    }
+
+    public void setWaterMarkFontFamily(String waterMarkFontFamily) {
+        this.waterMarkFontFamily = waterMarkFontFamily;
+    }
+
+    public String getWaterMarkFontSize() {
+        return waterMarkFontSize;
+    }
+
+    public void setWaterMarkFontSize(String waterMarkFontSize) {
+        this.waterMarkFontSize = waterMarkFontSize;
+    }
+
+    public String getWaterMarkFontStyle() {
+        return waterMarkFontStyle;
+    }
+
+    public void setWaterMarkFontStyle(String waterMarkFontStyle) {
+        this.waterMarkFontStyle = waterMarkFontStyle;
+    }
+
+    public String getWaterMarkFontText() {
+        return waterMarkFontText;
+    }
+
+    public void setWaterMarkFontText(String waterMarkFontText) {
+        this.waterMarkFontText = waterMarkFontText;
+    }
+
+    public Integer getWaterMarkFontColor() {
+        return waterMarkFontColor;
+    }
+
+    public void setWaterMarkFontColor(Integer waterMarkFontColor) {
+        this.waterMarkFontColor = waterMarkFontColor;
+    }
+
+    public Boolean getAutoAddWaterMark() {
+        return autoAddWaterMark;
+    }
+
+    public void setAutoAddWaterMark(Boolean autoAddWaterMark) {
+        this.autoAddWaterMark = autoAddWaterMark;
+    }
+
+    public Boolean getAutoFullScreenWatermark() {
+        return autoFullScreenWatermark;
+    }
+
+    public void setAutoFullScreenWatermark(Boolean autoFullScreenWatermark) {
+        this.autoFullScreenWatermark = autoFullScreenWatermark;
+    }
+
+    public Integer getFontWaterMarkTransparency() {
+        return fontWaterMarkTransparency;
+    }
+
+    public void setFontWaterMarkTransparency(Integer fontWaterMarkTransparency) {
+        this.fontWaterMarkTransparency = fontWaterMarkTransparency;
+    }
+
+    public Integer getFontWaterMarkRotate() {
+        return fontWaterMarkRotate;
+    }
+
+    public void setFontWaterMarkRotate(Integer fontWaterMarkRotate) {
+        this.fontWaterMarkRotate = fontWaterMarkRotate;
+    }
+
+    public Integer getFontWaterMarkSparsity() {
+        return fontWaterMarkSparsity;
+    }
+
+    public void setFontWaterMarkSparsity(Integer fontWaterMarkSparsity) {
+        this.fontWaterMarkSparsity = fontWaterMarkSparsity;
+    }
 }

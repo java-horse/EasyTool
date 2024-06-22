@@ -1,5 +1,6 @@
 package easy.handler;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrPool;
@@ -18,7 +19,7 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.scale.JBUIScale;
 import easy.base.Constants;
 import easy.config.screenshot.CodeScreenshotConfig;
-import easy.config.screenshot.CodeScreenshotConfigComponent;
+import easy.enums.FontStyleEnum;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Objects;
 
@@ -49,11 +52,12 @@ public class CodeScreenshotHandler {
      * 创建图像
      *
      * @param editor 编辑
+     * @param config 配置
      * @return {@link java.awt.image.BufferedImage}
      * @author mabin
      * @date 2024/06/04 14:46
      */
-    public static BufferedImage createImage(@NotNull Editor editor) {
+    public static BufferedImage createImage(@NotNull Editor editor, CodeScreenshotConfig config) {
         TextRange range = getRange(editor);
         Document document = editor.getDocument();
         EditorState state = EditorState.from(editor);
@@ -64,12 +68,6 @@ public class CodeScreenshotHandler {
                 editorEx.setCaretEnabled(false);
             }
             editor.getSettings().setCaretRowShown(false);
-
-            CodeScreenshotConfig config = ServiceHelper.getService(CodeScreenshotConfigComponent.class).getState();
-            if (Objects.isNull(config)) {
-                return null;
-            }
-
             JComponent contentComponent = editor.getContentComponent();
             Graphics2D contentGraphics = (Graphics2D) contentComponent.getGraphics();
             AffineTransform currentTransform = contentGraphics.getTransform();
@@ -119,7 +117,57 @@ public class CodeScreenshotHandler {
         } catch (Throwable t) {
             NotifyUtil.notify("Code screenshot file save error, please try again later!", NotificationType.ERROR);
         }
+    }
 
+    /**
+     * 添加图像水印
+     *
+     * @param targetImg 目标img
+     * @param config    配置
+     * @author mabin
+     * @date 2024/06/11 16:38
+     */
+    public static BufferedImage addImageWaterMark(BufferedImage targetImg, CodeScreenshotConfig config) {
+        try {
+            int width = targetImg.getWidth();
+            int height = targetImg.getHeight();
+            BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+            Graphics2D g = bufferedImage.createGraphics();
+            g.drawImage(targetImg, 0, 0, width, height, null);
+            Integer fontSize = Convert.toInt(config.getWaterMarkFontSize());
+            // 设置颜色
+            g.setColor(new JBColor(config.getWaterMarkFontColor(), config.getWaterMarkFontColor()));
+            // 设置透明度
+            float alpha = BigDecimal.valueOf(config.getFontWaterMarkTransparency()).divide(BigDecimal.valueOf(10), 2, RoundingMode.HALF_UP).floatValue();
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
+            // 设置字体
+            g.setFont(new Font(config.getWaterMarkFontFamily(), FontStyleEnum.getFontStyle(config.getWaterMarkFontStyle()), fontSize));
+            // 设置水印
+            if (config.getAutoFullScreenWatermark()) {
+                // 设置旋转角度
+                g.rotate(Math.toRadians(config.getFontWaterMarkRotate()));
+                // 全屏自适应平铺水印
+                int lineSpacing = fontSize * 2;
+                int xWidth = getWaterMarkWidth(config.getWaterMarkFontText(), fontSize);
+                int xCanNum = width / xWidth + 1;
+                int yCanNum = height / fontSize + 1;
+                for (int i = 1; i <= yCanNum; i += config.getFontWaterMarkSparsity()) {
+                    int y = fontSize * i + lineSpacing * i;
+                    for (int j = 0; j < xCanNum; j += config.getFontWaterMarkSparsity()) {
+                        g.drawString(config.getWaterMarkFontText(), xWidth * j + lineSpacing * j, y - (fontSize + lineSpacing) * j);
+                    }
+                }
+            } else {
+                // 右下角水印
+                g.drawString(config.getWaterMarkFontText(), width - (config.getWaterMarkFontText().length() + 1) * fontSize, height - fontSize * 2);
+            }
+            // 释放资源
+            g.dispose();
+            return bufferedImage;
+        } catch (Exception e) {
+            log.error(String.format("%s generate code screenshot add water mark handle exception", Constants.PLUGIN_NAME), e);
+        }
+        return null;
     }
 
     /**
@@ -268,5 +316,26 @@ public class CodeScreenshotHandler {
             selectionModel.setSelection(range.getStartOffset(), range.getEndOffset());
         }
     }
+
+
+    /**
+     * 获取水印文字占用宽度
+     *
+     * @param markText markText
+     * @param fontSize 字体大小
+     * @return int
+     * @author mabin
+     * @date 2024/06/14 13:59
+     */
+    private static int getWaterMarkWidth(String markText, int fontSize) {
+        char[] chars = markText.toCharArray();
+        int fontSize2 = fontSize / 2;
+        int width = 0;
+        for (char c : chars) {
+            width += String.valueOf(c).getBytes().length != 1 ? fontSize : fontSize2;
+        }
+        return width;
+    }
+
 
 }

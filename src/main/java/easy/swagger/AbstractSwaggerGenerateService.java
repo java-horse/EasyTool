@@ -10,7 +10,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import easy.base.Constants;
 import easy.enums.*;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;

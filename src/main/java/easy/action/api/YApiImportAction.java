@@ -11,7 +11,7 @@ import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
 import easy.form.api.YApiImportView;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.EasyCommonUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.collections.MapUtils;

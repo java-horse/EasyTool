@@ -1,5 +1,6 @@
 package easy.action.search;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
@@ -41,13 +42,14 @@ public class WebSearchAction extends AnAction {
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
         if (StringUtils.isBlank(selectedText)) {
+            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the code");
             return;
         }
         Presentation presentation = e.getPresentation();
         String actionText = presentation.getText();
         String searchUrl = null;
         try {
-            selectedText = URLEncoder.encode(selectedText, StandardCharsets.UTF_8.name());
+            selectedText = URLEncoder.encode(selectedText, StandardCharsets.UTF_8);
             if (StringUtils.equalsAny(actionText, WebSearchEnum.BAIDU.title, WebSearchEnum.BING.title, WebSearchEnum.GOOGLE.title,
                     WebSearchEnum.SO.title, WebSearchEnum.SO_GOU.title, WebSearchEnum.DUCK_DUCK_GO.title, WebSearchEnum.YANDEX.title)) {
                 searchUrl = String.format(WebSearchEnum.BAIDU.templateUrl, selectedText);

@@ -1,5 +1,6 @@
 package easy.action.swagger;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.keymap.KeymapManager;
@@ -13,9 +14,10 @@ import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerServiceEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.ui.SwaggerViewDialog;
 import easy.util.BundleUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -36,14 +38,14 @@ public class SwaggerAction extends AnAction {
     public SwaggerAction(String title, Icon icon, KeyboardShortcut keyboardShortcut) {
         super(title, title, icon);
         // 设置全局快捷键
-//        CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
-//        registerCustomShortcutSet(shortcutSet, null);
-//        String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
-//        ActionManager actionManager = ActionManager.getInstance();
-//        if (Objects.isNull(actionManager.getAction(actionId))) {
-//            actionManager.registerAction(actionId, this);
-//        }
-//        KeymapManager.getInstance().getActiveKeymap().addShortcut(actionId, shortcutSet.getShortcuts()[0]);
+        CustomShortcutSet shortcutSet = new CustomShortcutSet(keyboardShortcut);
+        registerCustomShortcutSet(shortcutSet, null);
+        String actionId = Constants.PLUGIN_NAME + DynamicSwaggerActionGroup.class.getSimpleName() + title;
+        ActionManager actionManager = ActionManager.getInstance();
+        if (Objects.isNull(actionManager.getAction(actionId))) {
+            actionManager.registerAction(actionId, this);
+        }
+        KeymapManager.getInstance().getActiveKeymap().addShortcut(actionId, shortcutSet.getShortcuts()[0]);
     }
 
     @Override
@@ -65,6 +67,10 @@ public class SwaggerAction extends AnAction {
         }
         // 二次弹窗确认
         String selectedText = editor.getSelectionModel().getSelectedText();
+        if (StringUtils.isBlank(selectedText)) {
+            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the class name, method name, attribute name");
+            return;
+        }
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             int confirmResult = Messages.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"), Constants.PLUGIN_NAME, Messages.getQuestionIcon());
             if (MessageConstants.YES == confirmResult) {

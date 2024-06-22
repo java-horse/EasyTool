@@ -143,7 +143,6 @@ public class PsiAnnotationUtils {
                 return PsiFieldUtils.getFieldDefaultValue((PsiField) resolve);
             }
         }
-
         if (memberValue instanceof PsiClassObjectAccessExpression expression) {
             PsiTypeElement typeElement = expression.getOperand();
             return typeElement.getType().getCanonicalText();

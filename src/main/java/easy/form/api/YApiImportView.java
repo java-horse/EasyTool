@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import easy.api.sdk.yapi.model.ImportDataRequest;
 import easy.enums.YApiImportDataSyncTypeEnum;
+import easy.util.EasyCommonUtil;
 import easy.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class YApiImportView extends DialogWrapper {
+
     private JPanel panel;
     private JLabel importTypeLabel;
     private JComboBox ImportTypeComboBox;
@@ -33,6 +35,9 @@ public class YApiImportView extends DialogWrapper {
 
     @Override
     protected @Nullable JComponent createCenterPanel() {
+        // 设置提示语
+        EasyCommonUtil.customBackgroundText(dataSourcePasteTextArea, "Please enter data in json format...");
+        // 设置窗体大小
         Dimension size = panel.getPreferredSize();
         setSize(Math.max(size.width, 700), Math.max(size.height, 400));
         return panel;
@@ -42,7 +47,7 @@ public class YApiImportView extends DialogWrapper {
     protected @Nullable ValidationInfo doValidate() {
         String pasteJsonText = dataSourcePasteTextArea.getText();
         if (StringUtils.isBlank(pasteJsonText) || !JsonUtil.isJson(pasteJsonText)) {
-            return new ValidationInfo("Please enter data in JSON format", dataSourcePasteTextArea);
+            return new ValidationInfo("Please enter data in json format...", dataSourcePasteTextArea);
         }
         return super.doValidate();
     }
@@ -50,6 +55,10 @@ public class YApiImportView extends DialogWrapper {
     @Override
     protected void doOKAction() {
         super.doOKAction();
+        // 二次校验JSON格式
+        if (!JsonUtil.isJson(dataSourcePasteTextArea.getText())) {
+            return;
+        }
         this.importDataRequest = new ImportDataRequest();
         importDataRequest.setJson(dataSourcePasteTextArea.getText());
         importDataRequest.setMerge(YApiImportDataSyncTypeEnum.getCode(String.valueOf(syncTypeComboBox.getSelectedItem())));

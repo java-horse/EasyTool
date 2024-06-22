@@ -2,12 +2,12 @@ package easy.form;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +20,6 @@ import java.util.Objects;
  * @date: 2023/12/17 11:01:56
  */
 public class CommonSettingView {
-
-    private static final Logger log = Logger.getInstance(CommonSettingView.class);
 
     private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
 
@@ -69,12 +67,13 @@ public class CommonSettingView {
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
-        tabHighlightEnableCheckBox.addChangeListener(e -> {
+        tabHighlightEnableCheckBox.addItemListener(e -> {
             boolean selected = ((JCheckBox) e.getSource()).isSelected();
             tabBackgroundColorPanel.setEnabled(selected);
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
+        tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
     }
 
     private void createUIComponents() {
@@ -90,21 +89,13 @@ public class CommonSettingView {
      * @date 2023/12/27 15:43
      */
     private void setTipsLabel() {
-        swaggerConfirmModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        searchApiTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        translateConfirmInputModelTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabBackgroundTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabHighlightSizeTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        tabHighlightGradientStepTipsLabel.setIcon(AllIcons.General.ContextHelp);
-        restfulDisplayApiCommentTipLabel.setIcon(AllIcons.General.ContextHelp);
-
-        swaggerConfirmModelTipsLabel.setToolTipText(BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
-        searchApiTipsLabel.setToolTipText(BundleUtil.getI18n("search.api.icon.tip.text"));
-        translateConfirmInputModelTipsLabel.setToolTipText(BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
-        tabBackgroundTipsLabel.setToolTipText(BundleUtil.getI18n("tab.background.checkBox.tip.text"));
-        tabHighlightSizeTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.size.tip.text"));
-        tabHighlightGradientStepTipsLabel.setToolTipText(BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
-        restfulDisplayApiCommentTipLabel.setToolTipText("开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
+        EasyCommonUtil.customLabelTipText(swaggerConfirmModelTipsLabel, BundleUtil.getI18n("swagger.confirm.model.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(searchApiTipsLabel, BundleUtil.getI18n("search.api.icon.tip.text"));
+        EasyCommonUtil.customLabelTipText(translateConfirmInputModelTipsLabel, BundleUtil.getI18n("translate.confirm.model.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabBackgroundTipsLabel, BundleUtil.getI18n("tab.background.checkBox.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabHighlightSizeTipsLabel, BundleUtil.getI18n("tab.highlight.size.tip.text"));
+        EasyCommonUtil.customLabelTipText(tabHighlightGradientStepTipsLabel, BundleUtil.getI18n("tab.highlight.gradient.step.tip.text"));
+        EasyCommonUtil.customLabelTipText(restfulDisplayApiCommentTipLabel, "开启后会尝试获取API的JavaDoc和Swagger的说明文本并展示");
     }
 
     /**

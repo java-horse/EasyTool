@@ -3,8 +3,8 @@ package easy.ui;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
@@ -15,9 +15,11 @@ import easy.doc.service.JavaDocWriterService;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.swagger.SwaggerGenerateService;
+import easy.util.BundleUtil;
 import easy.util.PsiElementUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -158,29 +160,39 @@ public class JavaDocViewDialog extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        super.doOKAction();
+        // 是否存在选择属性
+        List<AttributeItem> selectedItemList = new ArrayList<>();
+        for (int i = 0; i < attributesList.getModel().getSize(); i++) {
+            AttributeItem item = attributesList.getModel().getElementAt(i);
+            if (Objects.nonNull(item) && item.isSelected()) {
+                selectedItemList.add(item);
+            }
+        }
+        if (CollectionUtils.isEmpty(selectedItemList)) {
+            Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
+            return;
+        }
+        // 获取swagger版本
         SwaggerServiceEnum swaggerServiceEnum = null;
         if (syncGenSwagger2CheckBox.isSelected()) {
             swaggerServiceEnum = SwaggerServiceEnum.SWAGGER_2;
         } else if (syncGenSwagger3CheckBox.isSelected()) {
             swaggerServiceEnum = SwaggerServiceEnum.SWAGGER_3;
         }
-        for (int i = 0; i < attributesList.getModel().getSize(); i++) {
-            AttributeItem item = attributesList.getModel().getElementAt(i);
-            if (item.isSelected()) {
-                // 生成JavaDoc
-                String comment = JavaDocGenerateService.generate(item.getPsiElement());
-                if (StringUtils.isNotBlank(comment)) {
-                    javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
-                }
-                // 生成Swagger
-                if (Objects.nonNull(swaggerServiceEnum)) {
-                    SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-                    swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
-                    swaggerGenerateService.doGenerate();
-                }
+        for (AttributeItem item : selectedItemList) {
+            // 生成JavaDoc
+            String comment = JavaDocGenerateService.generate(item.getPsiElement());
+            if (StringUtils.isNotBlank(comment)) {
+                javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+            }
+            // 生成Swagger
+            if (Objects.nonNull(swaggerServiceEnum)) {
+                SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
+                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
+                swaggerGenerateService.doGenerate();
             }
         }
+        super.doOKAction();
     }
 
     @Override
@@ -217,6 +229,10 @@ public class JavaDocViewDialog extends DialogWrapper {
                     if (Arrays.stream(psiField.getAnnotations()).anyMatch(annotation -> StringUtils.equalsAny(annotation.getQualifiedName(), Resource.class.getName(), ExtraPackageNameEnum.AUTOWIRED.getName()))) {
                         continue;
                     }
+                    // 属性是否物理存在的(可排除lombok动态生成的)
+                    if (!psiField.isPhysical()) {
+                        continue;
+                    }
                     String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                     attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiFieldName), psiFieldName,
                             Objects.isNull(psiField.getDocComment()) ? ((psiField.hasModifierProperty(PsiModifier.STATIC) || psiField.hasModifierProperty(PsiModifier.FINAL))) ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field : AllIcons.Nodes.AnonymousClass, psiField, false));
@@ -226,6 +242,9 @@ public class JavaDocViewDialog extends DialogWrapper {
             PsiMethod[] psiMethods = psiClass.getMethods();
             if (ArrayUtils.isNotEmpty(psiMethods)) {
                 for (PsiMethod psiMethod : psiMethods) {
+                    if (!psiMethod.isPhysical()) {
+                        continue;
+                    }
                     List<String> paramList = Arrays.stream(psiMethod.getParameterList().getParameters()).map(psiParameter -> psiParameter.getName() + ":" + StringUtils.split(psiParameter.getType().toString(), ":")[1]).toList();
                     String psiMethodName = PsiElementUtil.getPsiElementNameIdentifierText(psiMethod);
                     attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiMethodName + "(" + StringUtils.trim(String.join(", ", paramList)) + ")"), psiMethodName, Objects.isNull(psiMethod.getDocComment()) ? AllIcons.Nodes.Method : AllIcons.Nodes.AnonymousClass, psiMethod, false));

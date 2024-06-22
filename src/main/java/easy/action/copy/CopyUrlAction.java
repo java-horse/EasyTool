@@ -1,5 +1,6 @@
 package easy.action.copy;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -42,6 +43,7 @@ public class CopyUrlAction extends AnAction {
         }
         PsiElement psiElement = psiFile.findElementAt(editor.getCaretModel().getOffset());
         if (Objects.isNull(psiElement)) {
+            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should be placed on the class name, method name");
             return;
         }
         String actionText = e.getPresentation().getText();

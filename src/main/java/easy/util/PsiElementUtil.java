@@ -9,8 +9,10 @@ import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SpringAnnotationEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +76,29 @@ public class PsiElementUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * 是否基础entity实体类(不严谨的判断)
+     *
+     * @param psiClass psi等级
+     * @return boolean
+     * @author mabin
+     * @date 2024/06/19 15:45
+     */
+    public static boolean isEntity(@NotNull PsiClass psiClass) {
+        for (PsiAnnotation psiAnnotation : psiClass.getAnnotations()) {
+            if (StringUtils.equalsAny(psiAnnotation.getQualifiedName(), SpringAnnotationEnum.CONTROLLER_ANNOTATION.getName(),
+                    SpringAnnotationEnum.REST_CONTROLLER_ANNOTATION.getName(), SpringAnnotationEnum.SERVICE.getName(),
+                    SpringAnnotationEnum.COMPONENT.getName(), SpringAnnotationEnum.REPOSITORY.getName(),
+                    SpringAnnotationEnum.SPRING_BOOT_APPLICATION.getName(), SpringAnnotationEnum.SPRING_BOOT_TEST.getName(),
+                    SpringAnnotationEnum.FEIGN_CLIENT_ANNOTATION.getName(), SpringAnnotationEnum.CONFIGURATION.getName(),
+                    ExtraPackageNameEnum.MAPPER.getName()
+            )) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

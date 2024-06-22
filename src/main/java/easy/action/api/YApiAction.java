@@ -1,12 +1,10 @@
 package easy.action.api;
 
-import cn.hutool.core.util.StrUtil;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import easy.api.model.common.Api;
 import easy.api.model.yapi.YApiTableDTO;
 import easy.api.process.yapi.YapiUploader;
@@ -15,7 +13,7 @@ import easy.api.sdk.yapi.model.ApiInterface;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
-import easy.handler.ServiceHelper;
+import easy.helper.ServiceHelper;
 import easy.util.EasyCommonUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.collections.MapUtils;

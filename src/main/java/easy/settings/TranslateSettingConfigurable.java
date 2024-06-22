@@ -47,33 +47,35 @@ public class TranslateSettingConfigurable implements Configurable {
     public boolean isModified() {
         return !Objects.equals(translateConfig.getTranslateChannel(), translateSettingView.getTranslateChannelBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getAppId(), translateSettingView.getAppIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getAppSecret(), translateSettingView.getAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getAppSecret(), String.valueOf(translateSettingView.getAppSecretTextField().getPassword()))
                 || !Objects.equals(translateConfig.getBaiduDomainCheckBox(), translateSettingView.getBaiduDomainCheckBox().isSelected())
                 || !Objects.equals(translateConfig.getBaiduDomainComboBox(), translateSettingView.getBaiduDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getSecretId(), translateSettingView.getSecretIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getSecretKey(), translateSettingView.getSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getSecretKey(), String.valueOf(translateSettingView.getSecretKeyTextField().getPassword()))
                 || !Objects.equals(translateConfig.getYoudaoDomainCheckBox(), translateSettingView.getYoudaoDomainCheckBox().isSelected())
                 || !Objects.equals(translateConfig.getYoudaoDomainComboBox(), translateSettingView.getYoudaoDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getAccessKeyId(), translateSettingView.getAccessKeyIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getAccessKeySecret(), translateSettingView.getAccessKeySecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getAccessKeySecret(), String.valueOf(translateSettingView.getAccessKeySecretTextField().getPassword()))
                 || !Objects.equals(translateConfig.getAliyunDomainCheckBox(), translateSettingView.getAliyunDomainCheckBox().isSelected())
                 || !Objects.equals(translateConfig.getAliyunDomainComboBox(), translateSettingView.getAliyunDomainComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getTencentSecretId(), translateSettingView.getTencentSecretIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getTencentSecretKey(), translateSettingView.getTencentSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getTencentSecretKey(),
+                String.valueOf(translateSettingView.getTencentSecretKeyTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getVolcanoSecretId(), translateSettingView.getVolcanoSecretIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getVolcanoSecretKey(), translateSettingView.getVolcanoSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getVolcanoSecretKey(),
+                String.valueOf(translateSettingView.getVolcanoSecretKeyTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getXfAppId(), translateSettingView.getXfAppIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getXfApiKey(), translateSettingView.getXfApiKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getXfApiSecret(), translateSettingView.getXfApiSecretTextField().getText())
-                || !StringUtils.equals(translateConfig.getGoogleSecretKey(), translateSettingView.getGoogleSecretKeyTextField().getText())
+                || !StringUtils.equals(translateConfig.getXfApiSecret(), String.valueOf(translateSettingView.getXfApiSecretTextField().getPassword()))
+                || !StringUtils.equals(translateConfig.getGoogleSecretKey(), String.valueOf(translateSettingView.getGoogleSecretKeyTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getMicrosoftKey(), translateSettingView.getMicrosoftKeyLabel().getText())
-                || !StringUtils.equals(translateConfig.getNiuApiKey(), translateSettingView.getNiuApiKeyTextField().getText())
-                || !StringUtils.equals(translateConfig.getCaiyunToken(), translateSettingView.getCaiyunTokenTextField().getText())
+                || !StringUtils.equals(translateConfig.getNiuApiKey(), String.valueOf(translateSettingView.getNiuApiKeyTextField().getPassword()))
+                || !StringUtils.equals(translateConfig.getCaiyunToken(), String.valueOf(translateSettingView.getCaiyunTokenTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getHwAppId(), translateSettingView.getHwAppIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getHwAppSecret(), translateSettingView.getAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getHwAppSecret(), String.valueOf(translateSettingView.getAppSecretTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getHwProjectId(), translateSettingView.getHwProjectIdTextField().getText())
                 || !StringUtils.equals(translateConfig.getThsAppId(), translateSettingView.getThsAppIdTextField().getText())
-                || !StringUtils.equals(translateConfig.getThsAppSecret(), translateSettingView.getThsAppSecretTextField().getText())
+                || !StringUtils.equals(translateConfig.getThsAppSecret(), String.valueOf(translateSettingView.getThsAppSecretTextField().getPassword()))
                 || !StringUtils.equals(translateConfig.getCustomApiUrl(), translateSettingView.getCustomApiUrlTextField().getText())
                 || !StringUtils.equals(translateConfig.getCustomSupportLanguage(), translateSettingView.getCustomSupportLanguageTextField().getText())
                 || !Objects.equals(translateConfig.getCustomApiMaxCharLength(), Integer.parseInt(translateSettingView.getCustomApiMaxCharLengthTextField().getText()))
@@ -101,33 +103,33 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         translateConfig.setTranslateChannel(String.valueOf(translateSettingView.getTranslateChannelBox().getSelectedItem()));
         translateConfig.setAppId(translateSettingView.getAppIdTextField().getText());
-        translateConfig.setAppSecret(translateSettingView.getAppSecretTextField().getText());
+        translateConfig.setAppSecret(String.valueOf(translateSettingView.getAppSecretTextField().getPassword()));
         translateConfig.setBaiduDomainCheckBox(translateSettingView.getBaiduDomainCheckBox().isSelected());
         translateConfig.setBaiduDomainComboBox(String.valueOf(translateSettingView.getBaiduDomainComboBox().getSelectedItem()));
         translateConfig.setSecretId(translateSettingView.getSecretIdTextField().getText());
-        translateConfig.setSecretKey(translateSettingView.getSecretKeyTextField().getText());
+        translateConfig.setSecretKey(String.valueOf(translateSettingView.getSecretKeyTextField().getPassword()));
         translateConfig.setYoudaoDomainCheckBox(translateSettingView.getYoudaoDomainCheckBox().isSelected());
         translateConfig.setYoudaoDomainComboBox(String.valueOf(translateSettingView.getYoudaoDomainComboBox().getSelectedItem()));
         translateConfig.setAccessKeyId(translateSettingView.getAccessKeyIdTextField().getText());
-        translateConfig.setAccessKeySecret(translateSettingView.getAccessKeySecretTextField().getText());
+        translateConfig.setAccessKeySecret(String.valueOf(translateSettingView.getAccessKeySecretTextField().getPassword()));
         translateConfig.setAliyunDomainCheckBox(translateSettingView.getAliyunDomainCheckBox().isSelected());
         translateConfig.setAliyunDomainComboBox(String.valueOf(translateSettingView.getAliyunDomainComboBox().getSelectedItem()));
         translateConfig.setTencentSecretId(translateSettingView.getTencentSecretIdTextField().getText());
-        translateConfig.setTencentSecretKey(translateSettingView.getTencentSecretKeyTextField().getText());
+        translateConfig.setTencentSecretKey(String.valueOf(translateSettingView.getTencentSecretKeyTextField().getPassword()));
         translateConfig.setVolcanoSecretId(translateSettingView.getVolcanoSecretIdTextField().getText());
-        translateConfig.setVolcanoSecretKey(translateSettingView.getVolcanoSecretKeyTextField().getText());
+        translateConfig.setVolcanoSecretKey(String.valueOf(translateSettingView.getVolcanoSecretKeyTextField().getPassword()));
         translateConfig.setXfAppId(translateSettingView.getXfAppIdTextField().getText());
         translateConfig.setXfApiKey(translateSettingView.getXfApiKeyTextField().getText());
-        translateConfig.setXfApiSecret(translateSettingView.getXfApiSecretTextField().getText());
-        translateConfig.setGoogleSecretKey(translateSettingView.getGoogleSecretKeyTextField().getText());
-        translateConfig.setMicrosoftKey(translateSettingView.getMicrosoftKeyTextField().getText());
-        translateConfig.setNiuApiKey(translateSettingView.getNiuApiKeyTextField().getText());
-        translateConfig.setCaiyunToken(translateSettingView.getCaiyunTokenTextField().getText());
+        translateConfig.setXfApiSecret(String.valueOf(translateSettingView.getXfApiSecretTextField().getPassword()));
+        translateConfig.setGoogleSecretKey(String.valueOf(translateSettingView.getGoogleSecretKeyTextField().getPassword()));
+        translateConfig.setMicrosoftKey(String.valueOf(translateSettingView.getMicrosoftKeyTextField().getPassword()));
+        translateConfig.setNiuApiKey(String.valueOf(translateSettingView.getNiuApiKeyTextField().getPassword()));
+        translateConfig.setCaiyunToken(String.valueOf(translateSettingView.getCaiyunTokenTextField().getPassword()));
         translateConfig.setHwProjectId(translateSettingView.getHwProjectIdTextField().getText());
         translateConfig.setHwAppId(translateSettingView.getHwAppIdTextField().getText());
-        translateConfig.setHwAppSecret(translateSettingView.getHwAppSecretTextField().getText());
+        translateConfig.setHwAppSecret(String.valueOf(translateSettingView.getHwAppSecretTextField().getPassword()));
         translateConfig.setThsAppId(translateSettingView.getThsAppIdTextField().getText());
-        translateConfig.setThsAppSecret(translateSettingView.getThsAppSecretTextField().getText());
+        translateConfig.setThsAppSecret(String.valueOf(translateSettingView.getThsAppSecretTextField().getPassword()));
         translateConfig.setCustomApiUrl(translateSettingView.getCustomApiUrlTextField().getText());
         translateConfig.setCustomApiMaxCharLength(Integer.parseInt(translateSettingView.getCustomApiMaxCharLengthTextField().getText()));
         translateConfig.setCustomSupportLanguage(translateSettingView.getCustomSupportLanguageTextField().getText());

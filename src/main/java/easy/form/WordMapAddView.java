@@ -2,11 +2,14 @@ package easy.form;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
+import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
+import java.util.Objects;
 
 public class WordMapAddView extends DialogWrapper {
 
@@ -15,16 +18,22 @@ public class WordMapAddView extends DialogWrapper {
     private JTextField targetTextField;
     private JLabel source;
     private JLabel target;
+    private Map<String, String> typeMap;
 
-    public WordMapAddView() {
+    public WordMapAddView(Map<String, String> typeMap) {
         super(false);
+        this.typeMap = typeMap;
         init();
-        setTitle("Add Word Mapping");
+        setTitle(BundleUtil.getI18n("global.word.mapping.text"));
+        setCancelButtonText(BundleUtil.getI18n("global.button.cancel.text"));
+        setOKButtonText(BundleUtil.getI18n("global.button.confirm.text"));
     }
 
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
+        EasyCommonUtil.customBackgroundText(sourceTextField, BundleUtil.getI18n("global.source.word.tip.text"));
+        EasyCommonUtil.customBackgroundText(targetTextField, BundleUtil.getI18n("global.target.word.tip.text"));
         return panel;
     }
 
@@ -32,10 +41,13 @@ public class WordMapAddView extends DialogWrapper {
     @Override
     protected ValidationInfo doValidate() {
         if (sourceTextField.getText() == null || sourceTextField.getText().isEmpty()) {
-            return new ValidationInfo("Please enter Source Word!", sourceTextField);
+            return new ValidationInfo(BundleUtil.getI18n("global.source.word.tip.text"), sourceTextField);
+        }
+        if (Objects.nonNull(typeMap.get(sourceTextField.getText().trim()))) {
+            return new ValidationInfo(BundleUtil.getI18n("global.word.mapping.repeat.text"), sourceTextField);
         }
         if (targetTextField.getText() == null || targetTextField.getText().isEmpty()) {
-            return new ValidationInfo("Please enter Target Word!", targetTextField);
+            return new ValidationInfo(BundleUtil.getI18n("global.target.word.tip.text"), targetTextField);
         }
         return super.doValidate();
     }
