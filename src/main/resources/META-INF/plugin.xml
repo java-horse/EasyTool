@@ -61,6 +61,7 @@
         <li>支持一键生成 JavaDoc 注释</li>
         <li>支持Markdown、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
         <li>支持选中代码块一键截图功能, 快捷键: <em>CTRL + ALT + 5</em> </li>
+        <li>支持Entity普通实体类批量生成JSON注解的View视窗, 快捷键: <em>CTRL + ALT + 6</em> </li>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -586,13 +587,13 @@
         </action>
         <!--Widget工具小组件-->
         <action id="EasyToolWidgetToolAnnotationViewAction" class="easy.action.WidgetToolAnnotationAction" text="Annotation"
-                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.WIDGET">
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.PUZZLE">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 6"/>
         </action>
-        <group id="EasyToolWidgetToolActionGroups" text="WidgetTool" description="EasyTool development assistance tools"
+        <group id="EasyToolWidgetToolActionGroups" text="Widget" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.WIDGET" popup="true" compact="true">
             <reference ref="EasyToolWidgetToolAnnotationViewAction"/>
         </group>

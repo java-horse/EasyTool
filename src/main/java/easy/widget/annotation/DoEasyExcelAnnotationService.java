@@ -8,6 +8,8 @@ import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
+import easy.util.PsiElementUtil;
+import org.apache.commons.lang3.StringUtils;
 
 public class DoEasyExcelAnnotationService extends DoAbstractAnnotationService {
 
@@ -24,8 +26,16 @@ public class DoEasyExcelAnnotationService extends DoAbstractAnnotationService {
      */
     @Override
     protected void writeAnnotation(Project project, PsiFile psiFile, PsiElement psiElement, String elementName) {
-        String annotationText = String.format("%s%s(\"%s\")", Constants.AT, ExtraPackageNameEnum.EXCEL_PROPERTY.getClassName(), elementName);
-        WriteCommandAction.runWriteCommandAction(project, () -> doWrite(ExtraPackageNameEnum.EXCEL_PROPERTY.getClassName(), ExtraPackageNameEnum.EXCEL_PROPERTY.getName(), annotationText,
+        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), Constants.UID)) {
+            WriteCommandAction.runWriteCommandAction(project, () -> doWrite(ExtraPackageNameEnum.EXCEL_IGNORE.getClassName(),
+                    ExtraPackageNameEnum.EXCEL_IGNORE.getName(),
+                    String.format("%s%s", Constants.AT, ExtraPackageNameEnum.EXCEL_IGNORE.getClassName()),
+                    psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
+            return;
+        }
+        WriteCommandAction.runWriteCommandAction(project, () -> doWrite(ExtraPackageNameEnum.EXCEL_PROPERTY.getClassName(),
+                ExtraPackageNameEnum.EXCEL_PROPERTY.getName(),
+                String.format("%s%s(\"%s\")", Constants.AT, ExtraPackageNameEnum.EXCEL_PROPERTY.getClassName(), elementName),
                 psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
     }
 
@@ -38,7 +48,12 @@ public class DoEasyExcelAnnotationService extends DoAbstractAnnotationService {
      */
     @Override
     public void removeAnnotation(PsiElement psiElement) {
-        WriteCommandAction.runWriteCommandAction(project, () -> doRemove( ExtraPackageNameEnum.EXCEL_PROPERTY.getName(),
+        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), Constants.UID)) {
+            WriteCommandAction.runWriteCommandAction(project, () -> doRemove(ExtraPackageNameEnum.EXCEL_IGNORE.getName(),
+                    psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
+            return;
+        }
+        WriteCommandAction.runWriteCommandAction(project, () -> doRemove(ExtraPackageNameEnum.EXCEL_PROPERTY.getName(),
                 psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
     }
 
