@@ -120,16 +120,8 @@ public class WidgetToolViewDialog extends DialogWrapper {
         toolPanel.add(ruleRadioPanel, BorderLayout.SOUTH);
         centerPanel.add(toolPanel, BorderLayout.NORTH);
 
-        removeRadioButton.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                ruleRadioPanel.setVisible(false);
-            }
-        });
-        addRadioButton.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                ruleRadioPanel.setVisible(true);
-            }
-        });
+        ruleVisibleListener(removeRadioButton, ruleRadioPanel, false);
+        ruleVisibleListener(addRadioButton, ruleRadioPanel, true);
 
         // 显示属性列表
         attributesList = new JBList<>(attributes);
@@ -183,6 +175,23 @@ public class WidgetToolViewDialog extends DialogWrapper {
         Dimension size = centerPanel.getPreferredSize();
         setSize(Math.max(size.width, 700), Math.max(size.height, 400));
         return centerPanel;
+    }
+
+    /**
+     * rule面板监听
+     *
+     * @param radioButton    单选按钮
+     * @param ruleRadioPanel “规则收音机” 面板
+     * @param visible        可见
+     * @author mabin
+     * @date 2024/06/22 13:58
+     */
+    private void ruleVisibleListener(JRadioButton radioButton, JPanel ruleRadioPanel, boolean visible) {
+        radioButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                ruleRadioPanel.setVisible(visible);
+            }
+        });
     }
 
     @Override
