@@ -8,7 +8,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.command.UndoConfirmationPolicy;
 import com.intellij.openapi.command.undo.UndoManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actions.ContentChooser;
 import com.intellij.openapi.editor.colors.EditorFontType;
@@ -32,19 +31,21 @@ import easy.config.emoji.GitEmojiConfigComponent;
 import easy.git.emoji.GitEmojiData;
 import easy.git.emoji.GitEmojiHelper;
 import easy.git.emoji.Gitmojis;
+import easy.helper.ServiceHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.*;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GitCommitEmojiAction extends AnAction {
-    private static final Logger log = Logger.getInstance(GitCommitEmojiAction.class);
 
-    private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
+    private GitEmojiConfig gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
     private final GitEmojiHelper gitEmojiResourceLoadService = new GitEmojiHelper();
 
     @Override

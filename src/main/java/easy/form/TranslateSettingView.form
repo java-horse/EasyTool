@@ -845,7 +845,6 @@
               <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <icon value="actions/preview.png"/>
               <text value=""/>
               <toolTipText value="点击预览密钥"/>
             </properties>

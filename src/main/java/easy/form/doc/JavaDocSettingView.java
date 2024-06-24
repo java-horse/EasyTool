@@ -1,13 +1,13 @@
 package easy.form.doc;
 
-import com.intellij.openapi.application.ApplicationManager;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
+import easy.helper.ServiceHelper;
 
 import javax.swing.*;
 
 public class JavaDocSettingView {
-    private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+    private JavaDocConfig javaDocConfig = ServiceHelper.getService(JavaDocConfigComponent.class).getState();
 
     private JPanel panel;
     private JPanel commonPanel;
@@ -27,7 +27,7 @@ public class JavaDocSettingView {
     }
 
     private void createUIComponents() {
-        javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+        javaDocConfig = ServiceHelper.getService(JavaDocConfigComponent.class).getState();
     }
 
     public void reset() {

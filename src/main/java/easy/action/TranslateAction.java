@@ -4,7 +4,6 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
@@ -20,6 +19,7 @@ import easy.config.common.CommonConfigComponent;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.TranslateEnum;
+import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
@@ -41,9 +41,9 @@ import java.util.Objects;
 public class TranslateAction extends AnAction {
 
     private static final Logger log = Logger.getInstance(TranslateAction.class);
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
-    private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
-    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
+    private TranslateConfig translateConfig = ServiceHelper.getService(TranslateConfigComponent.class).getState();
+    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {

@@ -1,13 +1,13 @@
 package easy.doc.variable.impl;
 
 import com.google.common.collect.Lists;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.impl.source.PsiMethodImpl;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 public class ParamsVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
 
     @Override
     public String generate(PsiElement element) {

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "mabin"
-version = "2.1.3"
+version = "2.1.4"
 
 repositories {
     maven {
@@ -23,6 +23,8 @@ dependencies {
 }
 
 intellij {
+    // 2022.2.4
+    // 2023.3.4
     version.set("2022.2.4")
     type.set("IC")
     plugins.set(listOf("com.intellij.java", "markdown", "properties", "org.jetbrains.plugins.yaml"))
@@ -36,6 +38,8 @@ tasks {
     }
 
     patchPluginXml {
+        // 222.3345.118
+        // 233.14475.28
         sinceBuild.set("222.3345.118")
         untilBuild.set("241.*")
     }

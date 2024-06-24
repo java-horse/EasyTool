@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaDocumentedElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.javadoc.PsiDocComment;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class DocVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
 
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
 
     @Override
     public String generate(PsiElement element) {

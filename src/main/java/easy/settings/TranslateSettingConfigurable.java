@@ -1,6 +1,5 @@
 package easy.settings;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.config.translate.TranslateConfig;
@@ -8,6 +7,7 @@ import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.form.TranslateSettingView;
+import easy.helper.ServiceHelper;
 import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -27,7 +27,7 @@ import java.util.TreeMap;
 
 public class TranslateSettingConfigurable implements Configurable {
 
-    private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
+    private TranslateConfig translateConfig = ServiceHelper.getService(TranslateConfigComponent.class).getState();
     private TranslateSettingView translateSettingView = new TranslateSettingView();
 
 

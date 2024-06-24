@@ -4,7 +4,6 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.util.ProcessingContext;
@@ -12,25 +11,25 @@ import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
 import easy.git.emoji.GitEmojiData;
 import easy.git.emoji.GitEmojiHelper;
+import easy.helper.ServiceHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * emoji符号提示处理
  *
+ * @author mabin
  * @project EasyTool
  * @package easy.git.emoji
- * @author mabin
  * @date 2024/03/08 14:55
  */
 public class EmojiCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     private static final Logger log = Logger.getInstance(EmojiCompletionProvider.class);
-    private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
+    private GitEmojiConfig gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
     private final GitEmojiHelper gitEmojiHelper = new GitEmojiHelper();
 
     @Override

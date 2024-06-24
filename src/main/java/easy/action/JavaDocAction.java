@@ -15,6 +15,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.doc.service.JavaDocGenerateService;
 import easy.doc.service.JavaDocWriterService;
+import easy.helper.ServiceHelper;
 import easy.ui.JavaDocViewDialog;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +24,8 @@ import java.util.Objects;
 
 public class JavaDocAction extends AnAction {
 
-    private final JavaDocGenerateService JavaDocGenerateService = ApplicationManager.getApplication().getService(JavaDocGenerateService.class);
-    private final JavaDocWriterService javaDocWriterService = ApplicationManager.getApplication().getService(JavaDocWriterService.class);
+    private final JavaDocGenerateService JavaDocGenerateService = ServiceHelper.getService(JavaDocGenerateService.class);
+    private final JavaDocWriterService javaDocWriterService = ServiceHelper.getService(JavaDocWriterService.class);
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {

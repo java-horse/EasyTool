@@ -1,16 +1,16 @@
 package easy.doc.variable.impl;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
 import easy.enums.JavaDocMethodReturnTypeEnum;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import org.apache.commons.lang3.StringUtils;
 
 public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
 
     @Override
     public String generate(PsiElement element) {

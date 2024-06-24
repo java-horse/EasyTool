@@ -1,11 +1,11 @@
 package easy.settings.doc.template;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.form.doc.template.ClassSettingsView;
+import easy.helper.ServiceHelper;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 public class JavaDocClassSettingConfigurable extends AbstractJavaDocTemplateConfigurable<ClassSettingsView> {
-    private JavaDocConfig config = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
+    private JavaDocConfig config = ServiceHelper.getService(JavaDocConfigComponent.class).getState();
     private ClassSettingsView view = new ClassSettingsView(config);
 
     @Nls(capitalization = Capitalization.Title)
