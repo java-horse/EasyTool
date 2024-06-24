@@ -10,6 +10,7 @@ import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.form.CommonSettingView;
+import easy.helper.ServiceHelper;
 import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -29,9 +30,7 @@ import java.util.Objects;
  */
 public class CommonSettingConfigurable implements Configurable {
 
-    private static final Logger log = Logger.getInstance(CommonSettingConfigurable.class);
-
-    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
     private CommonSettingView commonSettingView = new CommonSettingView();
 
     @Nls(capitalization = Nls.Capitalization.Title)

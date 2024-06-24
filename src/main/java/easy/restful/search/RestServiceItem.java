@@ -11,6 +11,7 @@ import com.intellij.psi.javadoc.PsiDocComment;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.enums.SwaggerAnnotationEnum;
+import easy.helper.ServiceHelper;
 import easy.restful.api.HttpMethod;
 import easy.restful.icons.Icons;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +24,7 @@ import java.util.Objects;
 
 public class RestServiceItem implements NavigationItem {
 
-    private final CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private final CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
     private final PsiElement psiElement;
     private PsiMethod psiMethod;

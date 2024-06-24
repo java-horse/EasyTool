@@ -5,6 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
 import easy.enums.GitEmojiLanguageEnum;
+import easy.helper.ServiceHelper;
 import easy.util.BundleUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +13,7 @@ import javax.swing.*;
 
 public class GitEmojiSettingView {
 
-    private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
+    private GitEmojiConfig gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
 
     private JPanel panel;
     private JPanel emojiPanel;
@@ -42,7 +43,7 @@ public class GitEmojiSettingView {
 
 
     private void createUIComponents() {
-        gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
+        gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
     }
 
     public void reset() {

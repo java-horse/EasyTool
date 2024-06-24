@@ -5,7 +5,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -17,6 +16,7 @@ import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.service.JavaDocVariableGeneratorService;
 import easy.enums.JavaDocMethodReturnTypeEnum;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
 import easy.util.NotifyUtil;
@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
 public class MethodDocGeneratorImpl extends AbstractDocGenerator {
 
     private static final Logger log = Logger.getInstance(MethodDocGeneratorImpl.class);
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
-    private JavaDocConfig javaDocConfig = ApplicationManager.getApplication().getService(JavaDocConfigComponent.class).getState();
-    private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ApplicationManager.getApplication().getService(JavaDocVariableGeneratorService.class);
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
+    private JavaDocConfig javaDocConfig = ServiceHelper.getService(JavaDocConfigComponent.class).getState();
+    private JavaDocVariableGeneratorService javaDocVariableGeneratorService = ServiceHelper.getService(JavaDocVariableGeneratorService.class);
 
     @Override
     public String generate(PsiElement psiElement) {

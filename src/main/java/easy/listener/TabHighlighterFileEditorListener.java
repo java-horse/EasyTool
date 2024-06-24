@@ -1,7 +1,6 @@
 package easy.listener;
 
 import cn.hutool.core.convert.Convert;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
@@ -17,6 +16,7 @@ import com.intellij.util.messages.Topic;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
+import easy.helper.ServiceHelper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class TabHighlighterFileEditorListener implements FileEditorManagerListener, EventListener {
     public static final Topic<TabHighlighterFileEditorListener> CHANGE_HIGHLIGHTER_TOPIC = Topic.create("Highlighter Topic", TabHighlighterFileEditorListener.class);
-    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
     private LinkedList<VirtualFile> highlightQueue = new LinkedList<>();
     private final Project project;
 

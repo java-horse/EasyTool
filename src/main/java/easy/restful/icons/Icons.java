@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.IconLoader;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
+import easy.helper.ServiceHelper;
 import easy.restful.api.HttpMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +13,7 @@ import javax.swing.*;
 
 public class Icons {
 
-    private static CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private static CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
     private Icons() {
     }

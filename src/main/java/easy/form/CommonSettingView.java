@@ -1,11 +1,10 @@
 package easy.form;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
+import easy.helper.ServiceHelper;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 
@@ -21,7 +20,7 @@ import java.util.Objects;
  */
 public class CommonSettingView {
 
-    private CommonConfig commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
     private JPanel panel;
     private JPanel commonPanel;
@@ -77,7 +76,7 @@ public class CommonSettingView {
     }
 
     private void createUIComponents() {
-        commonConfig = ApplicationManager.getApplication().getService(CommonConfigComponent.class).getState();
+        commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
     }
 
     /**

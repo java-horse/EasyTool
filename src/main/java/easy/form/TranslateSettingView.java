@@ -10,7 +10,6 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
@@ -19,7 +18,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.CollectionListModel;
-import com.intellij.ui.ListCellRendererWrapper;
+import com.intellij.ui.SimpleListCellRenderer;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
 import easy.base.Constants;
@@ -28,6 +27,7 @@ import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.enums.TranslateLanguageEnum;
+import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
@@ -54,8 +54,8 @@ import java.util.Objects;
 
 public class TranslateSettingView {
 
-    private TranslateConfig translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
-    private TranslateService translateService = ApplicationManager.getApplication().getService(TranslateService.class);
+    private TranslateConfig translateConfig = ServiceHelper.getService(TranslateConfigComponent.class).getState();
+    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
 
     // 全局单词映射设置
     private JBList<Entry<String, String>> globalWordMapList;
@@ -213,6 +213,8 @@ public class TranslateSettingView {
         EasyCommonUtil.customLabelTipText(translateChannelTipLabel, TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
         EasyCommonUtil.customLabelTipText(customApiMaxCharLengthTipLabel, "每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
         EasyCommonUtil.customLabelTipText(customSupportLanguageTipLabel, String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
+        // 设置按钮图标
+        previewSecretLabel.setIcon(AllIcons.Actions.Preview);
     }
 
     /**
@@ -317,14 +319,17 @@ public class TranslateSettingView {
     }
 
     private void createUIComponents() {
-        translateConfig = ApplicationManager.getApplication().getService(TranslateConfigComponent.class).getState();
+        translateConfig = ServiceHelper.getService(TranslateConfigComponent.class).getState();
+        if (Objects.isNull(translateConfig)) {
+            return;
+        }
         Map<String, String> typeMap = translateConfig.getGlobalWordMap();
         // 设置全局单词映射页面
         globalWordMapList = new JBList<>(new CollectionListModel<>(Lists.newArrayList()));
         globalWordMapList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        globalWordMapList.setCellRenderer(new ListCellRendererWrapper<>() {
+        globalWordMapList.setCellRenderer(new SimpleListCellRenderer<>() {
             @Override
-            public void customize(JList list, Entry<String, String> value, int index, boolean selected, boolean hasFocus) {
+            public void customize(@NotNull JList<? extends Entry<String, String>> list, Entry<String, String> value, int index, boolean selected, boolean hasFocus) {
                 setText(value.getKey() + " -> " + value.getValue());
             }
         });

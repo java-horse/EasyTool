@@ -7,6 +7,7 @@ import easy.config.emoji.GitEmojiConfig;
 import easy.config.emoji.GitEmojiConfigComponent;
 import easy.enums.GitEmojiLanguageEnum;
 import easy.form.GitEmojiSettingView;
+import easy.helper.ServiceHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,7 @@ import java.util.Objects;
  **/
 public class GitEmojiSettingConfigurable implements Configurable {
 
-    private GitEmojiConfig gitEmojiConfig = ApplicationManager.getApplication().getService(GitEmojiConfigComponent.class).getState();
+    private GitEmojiConfig gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
     private GitEmojiSettingView gitEmojiSettingView = new GitEmojiSettingView();
 
     @Nls(capitalization = Nls.Capitalization.Title)
