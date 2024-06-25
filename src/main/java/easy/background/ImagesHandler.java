@@ -126,6 +126,14 @@ public enum ImagesHandler {
         }
     }
 
+    /**
+     * 根据Mime文件类型判断是否是图片文件
+     *
+     * @param file 文件
+     * @return boolean
+     * @author mabin
+     * @date 2024/06/25 10:11
+     */
     private boolean isImage(File file) {
         String[] parts = typeMap.getContentType(file).split("/");
         return parts.length != 0 && "image".equals(parts[0]);
