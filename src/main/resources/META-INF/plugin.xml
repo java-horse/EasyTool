@@ -81,6 +81,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.6</h3>
+      <ul>
+        <li>Added plugin to automatically update experimental features</li>
+        <li>-------------------------------</li>
+        <li>【新增】新增插件自动更新实验性功能</li>
+      </ul>
       <h3>v2.1.4</h3>
       <ul>
         <li>Fix the problem of abnormal loading of the global translation configuration UI interface</li>

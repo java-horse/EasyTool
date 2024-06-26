@@ -14,6 +14,7 @@ import java.util.Set;
  **/
 public class Constants {
 
+    public static final String PLUGIN_ID = "easy.char";
     public static final String PLUGIN_NAME = "EasyTool";
     public static final int TOTAL_LENGTH = 45;
     public static final int SPLIT_LENGTH = 2;
