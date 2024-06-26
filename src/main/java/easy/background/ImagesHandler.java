@@ -1,12 +1,12 @@
 package easy.background;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import easy.base.Constants;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +15,6 @@ import java.util.List;
 public enum ImagesHandler {
 
     INSTANCE;
-
-    private final MimetypesFileTypeMap typeMap = new MimetypesFileTypeMap();
     private List<String> randomImageList = null;
     private List<String> swapImageList = Collections.synchronizedList(new ArrayList<>());
     private String lastFolder = null;
@@ -127,7 +125,7 @@ public enum ImagesHandler {
     }
 
     /**
-     * 根据Mime文件类型判断是否是图片文件
+     * 根据后缀名简单判断是否图片文件
      *
      * @param file 文件
      * @return boolean
@@ -135,8 +133,11 @@ public enum ImagesHandler {
      * @date 2024/06/25 10:11
      */
     private boolean isImage(File file) {
-        String[] parts = typeMap.getContentType(file).split("/");
-        return parts.length != 0 && "image".equals(parts[0]);
+        String extName = StringUtils.lowerCase(FileUtil.extName(file));
+        return switch (extName) {
+            case "jpg", "jpeg", "png", "gif", "webp" -> true;
+            default -> false;
+        };
     }
 
 }
