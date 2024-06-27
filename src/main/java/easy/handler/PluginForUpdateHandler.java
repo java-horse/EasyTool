@@ -210,7 +210,7 @@ public class PluginForUpdateHandler {
         String pluginTempPath = PathManager.getPluginTempPath();
         System.out.println("pluginTempPath=" + pluginTempPath);
         // 删除旧插件资源文件
-        if (Boolean.FALSE.equals(FileUtil.del(pluginPath))) {
+        if (Boolean.FALSE.equals(FileUtil.del(pluginPath + "/" + Constants.PLUGIN_NAME))) {
             return;
         }
         // 远程下载插件资源(zip文件, 进度条显示下载进度)
