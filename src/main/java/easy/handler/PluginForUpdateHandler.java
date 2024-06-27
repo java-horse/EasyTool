@@ -26,6 +26,9 @@ import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
 import easy.base.Constants;
+import easy.config.common.CommonConfig;
+import easy.config.common.CommonConfigComponent;
+import easy.helper.ServiceHelper;
 import easy.ui.CommonNotifyDialog;
 import easy.util.EasyCommonUtil;
 import easy.util.HttpUtil;
@@ -53,8 +56,23 @@ import java.util.Objects;
  * @date 2024/03/12 17:30
  */
 public class PluginForUpdateHandler {
-
     private static final Logger log = Logger.getInstance(PluginForUpdateHandler.class);
+    private static CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
+
+    /**
+     * 获取插件远程版本
+     *
+     * @author mabin
+     * @date 2024/06/27 16:03
+     */
+    public static JsonObject getPluginRemoteVersion() {
+        String response = HttpUtil.doGet("https://plugins.jetbrains.com/api/plugins/21589/updates?size=1");
+        if (StringUtils.isBlank(response)) {
+            return new JsonObject();
+        }
+        JsonObject pluginObject = JsonUtil.fromArray(response).get(0).getAsJsonObject();
+        return Objects.isNull(pluginObject) ? new JsonObject() : pluginObject;
+    }
 
     /**
      * 检查插件是否最新版本及跳出更新弹窗
@@ -74,11 +92,7 @@ public class PluginForUpdateHandler {
             return;
         }
         // 远程获取插件最新版本
-        String response = HttpUtil.doGet("https://plugins.jetbrains.com/api/plugins/21589/updates?size=1");
-        if (StringUtils.isBlank(response)) {
-            return;
-        }
-        JsonObject pluginObject = JsonUtil.fromArray(response).get(0).getAsJsonObject();
+        JsonObject pluginObject = getPluginRemoteVersion();
         String remoteVersion = pluginObject.get("version").getAsString();
         String notes = pluginObject.get("notes").getAsString();
         // 比对版本信息
@@ -100,6 +114,21 @@ public class PluginForUpdateHandler {
                         ShowSettingsUtil.getInstance().showSettingsDialog(project, "Plugins");
                     }
                 }, genNoteAction(notes, remoteVersion), genAutoUpdateAction(remoteVersion));
+    }
+
+    /**
+     * 监听器自动更新
+     *
+     * @author mabin
+     * @date 2024/06/27 16:13
+     */
+    public static void listenerAutoUpdate() {
+        if (Objects.isNull(commonConfig) || Boolean.FALSE.equals(commonConfig.getPluginAutoUpdateEnable())) {
+            return;
+        }
+        JsonObject pluginObject = getPluginRemoteVersion();
+        String remoteVersion = pluginObject.get("version").getAsString();
+        autoUpdate(remoteVersion);
     }
 
     /**
@@ -174,7 +203,7 @@ public class PluginForUpdateHandler {
      * @author mabin
      * @date 2024/06/26 09:47
      */
-    public static void autoUpdate(String remoteVersion) {
+    private static void autoUpdate(String remoteVersion) {
         // 获取插件的安装目录
         String pluginPath = PathManager.getPluginsPath();
         System.out.println("pluginPath=" + pluginPath);
@@ -225,7 +254,7 @@ public class PluginForUpdateHandler {
      * @date 2024/06/26 14:22
      */
     private static void unzipPluginFile(String remoteVersion, String pluginTempPath, String pluginPath) {
-        // 解压新版本的插件到插件目录 F:\horse_project\pluginTest
+        // 解压新版本的插件到插件目录
         String zipFilePath = pluginTempPath + String.format("/%s-%s.zip", Constants.PLUGIN_NAME, remoteVersion);
         File destDir = FileUtil.mkdir(pluginPath);
         try (ZipFile zipFile = new ZipFile(zipFilePath)) {
@@ -269,9 +298,8 @@ public class PluginForUpdateHandler {
      * @author mabin
      * @date 2024/06/26 10:11
      */
-    public static void restartIde() {
+    private static void restartIde() {
         ApplicationManager.getApplication().invokeLater(() -> {
-            // 使用 WriteAction 确保重启操作在正确的线程中执行
             WriteAction.run(() -> {
                 try {
                     ApplicationManager.getApplication().restart();
