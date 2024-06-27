@@ -40,6 +40,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setTabHighlightSizeComboBox(Integer.toString(Constants.NUM.ONE));
             commonConfig.setTabHighlightGradientStepFormattedTextField(Integer.toString(Constants.NUM.TEN));
             commonConfig.setConvertCharEnableCheckBox(Boolean.TRUE);
+            commonConfig.setPluginAutoUpdateEnable(Boolean.FALSE);
         } else {
             commonConfig.setSwaggerConfirmYesCheckBox(Objects.isNull(commonConfig.getSwaggerConfirmYesCheckBox()) ? Boolean.TRUE : commonConfig.getSwaggerConfirmYesCheckBox());
             commonConfig.setSearchApiDefaultIconRadioButton(Objects.isNull(commonConfig.getSearchApiDefaultIconRadioButton()) ? Boolean.TRUE : commonConfig.getSearchApiDefaultIconRadioButton());
@@ -61,6 +62,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setTabHighlightSizeComboBox(Objects.isNull(commonConfig.getTabHighlightSizeComboBox()) ? Integer.toString(Constants.NUM.ONE) : commonConfig.getTabHighlightSizeComboBox());
             commonConfig.setTabHighlightGradientStepFormattedTextField(Objects.isNull(commonConfig.getTabHighlightGradientStepFormattedTextField()) ? Integer.toString(Constants.NUM.TEN) : commonConfig.getTabHighlightGradientStepFormattedTextField());
             commonConfig.setConvertCharEnableCheckBox(Objects.isNull(commonConfig.getConvertCharEnableCheckBox()) ? Boolean.TRUE : commonConfig.getConvertCharEnableCheckBox());
+            commonConfig.setPluginAutoUpdateEnable(Objects.isNull(commonConfig.getPluginAutoUpdateEnable()) ? Boolean.FALSE : commonConfig.getPluginAutoUpdateEnable());
         }
         return commonConfig;
     }

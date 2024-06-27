@@ -355,7 +355,8 @@ public class TranslateSettingView {
         });
         DefaultActionGroup defaultActionGroup = new DefaultActionGroup();
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(AllIcons.ToolbarDecorator.Export) {
+        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.export.text"),
+                BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 创建文件保存弹窗
@@ -380,7 +381,8 @@ public class TranslateSettingView {
                 Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
             }
         });
-        defaultActionGroup.addAction(new AnAction(AllIcons.ToolbarDecorator.Import) {
+        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.import.text"),
+                BundleUtil.getI18n("global.button.import.text"), AllIcons.ToolbarDecorator.Import) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导入CSV文件
@@ -409,7 +411,8 @@ public class TranslateSettingView {
             }
         });
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(AllIcons.Actions.Download) {
+        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.download.text"),
+                BundleUtil.getI18n("global.button.download.text"), AllIcons.Actions.Download) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导出CSV模板文件

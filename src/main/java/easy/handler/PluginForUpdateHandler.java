@@ -250,10 +250,15 @@ public class PluginForUpdateHandler {
             return;
         }
         // 显示文件自动更新成功
-        NotifyUtil.notify(String.format("【%s】自动更新成功, 重启生效", Constants.PLUGIN_NAME), new NotificationAction("♨️ 立即重启") {
+        NotifyUtil.notify(String.format("插件【%s】更新完成, 重启IDE生效", Constants.PLUGIN_NAME), new NotificationAction("♨️ 立即重启") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
                 restartIde();
+            }
+        }, new NotificationAction("⚙️ 修改自动更新") {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                ShowSettingsUtil.getInstance().showSettingsDialog(ProjectManagerEx.getInstance().getDefaultProject(), Constants.PLUGIN_NAME);
             }
         });
     }
