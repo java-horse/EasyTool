@@ -185,14 +185,16 @@ public class PluginForUpdateHandler {
         return new NotificationAction("🎉 自动更新") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                int confirm = Messages.showDialog(String.format("确认更新插件到【v%s】最新版本? (实验性功能: 存在不稳定性, 建议在IDE插件面板更新)", remoteVersion),
-                        Constants.PLUGIN_NAME,
-                        new String[]{Messages.getOkButton()}, 0, Messages.getQuestionIcon());
-                if (confirm == MessageConstants.NO) {
+                int confirm = Messages.showOkCancelDialog(String.format("确认更新插件到【v%s】最新版本? (实验性功能: 存在不稳定性, 孤勇者可背水一试(建议在IDE插件面板更新))", remoteVersion),
+                        Constants.PLUGIN_NAME, BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.plugin.panel.text"),
+                        Messages.getQuestionIcon());
+                if (confirm == MessageConstants.OK) {
+                    autoUpdate(remoteVersion);
                     return;
                 }
-                // 插件更新处理
-                autoUpdate(remoteVersion);
+                if (confirm == MessageConstants.CANCEL) {
+                    ShowSettingsUtil.getInstance().showSettingsDialog(ProjectManagerEx.getInstance().getDefaultProject(), "Plugins");
+                }
             }
         };
     }
@@ -210,7 +212,7 @@ public class PluginForUpdateHandler {
         String pluginTempPath = PathManager.getPluginTempPath();
         // 远程下载插件资源(zip文件, 进度条显示下载进度)
         ProgressManager.getInstance().run(new Task.Backgroundable(ProjectManagerEx.getInstance().getDefaultProject(),
-                String.format("%s Plugin Download", Constants.PLUGIN_NAME), false) {
+                String.format("%s Plugin Download", Constants.PLUGIN_NAME), true) {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
                 indicator.setIndeterminate(false);
