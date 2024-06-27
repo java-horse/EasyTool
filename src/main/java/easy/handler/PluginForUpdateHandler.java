@@ -207,13 +207,7 @@ public class PluginForUpdateHandler {
     private static void autoUpdate(String remoteVersion) {
         // 获取插件的安装目录
         String pluginPath = PathManager.getPluginsPath();
-        System.out.println("pluginPath=" + pluginPath);
         String pluginTempPath = PathManager.getPluginTempPath();
-        System.out.println("pluginTempPath=" + pluginTempPath);
-        // 删除旧插件资源文件
-        if (Boolean.FALSE.equals(FileUtil.del(pluginPath + "/" + Constants.PLUGIN_NAME))) {
-            return;
-        }
         // 远程下载插件资源(zip文件, 进度条显示下载进度)
         ProgressManager.getInstance().run(new Task.Backgroundable(ProjectManagerEx.getInstance().getDefaultProject(),
                 String.format("%s Plugin Download", Constants.PLUGIN_NAME), false) {
@@ -238,6 +232,12 @@ public class PluginForUpdateHandler {
                     public void finish() {
                         indicator.setText(String.format("%s completed download...", Constants.PLUGIN_NAME));
                         ThreadUtil.sleep(Constants.NUM.ONE_THOUSAND);
+                        // 删除旧插件
+                        if (Boolean.FALSE.equals(FileUtil.del(pluginPath + "/" + Constants.PLUGIN_NAME))) {
+                            return;
+                        }
+                        ThreadUtil.sleep(Constants.NUM.ONE_THOUSAND);
+                        // 安装新插件
                         unzipPluginFile(remoteVersion, pluginTempPath, pluginPath);
                     }
                 });

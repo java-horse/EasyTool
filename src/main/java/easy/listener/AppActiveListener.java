@@ -1,6 +1,7 @@
 package easy.listener;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
@@ -103,6 +104,8 @@ public class AppActiveListener implements ApplicationActivationListener {
         if (currentTimeMillis - lastNoticeTime < AUTO_UPDATE_INTERVAL) {
             return;
         }
+        // 睡眠5s后再进行插件自动更新处理
+        ThreadUtil.sleep(5 * Constants.NUM.ONE_THOUSAND);
         PluginForUpdateHandler.listenerAutoUpdate();
         PropertiesComponent.getInstance().setValue(Constants.Persistence.COMMON.AUTO_UPDATE_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
     }
