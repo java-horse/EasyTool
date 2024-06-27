@@ -34,10 +34,7 @@ import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.helper.ServiceHelper;
 import easy.ui.CommonNotifyDialog;
-import easy.util.EasyCommonUtil;
-import easy.util.HttpUtil;
-import easy.util.JsonUtil;
-import easy.util.NotifyUtil;
+import easy.util.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.StringUtils;
@@ -286,7 +283,11 @@ public class PluginForUpdateHandler {
         NotifyUtil.notify(String.format("插件【%s】更新完成, 重启IDE生效", Constants.PLUGIN_NAME), new NotificationAction("♨️ 立即重启") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                restartIde();
+                int confirmRestart = Messages.showOkCancelDialog("Restart IDE to apply changes in plugins?", "IDE and Plugin Updates",
+                        BundleUtil.getI18n("global.button.restart.text"), BundleUtil.getI18n("global.button.later.text"), Messages.getQuestionIcon());
+                if (confirmRestart == MessageConstants.YES) {
+                    restartIde();
+                }
             }
         }, new NotificationAction("⚙️ 修改自动更新") {
             @Override
@@ -307,8 +308,6 @@ public class PluginForUpdateHandler {
         application.invokeLater(() -> {
             // 检查当前是否在写操作中
             if (!application.isWriteAccessAllowed()) {
-                // 如果不在写操作中，直接重启
-                System.out.println("写操作直接重启...");
                 application.restart();
             } else {
                 // 如果在写操作中，计划在写操作结束后重启
@@ -322,7 +321,6 @@ public class PluginForUpdateHandler {
                             psiDocumentManager.commitDocument(document);
                         }
                     }
-                    System.out.println("非写操作直接重启...");
                     application.restart();
                 });
             }
