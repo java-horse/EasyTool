@@ -12,10 +12,12 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.application.PathManager;
-import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -25,6 +27,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
 import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
@@ -299,14 +303,30 @@ public class PluginForUpdateHandler {
      * @date 2024/06/26 10:11
      */
     private static void restartIde() {
-        ApplicationManager.getApplication().invokeLater(() -> {
-            WriteAction.run(() -> {
-                try {
-                    ApplicationManager.getApplication().restart();
-                } catch (Exception ignore) {
-                }
-            });
-        });
+        Application application = ApplicationManager.getApplication();
+        application.invokeLater(() -> {
+            // 检查当前是否在写操作中
+            if (!application.isWriteAccessAllowed()) {
+                // 如果不在写操作中，直接重启
+                System.out.println("写操作直接重启...");
+                application.restart();
+            } else {
+                // 如果在写操作中，计划在写操作结束后重启
+                application.runWriteAction(() -> {
+                    // 保存所有文件后重启
+                    PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(ProjectManagerEx.getInstance().getDefaultProject());
+                    Document[] documents = psiDocumentManager.getUncommittedDocuments();
+                    for (Document document : documents) {
+                        PsiFile psiFile = psiDocumentManager.getPsiFile(document);
+                        if (Objects.nonNull(psiFile) && psiFile.isValid()) {
+                            psiDocumentManager.commitDocument(document);
+                        }
+                    }
+                    System.out.println("非写操作直接重启...");
+                    application.restart();
+                });
+            }
+        }, ModalityState.NON_MODAL);
     }
 
 }
