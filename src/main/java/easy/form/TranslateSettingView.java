@@ -190,6 +190,11 @@ public class TranslateSettingView {
         });
         baiduDomainComboBox.setEnabled(false);
         baiduDomainCheckBox.addItemListener(e -> baiduDomainComboBox.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+        baiduDomainCheckBox.addActionListener(e -> {
+            if (((JCheckBox) e.getSource()).isSelected()) {
+                Messages.showWarningDialog(String.format("【%s】请谨慎开启领域翻译功能，该功能涉及部分收费项!!!", translateChannelBox.getSelectedItem()), "友情提示");
+            }
+        });
         aliyunDomainComboBox.setEnabled(false);
         aliyunDomainCheckBox.addItemListener(e -> aliyunDomainComboBox.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
         youdaoDomainComboBox.setEnabled(false);
