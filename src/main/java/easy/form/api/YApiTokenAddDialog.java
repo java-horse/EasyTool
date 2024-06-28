@@ -30,7 +30,7 @@ public class YApiTokenAddDialog extends DialogWrapper {
     @Override
     protected @Nullable JComponent createCenterPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
         tokenTextField = new JTextField();
         panel.add(tokenTextField);
         Dimension size = panel.getPreferredSize();

@@ -1,6 +1,7 @@
 package easy.listener;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
@@ -10,6 +11,7 @@ import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.wm.IdeFrame;
 import easy.base.Constants;
 import easy.form.SupportView;
+import easy.handler.PluginForUpdateHandler;
 import easy.util.EasyCommonUtil;
 import easy.util.NotifyUtil;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +29,11 @@ import java.util.Date;
 public class AppActiveListener implements ApplicationActivationListener {
 
     // 通知时间间隔 (30天之内打开项目只弹窗一次提示)
-    private static final long INTERVAL = 30 * 24 * 60 * 60 * 1000L;
+    private static final long SUPPORT_INTERVAL = 30 * 24 * 60 * 60 * 1000L;
+    /**
+     * 自动更新间隔(3天检测一次)
+     */
+    private static final long AUTO_UPDATE_INTERVAL = 3 * 24 * 60 * 60 * 1000L;
 
     @Override
     public synchronized void applicationActivated(@NotNull IdeFrame ideFrame) {
@@ -45,6 +51,7 @@ public class AppActiveListener implements ApplicationActivationListener {
      **/
     public synchronized void activate() {
         this.support();
+        this.autoUpdate();
     }
 
     /**
@@ -56,9 +63,10 @@ public class AppActiveListener implements ApplicationActivationListener {
      * @date 2023/9/4 21:21
      **/
     private void support() {
-        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, DateUtil.offsetDay(new Date(), -16).getTime());
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.LAST_NOTIFY_TIME,
+                DateUtil.offsetDay(new Date(), -31).getTime());
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastNoticeTime < INTERVAL) {
+        if (currentTimeMillis - lastNoticeTime < SUPPORT_INTERVAL) {
             return;
         }
         AnAction starAction = new NotificationAction("\uD83C\uDF1F 点个star") {
@@ -81,6 +89,25 @@ public class AppActiveListener implements ApplicationActivationListener {
         };
         NotifyUtil.notify("如果觉得" + Constants.PLUGIN_NAME + "有趣, 欢迎支持哦!", starAction, reviewsAction, payAction);
         PropertiesComponent.getInstance().setValue(Constants.Persistence.COMMON.LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
+    }
+
+    /**
+     * 自动更新
+     *
+     * @author mabin
+     * @date 2024/06/27 15:59
+     */
+    private void autoUpdate() {
+        long lastNoticeTime = PropertiesComponent.getInstance().getLong(Constants.Persistence.COMMON.AUTO_UPDATE_LAST_NOTIFY_TIME,
+                DateUtil.offsetDay(new Date(), -4).getTime());
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastNoticeTime < AUTO_UPDATE_INTERVAL) {
+            return;
+        }
+        // 睡眠5s后再进行插件自动更新处理
+        ThreadUtil.sleep(5 * Constants.NUM.ONE_THOUSAND);
+        PluginForUpdateHandler.listenerAutoUpdate();
+        PropertiesComponent.getInstance().setValue(Constants.Persistence.COMMON.AUTO_UPDATE_LAST_NOTIFY_TIME, Long.toString(currentTimeMillis));
     }
 
     @Override

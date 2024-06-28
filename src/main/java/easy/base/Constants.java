@@ -14,6 +14,7 @@ import java.util.Set;
  **/
 public class Constants {
 
+    public static final String PLUGIN_ID = "easy.char";
     public static final String PLUGIN_NAME = "EasyTool";
     public static final int TOTAL_LENGTH = 45;
     public static final int SPLIT_LENGTH = 2;
@@ -40,6 +41,7 @@ public class Constants {
         public interface COMMON {
             String LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".last_notify_time";
             String TRANSLATE_CONFIG_LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".translate_config_last_notify_time";
+            String AUTO_UPDATE_LAST_NOTIFY_TIME = PLUGIN_NAME + "." + COMMON.class.getSimpleName() + ".auto_update_last_notify_time";
         }
 
         /**
