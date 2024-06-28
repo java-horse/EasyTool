@@ -74,8 +74,11 @@ public class CommonSettingView {
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
+        tabBackgroundColorPanel.setEnabled(false);
+        tabHighlightSizeComboBox.setEnabled(false);
+        tabHighlightGradientStepFormattedTextField.setEnabled(false);
         tabHighlightEnableCheckBox.addItemListener(e -> {
-            boolean selected = ((JCheckBox) e.getSource()).isSelected();
+            boolean selected = e.getStateChange() == ItemEvent.SELECTED;
             tabBackgroundColorPanel.setEnabled(selected);
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
