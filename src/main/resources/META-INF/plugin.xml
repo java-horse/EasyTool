@@ -84,8 +84,10 @@
       <h3>v2.1.5</h3>
       <ul>
         <li>Added plugin to automatically update experimental features</li>
+        <li>Remove some outdated APIs to improve plug-in adaptability</li>
         <li>-------------------------------</li>
         <li>【新增】新增插件自动更新实验性功能</li>
+        <li>【优化】优化移除部分过期API，提高插件适配性</li>
       </ul>
       <h3>v2.1.4</h3>
       <ul>
