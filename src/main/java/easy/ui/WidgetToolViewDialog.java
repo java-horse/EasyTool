@@ -49,7 +49,7 @@ public class WidgetToolViewDialog extends DialogWrapper {
 
     public WidgetToolViewDialog(Project project, PsiFile psiFile, PsiClass psiClass) {
         super(project);
-        setTitle("Widget Tool Annotation View");
+        setTitle("Widget Annotation View");
         this.project = project;
         this.psiFile = psiFile;
         this.psiClass = psiClass;
