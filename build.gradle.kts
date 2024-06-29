@@ -17,9 +17,12 @@ dependencies {
     // implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("java-sdk-core-3.2.4.jar"))))
     implementation("cn.hutool:hutool-http:5.8.28")
     implementation("cn.hutool:hutool-crypto:5.8.28")
+    implementation("cn.hutool:hutool-setting:5.8.28")
+    implementation("cn.hutool:hutool-extra:5.8.28")
     implementation("com.cronutils:cron-utils:9.2.1") {
         exclude(group = "org.slf4j")
     }
+    implementation("com.google.zxing:core:3.5.3")
 }
 
 intellij {

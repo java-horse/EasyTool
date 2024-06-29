@@ -85,9 +85,11 @@
       <ul>
         <li>Added plugin to automatically update experimental features</li>
         <li>Remove some outdated APIs to improve plug-in adaptability</li>
+        <li>Add common Widget tool widgets</li>
         <li>-------------------------------</li>
         <li>【新增】新增插件自动更新实验性功能</li>
         <li>【优化】优化移除部分过期API，提高插件适配性</li>
+        <li>【新增】新增常用的Widget工具小组件View视窗(EasyTool -> Widget -> Core)</li>
       </ul>
       <h3>v2.1.4</h3>
       <ul>
@@ -600,16 +602,24 @@
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 5"/>
         </action>
         <!--Widget工具小组件-->
-        <action id="EasyToolWidgetToolAnnotationViewAction" class="easy.action.WidgetToolAnnotationAction" text="Annotation"
+        <action id="EasyToolWidgetToolAnnotationViewAction" class="easy.action.widget.WidgetToolAnnotationAction" text="Annotation"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.PUZZLE">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 6"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 6"/>
         </action>
+        <action id="EasyToolWidgetToolCoreViewAction" class="easy.action.widget.WidgetToolCoreAction" text="Core"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.PUZZLE">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 7"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 7"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 7"/>
+            <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 7"/>
+        </action>
         <group id="EasyToolWidgetToolActionGroups" text="Widget" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.WIDGET" popup="true" compact="true">
             <reference ref="EasyToolWidgetToolAnnotationViewAction"/>
+            <reference ref="EasyToolWidgetToolCoreViewAction"/>
         </group>
 
         <!--编辑器右键菜单-->
