@@ -242,12 +242,28 @@ public class EasyCommonUtil {
      * @date 2024/06/13 10:37
      */
     public static void customLabelTipText(@NotNull JLabel label, String tipText) {
+        customLabelTipText(label, tipText, null);
+    }
+
+    /**
+     * 自定义标签提示文本
+     *
+     * @param label   标签
+     * @param tipText 提示文本
+     * @param color   文本颜色
+     * @author mabin
+     * @date 2024/07/02 09:53
+     */
+    public static void customLabelTipText(@NotNull JLabel label, String tipText, Color color) {
         if (Objects.isNull(tipText) || tipText.isBlank()) {
             return;
         }
         label.setIcon(AllIcons.General.ContextHelp);
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         label.setToolTipText(tipText);
+        if (Objects.nonNull(color)) {
+            label.setForeground(color);
+        }
     }
 
 }

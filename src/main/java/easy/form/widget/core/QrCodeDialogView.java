@@ -17,6 +17,7 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.ColorChooserService;
+import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
@@ -45,7 +46,8 @@ public class QrCodeDialogView extends CoreCommonView {
     private JButton backColorButton;
     private JSpinner marginSpinner;
     private JComboBox errorCorrectionLevelComboBox;
-    private JButton cleanButton;
+    private JButton clearButton;
+    private JLabel qrCodeTipLabel;
 
     private Color foreColor = Color.BLACK;
     private Color backColor = Color.WHITE;
@@ -69,6 +71,12 @@ public class QrCodeDialogView extends CoreCommonView {
         sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
         marginSpinner.setModel(new SpinnerNumberModel(Constants.NUM.ONE, Constants.NUM.ZERO, Constants.NUM.TEN, Constants.NUM.ONE));
         qrCodeLabel.setToolTipText("Click upload QrCode file!");
+        EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"), JBColor.RED);
+        generateButton.setText(BundleUtil.getI18n("global.button.generate.text"));
+        downloadButton.setText(BundleUtil.getI18n("global.button.download.text"));
+        identifyButton.setText(BundleUtil.getI18n("global.button.identify.text"));
+        clearButton.setText(BundleUtil.getI18n("global.button.clear.text"));
+
         foreColorButton.addActionListener(e -> {
             Color foregroundColor = ColorChooserService.getInstance().showDialog(ProjectManagerEx.getInstanceEx().getDefaultProject(), panel,
                     "Choose Foreground Color", foreColor, true, Collections.emptyList(), true);
@@ -92,7 +100,7 @@ public class QrCodeDialogView extends CoreCommonView {
         backColorButton.setForeground(backColor);
         backColorButton.setText(String.format("#%06X", (0xFFFFFF & backColor.getRGB())));
         generateButton.setEnabled(false);
-        areaListener(qrContentTextArea, generateButton, cleanButton);
+        areaListener(qrContentTextArea, generateButton, clearButton);
 
         generateButton.addActionListener(e -> {
             String qrContent = qrContentTextArea.getText();
@@ -102,6 +110,15 @@ public class QrCodeDialogView extends CoreCommonView {
             ErrorCorrectionLevel errorCorrectionLevel = ERROR_CORRECTION_LEVEL_MAP.getOrDefault(String.valueOf(errorCorrectionLevelComboBox.getSelectedItem()), ErrorCorrectionLevel.L);
             if (StringUtils.isBlank(qrContent) || size < Constants.NUM.HUNDRED || margin < Constants.NUM.ZERO) {
                 return;
+            }
+            // 二次生成确认
+            if (Objects.nonNull(qrCodeImage)) {
+                int confirmResult = Messages.showOkCancelDialog("Confirm to regenerate qrCode?", Constants.PLUGIN_NAME,
+                        BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"),
+                        Messages.getInformationIcon());
+                if (confirmResult == MessageConstants.CANCEL) {
+                    return;
+                }
             }
             QrConfig config = new QrConfig(size, size);
             config.setForeColor(foreColor);
@@ -133,8 +150,9 @@ public class QrCodeDialogView extends CoreCommonView {
             try (FileOutputStream outputStream = new FileOutputStream(virtualFileWrapper.getFile())) {
                 ImageIO.write(qrCodeImage, "png", outputStream);
                 uploadFilePath = null;
-                int confirmResult = Messages.showOkCancelDialog("QrCode download success", Constants.PLUGIN_NAME,
-                        BundleUtil.getI18n("global.button.continue.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getInformationIcon());
+                int confirmResult = Messages.showOkCancelDialog("Open qrCode download success folder?", Constants.PLUGIN_NAME,
+                        BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"),
+                        Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
                     // 打开所在文件夹
                     File parentDir = virtualFileWrapper.getFile().getParentFile();
@@ -176,7 +194,7 @@ public class QrCodeDialogView extends CoreCommonView {
             try {
                 String decode = QrCodeUtil.decode(new File(uploadFilePath));
                 qrContentTextArea.setText(decode);
-                int confirmResult = Messages.showOkCancelDialog("QrCode identify success", Constants.PLUGIN_NAME,
+                int confirmResult = Messages.showOkCancelDialog("Jump qrCode identify success link?", Constants.PLUGIN_NAME,
                         BundleUtil.getI18n("global.button.continue.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
                     // 一键跳转
@@ -186,7 +204,7 @@ public class QrCodeDialogView extends CoreCommonView {
                 Messages.showErrorDialog(String.format("QrCode file identify error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
             }
         });
-        cleanButton.addActionListener(e -> {
+        clearButton.addActionListener(e -> {
             int confirmResult = Messages.showOkCancelDialog("Confirm clean qrCode data?", Constants.PLUGIN_NAME,
                     BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getQuestionIcon());
             if (confirmResult == MessageConstants.OK) {
