@@ -69,7 +69,7 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
         innerTable.setPreferredScrollableViewportSize(new Dimension(-1, innerTable.getRowHeight() * innerTable.getRowCount()));
         innerTable.setFillsViewportHeight(true);
         // 内置变量表格添加单元格选择监听器
-        addCellCopyListener(innerTable);
+        EasyCommonUtil.addTableCellCopyListener(innerTable);
         innerScrollPane = new JBScrollPane(innerTable);
 
         customTable = new JBTable() {
@@ -95,7 +95,7 @@ public class ClassSettingsView extends AbstractJavaDocTemplateSettingView {
                 refreshCustomTable();
             }
         });
-        addCellCopyListener(customTable);
+        EasyCommonUtil.addTableCellCopyListener(customTable);
         customVariablePanel = toolbarDecorator.createPanel();
     }
 

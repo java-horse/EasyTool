@@ -4,11 +4,9 @@ import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.net.URLEncodeUtil;
 import com.intellij.icons.AllIcons;
 import easy.util.EasyCommonUtil;
-import org.apache.commons.lang3.StringUtils;
+import easy.widget.core.CoreCommonView;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.nio.charset.StandardCharsets;
 
 

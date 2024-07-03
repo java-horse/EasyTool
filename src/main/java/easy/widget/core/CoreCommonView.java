@@ -1,4 +1,4 @@
-package easy.form.widget.core;
+package easy.widget.core;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

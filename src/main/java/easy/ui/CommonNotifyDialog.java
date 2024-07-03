@@ -28,7 +28,7 @@ public class CommonNotifyDialog extends DialogWrapper {
      * @author mabin
      * @date 2024/04/25 17:24
      */
-    public CommonNotifyDialog(String title, String content) {
+    public CommonNotifyDialog(@NotNull String title, @NotNull String content) {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle(title);
         this.content = content;

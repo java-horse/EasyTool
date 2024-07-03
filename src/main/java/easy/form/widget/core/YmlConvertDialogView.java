@@ -2,6 +2,7 @@ package easy.form.widget.core;
 
 import com.intellij.icons.AllIcons;
 import easy.util.YmlAndPropUtil;
+import easy.widget.core.CoreCommonView;
 
 import javax.swing.*;
 

@@ -21,6 +21,7 @@ import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import easy.widget.core.CoreCommonView;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;

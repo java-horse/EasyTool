@@ -9,6 +9,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.JavaSdk;
@@ -24,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.net.URI;
@@ -264,6 +266,26 @@ public class EasyCommonUtil {
         if (Objects.nonNull(color)) {
             label.setForeground(color);
         }
+    }
+
+    /**
+     * 添加表单元格复制侦听器
+     *
+     * @param jTable j表
+     * @author mabin
+     * @date 2024/07/03 10:07
+     */
+    public static void addTableCellCopyListener(JTable jTable) {
+        jTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = jTable.getSelectedRow();
+                int selectedColumn = jTable.getSelectedColumn();
+                if (selectedRow != -1 && selectedColumn != -1) {
+                    String cellValue = (String) jTable.getValueAt(selectedRow, selectedColumn);
+                    CopyPasteManager.getInstance().setContents(new StringSelection(cellValue));
+                }
+            }
+        });
     }
 
 }

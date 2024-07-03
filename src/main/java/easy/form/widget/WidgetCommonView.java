@@ -4,7 +4,7 @@ import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
-import easy.form.widget.core.CronDialogView;
+import easy.form.widget.core.cron.CronDialogView;
 import easy.form.widget.core.QrCodeDialogView;
 import easy.form.widget.core.UrlEncodeDialogView;
 import easy.form.widget.core.YmlConvertDialogView;

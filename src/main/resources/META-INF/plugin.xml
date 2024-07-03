@@ -425,6 +425,7 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocWriterService"/>
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
         <applicationService serviceImplementation="easy.config.screenshot.CodeScreenshotConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.widget.WidgetConfigComponent"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
