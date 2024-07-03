@@ -6,14 +6,14 @@ import easy.widget.core.CoreCommonView;
 
 import javax.swing.*;
 
-public class YmlConvertDialogView extends CoreCommonView {
+public class YmlConvertCoreView extends CoreCommonView {
     private JPanel panel;
     private JTextArea propTextArea;
     private JTextArea ymlTextArea;
     private JButton prop2YmlButton;
     private JButton yml2PropButton;
 
-    public YmlConvertDialogView() {
+    public YmlConvertCoreView() {
         prop2YmlButton.setIcon(AllIcons.General.ArrowDown);
         prop2YmlButton.setEnabled(false);
         areaListener(propTextArea, prop2YmlButton);

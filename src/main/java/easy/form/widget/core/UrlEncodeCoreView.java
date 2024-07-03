@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * @package easy.form.widget
  * @date 2024/06/29 09:59
  */
-public class UrlEncodeDialogView extends CoreCommonView {
+public class UrlEncodeCoreView extends CoreCommonView {
     private JPanel panel;
     private JButton downButton;
     private JButton upButton;
@@ -26,7 +26,7 @@ public class UrlEncodeDialogView extends CoreCommonView {
     private JTextArea downTextArea;
     private JLabel encodeTipLabel;
 
-    public UrlEncodeDialogView() {
+    public UrlEncodeCoreView() {
         downButton.setIcon(AllIcons.General.ArrowDown);
         downButton.setEnabled(false);
         areaListener(upTextArea, downButton);

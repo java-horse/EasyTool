@@ -2,33 +2,38 @@ package easy.form.widget;
 
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
-import easy.config.common.CommonConfig;
-import easy.config.common.CommonConfigComponent;
-import easy.form.widget.core.cron.CronDialogView;
-import easy.form.widget.core.QrCodeDialogView;
-import easy.form.widget.core.UrlEncodeDialogView;
-import easy.form.widget.core.YmlConvertDialogView;
+import easy.config.widget.WidgetConfig;
+import easy.config.widget.WidgetConfigComponent;
+import easy.enums.WidgetCoreTabEnum;
+import easy.form.widget.setting.SettingCoreView;
 import easy.helper.ServiceHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class WidgetCommonView extends DialogWrapper {
-
-    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
-
     private JPanel panel;
     private JTabbedPane tabbedPane;
+
+    private final WidgetConfig widgetConfig = ServiceHelper.getService(WidgetConfigComponent.class).getState();
 
     public WidgetCommonView() {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle("Widget Core View");
-        tabbedPane.addTab("URL转码", new UrlEncodeDialogView().getContent());
-        tabbedPane.addTab("Cron预览", new CronDialogView().getContent());
-        tabbedPane.addTab("QR二维码", new QrCodeDialogView().getContent());
-        tabbedPane.addTab("YML转换", new YmlConvertDialogView().getContent());
+        if (Objects.nonNull(widgetConfig) && CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {
+            for (String tabName : widgetConfig.getWidgetCoreTabSet()) {
+                Component component = WidgetCoreTabEnum.getComponent(tabName);
+                if (Objects.isNull(component)) {
+                    continue;
+                }
+                tabbedPane.add(tabName, component);
+            }
+        }
+        tabbedPane.addTab("Tab设置", new SettingCoreView().getContent());
         init();
     }
 

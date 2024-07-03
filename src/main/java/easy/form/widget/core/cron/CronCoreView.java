@@ -31,7 +31,7 @@ import java.util.*;
  * @package easy.form.widget
  * @date 2024/06/29 13:40
  */
-public class CronDialogView extends CoreCommonView {
+public class CronCoreView extends CoreCommonView {
     private JPanel panel;
     private JTextArea upTextArea;
     private JButton previewButton;
@@ -52,7 +52,7 @@ public class CronDialogView extends CoreCommonView {
         put("SPRING53", CronType.SPRING53);
     }};
 
-    public CronDialogView() {
+    public CronCoreView() {
         previewButton.setIcon(AllIcons.General.ArrowDown);
         previewButton.setEnabled(false);
         collecteButton.setIcon(AllIcons.Nodes.Folder);

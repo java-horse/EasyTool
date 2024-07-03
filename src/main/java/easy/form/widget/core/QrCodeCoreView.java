@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
 
-public class QrCodeDialogView extends CoreCommonView {
+public class QrCodeCoreView extends CoreCommonView {
     private JPanel panel;
     private JTextArea qrContentTextArea;
     private JLabel qrCodeLabel;
@@ -66,7 +66,7 @@ public class QrCodeDialogView extends CoreCommonView {
     );
 
 
-    public QrCodeDialogView() {
+    public QrCodeCoreView() {
         logoFileTextField.addBrowseFolderListener(new TextBrowseFolderListener(new FileChooserDescriptor(
                 true, false, false, false, false, false)));
         sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
