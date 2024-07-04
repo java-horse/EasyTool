@@ -1,14 +1,14 @@
 package easy.config.widget;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class WidgetConfig {
 
     /**
      * 小部件核心选项卡集合
      */
-    private LinkedHashSet<String> widgetCoreTabSet;
+    private Set<String> widgetCoreTabSet;
 
     /**
      * Cron集合映射
@@ -16,11 +16,11 @@ public class WidgetConfig {
     private LinkedHashMap<String, String> cronCollectionMap;
 
 
-    public LinkedHashSet<String> getWidgetCoreTabSet() {
+    public Set<String> getWidgetCoreTabSet() {
         return widgetCoreTabSet;
     }
 
-    public void setWidgetCoreTabSet(LinkedHashSet<String> widgetCoreTabSet) {
+    public void setWidgetCoreTabSet(Set<String> widgetCoreTabSet) {
         this.widgetCoreTabSet = widgetCoreTabSet;
     }
 

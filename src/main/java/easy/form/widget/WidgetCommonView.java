@@ -19,18 +19,22 @@ public class WidgetCommonView extends DialogWrapper {
     private JPanel panel;
     private JTabbedPane tabbedPane;
 
-    private final WidgetConfig widgetConfig = ServiceHelper.getService(WidgetConfigComponent.class).getState();
-
     public WidgetCommonView() {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle("Widget Core View");
-        if (Objects.nonNull(widgetConfig) && CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {
+        WidgetConfig widgetConfig = ServiceHelper.getService(WidgetConfigComponent.class).getState();
+        if (CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {
             for (String tabName : widgetConfig.getWidgetCoreTabSet()) {
                 Component component = WidgetCoreTabEnum.getComponent(tabName);
                 if (Objects.isNull(component)) {
                     continue;
                 }
                 tabbedPane.add(tabName, component);
+            }
+        } else {
+            for (WidgetCoreTabEnum tabEnum : WidgetCoreTabEnum.values()) {
+                tabbedPane.add(tabEnum.getTitle(), tabEnum.getComponent());
+                widgetConfig.getWidgetCoreTabSet().add(tabEnum.getTitle());
             }
         }
         tabbedPane.addTab("Tab设置", new SettingCoreView().getContent());
