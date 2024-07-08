@@ -67,12 +67,12 @@ public class QrCodeCoreView extends CoreCommonView {
 
 
     public QrCodeCoreView() {
-        logoFileTextField.addBrowseFolderListener(new TextBrowseFolderListener(new FileChooserDescriptor(
-                true, false, false, false, false, false)));
+        logoFileTextField.addBrowseFolderListener(new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor()
+                .withFileFilter(file -> StrUtil.endWithAnyIgnoreCase(file.getName(), ".jpg", ".png"))));
         sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
         marginSpinner.setModel(new SpinnerNumberModel(Constants.NUM.ONE, Constants.NUM.ZERO, Constants.NUM.TEN, Constants.NUM.ONE));
         qrCodeLabel.setToolTipText("Click upload QrCode file!");
-        EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"), JBColor.RED);
+        EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"));
         generateButton.setText(BundleUtil.getI18n("global.button.generate.text"));
         downloadButton.setText(BundleUtil.getI18n("global.button.download.text"));
         identifyButton.setText(BundleUtil.getI18n("global.button.identify.text"));

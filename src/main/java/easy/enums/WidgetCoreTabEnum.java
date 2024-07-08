@@ -1,5 +1,6 @@
 package easy.enums;
 
+import easy.form.widget.core.ExcelCoreView;
 import easy.form.widget.core.QrCodeCoreView;
 import easy.form.widget.core.UrlEncodeCoreView;
 import easy.form.widget.core.YmlConvertCoreView;
@@ -13,7 +14,8 @@ public enum WidgetCoreTabEnum {
     URL("URL转码", new UrlEncodeCoreView().getContent()),
     CRON("Cron预览", new CronCoreView().getContent()),
     QR("QR二维码", new QrCodeCoreView().getContent()),
-    YML("YML转换", new YmlConvertCoreView().getContent());
+    YML("YML转换", new YmlConvertCoreView().getContent()),
+    EXCEL("EXCEL解析", new ExcelCoreView().getContent());
 
     private final String title;
     private final Component component;
