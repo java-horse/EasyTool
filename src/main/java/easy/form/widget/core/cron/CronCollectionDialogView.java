@@ -85,6 +85,10 @@ public class CronCollectionDialogView extends DialogWrapper {
                 BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
+                if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {
+                    Messages.showWarningDialog("收藏夹Cron表达式为空", Constants.PLUGIN_NAME);
+                    return;
+                }
                 // 创建文件保存弹窗
                 FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Widget Cron Tool", Constants.PLUGIN_NAME),
                         "Select a location to save the cron expression", "csv");
@@ -96,12 +100,10 @@ public class CronCollectionDialogView extends DialogWrapper {
                 // 组装并导出csv文件
                 CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
                 csvWriter.writeHeaderLine("Cron表达式", "执行描述");
-                if (Objects.nonNull(widgetConfig) && MapUtils.isNotEmpty(widgetConfig.getCronCollectionMap())) {
-                    for (Map.Entry<String, String> entry : widgetConfig.getCronCollectionMap().entrySet()) {
-                        csvWriter.writeLine(entry.getKey(), entry.getValue());
-                    }
-                    csvWriter.close();
+                for (Map.Entry<String, String> entry : widgetConfig.getCronCollectionMap().entrySet()) {
+                    csvWriter.writeLine(entry.getKey(), entry.getValue());
                 }
+                csvWriter.close();
                 Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
             }
         });
