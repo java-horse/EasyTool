@@ -9,6 +9,8 @@ import cn.hutool.poi.excel.ExcelUtil;
 import com.intellij.ide.CopyPasteManagerEx;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.ui.MessageConstants;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.JBColor;
@@ -28,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ExcelCoreView extends CoreCommonView {
     private JPanel panel;
@@ -59,6 +62,13 @@ public class ExcelCoreView extends CoreCommonView {
         summaryTextLabel.setForeground(JBColor.GREEN);
         areaListener(resultTextArea, copyButton);
         generateButton.addActionListener(e -> {
+            if (StringUtils.isNotBlank(resultTextArea.getText())) {
+                int confirm = Messages.showOkCancelDialog("确认重新解析文件数据?", Constants.PLUGIN_NAME,
+                        BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getQuestionIcon());
+                if (confirm == MessageConstants.CANCEL) {
+                    return;
+                }
+            }
             String filePath = selectFileTextField.getText();
             if (StringUtils.isBlank(filePath) || !FileUtil.exist(filePath)) {
                 return;
@@ -87,7 +97,10 @@ public class ExcelCoreView extends CoreCommonView {
                 }
                 List<Map<String, String>> dataList = csvData.getRows().stream()
                         .skip(Constants.NUM.ONE)
-                        .map(CsvRow::getFieldMap).toList();
+                        .map(CsvRow::getFieldMap).collect(Collectors.toList());
+                for (Map<String, String> rowMap : dataList) {
+                    rowMap.remove(StringUtils.EMPTY);
+                }
                 watch.stop();
                 summaryTextLabel.setText(String.format("Summary: 共【%s】行, 耗时【%s】毫秒", dataList.size(), watch.getTotalTimeMillis()));
                 resultTextArea.setText(JsonUtil.toPrettyJson(dataList));
