@@ -27,6 +27,7 @@ import easy.config.widget.WidgetConfigComponent;
 import easy.helper.ServiceHelper;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import easy.util.MessageUtil;
 import org.apache.commons.collections.MapUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,7 @@ public class CronCollectionDialogView extends DialogWrapper {
         });
         toolbarDecorator.setRemoveAction(anActionButton -> {
             String cron = cronTable.getValueAt(cronTable.getSelectedRow(), 0).toString();
-            int confirmRemove = Messages.showYesNoDialog(String.format("确认移除【%s】Cron表达式?", cron), Constants.PLUGIN_NAME, Messages.getQuestionIcon());
+            int confirmRemove = MessageUtil.showYesNoDialog(String.format("确认移除【%s】Cron表达式?", cron));
             if (MessageConstants.YES == confirmRemove) {
                 widgetConfig.getCronCollectionMap().remove(cron);
                 refreshCronTable();
@@ -86,7 +87,7 @@ public class CronCollectionDialogView extends DialogWrapper {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {
-                    Messages.showWarningDialog("收藏夹Cron表达式为空", Constants.PLUGIN_NAME);
+                    MessageUtil.showWarningDialog("收藏夹Cron表达式为空");
                     return;
                 }
                 // 创建文件保存弹窗
@@ -104,7 +105,7 @@ public class CronCollectionDialogView extends DialogWrapper {
                     csvWriter.writeLine(entry.getKey(), entry.getValue());
                 }
                 csvWriter.close();
-                Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
+                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         toolbarDecorator.setActionGroup(defaultActionGroup);

@@ -15,6 +15,7 @@ import easy.helper.ServiceHelper;
 import easy.ui.CommonNotifyDialog;
 import easy.util.BundleUtil;
 import easy.util.CronUtil;
+import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +75,7 @@ public class CronCoreView extends CoreCommonView {
                 return;
             }
             if (!CronUtil.isCron(cron, cronType)) {
-                Messages.showErrorDialog(String.format("【%s】非合法Cron表达式", cron), Constants.PLUGIN_NAME);
+                MessageUtil.showErrorDialog(String.format("【%s】非合法Cron表达式", cron));
                 return;
             }
             List<String> cronExceList = CronUtil.nextExecutionTime(cron, nextCount);
@@ -105,12 +106,10 @@ public class CronCoreView extends CoreCommonView {
             if (Objects.nonNull(widgetConfig)) {
                 LinkedHashMap<String, String> cronCollectionMap = widgetConfig.getCronCollectionMap();
                 if (StringUtils.isNotBlank(cronCollectionMap.get(cron))) {
-                    int confirm = Messages.showYesNoDialog(String.format("Cron表达式【%s】已存在, 是否覆盖?", cron), Constants.PLUGIN_NAME, Messages.getQuestionIcon());
+                    int confirm = MessageUtil.showYesNoDialog(String.format("Cron表达式【%s】已存在, 是否覆盖?", cron));
                     if (confirm == MessageConstants.YES) {
                         cronCollectionMap.put(cron, inputResult);
-                        int jump = Messages.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron), Constants.PLUGIN_NAME,
-                                BundleUtil.getI18n("global.button.jump.text"), BundleUtil.getI18n("global.button.cancel.text"),
-                                Messages.getQuestionIcon());
+                        int jump = MessageUtil.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron));
                         if (jump == MessageConstants.OK) {
                             new CronCollectionDialogView().show();
                         }
