@@ -16,6 +16,7 @@ import easy.enums.ExtraPackageNameEnum;
 import easy.enums.WidgetAnnotationRuleEnum;
 import easy.enums.WidgetToolEnum;
 import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import easy.util.PsiElementUtil;
 import easy.widget.annotation.DoAnnotationService;
 import org.apache.commons.collections.CollectionUtils;
@@ -222,7 +223,7 @@ public class WidgetToolViewDialog extends DialogWrapper {
             }
         }
         if (CollectionUtils.isEmpty(selectedItemList)) {
-            Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
+            MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"));
             return;
         }
         // 操作类型

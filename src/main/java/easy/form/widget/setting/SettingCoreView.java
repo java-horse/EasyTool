@@ -11,6 +11,7 @@ import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
 import easy.helper.ServiceHelper;
 import easy.ui.AttributeItem;
+import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -90,11 +91,11 @@ public class SettingCoreView extends CoreCommonView {
                     }
                 }
                 if (CollectionUtils.isEmpty(selectedTabList)) {
-                    Messages.showWarningDialog("请至少选择一个选项卡", Constants.PLUGIN_NAME);
+                    MessageUtil.showWarningDialog("请至少选择一个选项卡");
                     return;
                 }
                 widgetConfig.setWidgetCoreTabSet(selectedTabList);
-                Messages.showInfoMessage("保存成功, 重新打开View视窗生效", Constants.PLUGIN_NAME);
+                MessageUtil.showInfoMessage("保存成功, 重新打开View视窗生效");
             }
         });
     }

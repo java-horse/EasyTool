@@ -19,6 +19,7 @@ import easy.enums.ApiDocTypeEnum;
 import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
 import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -109,8 +110,7 @@ public class YApiSettingView {
             }
         });
         toolbarDecorator.setRemoveAction(button -> {
-            int confirm = Messages.showOkCancelDialog(String.format("确认移除%s项目Token信息?", ApiDocTypeEnum.YAPI.getTitle()), ApiDocTypeEnum.YAPI.getTitle(),
-                    BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getQuestionIcon());
+            int confirm = MessageUtil.showOkCancelDialog(String.format("确认移除%s项目Token信息?", ApiDocTypeEnum.YAPI.getTitle()));
             if (confirm == MessageConstants.OK) {
                 yApiConfig.getYapiTableMap().remove(yapiTable.getValueAt(yapiTable.getSelectedRow(), 1).toString());
                 refreshYapiTable();

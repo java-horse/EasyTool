@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="easy.form.widget.core.TimestampCoreView">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="665" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <scrollpane id="b8368">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="c5843" class="javax.swing.JTextArea" binding="timestampTextArea">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="a9c4b" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="be79f" class="javax.swing.JComboBox" binding="unitComboBox">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="Milliseconds"/>
+                <item value="Second"/>
+              </model>
+            </properties>
+          </component>
+          <component id="5539e" class="javax.swing.JComboBox" binding="zoneComboBox">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="Asia/Shanghai"/>
+                <item value="America/New_York"/>
+                <item value="Africa/Accra"/>
+                <item value="Africa/Addis_Ababa"/>
+                <item value="Africa/Algiers"/>
+                <item value="Africa/Asmera"/>
+                <item value="Africa/Bamako"/>
+                <item value="Africa/Bangui"/>
+                <item value="Africa/Banjul"/>
+                <item value="Africa/Bissau"/>
+                <item value="Africa/Blantyre"/>
+                <item value="Africa/Brazzaville"/>
+                <item value="Africa/Abidjan"/>
+                <item value="Africa/Bujumbura"/>
+                <item value="Africa/Cairo"/>
+                <item value="Africa/Casablanca"/>
+                <item value="Africa/Ceuta"/>
+                <item value="Africa/Conakry"/>
+                <item value="Africa/Dakar"/>
+                <item value="Africa/Dar_es_Salaam"/>
+                <item value="Africa/Djibouti"/>
+                <item value="Africa/Douala"/>
+                <item value="Africa/El_Aaiun"/>
+                <item value="Africa/Freetown"/>
+                <item value="Africa/Gaborone"/>
+                <item value="Africa/Harare"/>
+                <item value="Africa/Johannesburg"/>
+                <item value="Africa/Juba"/>
+                <item value="Africa/Kampala"/>
+                <item value="Africa/Khartoum"/>
+                <item value="Africa/Kigali"/>
+                <item value="Africa/Kinshasa"/>
+                <item value="Africa/Lagos"/>
+                <item value="Africa/Libreville"/>
+                <item value="Africa/Lome"/>
+                <item value="Africa/Luanda"/>
+                <item value="Africa/Lubumbashi"/>
+                <item value="Africa/Lusaka"/>
+                <item value="Africa/Malabo"/>
+                <item value="Africa/Maputo"/>
+                <item value="Africa/Maseru"/>
+                <item value="Africa/Mbabane"/>
+                <item value="Africa/Mogadishu"/>
+                <item value="Africa/Monrovia"/>
+                <item value="Africa/Nairobi"/>
+                <item value="Africa/Ndjamena"/>
+                <item value="Africa/Niamey"/>
+                <item value="Africa/Nouakchott"/>
+                <item value="Africa/Ouagadougou"/>
+                <item value="Africa/Porto-Novo"/>
+                <item value="Africa/Sao_Tome"/>
+                <item value="Africa/Tripoli"/>
+                <item value="Africa/Tunis"/>
+                <item value="Africa/Windhoek"/>
+                <item value="America/Adak"/>
+                <item value="America/Anchorage"/>
+                <item value="America/Anguilla"/>
+                <item value="America/Antigua"/>
+                <item value="America/Araguaina"/>
+                <item value="America/Argentina/La_Rioja"/>
+                <item value="America/Argentina/Rio_Gallegos"/>
+                <item value="America/Argentina/Salta"/>
+                <item value="America/Argentina/San_Juan"/>
+                <item value="America/Argentina/San_Luis"/>
+                <item value="America/Argentina/Tucuman"/>
+                <item value="America/Argentina/Ushuaia"/>
+                <item value="America/Aruba"/>
+                <item value="America/Asuncion"/>
+                <item value="America/Bahia"/>
+                <item value="America/Bahia_Banderas"/>
+                <item value="America/Barbados"/>
+                <item value="America/Belem"/>
+                <item value="America/Belize"/>
+                <item value="America/Blanc-Sablon"/>
+                <item value="America/Boa_Vista"/>
+                <item value="America/Bogota"/>
+                <item value="America/Boise"/>
+                <item value="America/Buenos_Aires"/>
+                <item value="America/Cambridge_Bay"/>
+                <item value="America/Campo_Grande"/>
+                <item value="America/Cancun"/>
+                <item value="America/Caracas"/>
+                <item value="America/Catamarca"/>
+                <item value="America/Cayenne"/>
+                <item value="America/Cayman"/>
+                <item value="America/Chicago"/>
+                <item value="America/Chihuahua"/>
+                <item value="America/Ciudad_Juarez"/>
+                <item value="America/Coral_Harbour"/>
+                <item value="America/Cordoba"/>
+                <item value="America/Costa_Rica"/>
+                <item value="America/Creston"/>
+                <item value="America/Cuiaba"/>
+                <item value="America/Curacao"/>
+                <item value="America/Danmarkshavn"/>
+                <item value="America/Dawson"/>
+                <item value="America/Dawson_Creek"/>
+                <item value="America/Denver"/>
+                <item value="America/Detroit"/>
+                <item value="America/Dominica"/>
+                <item value="America/Edmonton"/>
+                <item value="America/Eirunepe"/>
+                <item value="America/El_Salvador"/>
+                <item value="America/Fort_Nelson"/>
+                <item value="America/Fortaleza"/>
+                <item value="America/Glace_Bay"/>
+                <item value="America/Godthab"/>
+                <item value="America/Goose_Bay"/>
+                <item value="America/Grand_Turk"/>
+                <item value="America/Grenada"/>
+                <item value="America/Guadeloupe"/>
+                <item value="America/Guatemala"/>
+                <item value="America/Guayaquil"/>
+                <item value="America/Guyana"/>
+                <item value="America/Halifax"/>
+                <item value="America/Havana"/>
+                <item value="America/Hermosillo"/>
+                <item value="America/Indiana/Knox"/>
+                <item value="America/Indiana/Marengo"/>
+                <item value="America/Indiana/Petersburg"/>
+                <item value="America/Indiana/Tell_City"/>
+                <item value="America/Indiana/Vevay"/>
+                <item value="America/Indiana/Vincennes"/>
+                <item value="America/Indiana/Winamac"/>
+                <item value="America/Indianapolis"/>
+                <item value="America/Inuvik"/>
+                <item value="America/Iqaluit"/>
+                <item value="America/Jamaica"/>
+                <item value="America/Jujuy"/>
+                <item value="America/Juneau"/>
+                <item value="America/Kentucky/Monticello"/>
+                <item value="America/Kralendijk"/>
+                <item value="America/La_Paz"/>
+                <item value="America/Lima"/>
+                <item value="America/Los_Angeles"/>
+                <item value="America/Louisville"/>
+                <item value="America/Lower_Princes"/>
+                <item value="America/Maceio"/>
+                <item value="America/Managua"/>
+                <item value="America/Manaus"/>
+                <item value="America/Marigot"/>
+                <item value="America/Martinique"/>
+                <item value="America/Matamoros"/>
+                <item value="America/Mazatlan"/>
+                <item value="America/Mendoza"/>
+                <item value="America/Menominee"/>
+                <item value="America/Merida"/>
+                <item value="America/Metlakatla"/>
+                <item value="America/Mexico_City"/>
+                <item value="America/Miquelon"/>
+                <item value="America/Moncton"/>
+                <item value="America/Monterrey"/>
+                <item value="America/Montevideo"/>
+                <item value="America/Montserrat"/>
+                <item value="America/Nassau"/>
+                <item value="America/Nipigon"/>
+                <item value="America/Nome"/>
+                <item value="America/Noronha"/>
+                <item value="America/North_Dakota/Beulah"/>
+                <item value="America/North_Dakota/Center"/>
+                <item value="America/North_Dakota/New_Salem"/>
+                <item value="America/Ojinaga"/>
+                <item value="America/Panama"/>
+                <item value="America/Pangnirtung"/>
+                <item value="America/Paramaribo"/>
+                <item value="America/Phoenix"/>
+                <item value="America/Port-au-Prince"/>
+                <item value="America/Port_of_Spain"/>
+                <item value="America/Porto_Velho"/>
+                <item value="America/Puerto_Rico"/>
+                <item value="America/Punta_Arenas"/>
+                <item value="America/Rainy_River"/>
+                <item value="America/Rankin_Inlet"/>
+                <item value="America/Recife"/>
+                <item value="America/Regina"/>
+                <item value="America/Resolute"/>
+                <item value="America/Rio_Branco"/>
+                <item value="America/Santa_Isabel"/>
+                <item value="America/Santarem"/>
+                <item value="America/Santiago"/>
+                <item value="America/Santo_Domingo"/>
+                <item value="America/Sao_Paulo"/>
+                <item value="America/Scoresbysund"/>
+                <item value="America/Sitka"/>
+                <item value="America/St_Barthelemy"/>
+                <item value="America/St_Johns"/>
+                <item value="America/St_Kitts"/>
+                <item value="America/St_Lucia"/>
+                <item value="America/St_Thomas"/>
+                <item value="America/St_Vincent"/>
+                <item value="America/Swift_Current"/>
+                <item value="America/Tegucigalpa"/>
+                <item value="America/Thule"/>
+                <item value="America/Thunder_Bay"/>
+                <item value="America/Tijuana"/>
+                <item value="America/Toronto"/>
+                <item value="America/Tortola"/>
+                <item value="America/Vancouver"/>
+                <item value="America/Whitehorse"/>
+                <item value="America/Winnipeg"/>
+                <item value="America/Yakutat"/>
+                <item value="Antarctica/Casey"/>
+                <item value="Antarctica/Davis"/>
+                <item value="Antarctica/DumontDUrville"/>
+                <item value="Antarctica/Macquarie"/>
+                <item value="Antarctica/Mawson"/>
+                <item value="Antarctica/McMurdo"/>
+                <item value="Antarctica/Palmer"/>
+                <item value="Antarctica/Rothera"/>
+                <item value="Antarctica/Syowa"/>
+                <item value="Antarctica/Troll"/>
+                <item value="Antarctica/Vostok"/>
+                <item value="Arctic/Longyearbyen"/>
+                <item value="Asia/Aden"/>
+                <item value="Asia/Almaty"/>
+                <item value="Asia/Amman"/>
+                <item value="Asia/Anadyr"/>
+                <item value="Asia/Aqtau"/>
+                <item value="Asia/Aqtobe"/>
+                <item value="Asia/Ashgabat"/>
+                <item value="Asia/Atyrau"/>
+                <item value="Asia/Baghdad"/>
+                <item value="Asia/Bahrain"/>
+                <item value="Asia/Baku"/>
+                <item value="Asia/Bangkok"/>
+                <item value="Asia/Barnaul"/>
+                <item value="Asia/Beirut"/>
+                <item value="Asia/Bishkek"/>
+                <item value="Asia/Brunei"/>
+                <item value="Asia/Calcutta"/>
+                <item value="Asia/Chita"/>
+                <item value="Asia/Choibalsan"/>
+                <item value="Asia/Colombo"/>
+                <item value="Asia/Damascus"/>
+                <item value="Asia/Dhaka"/>
+                <item value="Asia/Dili"/>
+                <item value="Asia/Dubai"/>
+                <item value="Asia/Dushanbe"/>
+                <item value="Asia/Famagusta"/>
+                <item value="Asia/Gaza"/>
+                <item value="Asia/Hebron"/>
+                <item value="Asia/Hong_Kong"/>
+                <item value="Asia/Hovd"/>
+                <item value="Asia/Irkutsk"/>
+                <item value="Asia/Jakarta"/>
+                <item value="Asia/Jayapura"/>
+                <item value="Asia/Jerusalem"/>
+                <item value="Asia/Kabul"/>
+                <item value="Asia/Kamchatka"/>
+                <item value="Asia/Karachi"/>
+                <item value="Asia/Katmandu"/>
+                <item value="Asia/Khandyga"/>
+                <item value="Asia/Krasnoyarsk"/>
+                <item value="Asia/Kuala_Lumpur"/>
+                <item value="Asia/Kuching"/>
+                <item value="Asia/Kuwait"/>
+                <item value="Asia/Macau"/>
+                <item value="Asia/Magadan"/>
+                <item value="Asia/Makassar"/>
+                <item value="Asia/Manila"/>
+                <item value="Asia/Muscat"/>
+                <item value="Asia/Nicosia"/>
+                <item value="Asia/Novokuznetsk"/>
+                <item value="Asia/Novosibirsk"/>
+                <item value="Asia/Omsk"/>
+                <item value="Asia/Oral"/>
+                <item value="Asia/Phnom_Penh"/>
+                <item value="Asia/Pontianak"/>
+                <item value="Asia/Pyongyang"/>
+                <item value="Asia/Qatar"/>
+                <item value="Asia/Qostanay"/>
+                <item value="Asia/Qyzylorda"/>
+                <item value="Asia/Rangoon"/>
+                <item value="Asia/Riyadh"/>
+                <item value="Asia/Saigon"/>
+                <item value="Asia/Sakhalin"/>
+                <item value="Asia/Samarkand"/>
+                <item value="Asia/Seoul"/>
+                <item value="Asia/Singapore"/>
+                <item value="Asia/Srednekolymsk"/>
+                <item value="Asia/Taipei"/>
+                <item value="Asia/Tashkent"/>
+                <item value="Asia/Tbilisi"/>
+                <item value="Asia/Tehran"/>
+                <item value="Asia/Thimphu"/>
+                <item value="Asia/Tokyo"/>
+                <item value="Asia/Tomsk"/>
+                <item value="Asia/Ulaanbaatar"/>
+                <item value="Asia/Urumqi"/>
+                <item value="Asia/Ust-Nera"/>
+                <item value="Asia/Vientiane"/>
+                <item value="Asia/Vladivostok"/>
+                <item value="Asia/Yakutsk"/>
+                <item value="Asia/Yekaterinburg"/>
+                <item value="Asia/Yerevan"/>
+                <item value="Atlantic/Azores"/>
+                <item value="Atlantic/Bermuda"/>
+                <item value="Atlantic/Canary"/>
+                <item value="Atlantic/Cape_Verde"/>
+                <item value="Atlantic/Faeroe"/>
+                <item value="Atlantic/Madeira"/>
+                <item value="Atlantic/Reykjavik"/>
+                <item value="Atlantic/South_Georgia"/>
+                <item value="Atlantic/St_Helena"/>
+                <item value="Atlantic/Stanley"/>
+                <item value="Australia/Adelaide"/>
+                <item value="Australia/Brisbane"/>
+                <item value="Australia/Broken_Hill"/>
+                <item value="Australia/Currie"/>
+                <item value="Australia/Darwin"/>
+                <item value="Australia/Eucla"/>
+                <item value="Australia/Hobart"/>
+                <item value="Australia/Lindeman"/>
+                <item value="Australia/Lord_Howe"/>
+                <item value="Australia/Melbourne"/>
+                <item value="Australia/Perth"/>
+                <item value="Australia/Sydney"/>
+                <item value="Europe/Amsterdam"/>
+                <item value="Europe/Andorra"/>
+                <item value="Europe/Astrakhan"/>
+                <item value="Europe/Athens"/>
+                <item value="Europe/Belgrade"/>
+                <item value="Europe/Berlin"/>
+                <item value="Europe/Bratislava"/>
+                <item value="Europe/Brussels"/>
+                <item value="Europe/Bucharest"/>
+                <item value="Europe/Budapest"/>
+                <item value="Europe/Busingen"/>
+                <item value="Europe/Chisinau"/>
+                <item value="Europe/Copenhagen"/>
+                <item value="Europe/Dublin"/>
+                <item value="Europe/Gibraltar"/>
+                <item value="Europe/Guernsey"/>
+                <item value="Europe/Helsinki"/>
+                <item value="Europe/Isle_of_Man"/>
+                <item value="Europe/Istanbul"/>
+                <item value="Europe/Jersey"/>
+                <item value="Europe/Kaliningrad"/>
+                <item value="Europe/Kiev"/>
+                <item value="Europe/Kirov"/>
+                <item value="Europe/Lisbon"/>
+                <item value="Europe/Ljubljana"/>
+                <item value="Europe/London"/>
+                <item value="Europe/Luxembourg"/>
+                <item value="Europe/Madrid"/>
+                <item value="Europe/Malta"/>
+                <item value="Europe/Mariehamn"/>
+                <item value="Europe/Minsk"/>
+                <item value="Europe/Monaco"/>
+                <item value="Europe/Moscow"/>
+                <item value="Europe/Oslo"/>
+                <item value="Europe/Paris"/>
+                <item value="Europe/Podgorica"/>
+                <item value="Europe/Prague"/>
+                <item value="Europe/Riga"/>
+                <item value="Europe/Rome"/>
+                <item value="Europe/Samara"/>
+                <item value="Europe/San_Marino"/>
+                <item value="Europe/Sarajevo"/>
+                <item value="Europe/Saratov"/>
+                <item value="Europe/Simferopol"/>
+                <item value="Europe/Skopje"/>
+                <item value="Europe/Sofia"/>
+                <item value="Europe/Stockholm"/>
+                <item value="Europe/Tallinn"/>
+                <item value="Europe/Tirane"/>
+                <item value="Europe/Ulyanovsk"/>
+                <item value="Europe/Uzhgorod"/>
+                <item value="Europe/Vaduz"/>
+                <item value="Europe/Vatican"/>
+                <item value="Europe/Vienna"/>
+                <item value="Europe/Vilnius"/>
+                <item value="Europe/Volgograd"/>
+                <item value="Europe/Warsaw"/>
+                <item value="Europe/Zagreb"/>
+                <item value="Europe/Zaporozhye"/>
+                <item value="Europe/Zurich"/>
+                <item value="Indian/Antananarivo"/>
+                <item value="Indian/Chagos"/>
+                <item value="Indian/Christmas"/>
+                <item value="Indian/Cocos"/>
+                <item value="Indian/Comoro"/>
+                <item value="Indian/Kerguelen"/>
+                <item value="Indian/Mahe"/>
+                <item value="Indian/Maldives"/>
+                <item value="Indian/Mauritius"/>
+                <item value="Indian/Mayotte"/>
+                <item value="Indian/Reunion"/>
+                <item value="Pacific/Apia"/>
+                <item value="Pacific/Auckland"/>
+                <item value="Pacific/Bougainville"/>
+                <item value="Pacific/Chatham"/>
+                <item value="Pacific/Easter"/>
+                <item value="Pacific/Efate"/>
+                <item value="Pacific/Enderbury"/>
+                <item value="Pacific/Fakaofo"/>
+                <item value="Pacific/Fiji"/>
+                <item value="Pacific/Funafuti"/>
+                <item value="Pacific/Galapagos"/>
+                <item value="Pacific/Gambier"/>
+                <item value="Pacific/Guadalcanal"/>
+                <item value="Pacific/Guam"/>
+                <item value="Pacific/Honolulu"/>
+                <item value="Pacific/Johnston"/>
+                <item value="Pacific/Kiritimati"/>
+                <item value="Pacific/Kosrae"/>
+                <item value="Pacific/Kwajalein"/>
+                <item value="Pacific/Majuro"/>
+                <item value="Pacific/Marquesas"/>
+                <item value="Pacific/Midway"/>
+                <item value="Pacific/Nauru"/>
+                <item value="Pacific/Niue"/>
+                <item value="Pacific/Norfolk"/>
+                <item value="Pacific/Noumea"/>
+                <item value="Pacific/Pago_Pago"/>
+                <item value="Pacific/Palau"/>
+                <item value="Pacific/Pitcairn"/>
+                <item value="Pacific/Ponape"/>
+                <item value="Pacific/Port_Moresby"/>
+                <item value="Pacific/Rarotonga"/>
+                <item value="Pacific/Saipan"/>
+                <item value="Pacific/Tahiti"/>
+                <item value="Pacific/Tarawa"/>
+                <item value="Pacific/Tongatapu"/>
+                <item value="Pacific/Truk"/>
+                <item value="Pacific/Wake"/>
+                <item value="Pacific/Wallis"/>
+              </model>
+            </properties>
+          </component>
+          <component id="c6a70" class="javax.swing.JComboBox" binding="formatComboBox">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <model>
+                <item value="yyyy-MM-dd HH:mm:ss"/>
+                <item value="yyyyMMddHHmmss"/>
+                <item value="yyyyMMddHHmmssSSS"/>
+                <item value="yyyy年MM月dd日HH时mm分ss秒"/>
+              </model>
+            </properties>
+          </component>
+          <grid id="d175b" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="f5403" class="javax.swing.JButton" binding="convertButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Convert"/>
+                </properties>
+              </component>
+              <component id="fa34b" class="javax.swing.JButton" binding="restoreButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Restore"/>
+                </properties>
+              </component>
+              <hspacer id="1af7c">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <hspacer id="108dd">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <scrollpane id="ed3cc">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="dbaea" class="javax.swing.JTextArea" binding="datetimeTextArea">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="d1051" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="12a96" class="javax.swing.JButton" binding="timestampButton">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+          <hspacer id="4551c">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="98ab" class="javax.swing.JLabel" binding="timestampLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

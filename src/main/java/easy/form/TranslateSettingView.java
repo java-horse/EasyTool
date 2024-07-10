@@ -31,6 +31,7 @@ import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import easy.util.MessageUtil;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -166,14 +167,14 @@ public class TranslateSettingView {
         refreshGlobalWordMap();
         // 设置监听器
         resetButton.addActionListener(event -> {
-            int result = Messages.showYesNoDialog("确认删除所有配置数据?", "重置数据", Messages.getWarningIcon());
+            int result = MessageUtil.showYesNoDialog("确认删除所有配置数据?");
             if (result == MessageConstants.YES) {
                 translateConfig.reset();
                 refresh();
             }
         });
         clearButton.addActionListener(event -> {
-            int result = Messages.showYesNoDialog("确认清空所有翻译缓存?", "清空缓存", Messages.getWarningIcon());
+            int result = MessageUtil.showYesNoDialog("确认清空所有翻译缓存?");
             if (result == MessageConstants.YES) {
                 translateService.clearCache();
             }
@@ -192,7 +193,7 @@ public class TranslateSettingView {
         baiduDomainCheckBox.addItemListener(e -> baiduDomainComboBox.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
         baiduDomainCheckBox.addActionListener(e -> {
             if (((JCheckBox) e.getSource()).isSelected()) {
-                Messages.showWarningDialog(String.format("【%s】请谨慎开启领域翻译功能，该功能涉及部分收费项!!!", translateChannelBox.getSelectedItem()), "友情提示");
+                MessageUtil.showWarningDialog(String.format("【%s】请谨慎开启领域翻译功能，该功能涉及部分收费项!!!", translateChannelBox.getSelectedItem()));
             }
         });
         aliyunDomainComboBox.setEnabled(false);
@@ -351,8 +352,7 @@ public class TranslateSettingView {
         });
         toolbarDecorator.disableUpDownActions();
         toolbarDecorator.setRemoveAction(anActionButton -> {
-            int result = Messages.showDialog(String.format("确认移除【%s】映射数据?", globalWordMapList.getSelectedValue().getKey()), Constants.PLUGIN_NAME,
-                    new String[]{Messages.getOkButton()}, 0, Messages.getWarningIcon());
+            int result = MessageUtil.showYesNoDialog(String.format("确认移除【%s】映射数据?", globalWordMapList.getSelectedValue().getKey()), Messages.getWarningIcon());
             if (result == MessageConstants.YES) {
                 typeMap.remove(globalWordMapList.getSelectedValue().getKey());
                 refreshGlobalWordMap();
@@ -383,7 +383,7 @@ public class TranslateSettingView {
                     }
                     csvWriter.close();
                 }
-                Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
+                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.import.text"),
@@ -412,7 +412,7 @@ public class TranslateSettingView {
                     typeMap.put(sourceWord, StringUtils.trim(row.get(1)));
                 }
                 refreshGlobalWordMap();
-                Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
+                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         defaultActionGroup.addSeparator();
@@ -433,7 +433,7 @@ public class TranslateSettingView {
                 CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
                 csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.target.word.text"));
                 csvWriter.close();
-                Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"), Constants.PLUGIN_NAME);
+                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         toolbarDecorator.setActionGroup(defaultActionGroup);

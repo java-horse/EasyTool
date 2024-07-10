@@ -2,6 +2,7 @@ package easy.enums;
 
 import easy.form.widget.core.ExcelCoreView;
 import easy.form.widget.core.QrCodeCoreView;
+import easy.form.widget.core.TimestampCoreView;
 import easy.form.widget.core.UrlEncodeCoreView;
 import easy.form.widget.core.YmlConvertCoreView;
 import easy.form.widget.core.cron.CronCoreView;
@@ -39,6 +40,12 @@ public enum WidgetCoreTabEnum {
         @Override
         public Component getComponent() {
             return new ExcelCoreView().getContent();
+        }
+    },
+    TIMESTAMP("Timestamp转换") {
+        @Override
+        public Component getComponent() {
+            return new TimestampCoreView().getContent();
         }
     };
 

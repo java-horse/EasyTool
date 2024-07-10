@@ -34,12 +34,18 @@ public class CronAddDialogView extends DialogWrapper {
     @Override
     protected @Nullable ValidationInfo doValidate() {
         String cronValue = StringUtils.trim(cronTextField.getText());
-        if (StringUtils.isBlank(cronValue) || !CronUtil.isCron(cronValue)) {
+        if (StringUtils.isBlank(cronValue)) {
+            return new ValidationInfo("请输入Cron表达式", cronTextField);
+        }
+        if (!CronUtil.isCron(cronValue)) {
             return new ValidationInfo(String.format("Cron表达式【%s】不正确", cronValue), cronTextField);
         }
         String descValue = descTextField.getText();
-        if (StringUtils.isBlank(descValue) || descValue.length() > Constants.NUM.HUNDRED) {
-            return new ValidationInfo(String.format("任务描述字符数要求<%s", Constants.NUM.HUNDRED), descTextField);
+        if (StringUtils.isBlank(descValue)) {
+            return new ValidationInfo("请输入任务描述", descTextField);
+        }
+        if (descValue.length() > Constants.NUM.HUNDRED) {
+            return new ValidationInfo(String.format("任务描述字符数要求<=%s", Constants.NUM.HUNDRED), descTextField);
         }
         return super.doValidate();
     }
