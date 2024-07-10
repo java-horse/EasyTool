@@ -19,6 +19,7 @@ import com.intellij.openapi.projectRoots.impl.JavaSdkImpl;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -204,6 +205,7 @@ public class EasyCommonUtil {
                 public void focusGained(FocusEvent e) {
                     if (StringUtils.equals(textArea.getText(), text)) {
                         textArea.setText(StringUtils.EMPTY);
+                        textArea.setForeground(JBColor.BLACK);
                     }
                 }
 
@@ -211,6 +213,7 @@ public class EasyCommonUtil {
                 public void focusLost(FocusEvent e) {
                     if (StringUtils.isBlank(textArea.getText())) {
                         textArea.setText(text);
+                        textArea.setForeground(JBColor.GRAY);
                     }
                 }
             });
@@ -222,6 +225,7 @@ public class EasyCommonUtil {
                 public void focusGained(FocusEvent e) {
                     if (StringUtils.equals(textField.getText(), text)) {
                         textField.setText(StringUtils.EMPTY);
+                        textField.setForeground(JBColor.BLACK);
                     }
                 }
 
@@ -229,6 +233,7 @@ public class EasyCommonUtil {
                 public void focusLost(FocusEvent e) {
                     if (StringUtils.isBlank(textField.getText())) {
                         textField.setText(text);
+                        textField.setForeground(JBColor.GRAY);
                     }
                 }
             });
