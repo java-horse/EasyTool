@@ -1,4 +1,4 @@
-package easy.action;
+package easy.action.widget;
 
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;

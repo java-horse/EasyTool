@@ -26,6 +26,7 @@ public class CommonConfig {
     private String tabHighlightGradientStepFormattedTextField;
     private Boolean tabHighlightEnableCheckBox;
     private Boolean convertCharEnableCheckBox;
+    private Boolean pluginAutoUpdateEnable;
 
     public Boolean getSwaggerConfirmYesCheckBox() {
         return swaggerConfirmYesCheckBox;
@@ -123,22 +124,12 @@ public class CommonConfig {
         this.restfulDisplayApiCommentCheckBox = restfulDisplayApiCommentCheckBox;
     }
 
-    @Override
-    public String toString() {
-        return "CommonConfig{" +
-                "swaggerConfirmYesCheckBox=" + swaggerConfirmYesCheckBox +
-                ", swaggerConfirmNoCheckBox=" + swaggerConfirmNoCheckBox +
-                ", searchApiDefaultIconRadioButton=" + searchApiDefaultIconRadioButton +
-                ", searchApiCuteIconRadioButton=" + searchApiCuteIconRadioButton +
-                ", restfulDisplayApiCommentCheckBox=" + restfulDisplayApiCommentCheckBox +
-                ", translateConfirmInputModelYesCheckBox=" + translateConfirmInputModelYesCheckBox +
-                ", translateConfirmInputModelNoCheckBox=" + translateConfirmInputModelNoCheckBox +
-                ", persistentColor=" + persistentColor +
-                ", tabHighlightSizeComboBox='" + tabHighlightSizeComboBox + '\'' +
-                ", tabHighlightGradientStepFormattedTextField='" + tabHighlightGradientStepFormattedTextField + '\'' +
-                ", tabHighlightEnableCheckBox=" + tabHighlightEnableCheckBox +
-                ", convertCharEnableCheckBox=" + convertCharEnableCheckBox +
-                '}';
+    public Boolean getPluginAutoUpdateEnable() {
+        return pluginAutoUpdateEnable;
+    }
+
+    public void setPluginAutoUpdateEnable(Boolean pluginAutoUpdateEnable) {
+        this.pluginAutoUpdateEnable = pluginAutoUpdateEnable;
     }
 
     /**

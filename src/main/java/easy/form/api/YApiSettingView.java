@@ -6,6 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.openapi.ui.MessageConstants;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.OnOffButton;
 import com.intellij.ui.table.JBTable;
@@ -16,6 +18,8 @@ import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
 import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
+import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -106,8 +110,11 @@ public class YApiSettingView {
             }
         });
         toolbarDecorator.setRemoveAction(button -> {
-            yApiConfig.getYapiTableMap().remove(yapiTable.getValueAt(yapiTable.getSelectedRow(), 1).toString());
-            refreshYapiTable();
+            int confirm = MessageUtil.showOkCancelDialog(String.format("确认移除%s项目Token信息?", ApiDocTypeEnum.YAPI.getTitle()));
+            if (confirm == MessageConstants.OK) {
+                yApiConfig.getYapiTableMap().remove(yapiTable.getValueAt(yapiTable.getSelectedRow(), 1).toString());
+                refreshYapiTable();
+            }
         });
         mainPanel = toolbarDecorator.createPanel();
     }

@@ -64,7 +64,7 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
         };
         innerTable.setPreferredScrollableViewportSize(new Dimension(-1, innerTable.getRowHeight() * innerTable.getRowCount()));
         innerTable.setFillsViewportHeight(true);
-        addCellCopyListener(innerTable);
+        EasyCommonUtil.addTableCellCopyListener(innerTable);
         innerScrollPane = new JBScrollPane(innerTable);
 
         customTable = new JBTable() {
@@ -92,7 +92,7 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
                 refreshCustomTable();
             }
         });
-        addCellCopyListener(customTable);
+        EasyCommonUtil.addTableCellCopyListener(customTable);
         customVariablePanel = toolbarDecorator.createPanel();
     }
 

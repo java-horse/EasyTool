@@ -1,15 +1,20 @@
 package easy.form;
 
+import com.intellij.notification.NotificationType;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.OnOffButton;
+import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.helper.ServiceHelper;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import easy.util.NotifyUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.Objects;
 
 /**
@@ -55,6 +60,9 @@ public class CommonSettingView {
     private JLabel restfulDisplayApiCommentLabel;
     private JCheckBox restfulDisplayApiCommentCheckBox;
     private JLabel restfulDisplayApiCommentTipLabel;
+    private JLabel pluginUpdateGroupLabel;
+    private JLabel pluginAutoUpdateEnableLabel;
+    private OnOffButton pluginAutoUpdateEnableButton;
 
     public CommonSettingView() {
         // 设置提示小图标和提示信息
@@ -66,13 +74,21 @@ public class CommonSettingView {
         searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
+        tabBackgroundColorPanel.setEnabled(false);
+        tabHighlightSizeComboBox.setEnabled(false);
+        tabHighlightGradientStepFormattedTextField.setEnabled(false);
         tabHighlightEnableCheckBox.addItemListener(e -> {
-            boolean selected = ((JCheckBox) e.getSource()).isSelected();
+            boolean selected = e.getStateChange() == ItemEvent.SELECTED;
             tabBackgroundColorPanel.setEnabled(selected);
             tabHighlightSizeComboBox.setEnabled(selected);
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
         tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
+        pluginAutoUpdateEnableButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                NotifyUtil.notify(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME), NotificationType.WARNING);
+            }
+        });
     }
 
     private void createUIComponents() {
@@ -134,6 +150,7 @@ public class CommonSettingView {
         setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
         setConvertCharEnableCheckBox(commonConfig.getConvertCharEnableCheckBox());
         setRestfulDisplayApiCommentCheckBox(commonConfig.getRestfulDisplayApiCommentCheckBox());
+        setPluginAutoUpdateEnableButton(commonConfig.getPluginAutoUpdateEnable());
     }
 
     public JComponent getComponent() {
@@ -387,4 +404,13 @@ public class CommonSettingView {
     public void setRestfulDisplayApiCommentTipLabel(JLabel restfulDisplayApiCommentTipLabel) {
         this.restfulDisplayApiCommentTipLabel = restfulDisplayApiCommentTipLabel;
     }
+
+    public OnOffButton getPluginAutoUpdateEnableButton() {
+        return pluginAutoUpdateEnableButton;
+    }
+
+    public void setPluginAutoUpdateEnableButton(Boolean pluginAutoUpdateEnableButton) {
+        this.pluginAutoUpdateEnableButton.setSelected(pluginAutoUpdateEnableButton);
+    }
+
 }

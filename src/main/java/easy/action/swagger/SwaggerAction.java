@@ -17,6 +17,7 @@ import easy.enums.SwaggerServiceEnum;
 import easy.helper.ServiceHelper;
 import easy.ui.SwaggerViewDialog;
 import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +73,7 @@ public class SwaggerAction extends AnAction {
             return;
         }
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
-            int confirmResult = Messages.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"), Constants.PLUGIN_NAME, Messages.getQuestionIcon());
+            int confirmResult = MessageUtil.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"));
             if (MessageConstants.YES == confirmResult) {
                 execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
             }

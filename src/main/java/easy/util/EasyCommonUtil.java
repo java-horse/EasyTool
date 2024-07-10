@@ -9,6 +9,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.JavaSdk;
@@ -18,12 +19,14 @@ import com.intellij.openapi.projectRoots.impl.JavaSdkImpl;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.net.URI;
@@ -202,6 +205,7 @@ public class EasyCommonUtil {
                 public void focusGained(FocusEvent e) {
                     if (StringUtils.equals(textArea.getText(), text)) {
                         textArea.setText(StringUtils.EMPTY);
+                        textArea.setForeground(JBColor.BLACK);
                     }
                 }
 
@@ -209,6 +213,7 @@ public class EasyCommonUtil {
                 public void focusLost(FocusEvent e) {
                     if (StringUtils.isBlank(textArea.getText())) {
                         textArea.setText(text);
+                        textArea.setForeground(JBColor.GRAY);
                     }
                 }
             });
@@ -220,6 +225,7 @@ public class EasyCommonUtil {
                 public void focusGained(FocusEvent e) {
                     if (StringUtils.equals(textField.getText(), text)) {
                         textField.setText(StringUtils.EMPTY);
+                        textField.setForeground(JBColor.BLACK);
                     }
                 }
 
@@ -227,6 +233,7 @@ public class EasyCommonUtil {
                 public void focusLost(FocusEvent e) {
                     if (StringUtils.isBlank(textField.getText())) {
                         textField.setText(text);
+                        textField.setForeground(JBColor.GRAY);
                     }
                 }
             });
@@ -242,12 +249,48 @@ public class EasyCommonUtil {
      * @date 2024/06/13 10:37
      */
     public static void customLabelTipText(@NotNull JLabel label, String tipText) {
+        customLabelTipText(label, tipText, null);
+    }
+
+    /**
+     * 自定义标签提示文本
+     *
+     * @param label   标签
+     * @param tipText 提示文本
+     * @param color   文本颜色
+     * @author mabin
+     * @date 2024/07/02 09:53
+     */
+    public static void customLabelTipText(@NotNull JLabel label, String tipText, Color color) {
         if (Objects.isNull(tipText) || tipText.isBlank()) {
             return;
         }
         label.setIcon(AllIcons.General.ContextHelp);
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         label.setToolTipText(tipText);
+        if (Objects.nonNull(color)) {
+            label.setForeground(color);
+        }
+    }
+
+    /**
+     * 添加表单元格复制侦听器
+     *
+     * @param jTable j表
+     * @author mabin
+     * @date 2024/07/03 10:07
+     */
+    public static void addTableCellCopyListener(JTable jTable) {
+        jTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = jTable.getSelectedRow();
+                int selectedColumn = jTable.getSelectedColumn();
+                if (selectedRow != -1 && selectedColumn != -1) {
+                    String cellValue = (String) jTable.getValueAt(selectedRow, selectedColumn);
+                    CopyPasteManager.getInstance().setContents(new StringSelection(cellValue));
+                }
+            }
+        });
     }
 
 }

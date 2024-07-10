@@ -6,6 +6,7 @@ import easy.util.BundleUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class OpenModelPreviewKeyView extends DialogWrapper {
 
@@ -21,6 +22,8 @@ public class OpenModelPreviewKeyView extends DialogWrapper {
         setOKButtonIcon(EasyIcons.ICON.COPY);
         setOKButtonText(BundleUtil.getI18n("global.button.copy.text"));
         setCancelButtonText(BundleUtil.getI18n("global.button.cancel.text"));
+        Dimension size = panel.getPreferredSize();
+        setSize(Math.max(size.width, 500), Math.min(size.height, 200));
     }
 
     @Override

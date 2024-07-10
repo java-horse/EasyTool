@@ -4,6 +4,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -40,13 +41,15 @@ public class WordMapAddView extends DialogWrapper {
     @Nullable
     @Override
     protected ValidationInfo doValidate() {
-        if (sourceTextField.getText() == null || sourceTextField.getText().isEmpty()) {
+        if (sourceTextField.getText() == null || sourceTextField.getText().isEmpty()
+                || StringUtils.equals(sourceTextField.getText().trim(), BundleUtil.getI18n("global.source.word.tip.text"))) {
             return new ValidationInfo(BundleUtil.getI18n("global.source.word.tip.text"), sourceTextField);
         }
         if (Objects.nonNull(typeMap.get(sourceTextField.getText().trim()))) {
             return new ValidationInfo(BundleUtil.getI18n("global.word.mapping.repeat.text"), sourceTextField);
         }
-        if (targetTextField.getText() == null || targetTextField.getText().isEmpty()) {
+        if (targetTextField.getText() == null || targetTextField.getText().isEmpty()
+                || StringUtils.equals(targetTextField.getText().trim(), BundleUtil.getI18n("global.target.word.tip.text"))) {
             return new ValidationInfo(BundleUtil.getI18n("global.target.word.tip.text"), targetTextField);
         }
         return super.doValidate();

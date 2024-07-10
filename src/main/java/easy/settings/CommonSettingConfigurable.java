@@ -2,8 +2,6 @@ package easy.settings;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.NumberUtil;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import easy.base.Constants;
@@ -60,7 +58,8 @@ public class CommonSettingConfigurable implements Configurable {
                 || !Objects.equals(commonConfig.getPersistentColor().getBlue(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getBlue()))
                 || !Objects.equals(commonConfig.getTabHighlightSizeComboBox(), commonSettingView.getTabHighlightSizeComboBox().getSelectedItem())
                 || !StringUtils.equals(commonConfig.getTabHighlightGradientStepFormattedTextField(), commonSettingView.getTabHighlightGradientStepFormattedTextField().getText())
-                || !Objects.equals(commonConfig.getConvertCharEnableCheckBox(), commonSettingView.getConvertCharEnableCheckBox().isSelected());
+                || !Objects.equals(commonConfig.getConvertCharEnableCheckBox(), commonSettingView.getConvertCharEnableCheckBox().isSelected())
+                || !Objects.equals(commonConfig.getPluginAutoUpdateEnable(), commonSettingView.getPluginAutoUpdateEnableButton().isSelected());
     }
 
     @Override
@@ -93,7 +92,7 @@ public class CommonSettingConfigurable implements Configurable {
                         && Convert.toInt(tabHighlightGradientStepFormattedTextField) <= Constants.NUM.EIGHTY,
                 String.format("属性: %s 请输入合法的整数(x>=%d && x<=%d)", "Tab Highlight Gradient Step", Constants.NUM.TEN, Constants.NUM.EIGHTY));
         commonConfig.setConvertCharEnableCheckBox(commonSettingView.getConvertCharEnableCheckBox().isSelected());
-
+        commonConfig.setPluginAutoUpdateEnable(commonSettingView.getPluginAutoUpdateEnableButton().isSelected());
     }
 
 }

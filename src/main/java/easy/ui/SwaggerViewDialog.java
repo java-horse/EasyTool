@@ -18,6 +18,7 @@ import easy.enums.SwaggerServiceEnum;
 import easy.helper.ServiceHelper;
 import easy.swagger.SwaggerGenerateService;
 import easy.util.BundleUtil;
+import easy.util.MessageUtil;
 import easy.util.PsiElementUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -155,7 +156,7 @@ public class SwaggerViewDialog extends DialogWrapper {
             }
         }
         if (CollectionUtils.isEmpty(selectedItemList)) {
-            Messages.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"), Constants.PLUGIN_NAME);
+            MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.unselected"));
             return;
         }
         // 获取选中swagger版本

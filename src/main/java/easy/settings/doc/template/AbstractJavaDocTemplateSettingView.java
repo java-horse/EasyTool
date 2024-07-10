@@ -29,22 +29,4 @@ public abstract class AbstractJavaDocTemplateSettingView {
 
     public abstract JComponent getComponent();
 
-    /**
-     * 添加单元格选择监听器
-     *
-     * @param jTable
-     */
-    protected void addCellCopyListener(JTable jTable) {
-        jTable.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int selectedRow = jTable.getSelectedRow();
-                int selectedColumn = jTable.getSelectedColumn();
-                if (selectedRow != -1 && selectedColumn != -1) {
-                    String cellValue = (String) jTable.getValueAt(selectedRow, selectedColumn);
-                    CopyPasteManager.getInstance().setContents(new StringSelection(cellValue));
-                }
-            }
-        });
-    }
-
 }
