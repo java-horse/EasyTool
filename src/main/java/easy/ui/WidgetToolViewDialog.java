@@ -4,17 +4,15 @@ import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
-import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.WidgetAnnotationRuleEnum;
-import easy.enums.WidgetToolEnum;
+import easy.enums.WidgetAnnotationToolEnum;
 import easy.util.BundleUtil;
 import easy.util.MessageUtil;
 import easy.util.PsiElementUtil;
@@ -77,14 +75,14 @@ public class WidgetToolViewDialog extends DialogWrapper {
 
         jsonButtonGroup = new ButtonGroup();
         String type = getSelectedJsonType(psiClass);
-        JRadioButton jacksonRadioButton = new JRadioButton(WidgetToolEnum.JACKSON.getName());
-        jacksonRadioButton.setSelected(WidgetToolEnum.JACKSON.getName().equals(type));
-        JRadioButton fastJsonRadioButton = new JRadioButton(WidgetToolEnum.FASTJSON.getName());
-        fastJsonRadioButton.setSelected(WidgetToolEnum.FASTJSON.getName().equals(type));
-        JRadioButton gsonRadioButton = new JRadioButton(WidgetToolEnum.GSON.getName());
-        gsonRadioButton.setSelected(WidgetToolEnum.GSON.getName().equals(type));
-        JRadioButton easyExcelRadioButton = new JRadioButton(WidgetToolEnum.EASY_EXCEL.getName());
-        easyExcelRadioButton.setSelected(WidgetToolEnum.EASY_EXCEL.getName().equals(type));
+        JRadioButton jacksonRadioButton = new JRadioButton(WidgetAnnotationToolEnum.JACKSON.getName());
+        jacksonRadioButton.setSelected(WidgetAnnotationToolEnum.JACKSON.getName().equals(type));
+        JRadioButton fastJsonRadioButton = new JRadioButton(WidgetAnnotationToolEnum.FASTJSON.getName());
+        fastJsonRadioButton.setSelected(WidgetAnnotationToolEnum.FASTJSON.getName().equals(type));
+        JRadioButton gsonRadioButton = new JRadioButton(WidgetAnnotationToolEnum.GSON.getName());
+        gsonRadioButton.setSelected(WidgetAnnotationToolEnum.GSON.getName().equals(type));
+        JRadioButton easyExcelRadioButton = new JRadioButton(WidgetAnnotationToolEnum.EASY_EXCEL.getName());
+        easyExcelRadioButton.setSelected(WidgetAnnotationToolEnum.EASY_EXCEL.getName().equals(type));
         jsonButtonGroup.add(jacksonRadioButton);
         jsonButtonGroup.add(fastJsonRadioButton);
         jsonButtonGroup.add(gsonRadioButton);
@@ -235,11 +233,11 @@ public class WidgetToolViewDialog extends DialogWrapper {
             }
         }
         // 注解类型
-        WidgetToolEnum typeEnum = null;
+        WidgetAnnotationToolEnum typeEnum = null;
         for (Enumeration<AbstractButton> buttons = jsonButtonGroup.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
-                typeEnum = WidgetToolEnum.getEnum(button.getText());
+                typeEnum = WidgetAnnotationToolEnum.getEnum(button.getText());
             }
         }
         // 处理规则
@@ -329,20 +327,20 @@ public class WidgetToolViewDialog extends DialogWrapper {
      */
     private String getSelectedJsonType(PsiClass psiClass) {
         if (Objects.isNull(psiClass)) {
-            return WidgetToolEnum.JACKSON.getName();
+            return WidgetAnnotationToolEnum.JACKSON.getName();
         }
         for (PsiField psiField : psiClass.getFields()) {
             if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.JSON_PROPERTY.getName()))) {
-                return WidgetToolEnum.JACKSON.getName();
+                return WidgetAnnotationToolEnum.JACKSON.getName();
             } else if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.JSON_FIELD.getName()))) {
-                return WidgetToolEnum.FASTJSON.getName();
+                return WidgetAnnotationToolEnum.FASTJSON.getName();
             } else if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.SERIALIZED_NAME.getName()))) {
-                return WidgetToolEnum.GSON.getName();
+                return WidgetAnnotationToolEnum.GSON.getName();
             } else if (Objects.nonNull(psiField.getAnnotation(ExtraPackageNameEnum.EXCEL_PROPERTY.getName()))) {
-                return WidgetToolEnum.EASY_EXCEL.getName();
+                return WidgetAnnotationToolEnum.EASY_EXCEL.getName();
             }
         }
-        return WidgetToolEnum.JACKSON.getName();
+        return WidgetAnnotationToolEnum.JACKSON.getName();
     }
 
 }
