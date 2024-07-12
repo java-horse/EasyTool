@@ -1,6 +1,6 @@
 package easy.enums;
 
-import easy.form.widget.core.ExcelCoreView;
+import easy.form.widget.core.excel.ExcelCoreView;
 import easy.form.widget.core.QrCodeCoreView;
 import easy.form.widget.core.TimestampCoreView;
 import easy.form.widget.core.UrlEncodeCoreView;
