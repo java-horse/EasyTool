@@ -6,6 +6,7 @@ import com.intellij.ide.CommonActionsManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.*;
+import com.intellij.openapi.editor.actions.ScrollToTheEndToolbarAction;
 import com.intellij.openapi.editor.actions.ToggleUseSoftWrapsToolbarAction;
 import com.intellij.openapi.editor.event.CaretEvent;
 import com.intellij.openapi.editor.event.CaretListener;
@@ -53,12 +54,14 @@ public class ConvertCoreView {
     private JButton log2SqlButton;
     private JButton clearButton;
 
+    private final Editor strEditor;
+
     public ConvertCoreView() {
         setupUI();
         Project project = ProjectManagerEx.getInstanceEx().getDefaultProject();
         // 配置左侧面板编辑器
         EditorFactory editorFactory = EditorFactory.getInstance();
-        Editor strEditor = editorFactory.createEditor(editorFactory.createDocument(StringUtils.EMPTY),
+        strEditor = editorFactory.createEditor(editorFactory.createDocument(StringUtils.EMPTY),
                 project, PlainTextLanguage.INSTANCE.getAssociatedFileType(), false);
         configureLeftEditor(strEditor, project);
         // 配置右侧面板
@@ -127,6 +130,7 @@ public class ConvertCoreView {
         Presentation presentation = toggleUseSoftWrapsToolbarAction.getTemplatePresentation();
         presentation.putClientProperty(Key.create("selected"), Boolean.TRUE);
         actionGroup.add(toggleUseSoftWrapsToolbarAction);
+        actionGroup.add(new ScrollToTheEndToolbarAction(strEditor));
         actionGroup.add(ActionManager.getInstance().getAction("Print"));
 
         ActionManager actionManager = ActionManager.getInstance();
