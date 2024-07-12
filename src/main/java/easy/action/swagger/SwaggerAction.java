@@ -6,8 +6,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.keymap.KeymapManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageConstants;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
@@ -17,6 +17,7 @@ import easy.enums.SwaggerServiceEnum;
 import easy.helper.ServiceHelper;
 import easy.ui.SwaggerViewDialog;
 import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -69,8 +70,15 @@ public class SwaggerAction extends AnAction {
         // 二次弹窗确认
         String selectedText = editor.getSelectionModel().getSelectedText();
         if (StringUtils.isBlank(selectedText)) {
-            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the class name, method name, attribute name");
-            return;
+            // 尝试获取光标所在PsiElement属性名称
+            PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
+            if (Objects.nonNull(psiElement)) {
+                selectedText = EasyCommonUtil.getPsiElementName(psiElement);
+            }
+            if (StringUtils.isBlank(selectedText)) {
+                HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the class name, method name, filed name");
+                return;
+            }
         }
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             int confirmResult = MessageUtil.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"));
