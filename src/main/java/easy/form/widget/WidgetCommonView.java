@@ -23,6 +23,9 @@ public class WidgetCommonView extends DialogWrapper {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle("Widget Core View");
         WidgetConfig widgetConfig = ServiceHelper.getService(WidgetConfigComponent.class).getState();
+        if (Objects.isNull(widgetConfig)) {
+            return;
+        }
         if (CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {
             for (String tabName : widgetConfig.getWidgetCoreTabSet()) {
                 Component component = WidgetCoreTabEnum.getComponent(tabName);

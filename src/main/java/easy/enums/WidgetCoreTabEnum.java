@@ -5,6 +5,8 @@ import easy.form.widget.core.QrCodeCoreView;
 import easy.form.widget.core.TimestampCoreView;
 import easy.form.widget.core.UrlEncodeCoreView;
 import easy.form.widget.core.YmlConvertCoreView;
+import easy.form.widget.core.*;
+import easy.form.widget.core.convert.ConvertCoreView;
 import easy.form.widget.core.cron.CronCoreView;
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,7 +49,20 @@ public enum WidgetCoreTabEnum {
         public Component getComponent() {
             return new TimestampCoreView().getContent();
         }
+    },
+    CONVERT("Convert转换") {
+        @Override
+        public Component getComponent() {
+            return new ConvertCoreView().getContent();
+        }
+    },
+    BASE64("Base64转码") {
+        @Override
+        public Component getComponent() {
+            return new Base64CoreView().getContent();
+        }
     };
+
 
     private final String title;
 

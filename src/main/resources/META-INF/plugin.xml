@@ -549,10 +549,6 @@
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
-        <!--Convert动态转换-->
-        <group id="EasyToolConvertDynamicActions" class="easy.action.convert.DynamicConvertActionGroup"
-               text="Convert" description="EasyTool development assistance tools"
-               icon="easy.icons.EasyIcons.ICON.CONVERT" popup="true" compact="true"/>
         <!--Cron解析-->
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
@@ -640,7 +636,6 @@
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
             <reference ref="EasyToolWidgetToolActionGroups"/>
-            <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
@@ -657,7 +652,6 @@
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
-            <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>

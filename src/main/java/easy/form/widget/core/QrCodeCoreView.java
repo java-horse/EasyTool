@@ -21,7 +21,9 @@ import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
+import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -68,11 +70,10 @@ public class QrCodeCoreView extends CoreCommonView {
 
     public QrCodeCoreView() {
         logoFileTextField.addBrowseFolderListener(new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor()
-                .withFileFilter(file -> StrUtil.endWithAnyIgnoreCase(file.getName(), ".jpg", ".png"))));
-        sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
+                .withFileFilter(file -> StrUtil.endWithAnyIgnoreCase(file.getName(), ".jpg", ".png"))));        sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
         marginSpinner.setModel(new SpinnerNumberModel(Constants.NUM.ONE, Constants.NUM.ZERO, Constants.NUM.TEN, Constants.NUM.ONE));
         qrCodeLabel.setToolTipText("Click upload QrCode file!");
-        EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"));
+        EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"), JBColor.RED);
         generateButton.setText(BundleUtil.getI18n("global.button.generate.text"));
         downloadButton.setText(BundleUtil.getI18n("global.button.download.text"));
         identifyButton.setText(BundleUtil.getI18n("global.button.identify.text"));
@@ -114,9 +115,7 @@ public class QrCodeCoreView extends CoreCommonView {
             }
             // 二次生成确认
             if (Objects.nonNull(qrCodeImage)) {
-                int confirmResult = Messages.showOkCancelDialog("Confirm to regenerate qrCode?", Constants.PLUGIN_NAME,
-                        BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"),
-                        Messages.getInformationIcon());
+                int confirmResult = MessageUtil.showOkCancelDialog("Confirm to regenerate qrCode?", Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.CANCEL) {
                     return;
                 }
@@ -133,7 +132,7 @@ public class QrCodeCoreView extends CoreCommonView {
                 qrCodeImage = QrCodeUtil.generate(qrContent, config);
                 qrCodeLabel.setIcon(new ImageIcon(qrCodeImage));
             } catch (Exception ex) {
-                Messages.showErrorDialog(String.format("QrCode generate error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
+                MessageUtil.showErrorDialog(String.format("QrCode generate error: %s", ex.getMessage()));
             }
         });
         downloadButton.addActionListener(e -> {
@@ -151,9 +150,7 @@ public class QrCodeCoreView extends CoreCommonView {
             try (FileOutputStream outputStream = new FileOutputStream(virtualFileWrapper.getFile())) {
                 ImageIO.write(qrCodeImage, "png", outputStream);
                 uploadFilePath = null;
-                int confirmResult = Messages.showOkCancelDialog("Open qrCode download success folder?", Constants.PLUGIN_NAME,
-                        BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"),
-                        Messages.getInformationIcon());
+                int confirmResult = MessageUtil.showOkCancelDialog("Open qrCode download success folder?", Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
                     // 打开所在文件夹
                     File parentDir = virtualFileWrapper.getFile().getParentFile();
@@ -161,12 +158,12 @@ public class QrCodeCoreView extends CoreCommonView {
                         try {
                             Desktop.getDesktop().open(parentDir);
                         } catch (Exception ex) {
-                            Messages.showErrorDialog(String.format("Open QrCode parent directory error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
+                            MessageUtil.showErrorDialog(String.format("Open QrCode parent directory error: %s", ex.getMessage()));
                         }
                     }
                 }
             } catch (Exception ex) {
-                Messages.showErrorDialog(String.format("QrCode download error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
+                MessageUtil.showErrorDialog(String.format("QrCode download error: %s", ex.getMessage()));
             }
         });
         qrCodeLabel.addMouseListener(new MouseAdapter() {
@@ -184,7 +181,7 @@ public class QrCodeCoreView extends CoreCommonView {
                     qrCodeLabel.setIcon(new ImageIcon(qrCodeUploadImage));
                     qrCodeImage = null;
                 } catch (Exception ex) {
-                    Messages.showErrorDialog(String.format("QrCode file upload error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
+                    MessageUtil.showErrorDialog(String.format("QrCode file upload error: %s", ex.getMessage()));
                 }
             }
         });
@@ -195,28 +192,26 @@ public class QrCodeCoreView extends CoreCommonView {
             try {
                 String decode = QrCodeUtil.decode(new File(uploadFilePath));
                 qrContentTextArea.setText(decode);
-                int confirmResult = Messages.showOkCancelDialog("Jump qrCode identify success link?", Constants.PLUGIN_NAME,
-                        BundleUtil.getI18n("global.button.continue.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getInformationIcon());
+                int confirmResult = MessageUtil.showOkCancelDialog("Jump qrCode identify success link?", Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
                     // 一键跳转
                     EasyCommonUtil.openLink(decode);
                 }
             } catch (Exception ex) {
-                Messages.showErrorDialog(String.format("QrCode file identify error: %s", ex.getMessage()), Constants.PLUGIN_NAME);
+                MessageUtil.showErrorDialog(String.format("QrCode file identify error: %s", ex.getMessage()));
             }
         });
         clearButton.addActionListener(e -> {
-            int confirmResult = Messages.showOkCancelDialog("Confirm clean qrCode data?", Constants.PLUGIN_NAME,
-                    BundleUtil.getI18n("global.button.confirm.text"), BundleUtil.getI18n("global.button.cancel.text"), Messages.getQuestionIcon());
-            if (confirmResult == MessageConstants.OK) {
-                qrContentTextArea.setText(StringUtils.EMPTY);
-                qrCodeLabel.setIcon(null);
-                logoFileTextField.setText(StringUtils.EMPTY);
-                qrCodeImage = null;
-                uploadFilePath = null;
+            if (ObjectUtils.anyNotNull(qrContentTextArea.getText(), qrCodeLabel.getIcon(), logoFileTextField.getText(), qrCodeImage, uploadFilePath)) {
+                if (MessageUtil.showOkCancelDialog("Confirm clean qrCode data?") == MessageConstants.OK) {
+                    qrContentTextArea.setText(StringUtils.EMPTY);
+                    qrCodeLabel.setIcon(null);
+                    logoFileTextField.setText(StringUtils.EMPTY);
+                    qrCodeImage = null;
+                    uploadFilePath = null;
+                }
             }
         });
-
     }
 
     public JPanel getContent() {

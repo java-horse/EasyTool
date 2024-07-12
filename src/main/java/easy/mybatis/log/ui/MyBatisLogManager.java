@@ -34,7 +34,7 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerListener;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.util.messages.MessageBusConnection;
-import easy.action.convert.Log2SqlAction;
+import easy.action.base.Log2SqlAction;
 import easy.action.mybatis.log.*;
 import easy.base.Constants;
 import easy.icons.EasyIcons;
