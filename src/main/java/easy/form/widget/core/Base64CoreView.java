@@ -66,7 +66,7 @@ public class Base64CoreView extends CoreCommonView {
         decodeButton.setEnabled(false);
         decodeButton.setIcon(AllIcons.General.ArrowUp);
         copyButton.setEnabled(false);
-        copyButton.setIcon(AllIcons.General.CopyHovered);
+        copyButton.setIcon(AllIcons.Actions.Copy);
         areaListener(decodeTextArea, decodeButton, copyButton);
         encodeButton.addActionListener(e -> {
             if (textRadioButton.isSelected()) {

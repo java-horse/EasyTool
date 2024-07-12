@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
@@ -74,9 +75,13 @@ public class QrCodeCoreView extends CoreCommonView {
         marginSpinner.setModel(new SpinnerNumberModel(Constants.NUM.ONE, Constants.NUM.ZERO, Constants.NUM.TEN, Constants.NUM.ONE));
         qrCodeLabel.setToolTipText("Click upload QrCode file!");
         EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"), JBColor.RED);
+        generateButton.setIcon(AllIcons.General.ArrowDown);
         generateButton.setText(BundleUtil.getI18n("global.button.generate.text"));
+        downloadButton.setIcon(AllIcons.Actions.Download);
         downloadButton.setText(BundleUtil.getI18n("global.button.download.text"));
+        identifyButton.setIcon(AllIcons.General.ArrowUp);
         identifyButton.setText(BundleUtil.getI18n("global.button.identify.text"));
+        clearButton.setIcon(AllIcons.Actions.GC);
         clearButton.setText(BundleUtil.getI18n("global.button.clear.text"));
 
         foreColorButton.addActionListener(e -> {
