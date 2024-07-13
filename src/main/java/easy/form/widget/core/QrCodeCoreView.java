@@ -7,6 +7,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileChooser.*;
@@ -52,6 +53,7 @@ public class QrCodeCoreView extends CoreCommonView {
     private JComboBox errorCorrectionLevelComboBox;
     private JButton clearButton;
     private JLabel qrCodeTipLabel;
+    private JComboBox codeTypeComboBox;
 
     private Color foreColor = Color.BLACK;
     private Color backColor = Color.WHITE;
@@ -68,10 +70,20 @@ public class QrCodeCoreView extends CoreCommonView {
             "高", ErrorCorrectionLevel.H
     );
 
+    /**
+     * 条码格式
+     */
+    private static final Map<String, BarcodeFormat> BARCODE_FORMAT_MAP = Map.of(
+            "二维码", BarcodeFormat.QR_CODE,
+            "条形码（39）", BarcodeFormat.CODE_39,
+            "条形码（93）", BarcodeFormat.CODE_93,
+            "条形码（128）", BarcodeFormat.CODE_128
+    );
 
     public QrCodeCoreView() {
         logoFileTextField.addBrowseFolderListener(new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor()
-                .withFileFilter(file -> StrUtil.endWithAnyIgnoreCase(file.getName(), ".jpg", ".png"))));        sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
+                .withFileFilter(file -> StrUtil.endWithAnyIgnoreCase(file.getName(), ".jpg", ".png"))));
+        sizeSpinner.setModel(new SpinnerNumberModel(Constants.NUM.THREE_HUNDRED, Constants.NUM.HUNDRED, Constants.NUM.ONE_THOUSAND, Constants.NUM.TWENTY));
         marginSpinner.setModel(new SpinnerNumberModel(Constants.NUM.ONE, Constants.NUM.ZERO, Constants.NUM.TEN, Constants.NUM.ONE));
         qrCodeLabel.setToolTipText("Click upload QrCode file!");
         EasyCommonUtil.customLabelTipText(qrCodeTipLabel, BundleUtil.getI18n("widget.core.qrcode.tip"), JBColor.RED);
@@ -134,7 +146,8 @@ public class QrCodeCoreView extends CoreCommonView {
                 config.setImg(logoPath);
             }
             try {
-                qrCodeImage = QrCodeUtil.generate(qrContent, config);
+                BarcodeFormat barcodeFormat = BARCODE_FORMAT_MAP.getOrDefault(String.valueOf(codeTypeComboBox.getSelectedItem()), BarcodeFormat.QR_CODE);
+                qrCodeImage = QrCodeUtil.generate(qrContent, barcodeFormat, config);
                 qrCodeLabel.setIcon(new ImageIcon(qrCodeImage));
             } catch (Exception ex) {
                 MessageUtil.showErrorDialog(String.format("QrCode generate error: %s", ex.getMessage()));
@@ -196,6 +209,10 @@ public class QrCodeCoreView extends CoreCommonView {
             }
             try {
                 String decode = QrCodeUtil.decode(new File(uploadFilePath));
+                if (StringUtils.isBlank(decode)) {
+                    MessageUtil.showErrorDialog("QrCode identify error");
+                    return;
+                }
                 qrContentTextArea.setText(decode);
                 int confirmResult = MessageUtil.showOkCancelDialog("Jump qrCode identify success link?", Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
