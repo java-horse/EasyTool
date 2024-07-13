@@ -3,6 +3,7 @@ package easy.form.widget.core;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
@@ -17,6 +18,7 @@ import easy.base.Constants;
 import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -40,6 +42,7 @@ public class Base64CoreView extends CoreCommonView {
     private TextFieldWithBrowseButton imageFileTextField;
     private JLabel encodeImageLabel;
     private JLabel base64TipLabel;
+    private JButton clearButton;
 
     public Base64CoreView() {
         EasyCommonUtil.customLabelTipText(base64TipLabel, "默认进行URL安全的Base64编码");
@@ -75,6 +78,7 @@ public class Base64CoreView extends CoreCommonView {
         decodeButton.setIcon(AllIcons.General.ArrowUp);
         copyButton.setEnabled(false);
         copyButton.setIcon(AllIcons.Actions.Copy);
+        clearButton.setIcon(AllIcons.Actions.GC);
         areaListener(decodeTextArea, decodeButton, copyButton);
         encodeButton.addActionListener(e -> {
             if (textRadioButton.isSelected()) {
@@ -103,10 +107,8 @@ public class Base64CoreView extends CoreCommonView {
                 return;
             }
             if (textRadioButton.isSelected()) {
-                if (StringUtils.isNotBlank(encodeTextArea.getText())) {
-                    if (MessageUtil.showOkCancelDialog("是否重新Decode操作?") == MessageConstants.CANCEL) {
-                        return;
-                    }
+                if (StringUtils.isNotBlank(encodeTextArea.getText()) && MessageUtil.showOkCancelDialog("是否重新Decode操作?") == MessageConstants.CANCEL) {
+                    return;
                 }
                 try {
                     BufferedImage image = ImgUtil.read(new ByteArrayInputStream(Base64.decode(decodeTextArea.getText())));
@@ -115,13 +117,15 @@ public class Base64CoreView extends CoreCommonView {
                         return;
                     }
                 } catch (Exception ignore) {
-                    return;
                 }
                 encodeTextArea.setText(Base64.decodeStr(decodeTextArea.getText()));
                 return;
             }
             if (imageRadioButton.isSelected()) {
                 try {
+                    if (Objects.nonNull(encodeImageLabel.getIcon()) && MessageUtil.showOkCancelDialog("是否重新Decode操作?") == MessageConstants.CANCEL) {
+                        return;
+                    }
                     BufferedImage image = ImgUtil.read(new ByteArrayInputStream(Base64.decode(decodeTextArea.getText())));
                     encodeImageLabel.setIcon(new ImageIcon(resizeImage(image)));
                 } catch (Exception ex) {
@@ -135,8 +139,16 @@ public class Base64CoreView extends CoreCommonView {
             }
             CopyPasteManagerEx.getInstanceEx().setContents(new StringSelection(decodeTextArea.getText()));
         });
+        clearButton.addActionListener(e -> {
+            if (ObjectUtils.anyNotNull(encodeTextArea.getText(), decodeTextArea.getText(), imageFileTextField.getText(), encodeImageLabel.getIcon())
+                    && MessageUtil.showOkCancelDialog("Confirm Clear Data?") == MessageConstants.OK) {
+                encodeTextArea.setText(StringUtils.EMPTY);
+                decodeTextArea.setText(StringUtils.EMPTY);
+                imageFileTextField.setText(StringUtils.EMPTY);
+                encodeImageLabel.setIcon(null);
+            }
+        });
     }
-
 
     /**
      * 调整图像大小

@@ -3,9 +3,11 @@ package easy.form.widget.core;
 import cn.hutool.core.util.NumberUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
+import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.ui.JBColor;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -31,6 +33,7 @@ public class TimestampCoreView extends CoreCommonView {
     private JComboBox formatComboBox;
     private JButton timestampButton;
     private JLabel timestampLabel;
+    private JButton clearButton;
 
     private Timer timer;
 
@@ -109,6 +112,14 @@ public class TimestampCoreView extends CoreCommonView {
                 timestampTextArea.setText(Long.toString(epochMilli));
             } catch (Exception ex) {
                 MessageUtil.showErrorDialog(String.format("Timestamp restore exception: %s", ex.getMessage()));
+            }
+        });
+        clearButton.setIcon(AllIcons.Actions.GC);
+        clearButton.addActionListener(e -> {
+            if (ObjectUtils.anyNotNull(timestampTextArea.getText(), datetimeTextArea.getText())
+                    && MessageUtil.showOkCancelDialog("Confirm Clear Data?") == MessageConstants.OK) {
+                timestampTextArea.setText(StringUtils.EMPTY);
+                datetimeTextArea.setText(StringUtils.EMPTY);
             }
         });
     }
