@@ -1,6 +1,7 @@
 package easy.enums;
 
 import easy.form.widget.core.*;
+import easy.form.widget.core.clac.CalculatorCoreView;
 import easy.form.widget.core.convert.ConvertCoreView;
 import easy.form.widget.core.cron.CronCoreView;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,12 @@ public enum WidgetCoreTabEnum {
         @Override
         public Component getComponent() {
             return new Base64CoreView().getContent();
+        }
+    },
+    CALCULATOR("Simple计算器") {
+        @Override
+        public Component getComponent() {
+            return new CalculatorCoreView().getContent();
         }
     };
 
