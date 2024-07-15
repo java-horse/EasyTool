@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.intellij") version "1.17.3"
 }
 
-group = "mabin"
+group = "easy.tool"
 version = "2.1.5-beat"
 
 repositories {

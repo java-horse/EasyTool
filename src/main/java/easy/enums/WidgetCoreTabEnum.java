@@ -1,13 +1,10 @@
 package easy.enums;
 
-import easy.form.widget.core.excel.ExcelCoreView;
-import easy.form.widget.core.QrCodeCoreView;
-import easy.form.widget.core.TimestampCoreView;
-import easy.form.widget.core.UrlEncodeCoreView;
-import easy.form.widget.core.YmlConvertCoreView;
 import easy.form.widget.core.*;
+import easy.form.widget.core.clac.CalculatorCoreView;
 import easy.form.widget.core.convert.ConvertCoreView;
 import easy.form.widget.core.cron.CronCoreView;
+import easy.form.widget.core.excel.ExcelCoreView;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
@@ -60,6 +57,12 @@ public enum WidgetCoreTabEnum {
         @Override
         public Component getComponent() {
             return new Base64CoreView().getContent();
+        }
+    },
+    CALCULATOR("Simple计算器") {
+        @Override
+        public Component getComponent() {
+            return new CalculatorCoreView().getContent();
         }
     };
 

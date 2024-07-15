@@ -1,11 +1,14 @@
 package easy.form.widget.core;
 
+import cn.hutool.core.date.ChineseDate;
 import cn.hutool.core.util.NumberUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
+import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.ui.JBColor;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -31,6 +34,8 @@ public class TimestampCoreView extends CoreCommonView {
     private JComboBox formatComboBox;
     private JButton timestampButton;
     private JLabel timestampLabel;
+    private JButton clearButton;
+    private JLabel chineseDateLabel;
 
     private Timer timer;
 
@@ -69,6 +74,8 @@ public class TimestampCoreView extends CoreCommonView {
                 }
             }
         });
+        chineseDateLabel.setForeground(JBColor.GREEN);
+
 
         convertButton.setIcon(AllIcons.General.ArrowDown);
         convertButton.setEnabled(false);
@@ -84,11 +91,13 @@ public class TimestampCoreView extends CoreCommonView {
                     return;
                 }
                 long timestamp = Long.parseLong(timestampText);
-                String dateTimeFormat = LocalDateTime.ofInstant(StringUtils.equals(String.valueOf(unitComboBox.getSelectedItem()), SECOND_UNIX)
-                                        ? Instant.ofEpochSecond(timestamp) : Instant.ofEpochMilli(timestamp),
-                                ZoneId.of(String.valueOf(zoneComboBox.getSelectedItem())))
-                        .format(DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())));
+                LocalDateTime localDateTime = LocalDateTime.ofInstant(StringUtils.equals(String.valueOf(unitComboBox.getSelectedItem()), SECOND_UNIX)
+                        ? Instant.ofEpochSecond(timestamp) : Instant.ofEpochMilli(timestamp), ZoneId.of(String.valueOf(zoneComboBox.getSelectedItem())));
+                String dateTimeFormat = localDateTime.format(DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())));
                 datetimeTextArea.setText(dateTimeFormat);
+                ChineseDate chineseDate = new ChineseDate(localDateTime.toLocalDate());
+                chineseDateLabel.setText(String.format("Chinese Date: %s（%s）%s", chineseDate, chineseDate.getCyclicalYMD(),
+                        StringUtils.isNotBlank(chineseDate.getFestivals()) ? String.format("（%s）", chineseDate.getFestivals()) : StringUtils.EMPTY));
             } catch (Exception ex) {
                 MessageUtil.showErrorDialog(String.format("Timestamp convert exception: %s", ex.getMessage()));
             }
@@ -109,6 +118,15 @@ public class TimestampCoreView extends CoreCommonView {
                 timestampTextArea.setText(Long.toString(epochMilli));
             } catch (Exception ex) {
                 MessageUtil.showErrorDialog(String.format("Timestamp restore exception: %s", ex.getMessage()));
+            }
+        });
+        clearButton.setIcon(AllIcons.Actions.GC);
+        clearButton.addActionListener(e -> {
+            if (ObjectUtils.anyNotNull(timestampTextArea.getText(), datetimeTextArea.getText(), chineseDateLabel.getText())
+                    && MessageUtil.showOkCancelDialog("Confirm Clear Data?") == MessageConstants.OK) {
+                timestampTextArea.setText(StringUtils.EMPTY);
+                datetimeTextArea.setText(StringUtils.EMPTY);
+                chineseDateLabel.setText(StringUtils.EMPTY);
             }
         });
     }

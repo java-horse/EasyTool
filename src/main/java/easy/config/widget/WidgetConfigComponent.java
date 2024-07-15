@@ -25,9 +25,11 @@ public class WidgetConfigComponent implements PersistentStateComponent<WidgetCon
             widgetConfig = new WidgetConfig();
             widgetConfig.setCronCollectionMap(new LinkedHashMap<>(16));
             widgetConfig.setWidgetCoreTabSet(new HashSet<>(16));
+            widgetConfig.setCalculatorHistoryMap(new LinkedHashMap<>(16));
         } else {
             widgetConfig.setCronCollectionMap(MapUtils.isEmpty(widgetConfig.getCronCollectionMap()) ? new LinkedHashMap<>(16) : widgetConfig.getCronCollectionMap());
             widgetConfig.setWidgetCoreTabSet(CollectionUtils.isEmpty(widgetConfig.getWidgetCoreTabSet()) ? new HashSet<>(16) : widgetConfig.getWidgetCoreTabSet());
+            widgetConfig.setCalculatorHistoryMap(MapUtils.isEmpty(widgetConfig.getCalculatorHistoryMap()) ? new LinkedHashMap<>(16) : widgetConfig.getCalculatorHistoryMap());
         }
         return widgetConfig;
     }

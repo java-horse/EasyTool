@@ -23,7 +23,7 @@
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x、Swagger3.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
         <li>支持一键导入YApi接口文档, 包括YApi项目UI配置页面, 兼容各颗粒度范围导入(文件、类、接口)</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> (可能存在与IDEA内置快捷键冲突，请自行更换)</li>
         <ul>
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
@@ -33,7 +33,7 @@
             <li>--<em>火山翻译</em></li>
             <li>--<em>讯飞翻译</em></li>
             <li>--<em>华为翻译</em></li>
-            <li>--<em>小牛翻译</em></li>
+            <li>--<em>小牛翻译</em>(极力推荐，免费权益额度高)</li>
             <li>--<em>彩云翻译</em></li>
             <li>--<em>同花顺翻译</em></li>
             <li>--<em>CNKI学术翻译</em></li>
@@ -62,6 +62,18 @@
         <li>支持Markdown、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
         <li>支持选中代码块一键截图功能, 快捷键: <em>CTRL + ALT + 5</em> </li>
         <li>支持Entity普通实体类批量生成JSON注解的View视窗, 快捷键: <em>CTRL + ALT + 6</em> </li>
+        <li>支持常用的Widget工具小组件View视窗(EasyTool -> Widget -> Core), 快捷键: <em>CTRL + ALT + 7</em></li>
+        <ul>
+            <li>--<em>URL转码</em></li>
+            <li>--<em>Cron预览</em></li>
+            <li>--<em>QR二维码（条形码）生成</em></li>
+            <li>--<em>YML转换</em></li>
+            <li>--<em>EXCEL解析</em></li>
+            <li>--<em>Timestamp时间戳转换</em></li>
+            <li>--<em>Base64转码</em></li>
+            <li>--<em>Simple计算器</em></li>
+            <li>--<em>SQL日志还原</em></li>
+        </ul>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -81,6 +93,18 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.6</h3>
+      <ul>
+        <li>Optimize the original right-Convert small function migration to the Widget Core View window</li>
+        <li>Added Base64 Transcoding Widget View Windows</li>
+        <li>Optimization supports automatic generation of Swagger annotations and supports both selection and cursor placement of elements</li>
+        <li>TimestampView window added Chinese calendar conversion display</li>
+        <li>-------------------------------</li>
+        <li>【优化】原右键Convert小功能迁移至 Widget Core View 视窗</li>
+        <li>【新增】新增Base64转码小组件View视窗</li>
+        <li>【优化】自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
+        <li>【优化】时间戳转换 TimestampView 视窗新增中国黄历转换显示</li>
+      </ul>
       <h3>v2.1.5</h3>
       <ul>
         <li>Added plugin to automatically update experimental features</li>
