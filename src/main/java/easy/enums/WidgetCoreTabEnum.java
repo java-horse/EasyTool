@@ -41,6 +41,12 @@ public enum WidgetCoreTabEnum {
             return new ExcelCoreView().getContent();
         }
     },
+    SIGN("Sign签到") {
+        @Override
+        public Component getComponent() {
+            return new SignCoreView().getContent();
+        }
+    },
     TIMESTAMP("Timestamp转换") {
         @Override
         public Component getComponent() {

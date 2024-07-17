@@ -2,10 +2,11 @@ package easy.util;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationGroupManager;
-import com.intellij.notification.NotificationListener;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
 import easy.base.Constants;
+import easy.handler.ding.DingBotHandler;
+import easy.handler.ding.DingBotModel;
 import easy.icons.EasyIcons;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -87,6 +88,17 @@ public class NotifyUtil {
             Arrays.stream(actions).forEach(notification::addAction);
         }
         notification.notify(null);
+    }
+
+    /**
+     * 发送钉钉机器人群通知
+     *
+     * @param model 型号
+     * @author mabin
+     * @date 2024/07/15 17:50
+     */
+    public static void notify(DingBotModel model) {
+        DingBotHandler.send(model);
     }
 
 }

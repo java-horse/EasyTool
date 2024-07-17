@@ -15,6 +15,7 @@ import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
+import easy.handler.sign.JueJinSignService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 import easy.util.JsonUtil;
@@ -40,6 +41,7 @@ public class ExcelCoreView extends CoreCommonView {
     private JComboBox encodeComboBox;
     private JLabel summaryTextLabel;
     private JButton sqlButton;
+    private JButton signButton;
 
     /**
      * 编码格式映射
@@ -100,6 +102,7 @@ public class ExcelCoreView extends CoreCommonView {
             }
             CopyPasteManagerEx.getInstanceEx().setContents(new StringSelection(resultTextArea.getText()));
         });
+        signButton.addActionListener(e -> new JueJinSignService().autoSign());
     }
 
     private List<Map<String, String>> parseFile(String filePath) {
