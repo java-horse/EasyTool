@@ -7,9 +7,11 @@ import com.intellij.ui.components.OnOffButton;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.handler.sign.JueJinSignService;
+import easy.helper.EmptyHelper;
 import easy.helper.ServiceHelper;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.util.Objects;
@@ -48,10 +50,10 @@ public class SignCoreView extends CoreCommonView {
         });
         if (Objects.nonNull(widgetConfig) && Objects.nonNull(widgetConfig.getSignConfig())) {
             WidgetConfig.SignConfig signConfig = widgetConfig.getSignConfig();
-            cookiePasswordField.setText(signConfig.getCookie());
-            reservedSpinner.setModel(new SpinnerNumberModel(signConfig.getReserved().intValue(), 120000, 1000000, 1000));
-            drawSwitchButton.setSelected(signConfig.getDrawSwitch());
-            drawIntervalSlider.setValue(signConfig.getDrawInternal().intValue());
+            cookiePasswordField.setText(EmptyHelper.of(signConfig.getCookie()).orElse(StringUtils.EMPTY));
+            reservedSpinner.setModel(new SpinnerNumberModel(EmptyHelper.of(signConfig.getReserved()).orElse(120000).intValue(), 120000, 1000000, 1000));
+            drawSwitchButton.setSelected(EmptyHelper.of(signConfig.getDrawSwitch()).orElse(Boolean.FALSE));
+            drawIntervalSlider.setValue(EmptyHelper.of(signConfig.getDrawInternal()).orElse(2L).intValue());
         }
     }
 
