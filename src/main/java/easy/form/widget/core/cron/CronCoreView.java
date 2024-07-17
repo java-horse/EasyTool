@@ -104,7 +104,7 @@ public class CronCoreView extends CoreCommonView {
                         }
                     });
             if (StringUtils.isBlank(inputResult)) {
-                MessageUtil.showErrorDialog(String.format("Cron表达式【%s】收藏失败, 请输入描述备注", cron));
+                MessageUtil.showErrorDialog(String.format("Cron表达式【%s】收藏失败, 描述备注不能为空", cron));
                 return;
             }
             if (Objects.nonNull(widgetConfig)) {

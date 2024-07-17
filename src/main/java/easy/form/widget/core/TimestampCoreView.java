@@ -8,7 +8,6 @@ import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.ui.JBColor;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -82,8 +81,11 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(timestampTextArea, convertButton);
         convertButton.addActionListener(e -> {
             try {
-                String timestampText = StringUtils.trim(timestampTextArea.getText());
+                String timestampText = StringUtils.trim(datetimeTextArea.getText());
                 if (StringUtils.isBlank(timestampText)) {
+                    return;
+                }
+                if (MessageUtil.showQuestionDialog("Confirm again convert?") != MessageConstants.OK) {
                     return;
                 }
                 if (!NumberUtil.isNumber(timestampText)) {
@@ -96,7 +98,7 @@ public class TimestampCoreView extends CoreCommonView {
                 String dateTimeFormat = localDateTime.format(DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())));
                 datetimeTextArea.setText(dateTimeFormat);
                 ChineseDate chineseDate = new ChineseDate(localDateTime.toLocalDate());
-                chineseDateLabel.setText(String.format("Chinese Date: %s（%s）%s", chineseDate, chineseDate.getCyclicalYMD(),
+                chineseDateLabel.setText(String.format("中华黄历: %s（%s）%s", chineseDate, chineseDate.getCyclicalYMD(),
                         StringUtils.isNotBlank(chineseDate.getFestivals()) ? String.format("（%s）", chineseDate.getFestivals()) : StringUtils.EMPTY));
             } catch (Exception ex) {
                 MessageUtil.showErrorDialog(String.format("Timestamp convert exception: %s", ex.getMessage()));
@@ -107,7 +109,10 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(datetimeTextArea, restoreButton);
         restoreButton.addActionListener(e -> {
             try {
-                if (StringUtils.isBlank(datetimeTextArea.getText())) {
+                if (StringUtils.isBlank(timestampTextArea.getText())) {
+                    return;
+                }
+                if (MessageUtil.showQuestionDialog("Confirm again restore?") != MessageConstants.OK) {
                     return;
                 }
                 long epochMilli = LocalDateTime.parse(StringUtils.trim(datetimeTextArea.getText()), DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())))
@@ -122,7 +127,7 @@ public class TimestampCoreView extends CoreCommonView {
         });
         clearButton.setIcon(AllIcons.Actions.GC);
         clearButton.addActionListener(e -> {
-            if (ObjectUtils.anyNotNull(timestampTextArea.getText(), datetimeTextArea.getText(), chineseDateLabel.getText())
+            if (!StringUtils.isAllBlank(timestampTextArea.getText(), datetimeTextArea.getText(), chineseDateLabel.getText())
                     && MessageUtil.showOkCancelDialog("Confirm Clear Data?") == MessageConstants.OK) {
                 timestampTextArea.setText(StringUtils.EMPTY);
                 datetimeTextArea.setText(StringUtils.EMPTY);
