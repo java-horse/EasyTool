@@ -53,7 +53,7 @@ public class WidgetCommonView extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         Dimension size = panel.getPreferredSize();
-        setSize(Math.max(size.width, 800), Math.max(size.height, 600));
+        setSize(Math.max(size.width, 900), Math.max(size.height, 650));
         return panel;
     }
 
