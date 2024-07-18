@@ -1,12 +1,12 @@
 package easy.util;
 
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.lang.Opt;
 import com.cronutils.model.Cron;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
-import easy.helper.EmptyHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.ZonedDateTime;
@@ -116,7 +116,7 @@ public class CronUtil {
     }
 
     private static ZonedDateTime getNext(ExecutionTime time, ZonedDateTime current) {
-        return EmptyHelper.of(time.nextExecution(current)).get().orElse(null);
+        return Opt.ofNullable(time.nextExecution(current)).get().orElse(null);
     }
 
 }
