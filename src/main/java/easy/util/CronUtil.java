@@ -1,12 +1,12 @@
 package easy.util;
 
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.lang.Opt;
 import com.cronutils.model.Cron;
 import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
-import easy.helper.EmptyHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.ZonedDateTime;
@@ -99,24 +99,24 @@ public class CronUtil {
     public static Map<String, String> getExampleCronMap() {
         Map<String, String> cronMap = new LinkedHashMap<>(16);
         cronMap.put("每天凌晨的12:30", "0 30 0 * * ?");
-        cronMap.put("周一到周五每天上午10:15",  "0 15 10 ? * MON-FRI");
-        cronMap.put("每天上午10点，下午2点，4点",  "0 0 10,14,16 * * ?");
-        cronMap.put("每天9点到5点期间的每30分钟",  "0 0/30 9-17 * * ?");
-        cronMap.put("每个星期三中午12点",  "0 0 12 ? * WED");
-        cronMap.put("每天中午12点",  "0 0 12 * * ?");
-        cronMap.put("每天上午10:15",  "0 15 10 * * ?");
-        cronMap.put("每天下午2点到下午4点期间的每1分钟",  "0 * 14-16 * * ?");
-        cronMap.put("每天下午2点到下午4点期间的每5分钟",  "0 0/5 14-16 * * ?");
+        cronMap.put("周一到周五每天上午10:15", "0 15 10 ? * MON-FRI");
+        cronMap.put("每天上午10点，下午2点，4点", "0 0 10,14,16 * * ?");
+        cronMap.put("每天9点到5点期间的每30分钟", "0 0/30 9-17 * * ?");
+        cronMap.put("每个星期三中午12点", "0 0 12 ? * WED");
+        cronMap.put("每天中午12点", "0 0 12 * * ?");
+        cronMap.put("每天上午10:15", "0 15 10 * * ?");
+        cronMap.put("每天下午2点到下午4点期间的每1分钟", "0 * 14-16 * * ?");
+        cronMap.put("每天下午2点到下午4点期间的每5分钟", "0 0/5 14-16 * * ?");
         cronMap.put("每月的1日的凌晨2点", "0 0 2 1 * ?");
-        cronMap.put("每月15日上午10:15",  "0 15 10 15 * ?");
-        cronMap.put("每月的第三个星期五上午10:15",  "0 15 10 ? * 6#3");
-        cronMap.put("每年三月的星期三的下午2:10和2:44",  "0 10,44 14 ? 3 WED");
-        cronMap.put("每天下午2点到4点期间和下午6点到8点期间的每5分钟",  "0 0/5 14-16,18-20 * * ?");
+        cronMap.put("每月15日上午10:15", "0 15 10 15 * ?");
+        cronMap.put("每月的第三个星期五上午10:15", "0 15 10 ? * 6#3");
+        cronMap.put("每年三月的星期三的下午2:10和2:44", "0 10,44 14 ? 3 WED");
+        cronMap.put("每天下午2点到4点期间和下午6点到8点期间的每5分钟", "0 0/5 14-16,18-20 * * ?");
         return cronMap;
     }
 
     private static ZonedDateTime getNext(ExecutionTime time, ZonedDateTime current) {
-        return EmptyHelper.of(time.nextExecution(current)).get().orElse(null);
+        return Opt.ofNullable(time.nextExecution(current)).get().orElse(null);
     }
 
 }

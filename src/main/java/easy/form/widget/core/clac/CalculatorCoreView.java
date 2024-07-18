@@ -10,6 +10,7 @@ import easy.helper.ServiceHelper;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -57,10 +58,9 @@ public class CalculatorCoreView extends CoreCommonView {
     private JButton bracketLeftButton;
     private JButton bracketRightButton;
 
-    private String operator = StringUtils.EMPTY;
-    private String previous = StringUtils.EMPTY;
     private final static List<String> NUMBER = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     private final static List<String> OPERATOR = List.of("+", "-", "*", "/", "(", ")", ".");
+    private final static List<String> MATH_OPERATOR = List.of("+", "-", "*", "/");
 
     public CalculatorCoreView() {
         ButtonClickListener clickListener = new ButtonClickListener();
@@ -103,7 +103,6 @@ public class CalculatorCoreView extends CoreCommonView {
                         break;
                     }
                     expressionTextField.setText(expressionTextFieldText + buttonText);
-                    previous = buttonText;
                     break;
                 case ")":
                     if (StringUtils.endsWithAny(expressionTextFieldText, OPERATOR.toArray(new String[]{}))
@@ -112,7 +111,13 @@ public class CalculatorCoreView extends CoreCommonView {
                         break;
                     }
                     expressionTextField.setText(expressionTextFieldText + buttonText);
-                    previous = buttonText;
+                    break;
+                case ".":
+                    if (!StringUtils.endsWithAny(expressionTextFieldText, NUMBER.toArray(new String[]{}))) {
+                        MessageUtil.showErrorDialog("Unreasonable expression!");
+                        break;
+                    }
+                    expressionTextField.setText(expressionTextFieldText + buttonText);
                     break;
                 case "0":
                 case "1":
@@ -124,23 +129,15 @@ public class CalculatorCoreView extends CoreCommonView {
                 case "7":
                 case "8":
                 case "9":
-                case ".":
-                    expressionTextField.setText(expressionTextFieldText + buttonText);
-                    previous = buttonText;
-                    break;
                 case "+":
                 case "-":
                 case "*":
                 case "/":
                     expressionTextField.setText(expressionTextFieldText + buttonText);
-                    operator = buttonText;
-                    previous = buttonText;
                     break;
                 case "C":
                     expressionTextField.setText(StringUtils.EMPTY);
                     resultTextArea.setText(StringUtils.EMPTY);
-                    operator = StringUtils.EMPTY;
-                    previous = StringUtils.EMPTY;
                     break;
                 case "R":
                     if (StringUtils.isNotBlank(expressionTextFieldText)) {
@@ -165,26 +162,48 @@ public class CalculatorCoreView extends CoreCommonView {
                     }
                     break;
                 case "+/-":
-                    if (StringUtils.isBlank(previous) || OPERATOR.contains(previous)) {
-                        MessageUtil.showErrorDialog("Unreasonable expression!");
+                    String firstOperator = getExpressOperator(expressionTextFieldText, Boolean.FALSE);
+                    if (StringUtils.isBlank(firstOperator)) {
+                        if (StringUtils.startsWith(expressionTextFieldText, "-")) {
+                            expressionTextField.setText(expressionTextFieldText.substring(1));
+                        } else {
+                            expressionTextField.setText("-" + expressionTextFieldText);
+                        }
                         return;
-                    }
-                    if (NUMBER.contains(previous)) {
-                        if (StringUtils.isBlank(operator)) {
+                    } else {
+                        String firstPre = StrUtil.subBefore(expressionTextFieldText, firstOperator, true);
+                        if (StringUtils.startsWith(expressionTextFieldText, "-")) {
+                            firstPre = StrUtil.subBefore(expressionTextFieldText.substring(1), firstOperator, true);
+                        }
+                        String firstLast = StrUtil.subAfter(expressionTextFieldText, firstOperator, true);
+                        if (StringUtils.isBlank(firstLast) && !StrUtil.containsAny(firstPre, MATH_OPERATOR.toArray(new String[]{}))) {
                             if (StringUtils.startsWith(expressionTextFieldText, "-")) {
                                 expressionTextField.setText(expressionTextFieldText.substring(1));
                             } else {
                                 expressionTextField.setText("-" + expressionTextFieldText);
                             }
                             return;
+                        } else {
+                            String lastOperator = getExpressOperator(expressionTextFieldText, Boolean.TRUE);
+                            String pre = StrUtil.subBefore(expressionTextFieldText, lastOperator, true);
+                            String last = StrUtil.subAfter(expressionTextFieldText, lastOperator, true);
+                            if (StringUtils.isBlank(last)) {
+                                MessageUtil.showErrorDialog("Unreasonable expression!");
+                                return;
+                            }
+                            if (StringUtils.equalsAny(lastOperator, "+", "*", "/")) {
+                                expressionTextField.setText(pre + lastOperator + "-" + last);
+                                return;
+                            }
+                            if (StringUtils.equals(lastOperator, "-")) {
+                                if (StringUtils.endsWithAny(pre, MATH_OPERATOR.toArray(new String[]{}))) {
+                                    expressionTextField.setText(pre + last);
+                                } else {
+                                    expressionTextField.setText(pre + lastOperator + "-" + last);
+                                }
+                                return;
+                            }
                         }
-                        String preNumber = StrUtil.subBefore(expressionTextFieldText, operator, true);
-                        String lastNumber = StrUtil.subAfter(expressionTextFieldText, operator, true);
-                        if (StringUtils.startsWith(lastNumber, "-")) {
-                            expressionTextField.setText(preNumber + operator + lastNumber.substring(1));
-                            return;
-                        }
-                        expressionTextField.setText(preNumber + operator + "-" + lastNumber);
                     }
                     break;
                 default:
@@ -192,6 +211,38 @@ public class CalculatorCoreView extends CoreCommonView {
             }
         }
     }
+
+    /**
+     * 获取算术表达式的操作符
+     *
+     * @param express   快递
+     * @param isReverse 是反向的
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/07/17 15:46
+     */
+    private String getExpressOperator(String express, @Nullable Boolean isReverse) {
+        if (StringUtils.isBlank(express)) {
+            return null;
+        }
+        if (StringUtils.startsWithAny(express, MATH_OPERATOR.toArray(new String[]{}))) {
+            express = express.substring(1);
+        }
+        if (StringUtils.endsWithAny(express, MATH_OPERATOR.toArray(new String[]{}))) {
+            express = express.substring(0, express.length() - 1);
+        }
+        if (Boolean.TRUE.equals(isReverse)) {
+            express = StrUtil.reverse(express);
+        }
+        for (char c : express.toCharArray()) {
+            String charStr = String.valueOf(c);
+            if (MATH_OPERATOR.contains(charStr)) {
+                return charStr;
+            }
+        }
+        return null;
+    }
+
 
     public JPanel getContent() {
         return panel;

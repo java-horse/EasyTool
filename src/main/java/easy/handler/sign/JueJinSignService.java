@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.lang.Opt;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -23,7 +24,6 @@ import easy.config.widget.WidgetConfigComponent;
 import easy.handler.ding.DingBotModel;
 import easy.handler.ding.DingBotParam;
 import easy.handler.ding.DingTypeEnum;
-import easy.helper.EmptyHelper;
 import easy.helper.ServiceHelper;
 import easy.util.JsonUtil;
 import easy.util.NotifyUtil;
@@ -129,10 +129,10 @@ public class JueJinSignService {
         int originPoint = curPointObject.get(JueJinConstants.DATA).getAsInt();
         Integer summaryPoint = originPoint;
         int rouletteDrawCount = Constants.NUM.ZERO;
-        if (EmptyHelper.of(signConfig.getDrawSwitch()).orElse(Boolean.FALSE)) {
-            while (summaryPoint >= EmptyHelper.of(signConfig.getReserved()).orElse(120000)) {
+        if (Opt.ofNullable(signConfig.getDrawSwitch()).orElse(Boolean.FALSE)) {
+            while (summaryPoint >= Opt.ofNullable(signConfig.getReserved()).orElse(120000)) {
                 if (rouletteDrawCount > Constants.NUM.ZERO) {
-                    ThreadUtil.sleep(EmptyHelper.of(signConfig.getDrawInternal()).orElse(1000L));
+                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(1000L));
                 }
                 String drawResponse = postRequest(JueJinConstants.DRAW, null);
                 JsonObject drawObject = JsonUtil.fromObject(drawResponse);
@@ -148,7 +148,7 @@ public class JueJinSignService {
                     rouletteDrawCount++;
                 } else {
                     // 抽奖请求异常时, 睡眠后重试
-                    ThreadUtil.sleep(EmptyHelper.of(signConfig.getDrawInternal()).orElse(2000L));
+                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(2000L));
                 }
             }
         }
@@ -303,7 +303,7 @@ public class JueJinSignService {
         return HttpRequest.get(url)
                 .timeout(10000)
                 .setFollowRedirects(false)
-                .cookie(EmptyHelper.of(signConfig.getCookie()).get())
+                .cookie(Opt.ofNullable(signConfig.getCookie()).get())
                 .header(Header.CONTENT_TYPE, ContentType.JSON.getValue())
                 .header(Header.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.53")
                 .execute().body();
@@ -322,7 +322,7 @@ public class JueJinSignService {
         HttpRequest httpRequest = HttpRequest.post(url)
                 .timeout(10000)
                 .setFollowRedirects(false)
-                .cookie(EmptyHelper.of(signConfig.getCookie()).get());
+                .cookie(Opt.ofNullable(signConfig.getCookie()).get());
         if (MapUtil.isNotEmpty(paramMap)) {
             httpRequest.form(paramMap);
         }

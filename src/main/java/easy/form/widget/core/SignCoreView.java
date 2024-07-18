@@ -1,13 +1,13 @@
 package easy.form.widget.core;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Opt;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.ui.components.OnOffButton;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.handler.sign.JueJinSignService;
-import easy.helper.EmptyHelper;
 import easy.helper.ServiceHelper;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
@@ -50,10 +50,10 @@ public class SignCoreView extends CoreCommonView {
         });
         if (Objects.nonNull(widgetConfig) && Objects.nonNull(widgetConfig.getSignConfig())) {
             WidgetConfig.SignConfig signConfig = widgetConfig.getSignConfig();
-            cookiePasswordField.setText(EmptyHelper.of(signConfig.getCookie()).orElse(StringUtils.EMPTY));
-            reservedSpinner.setModel(new SpinnerNumberModel(EmptyHelper.of(signConfig.getReserved()).orElse(120000).intValue(), 120000, 1000000, 1000));
-            drawSwitchButton.setSelected(EmptyHelper.of(signConfig.getDrawSwitch()).orElse(Boolean.FALSE));
-            drawIntervalSlider.setValue(EmptyHelper.of(signConfig.getDrawInternal()).orElse(2L).intValue());
+            cookiePasswordField.setText(Opt.ofNullable(signConfig.getCookie()).orElse(StringUtils.EMPTY));
+            reservedSpinner.setModel(new SpinnerNumberModel(Opt.ofNullable(signConfig.getReserved()).orElse(120000).intValue(), 120000, 1000000, 1000));
+            drawSwitchButton.setSelected(Opt.ofNullable(signConfig.getDrawSwitch()).orElse(Boolean.FALSE));
+            drawIntervalSlider.setValue(Opt.ofNullable(signConfig.getDrawInternal()).orElse(2L).intValue());
         }
     }
 

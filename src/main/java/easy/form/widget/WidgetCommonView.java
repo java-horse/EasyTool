@@ -1,5 +1,6 @@
 package easy.form.widget;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import easy.config.widget.WidgetConfig;
@@ -41,6 +42,10 @@ public class WidgetCommonView extends DialogWrapper {
             }
         }
         tabbedPane.addTab("Tab设置", new SettingCoreView().getContent());
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            tabbedPane.setIconAt(i, AllIcons.Actions.PinTab);
+            tabbedPane.setToolTipTextAt(i, tabbedPane.getTitleAt(i));
+        }
         init();
     }
 
@@ -48,7 +53,7 @@ public class WidgetCommonView extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         Dimension size = panel.getPreferredSize();
-        setSize(Math.max(size.width, 800), Math.max(size.height, 600));
+        setSize(Math.max(size.width, 900), Math.max(size.height, 650));
         return panel;
     }
 
