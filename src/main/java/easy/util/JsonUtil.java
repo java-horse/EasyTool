@@ -2,6 +2,7 @@ package easy.util;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -70,7 +71,6 @@ public class JsonUtil {
         }.getType());
     }
 
-
     public static JsonObject fromObject(String json) {
         if (json == null) {
             return null;
@@ -93,14 +93,6 @@ public class JsonUtil {
         return null;
     }
 
-    public static String findJson(String json, String fieldName) {
-        if (Boolean.TRUE.equals(isJson(json))) {
-            JsonElement jsonElement = findJson(fromJson(json, JsonElement.class), fieldName);
-            return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
-        }
-        return null;
-    }
-
     public static Boolean isJson(String json) {
         try {
             fromJson(json, JsonElement.class);
@@ -108,6 +100,14 @@ public class JsonUtil {
         } catch (Exception e) {
             return Boolean.FALSE;
         }
+    }
+
+    public static String findJson(String json, String fieldName) {
+        if (Boolean.TRUE.equals(isJson(json))) {
+            JsonElement jsonElement = findJson(fromJson(json, JsonElement.class), fieldName);
+            return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
+        }
+        return null;
     }
 
     private static JsonElement findJson(JsonElement jsonElement, String fieldName) {
