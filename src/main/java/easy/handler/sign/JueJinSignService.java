@@ -246,12 +246,16 @@ public class JueJinSignService {
         model.setTitle("掘金签到");
         model.setReceiver(Set.of("@all"));
         model.setSendType(DingTypeEnum.ACTION_CARD.getType());
-        model.setBtnOrientation(Integer.toString(Constants.NUM.ONE));
+        model.setBtnOrientation(Integer.toString(Constants.NUM.TWO));
         List<DingBotParam.ActionCardVO.BtnVO> btnVOList = new ArrayList<>();
         DingBotParam.ActionCardVO.BtnVO btnVO = new DingBotParam.ActionCardVO.BtnVO();
         btnVO.setTitle(Constants.PLUGIN_NAME);
         btnVO.setActionURL(Constants.JETBRAINS_URL);
         btnVOList.add(btnVO);
+        DingBotParam.ActionCardVO.BtnVO btnVOTwo = new DingBotParam.ActionCardVO.BtnVO();
+        btnVOTwo.setTitle("Gitee");
+        btnVOTwo.setActionURL(Constants.GITEE_URL);
+        btnVOList.add(btnVOTwo);
         model.setBtns(JsonUtil.toJson(btnVOList));
         // 账号是否正常
         if (ObjectUtil.isNotNull(resultMap.get("cookie"))) {
