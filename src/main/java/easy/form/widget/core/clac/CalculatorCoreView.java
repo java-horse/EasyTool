@@ -150,7 +150,7 @@ public class CalculatorCoreView extends CoreCommonView {
                         return;
                     }
                     try {
-                        String calculateResult = new BigDecimal(Double.toString(NumberUtil.calculate(expressionTextFieldText)))
+                        String calculateResult = new BigDecimal(Double.toString(NumberUtil.calculate(StringUtils.trim(expressionTextFieldText))))
                                 .stripTrailingZeros().toPlainString();
                         resultTextArea.setText(calculateResult);
                         if (Objects.nonNull(widgetConfig)) {

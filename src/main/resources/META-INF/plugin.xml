@@ -433,9 +433,14 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
+
         <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
 
         <consoleFilterProvider implementation="easy.mybatis.log.MyBatisLogConsoleFilterProvider"/>
+
+        <statusBarWidgetFactory order="before LineSeparator, after Position, before lineSeparatorWidget, after positionWidget"
+                                implementation="easy.provider.PluginStatusBarWidgetProvider"/>
+
         <executor implementation="easy.mybatis.log.ui.MyBatisLogExecutor"/>
 
         <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
