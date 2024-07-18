@@ -255,21 +255,29 @@ public class JueJinSignService {
         model.setBtns(JsonUtil.toJson(btnVOList));
         // 账号是否正常
         if (ObjectUtil.isNotNull(resultMap.get("cookie"))) {
-            model.setContent("![1](https://horse-blog.oss-cn-hangzhou.aliyuncs.com/202303/NMZlf0piTA.png) \n" +
-                    "#### **掘金** \n" +
-                    "---  \n" +
-                    "**Cookie状态：** Cookie已失效，请重新配置！");
+            model.setContent("""
+                    ![1](https://s21.ax1x.com/2024/07/18/pkoJUte.png)\s
+                    #### **掘金**\s
+                    --- \s
+                    **Cookie状态：** Cookie已失效，请重新配置！""");
         } else {
-            String msgTemplate = "![1](https://horse-blog.oss-cn-hangzhou.aliyuncs.com/202303/NMZlf0piTA.png) \n" +
-                    "#### **掘金** \n" +
-                    "---  \n" +
-                    "**Cookie状态：** Cookie正常 \n\n" +
-                    "**签到：** 总签到 {} 天，连续签到 {} 天 \n\n" +
-                    "**轮盘抽奖：** 抽奖 {} 次，矿石 x {}，BUG x {}，其他 x {} \n\n" +
-                    "**收集BUG：** BUG x {} \n\n" +
-                    "**矿石变化：** 初始 {} 矿石，剩余 {} 矿石 \n\n" +
-                    "**我的道具：** {} \n\n" +
-                    "**签到耗时：** 起始 {}-{}，共耗时 {}ms";
+            String msgTemplate = """
+                    ![1](https://s21.ax1x.com/2024/07/18/pkoJUte.png)\s
+                    #### **掘金**\s
+                    --- \s
+                    **Cookie状态：** Cookie正常\s
+
+                    **签到：** 总签到 {} 天，连续签到 {} 天\s
+
+                    **轮盘抽奖：** 抽奖 {} 次，矿石 x {}，BUG x {}，其他 x {}\s
+
+                    **收集BUG：** BUG x {}\s
+
+                    **矿石变化：** 初始 {} 矿石，剩余 {} 矿石\s
+
+                    **我的道具：** {}\s
+
+                    **签到耗时：** 起始 {}-{}，共耗时 {}ms""";
             JsonObject resultObject = JsonUtil.fromObject(JsonUtil.toJson(resultMap));
             List<String> lotteryNameList = JsonUtil.fromJson(JsonUtil.toJson(resultObject.get("lotteryNameList")), new TypeToken<List<String>>() {
             }.getType());
