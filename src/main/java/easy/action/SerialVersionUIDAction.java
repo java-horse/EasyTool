@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.JavaSdkVersion;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ThrowableRunnable;
 import easy.base.Constants;
@@ -20,7 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
@@ -52,20 +52,23 @@ public class SerialVersionUIDAction extends AnAction {
         PsiClass caretPsiClass = PsiTreeUtil.getContextOfType(psiElement, PsiClass.class);
         try {
             if (Objects.nonNull(caretPsiClass)) {
+                CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(psiClass.getProject());
                 if (StringUtils.equals(psiClass.getQualifiedName(), caretPsiClass.getQualifiedName())) {
                     genUID(caretPsiClass, project, psiFile);
                     PsiClass[] innerClasses = psiClass.getInnerClasses();
                     for (PsiClass innerClass : innerClasses) {
                         genUID(innerClass, project, psiFile);
                     }
+                    codeStyleManager.reformat(psiClass);
                 } else {
                     if (Arrays.stream(psiClass.getInnerClasses()).anyMatch(innerItem -> StringUtils.equals(innerItem.getQualifiedName(), caretPsiClass.getQualifiedName()))) {
                         genUID(caretPsiClass, project, psiFile);
+                        codeStyleManager.reformat(psiClass);
                     }
                 }
             }
         } catch (Throwable ex) {
-            log.error(String.format("%s write editor exception!", Constants.UID), ex);
+            log.error(String.format("%s write editor exception!", CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME), ex);
         }
     }
 
@@ -83,23 +86,20 @@ public class SerialVersionUIDAction extends AnAction {
             e.getPresentation().setEnabledAndVisible(false);
             return;
         }
-        PsiClassType[] implementsListTypes = psiClass.getImplementsListTypes();
-        boolean serializable = Arrays.stream(implementsListTypes)
-                .anyMatch(type -> StringUtils.equalsAny(type.getClassName(), Serializable.class.getSimpleName(), Serializable.class.getName()));
-        boolean serialResult = Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), Constants.UID));
+        boolean serialResult = Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME));
         PsiClass[] innerClasses = psiClass.getInnerClasses();
         boolean innerSerialResult = false;
         if (innerClasses.length == 0) {
             innerSerialResult = true;
         } else {
             for (PsiClass innerClass : innerClasses) {
-                if (Arrays.stream(innerClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), Constants.UID))) {
+                if (Arrays.stream(innerClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME))) {
                     innerSerialResult = true;
                     break;
                 }
             }
         }
-        e.getPresentation().setEnabledAndVisible(serializable && (serialResult || innerSerialResult));
+        e.getPresentation().setEnabledAndVisible((serialResult || innerSerialResult));
     }
 
     @Override
@@ -116,27 +116,38 @@ public class SerialVersionUIDAction extends AnAction {
      * @date 2023/11/15 15:02
      */
     private void genUID(PsiClass psiClass, Project project, PsiFile psiFile) throws Throwable {
-        if (Objects.isNull(psiClass) || Arrays.stream(psiClass.getFields()).anyMatch(field ->
-                StringUtils.equalsAny(field.getName(), Constants.UID))) {
+        if (Objects.isNull(psiClass)) {
             return;
         }
-        WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
-            String uid = UUID.randomUUID().getLeastSignificantBits() + "L;";
-            String insertStr = String.format("%s %s %s long %s = %s", PsiModifier.PRIVATE, PsiModifier.STATIC, PsiModifier.FINAL, Constants.UID, uid);
-            boolean isHighVersion = false;
-            JavaSdkVersion projectJdkVersion = EasyCommonUtil.getProjectJdkVersion(project);
-            if (Objects.nonNull(projectJdkVersion) && projectJdkVersion.isAtLeast(JavaSdkVersion.JDK_17)) {
-                insertStr = String.format("%s%s" + StringUtils.LF + "%s", Constants.AT, Serial.class.getSimpleName(), insertStr);
-                isHighVersion = true;
-            }
-            PsiElementFactory elementFactory = PsiElementFactory.getInstance(psiClass.getProject());
-            PsiStatement psiStatement = elementFactory.createStatementFromText(insertStr, null);
-            PsiElement lBrace = psiClass.getLBrace();
-            if (Objects.nonNull(lBrace)) {
-                psiClass.addBefore(psiStatement, lBrace.getNextSibling());
-                if (isHighVersion) {
-                    PsiElementUtil.addImport(project, psiFile, Serial.class.getSimpleName());
+        if (Arrays.stream(psiClass.getFields()).noneMatch(field -> StringUtils.equalsAny(field.getName(), CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME))) {
+            WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
+                String uid = UUID.randomUUID().getLeastSignificantBits() + "L;";
+                String insertStr = String.format("%s %s %s long %s = %s", PsiModifier.PRIVATE, PsiModifier.STATIC, PsiModifier.FINAL,
+                        CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME, uid);
+                boolean isHighVersion = false;
+                JavaSdkVersion projectJdkVersion = EasyCommonUtil.getProjectJdkVersion(project);
+                if (Objects.nonNull(projectJdkVersion) && projectJdkVersion.isAtLeast(JavaSdkVersion.JDK_17)) {
+                    insertStr = String.format("%s%s" + StringUtils.LF + "%s", Constants.AT, Serial.class.getSimpleName(), insertStr);
+                    isHighVersion = true;
                 }
+                PsiElementFactory elementFactory = PsiElementFactory.getInstance(psiClass.getProject());
+                PsiStatement psiStatement = elementFactory.createStatementFromText(insertStr, null);
+                PsiElement lBrace = psiClass.getLBrace();
+                if (Objects.nonNull(lBrace)) {
+                    psiClass.addBefore(psiStatement, lBrace.getNextSibling());
+                    if (isHighVersion) {
+                        PsiElementUtil.addImport(project, psiFile, Serial.class.getSimpleName());
+                    }
+                }
+            });
+        }
+        WriteCommandAction.writeCommandAction(psiClass.getProject()).run((ThrowableRunnable<Throwable>) () -> {
+            PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiClass.getProject());
+            PsiJavaCodeReferenceElement interfaceReference = elementFactory.createReferenceElementByFQClassName(CommonClassNames.JAVA_IO_SERIALIZABLE, psiClass.getResolveScope());
+            PsiReferenceList implementsList = psiClass.getImplementsList();
+            if (Objects.nonNull(implementsList) && Arrays.stream(implementsList.getReferencedTypes())
+                    .noneMatch(type -> type.equalsToText(CommonClassNames.JAVA_IO_SERIALIZABLE))) {
+                implementsList.addBefore(interfaceReference, null);
             }
         });
     }
