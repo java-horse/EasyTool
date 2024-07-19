@@ -1,7 +1,11 @@
 package easy.provider;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -12,21 +16,20 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.ui.ClickListener;
 import easy.base.Constants;
+import easy.handler.PluginForUpdateHandler;
 import easy.icons.EasyIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 
 public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implements StatusBarWidget, IconLikeCustomStatusBarWidget {
     public static final String ID = Constants.PLUGIN_NAME + "PluginStatusBarWidget";
 
     private Project project;
 
-    public PluginStatusBarWidget(Project project) {
+    public PluginStatusBarWidget(@NotNull Project project) {
         this.project = project;
         setIcon(EasyIcons.ICON.LOGO);
         setToolTipText(Constants.PLUGIN_NAME);
@@ -60,7 +63,7 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                 if (!project.isDisposed()) {
                     DataContext dataContext = DataManager.getInstance().getDataContext(event.getComponent());
                     ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(Constants.PLUGIN_NAME, createActionGroup(),
-                            dataContext, false, null, Constants.NUM.TEN);
+                            dataContext, true, null, Constants.NUM.TEN);
                     popup.showInBestPositionFor(dataContext);
                 }
                 return true;
@@ -78,30 +81,18 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
     private DefaultActionGroup createActionGroup() {
         return new DefaultActionGroup(Constants.PLUGIN_NAME, true) {
             {
-                add(new AnAction("Action1", "Action1", EasyIcons.ICON.JAVA) {
-                    @Override
-                    public void actionPerformed(@NotNull AnActionEvent e) {
-
-                    }
-                });
-                add(new AnAction("Action2", "Action2", EasyIcons.ICON.JAVA) {
-                    @Override
-                    public void actionPerformed(@NotNull AnActionEvent e) {
-
-                    }
-                });
                 addSeparator();
-                add(new AnAction("Action3", "Action3", EasyIcons.ICON.JAVA) {
+                add(new AnAction("检查更新", "检查更新", AllIcons.Ide.Notification.PluginUpdate) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
-
+                        PluginForUpdateHandler.forUpdate(project);
                     }
                 });
                 addSeparator();
                 add(new AnAction("插件设置", "插件设置", EasyIcons.ICON.SETTING) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
-                        ShowSettingsUtil.getInstance().showSettingsDialog(e.getProject(), Constants.PLUGIN_NAME);
+                        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
                     }
                 });
             }

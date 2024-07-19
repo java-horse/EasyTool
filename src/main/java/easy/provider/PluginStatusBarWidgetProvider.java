@@ -10,8 +10,6 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class PluginStatusBarWidgetProvider implements StatusBarWidgetFactory {
 
     @Override
@@ -26,7 +24,7 @@ public class PluginStatusBarWidgetProvider implements StatusBarWidgetFactory {
 
     @Override
     public boolean isAvailable(@NotNull Project project) {
-        return project.isInitialized();
+        return true;
     }
 
     @Override
@@ -41,7 +39,7 @@ public class PluginStatusBarWidgetProvider implements StatusBarWidgetFactory {
 
     @Override
     public boolean canBeEnabledOn(@NotNull StatusBar statusBar) {
-        return Objects.nonNull(statusBar.getProject()) && statusBar.getProject().isInitialized();
+        return true;
     }
 
 }

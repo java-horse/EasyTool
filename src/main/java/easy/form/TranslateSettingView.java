@@ -32,7 +32,6 @@ import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -365,25 +364,27 @@ public class TranslateSettingView {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 创建文件保存弹窗
-                FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Global Word Mapping", Constants.PLUGIN_NAME),
-                        "Select a location to save the word mapping", "csv");
-                FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
-                VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + StrPool.UNDERLINE + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
-                if (Objects.isNull(virtualFileWrapper)) {
-                    return;
-                }
-                // 组装并导出csv文件
-                CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
-                csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.target.word.text"));
-                if (Objects.nonNull(globalWordMapList) && !globalWordMapList.isEmpty()) {
-                    int size = globalWordMapList.getModel().getSize();
-                    for (int i = 0; i < size; i++) {
-                        Entry<String, String> entry = globalWordMapList.getModel().getElementAt(i);
-                        csvWriter.writeLine(entry.getKey(), entry.getValue());
+                if (MessageConstants.OK == MessageUtil.showOkCancelDialog("确认导出全局单词映射CSV文件？")) {
+                    FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Global Word Mapping", Constants.PLUGIN_NAME),
+                            "Select a location to save the word mapping", "csv");
+                    FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
+                    VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + StrPool.UNDERLINE + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
+                    if (Objects.isNull(virtualFileWrapper)) {
+                        return;
                     }
-                    csvWriter.close();
+                    // 组装并导出csv文件
+                    CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
+                    csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.target.word.text"));
+                    if (Objects.nonNull(globalWordMapList) && !globalWordMapList.isEmpty()) {
+                        int size = globalWordMapList.getModel().getSize();
+                        for (int i = 0; i < size; i++) {
+                            Entry<String, String> entry = globalWordMapList.getModel().getElementAt(i);
+                            csvWriter.writeLine(entry.getKey(), entry.getValue());
+                        }
+                        csvWriter.close();
+                    }
+                    MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
                 }
-                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.import.text"),
@@ -391,28 +392,30 @@ public class TranslateSettingView {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导入CSV文件
-                FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, false, false, false, false, false);
-                FileChooserDialog fileChooser = FileChooserFactory.getInstance().createFileChooser(fileChooserDescriptor, ProjectManagerEx.getInstance().getDefaultProject(), null);
-                VirtualFileWrapper virtualFileWrapper = new VirtualFileWrapper(new File(Constants.PLUGIN_NAME + "_Template_" + DateUtil.format(new Date()
-                        , DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv"));
-                VirtualFile[] virtualFiles = fileChooser.choose(ProjectManagerEx.getInstance().getDefaultProject(), virtualFileWrapper.getVirtualFile());
-                if (virtualFiles.length == 0) {
-                    return;
-                }
-                // 读取CSV文件
-                CsvReadConfig config = new CsvReadConfig();
-                config.setHeaderLineNo(0);
-                CsvReader csvReader = CsvUtil.getReader(config);
-                CsvData csvRows = csvReader.read(new File(virtualFiles[0].getPath()), CharsetUtil.CHARSET_GBK);
-                for (CsvRow row : csvRows.getRows()) {
-                    String sourceWord = StringUtils.trim(row.get(0));
-                    if (StringUtils.isNotBlank(typeMap.get(sourceWord))) {
-                        continue;
+                if (MessageConstants.OK == MessageUtil.showOkCancelDialog("确认导入全局单词映射CSV文件？")) {
+                    FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, false, false, false, false, false);
+                    FileChooserDialog fileChooser = FileChooserFactory.getInstance().createFileChooser(fileChooserDescriptor, ProjectManagerEx.getInstance().getDefaultProject(), null);
+                    VirtualFileWrapper virtualFileWrapper = new VirtualFileWrapper(new File(Constants.PLUGIN_NAME + "_Template_" + DateUtil.format(new Date()
+                            , DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv"));
+                    VirtualFile[] virtualFiles = fileChooser.choose(ProjectManagerEx.getInstance().getDefaultProject(), virtualFileWrapper.getVirtualFile());
+                    if (virtualFiles.length == 0) {
+                        return;
                     }
-                    typeMap.put(sourceWord, StringUtils.trim(row.get(1)));
+                    // 读取CSV文件
+                    CsvReadConfig config = new CsvReadConfig();
+                    config.setHeaderLineNo(0);
+                    CsvReader csvReader = CsvUtil.getReader(config);
+                    CsvData csvRows = csvReader.read(new File(virtualFiles[0].getPath()), CharsetUtil.CHARSET_GBK);
+                    for (CsvRow row : csvRows.getRows()) {
+                        String sourceWord = StringUtils.trim(row.get(0));
+                        if (StringUtils.isNotBlank(typeMap.get(sourceWord))) {
+                            continue;
+                        }
+                        typeMap.put(sourceWord, StringUtils.trim(row.get(1)));
+                    }
+                    refreshGlobalWordMap();
+                    MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
                 }
-                refreshGlobalWordMap();
-                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
         defaultActionGroup.addSeparator();
@@ -421,19 +424,32 @@ public class TranslateSettingView {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导出CSV模板文件
-                FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Global Word Mapping Template Download", Constants.PLUGIN_NAME),
-                        "Select a location to download the word mapping template file", "csv");
-                FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
-                VirtualFileWrapper virtualFileWrapper =
-                        saveFileDialog.save(Constants.PLUGIN_NAME + "_Template_" + DateUtil.format(new Date()
-                                , DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
-                if (Objects.isNull(virtualFileWrapper)) {
-                    return;
+                if (MessageConstants.OK == MessageUtil.showOkCancelDialog("确认下载全局单词映射导入模板文件？")) {
+                    FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Global Word Mapping Template Download", Constants.PLUGIN_NAME),
+                            "Select a location to download the word mapping template file", "csv");
+                    FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
+                    VirtualFileWrapper virtualFileWrapper =
+                            saveFileDialog.save(Constants.PLUGIN_NAME + "_Template_" + DateUtil.format(new Date()
+                                    , DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
+                    if (Objects.isNull(virtualFileWrapper)) {
+                        return;
+                    }
+                    CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
+                    csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.target.word.text"));
+                    csvWriter.close();
+                    MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
                 }
-                CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
-                csvWriter.writeHeaderLine(BundleUtil.getI18n("global.source.word.text"), BundleUtil.getI18n("global.target.word.text"));
-                csvWriter.close();
-                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
+            }
+        });
+        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.clear.text"),
+                BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                if (MessageConstants.OK == MessageUtil.showOkCancelDialog("确认清空全局单词映射？")) {
+                    typeMap.clear();
+                    refreshGlobalWordMap();
+                    MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
+                }
             }
         });
         toolbarDecorator.setActionGroup(defaultActionGroup);
@@ -1631,7 +1647,7 @@ public class TranslateSettingView {
     }
 
     private void refreshGlobalWordMap() {
-        if (Objects.nonNull(translateConfig) && MapUtils.isNotEmpty(translateConfig.getGlobalWordMap())) {
+        if (Objects.nonNull(translateConfig) && Objects.nonNull(translateConfig.getGlobalWordMap())) {
             globalWordMapList.setModel(new CollectionListModel<>(Lists.newArrayList(translateConfig.getGlobalWordMap().entrySet())));
         }
     }
