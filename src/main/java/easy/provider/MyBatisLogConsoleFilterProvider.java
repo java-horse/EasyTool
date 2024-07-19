@@ -1,9 +1,10 @@
-package easy.mybatis.log;
+package easy.provider;
 
 import com.intellij.execution.filters.ConsoleFilterProvider;
 import com.intellij.execution.filters.Filter;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import easy.mybatis.log.MyBatisLogConsoleFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

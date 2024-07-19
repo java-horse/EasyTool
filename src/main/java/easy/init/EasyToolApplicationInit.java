@@ -35,6 +35,9 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
     @Override
     public void runActivity(@NotNull Project project) {
         Application application = ApplicationManager.getApplication();
+        if (application.isUnitTestMode() || project.isDisposed()) {
+            return;
+        }
         notifyInit(application);
         translateServiceInit(application);
         convertInit(application);
