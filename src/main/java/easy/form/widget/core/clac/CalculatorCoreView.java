@@ -150,11 +150,11 @@ public class CalculatorCoreView extends CoreCommonView {
                         return;
                     }
                     try {
-                        String calculateResult = new BigDecimal(Double.toString(NumberUtil.calculate(StringUtils.trim(expressionTextFieldText))))
-                                .stripTrailingZeros().toPlainString();
+                        String trimExpress = StringUtils.trim(expressionTextFieldText);
+                        String calculateResult = new BigDecimal(Double.toString(NumberUtil.calculate(trimExpress))).stripTrailingZeros().toPlainString();
                         resultTextArea.setText(calculateResult);
                         if (Objects.nonNull(widgetConfig)) {
-                            widgetConfig.getCalculatorHistoryMap().put(DateUtil.formatDateTime(new Date()) + StrUtil.UNDERLINE + expressionTextFieldText, calculateResult);
+                            widgetConfig.getCalculatorHistoryMap().put(DateUtil.formatDateTime(new Date()) + StrUtil.UNDERLINE + trimExpress, calculateResult);
                         }
                     } catch (Exception ex) {
                         MessageUtil.showErrorDialog(String.format("Calculate exception: %s", ex.getMessage()));
