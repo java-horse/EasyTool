@@ -168,7 +168,7 @@ public class ClassDocGeneratorImpl extends AbstractDocGenerator {
         map.put("author", javaDocConfig.getAuthor());
         map.put("className", psiClass.getQualifiedName());
         map.put("simpleClassName", psiClass.getName());
-        map.put("branch", VcsUtil.getCurrentBranch(psiClass.getProject()));
+        VcsUtil.getVcsUser(psiClass.getProject());
         return map;
     }
 

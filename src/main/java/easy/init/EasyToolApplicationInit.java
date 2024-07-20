@@ -25,9 +25,9 @@ import java.util.Objects;
 /**
  * EasyTool插件启动初始化
  *
+ * @author mabin
  * @project EasyTool
  * @package easy.init
- * @author mabin
  * @date 2024/03/09 10:20
  */
 public class EasyToolApplicationInit implements StartupActivity, DumbAware {
