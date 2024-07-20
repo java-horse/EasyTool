@@ -57,10 +57,11 @@ public class CalculatorCoreView extends CoreCommonView {
     private JButton historyButton;
     private JButton bracketLeftButton;
     private JButton bracketRightButton;
+    private JButton remainderButton;
 
     private final static List<String> NUMBER = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-    private final static List<String> OPERATOR = List.of("+", "-", "*", "/", "(", ")", ".");
-    private final static List<String> MATH_OPERATOR = List.of("+", "-", "*", "/");
+    private final static List<String> OPERATOR = List.of("+", "-", "*", "/", "%", "(", ")", ".");
+    private final static List<String> MATH_OPERATOR = List.of("+", "-", "*", "/", "%");
 
     public CalculatorCoreView() {
         ButtonClickListener clickListener = new ButtonClickListener();
@@ -85,11 +86,20 @@ public class CalculatorCoreView extends CoreCommonView {
         negateButton.addActionListener(clickListener);
         bracketLeftButton.addActionListener(clickListener);
         bracketRightButton.addActionListener(clickListener);
+        remainderButton.addActionListener(clickListener);
 
         historyButton.setIcon(AllIcons.Actions.SearchWithHistory);
         historyButton.addActionListener(e -> new CalculatorHistoryDialogView().show());
     }
 
+    /**
+     * 按钮单击监听器
+     *
+     * @author mabin
+     * @project EasyTool
+     * @package easy.form.widget.core.clac.CalculatorCoreView
+     * @date 2024/07/20 09:33
+     */
     private class ButtonClickListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -133,6 +143,7 @@ public class CalculatorCoreView extends CoreCommonView {
                 case "-":
                 case "*":
                 case "/":
+                case "%":
                     expressionTextField.setText(expressionTextFieldText + buttonText);
                     break;
                 case "C":
@@ -191,7 +202,7 @@ public class CalculatorCoreView extends CoreCommonView {
                                 MessageUtil.showErrorDialog("Unreasonable expression!");
                                 return;
                             }
-                            if (StringUtils.equalsAny(lastOperator, "+", "*", "/")) {
+                            if (StringUtils.equalsAny(lastOperator, "+", "*", "/", "%")) {
                                 expressionTextField.setText(pre + lastOperator + "-" + last);
                                 return;
                             }

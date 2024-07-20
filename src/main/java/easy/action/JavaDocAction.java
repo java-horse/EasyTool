@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
@@ -39,6 +38,10 @@ public class JavaDocAction extends AnAction {
         if (Objects.isNull(psiClass)) {
             return;
         }
+        if (!psiFile.isWritable()) {
+            HintManager.getInstance().showErrorHint(editor, "This is read-only source file!");
+            return;
+        }
         String text = e.getPresentation().getText();
         if (StringUtils.equalsIgnoreCase(text, "JavaDocView")) {
             new JavaDocViewDialog(project, psiClass, psiFile).show();
@@ -60,7 +63,9 @@ public class JavaDocAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor));
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        e.getPresentation().setEnabledAndVisible(Objects.nonNull(project)
+                && Objects.nonNull(editor) && Objects.nonNull(psiFile) && psiFile.isWritable());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package easy.action;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -13,6 +14,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.InputValidator;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsSafe;
+import com.intellij.psi.PsiFile;
 import com.intellij.util.ThrowableRunnable;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
@@ -49,7 +51,12 @@ public class TranslateAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (Objects.isNull(project) || Objects.isNull(editor) || !editor.getSelectionModel().hasSelection()) {
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
+        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile) || !editor.getSelectionModel().hasSelection()) {
+            return;
+        }
+        if (!psiFile.isWritable()) {
+            HintManager.getInstance().showErrorHint(editor, "This is read-only source file!");
             return;
         }
         String selectedText = editor.getSelectionModel().getSelectedText();
@@ -102,8 +109,9 @@ public class TranslateAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
+        PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         e.getPresentation().setEnabledAndVisible(Objects.nonNull(project) && Objects.nonNull(editor)
-                && editor.getSelectionModel().hasSelection());
+                && editor.getSelectionModel().hasSelection() && Objects.nonNull(psiFile) && psiFile.isWritable());
     }
 
     @Override

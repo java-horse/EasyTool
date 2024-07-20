@@ -1,5 +1,6 @@
 package easy.action;
 
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -41,7 +42,11 @@ public class SerialVersionUIDAction extends AnAction {
         Project project = e.getProject();
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
-        if (ObjectUtils.anyNull(project, editor, psiFile)) {
+        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile)) {
+            return;
+        }
+        if (!psiFile.isWritable()) {
+            HintManager.getInstance().showErrorHint(editor, "This is read-only source file!");
             return;
         }
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
