@@ -146,7 +146,7 @@ public class CalculatorCoreView extends CoreCommonView {
                 case "%":
                     expressionTextField.setText(expressionTextFieldText + buttonText);
                     break;
-                case "C":
+                case "CE":
                     expressionTextField.setText(StringUtils.EMPTY);
                     resultTextArea.setText(StringUtils.EMPTY);
                     break;
