@@ -59,6 +59,10 @@ public class SwaggerAction extends AnAction {
         if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile) || Objects.isNull(psiClass)) {
             return;
         }
+        if (!psiFile.isWritable()) {
+            HintManager.getInstance().showErrorHint(editor, "This is read-only source file!");
+            return;
+        }
         SwaggerServiceEnum swaggerAnnotationEnum = SwaggerServiceEnum.getSwaggerAnnotationEnum(e.getPresentation().getText());
         if (Objects.isNull(swaggerAnnotationEnum)) {
             return;

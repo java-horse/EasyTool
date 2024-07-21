@@ -31,7 +31,7 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
     private JScrollPane innerScrollPane;
     private JLabel defaultRadioTipLabel;
     private JTable customTable;
-    private static Map<String, String> innerMap;
+    private static final Map<String, String> innerMap;
 
     static {
         innerMap = Maps.newLinkedHashMap();
@@ -39,6 +39,9 @@ public class MethodSettingsView extends AbstractJavaDocTemplateSettingView {
         innerMap.put(JavaDocInnerVariableEnum.PARAMS.name, JavaDocInnerVariableEnum.PARAMS.value);
         innerMap.put(JavaDocInnerVariableEnum.RETURN.name, JavaDocInnerVariableEnum.RETURN.value);
         innerMap.put(JavaDocInnerVariableEnum.AUTHOR.name, JavaDocInnerVariableEnum.AUTHOR.value);
+        innerMap.put(JavaDocInnerVariableEnum.VCS_USER.name, JavaDocInnerVariableEnum.VCS_USER.value);
+        innerMap.put(JavaDocInnerVariableEnum.VCS_EMAIL.name, JavaDocInnerVariableEnum.VCS_EMAIL.value);
+        innerMap.put(JavaDocInnerVariableEnum.VCS_BRANCH.name, JavaDocInnerVariableEnum.VCS_BRANCH.value);
         innerMap.put(JavaDocInnerVariableEnum.DATE.name, JavaDocInnerVariableEnum.DATE.value);
         innerMap.put(JavaDocInnerVariableEnum.VERSION.name, JavaDocInnerVariableEnum.VERSION.value);
         innerMap.put(JavaDocInnerVariableEnum.THROWS.name, JavaDocInnerVariableEnum.THROWS.value);

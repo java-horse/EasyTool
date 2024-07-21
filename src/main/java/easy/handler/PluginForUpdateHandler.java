@@ -108,7 +108,7 @@ public class PluginForUpdateHandler {
             return;
         }
         // 发送插件最新版本通知
-        NotifyUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s 🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion),
+        NotifyUtil.notify(String.format("🎉🎉🎉 %s 已发布最新版：v%s（当前版本：v%s）🎉🎉🎉", Constants.PLUGIN_NAME, remoteVersion, version),
                 new NotificationAction("😎 插件面板") {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {

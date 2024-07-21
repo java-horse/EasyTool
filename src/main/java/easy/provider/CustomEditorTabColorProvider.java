@@ -1,4 +1,4 @@
-package easy.highlight;
+package easy.provider;
 
 import com.intellij.openapi.fileEditor.ex.FileEditorManagerEx;
 import com.intellij.openapi.fileEditor.impl.EditorComposite;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class CustomEditorTabColorProvider implements EditorTabColorProvider {
 
-    private CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
+    private final CommonConfig commonConfig = ServiceHelper.getService(CommonConfigComponent.class).getState();
 
     @Nullable
     @Override
@@ -28,7 +28,7 @@ public class CustomEditorTabColorProvider implements EditorTabColorProvider {
         try {
             // 是否开启Tab选项卡高亮配置
             EditorWindow activeWindow = fileEditorManagerEx.getCurrentWindow();
-            if (Objects.nonNull(activeWindow) && (Boolean.TRUE.equals(commonConfig.getTabHighlightEnableCheckBox()))) {
+            if (Objects.nonNull(activeWindow) && Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getTabHighlightEnableCheckBox())) {
                 EditorComposite selectedComposite = activeWindow.getSelectedComposite();
                 if (Objects.nonNull(selectedComposite) && Objects.equals(virtualFile, selectedComposite.getFile())) {
                     return commonConfig.getPersistentColor().getColor();

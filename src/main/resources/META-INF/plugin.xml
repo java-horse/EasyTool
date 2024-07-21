@@ -95,17 +95,27 @@
         <![CDATA[
       <h3>v2.1.6</h3>
       <ul>
-        <li>Optimize the original right-Convert small function migration to the Widget Core View window</li>
         <li>Added Base64 Transcoding Widget View Windows</li>
-        <li>Optimization supports automatic generation of Swagger annotations and supports both selection and cursor placement of elements</li>
-        <li>Optimization TimestampView window added Chinese calendar conversion display</li>
-        <li>Added Simple calculator CalculatorView window supporting simple four operations</li>
+        <li>Added simple calculator CalculatorView window supporting simple four operations</li>
+        <li>Added small icon for the status bar plug-in that can be quickly operated</li>
+        <li>Added the function of automatically generating JavaDoc comments when saving files</li>
+        <li>Optimize the original right-Convert small function migration to the Widget Core View window</li>
+        <li>Optimize supports automatic generation of Swagger annotations and supports both selection and cursor placement of elements</li>
+        <li>Optimize TimestampView window added Chinese calendar conversion display</li>
+        <li>Optimize class automatically generates serialVersionUID fields when synchronously implementing the Serializable interface</li>
+        <li>Optimize some operations that do not support read-only source files to avoid false reports</li>
+        <li>Optimize the JavaDoc to add automatically obtain Git user name, mailbox, branch and other built-in variables</li>
         <li>-------------------------------</li>
-        <li>【优化】原右键Convert小功能迁移至 Widget Core View 视窗</li>
         <li>【新增】新增Base64转码小组件View视窗</li>
+        <li>【新增】新增支持简单四则运算的简易计算器CalculatorView视窗(加、减、乘、除、取余、括号等)</li>
+        <li>【新增】新增可快捷操作的状态栏插件小图标</li>
+        <li>【新增】新增文件保存时自动生成JavaDoc注释功能(实验性功能, 谨慎开启!)</li>
+        <li>【优化】原右键Convert小功能迁移至 Widget Core View 视窗</li>
         <li>【优化】自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
         <li>【优化】优化时间戳转换TimestampView视窗，新增中国黄历转换显示</li>
-        <li>【新增】新增支持简单四则运算的简易计算器CalculatorView视窗</li>
+        <li>【优化】优化类自动生成serialVersionUID字段时同步实现Serializable接口（GenUID）</li>
+        <li>【优化】优化某些操作不支持只读源文件，避免误触报错</li>
+        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量</li>
       </ul>
       <h3>v2.1.5</h3>
       <ul>
@@ -429,13 +439,21 @@
     <depends>org.intellij.plugins.markdown</depends>
     <depends>com.intellij.properties</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
+    <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
         <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
-        <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
 
-        <consoleFilterProvider implementation="easy.mybatis.log.MyBatisLogConsoleFilterProvider"/>
+        <editorTabColorProvider implementation="easy.provider.CustomEditorTabColorProvider"/>
+        <consoleFilterProvider implementation="easy.provider.MyBatisLogConsoleFilterProvider"/>
+        <statusBarWidgetFactory order="before LineSeparator, after Position, before lineSeparatorWidget, after positionWidget"
+                                implementation="easy.provider.PluginStatusBarWidgetProvider"/>
+        <codeInsight.template.postfixTemplateProvider language="JAVA"
+                                                      implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
+        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
+                                        implementationClass="easy.provider.CronMarkerProvider"/>
+
         <executor implementation="easy.mybatis.log.ui.MyBatisLogExecutor"/>
 
         <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
@@ -486,13 +504,7 @@
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
 
-
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
-
-        <codeInsight.template.postfixTemplateProvider language="JAVA"
-                                                      implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
-        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
-                                        implementationClass="easy.provider.CronMarkerProvider"/>
 
         <completion.contributor language="JAVA" order="last"
                                 implementationClass="easy.git.emoji.prompt.contributor.JavaEmojiCompletionContributor"/>

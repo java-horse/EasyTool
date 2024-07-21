@@ -81,11 +81,11 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(timestampTextArea, convertButton);
         convertButton.addActionListener(e -> {
             try {
-                String timestampText = StringUtils.trim(timestampTextArea.getText());
+                String timestampText = StringUtils.trim(datetimeTextArea.getText());
                 if (StringUtils.isBlank(timestampText)) {
                     return;
                 }
-                if (StringUtils.isNotBlank(datetimeTextArea.getText()) && MessageUtil.showQuestionDialog("Confirm again convert?") != MessageConstants.OK) {
+                if (MessageUtil.showQuestionDialog("Confirm again convert?") != MessageConstants.OK) {
                     return;
                 }
                 if (!NumberUtil.isNumber(timestampText)) {
@@ -109,10 +109,10 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(datetimeTextArea, restoreButton);
         restoreButton.addActionListener(e -> {
             try {
-                if (StringUtils.isBlank(datetimeTextArea.getText())) {
+                if (StringUtils.isBlank(timestampTextArea.getText())) {
                     return;
                 }
-                if (StringUtils.isNotBlank(timestampTextArea.getText()) && MessageUtil.showQuestionDialog("Confirm again restore?") != MessageConstants.OK) {
+                if (MessageUtil.showQuestionDialog("Confirm again restore?") != MessageConstants.OK) {
                     return;
                 }
                 long epochMilli = LocalDateTime.parse(StringUtils.trim(datetimeTextArea.getText()), DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())))

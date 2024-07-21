@@ -155,6 +155,7 @@ public class QrCodeCoreView extends CoreCommonView {
         });
         downloadButton.addActionListener(e -> {
             if (Objects.isNull(qrCodeImage)) {
+                MessageUtil.showInfoMessage("qrCode is not exist!");
                 return;
             }
             FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(String.format("%s QrCode Save", Constants.PLUGIN_NAME),
@@ -205,6 +206,7 @@ public class QrCodeCoreView extends CoreCommonView {
         });
         identifyButton.addActionListener(e -> {
             if (StringUtils.isBlank(uploadFilePath) || !FileUtil.exist(uploadFilePath)) {
+                MessageUtil.showErrorDialog("QrCode file is not upload!");
                 return;
             }
             try {

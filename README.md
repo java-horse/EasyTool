@@ -145,7 +145,7 @@ Background Image Plus背景图轮播、代码块一键截图等功能特性。�
   * EXCEL解析
   * Timestamp时间戳
   * Base64转码
-  * Simple计算器
+  * Simple计算器（加、减、乘、除、取余、括号）
   * SQL日志还原
 
 ## 示例|Example

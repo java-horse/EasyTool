@@ -2,10 +2,7 @@ package easy.widget.annotation;
 
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.javadoc.PsiDocComment;
 import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
@@ -37,7 +34,7 @@ public class DoEasyExcelAnnotationService extends DoAbstractAnnotationService {
      */
     @Override
     protected void writeAnnotation(Project project, PsiFile psiFile, PsiElement psiElement, String elementName) {
-        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), Constants.UID)) {
+        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME)) {
             WriteCommandAction.runWriteCommandAction(project, () -> doWrite(ExtraPackageNameEnum.EXCEL_IGNORE.getClassName(),
                     ExtraPackageNameEnum.EXCEL_IGNORE.getName(),
                     String.format("%s%s", Constants.AT, ExtraPackageNameEnum.EXCEL_IGNORE.getClassName()),
@@ -87,7 +84,7 @@ public class DoEasyExcelAnnotationService extends DoAbstractAnnotationService {
      */
     @Override
     public void removeAnnotation(PsiElement psiElement) {
-        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), Constants.UID)) {
+        if (StringUtils.equalsAny(PsiElementUtil.getPsiElementNameIdentifierText(psiElement), CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME)) {
             WriteCommandAction.runWriteCommandAction(project, () -> doRemove(ExtraPackageNameEnum.EXCEL_IGNORE.getName(),
                     psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
             return;

@@ -237,7 +237,7 @@ public class SwaggerViewDialog extends DialogWrapper {
                 }
                 String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                 attributeItemList.add(new AttributeItem(String.format(getBoldText(className), StrUtil.DOT + psiFieldName), psiFieldName,
-                        getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(psiFieldName, Constants.UID)
+                        getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(psiFieldName, CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME)
                                 ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field), psiField, false));
             }
             PsiClass[] innerClasses = psiClass.getInnerClasses();
@@ -253,7 +253,7 @@ public class SwaggerViewDialog extends DialogWrapper {
                         }
                         String psiFieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
                         attributeItemList.add(new AttributeItem(String.format(getBoldText(innerClassName), StrUtil.DOT + psiFieldName),
-                                psiFieldName, getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(Constants.UID, psiFieldName)
+                                psiFieldName, getIcon(psiField.getAnnotations(), fieldSwaggerList, StringUtils.equalsIgnoreCase(CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME, psiFieldName)
                                 ? AllIcons.Nodes.Constant : AllIcons.Nodes.Field), psiField, false));
                     }
                 }

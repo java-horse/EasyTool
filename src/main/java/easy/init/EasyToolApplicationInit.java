@@ -1,5 +1,6 @@
 package easy.init;
 
+import com.intellij.AppTopics;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
@@ -15,6 +16,7 @@ import easy.action.ConvertAction;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.listener.AppActiveListener;
+import easy.listener.FileDocumentSaveListener;
 import easy.listener.TabHighlighterFileEditorListener;
 import easy.translate.TranslateService;
 import org.jetbrains.annotations.NotNull;
@@ -25,9 +27,9 @@ import java.util.Objects;
 /**
  * EasyTool插件启动初始化
  *
+ * @author mabin
  * @project EasyTool
  * @package easy.init
- * @author mabin
  * @date 2024/03/09 10:20
  */
 public class EasyToolApplicationInit implements StartupActivity, DumbAware {
@@ -35,10 +37,17 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
     @Override
     public void runActivity(@NotNull Project project) {
         Application application = ApplicationManager.getApplication();
+        if (application.isUnitTestMode() || project.isDisposed()) {
+            return;
+        }
         notifyInit(application);
         translateServiceInit(application);
         convertInit(application);
-        activeTabHighlightInit(project, application);
+
+        MessageBus messageBus = application.getMessageBus();
+        MessageBusConnection messageBusConnection = messageBus.connect();
+        activeTabHighlightInit(project, application, messageBusConnection);
+        fileDocumentSaveInit(project, messageBusConnection);
     }
 
     /**
@@ -92,16 +101,27 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
      *
      * @param project
      * @param application
+     * @param messageBusConnection
      * @return void
      * @author mabin
      * @date 2023/12/20 14:10
      */
-    private void activeTabHighlightInit(@NotNull Project project, @NotNull Application application) {
-        MessageBus messageBus = application.getMessageBus();
-        MessageBusConnection messageBusConnection = messageBus.connect();
+    private void activeTabHighlightInit(@NotNull Project project, @NotNull Application application, @NotNull MessageBusConnection messageBusConnection) {
         TabHighlighterFileEditorListener tabHighlighterFileEditorListener = new TabHighlighterFileEditorListener(project);
         messageBusConnection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, tabHighlighterFileEditorListener);
         messageBusConnection.subscribe(TabHighlighterFileEditorListener.CHANGE_HIGHLIGHTER_TOPIC, tabHighlighterFileEditorListener);
+    }
+
+    /**
+     * 文件文档保存监听器初始化
+     *
+     * @param project              项目
+     * @param messageBusConnection
+     * @author mabin
+     * @date 2024/07/20 15:42
+     */
+    private void fileDocumentSaveInit(@NotNull Project project, @NotNull MessageBusConnection messageBusConnection) {
+        messageBusConnection.subscribe(AppTopics.FILE_DOCUMENT_SYNC, new FileDocumentSaveListener(project));
     }
 
 }

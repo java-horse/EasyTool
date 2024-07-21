@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "easy.tool"
-version = "2.1.5-beat"
+version = "2.1.6-beat"
 
 repositories {
     maven {
@@ -32,7 +32,12 @@ intellij {
     // 2023.3.4
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java", "markdown", "properties", "org.jetbrains.plugins.yaml"))
+    plugins.set(listOf(
+            "com.intellij.java",
+            "markdown",
+            "properties",
+            "org.jetbrains.plugins.yaml",
+            "Git4Idea"))
 }
 
 tasks {

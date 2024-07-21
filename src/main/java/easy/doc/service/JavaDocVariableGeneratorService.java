@@ -38,6 +38,9 @@ public class JavaDocVariableGeneratorService {
             .put(JavaDocInnerVariableEnum.VERSION.key, new VersionVariableGeneratorImpl())
             .put(JavaDocInnerVariableEnum.PROJECT.key, new ProjectVariableGeneratorImpl())
             .put(JavaDocInnerVariableEnum.PACKAGE.key, new PackageVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.VCS_USER.key, new VcsUserVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.VCS_EMAIL.key, new VcsEmailVariableGeneratorImpl())
+            .put(JavaDocInnerVariableEnum.VCS_BRANCH.key, new VcsBranchVariableGeneratorImpl())
             .build();
 
     public String generate(PsiElement psiElement, String template, Map<String, CustomValue> customValueMap, Map<String, Object> innerVariableMap) {

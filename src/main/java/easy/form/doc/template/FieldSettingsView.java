@@ -32,7 +32,7 @@ public class FieldSettingsView extends AbstractJavaDocTemplateSettingView {
     private JScrollPane innerScrollPane;
     private JLabel defaultRadioTipLabel;
     private JTable customTable;
-    private static Map<String, String> innerMap;
+    private static final Map<String, String> innerMap;
 
     static {
         innerMap = Maps.newLinkedHashMap();
