@@ -27,7 +27,10 @@ import easy.handler.ding.DingTypeEnum;
 import easy.helper.ServiceHelper;
 import easy.util.JsonUtil;
 import easy.util.NotifyUtil;
+import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class JueJinSignService {
@@ -55,11 +58,32 @@ public class JueJinSignService {
             collectBug(resultMap);
             // 我的道具
             displayMyTool(resultMap);
+            // 我的幸运值
+            displayMyLuck(resultMap);
         }
         // 发送钉钉消息
         watch.stop();
         resultMap.put("endTime", DateUtil.format(new Date(), DatePattern.NORM_DATETIME_MS_FORMAT));
         sendDingMsg(resultMap, watch.getTotalTimeMillis());
+    }
+
+    /**
+     * 查询我的幸运值
+     *
+     * @param resultMap 结果图
+     * @author mabin
+     * @date 2024/07/22 09:36
+     */
+    private void displayMyLuck(Map<String, Object> resultMap) {
+        String response = postRequest(JueJinConstants.MY_LUCK, null);
+        if (StringUtils.isBlank(response)) {
+            return;
+        }
+        JsonObject resObject = JsonUtil.fromObject(response);
+        if (ObjectUtil.equal(Constants.NUM.ZERO, resObject.get(JueJinConstants.ERR_NO).getAsInt())) {
+            JsonObject dataObject = resObject.get(JueJinConstants.DATA).getAsJsonObject();
+            resultMap.put("totalValue", dataObject.get("total_value").getAsInt());
+        }
     }
 
     /**
@@ -280,6 +304,8 @@ public class JueJinSignService {
                     **矿石变化：** 初始 {} 矿石，剩余 {} 矿石\s
 
                     **我的道具：** {}\s
+                                        
+                    **幸运值：** {}%\s
 
                     **签到耗时：** 起始 {}-{}，共耗时 {}ms""";
             JsonObject resultObject = JsonUtil.fromObject(JsonUtil.toJson(resultMap));
@@ -295,9 +321,12 @@ public class JueJinSignService {
                 bugCount = lotteryNameList.stream().filter(lottery -> StrUtil.containsIgnoreCase(lottery, JueJinConstants.BUG)).count();
                 otherCount = lotteryNameList.size() - lotteryNameList.stream().filter(lottery -> StrUtil.containsIgnoreCase(lottery, JueJinConstants.MINERAL)).count() - bugCount;
             }
+            BigDecimal luckValue = Convert.toBigDecimal(resultMap.getOrDefault("totalValue", Constants.NUM.ZERO));
+            String luckRate = luckValue.divide(BigDecimal.valueOf(6000), 2, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).toPlainString();
             model.setContent(StrUtil.format(msgTemplate, resultObject.get("sumCount").getAsString(), resultObject.get("contCount").getAsString(),
                     resultObject.get("drawCount").getAsString(), mineralCount, bugCount, otherCount, resultObject.get("collectBug").getAsString(),
                     resultObject.get("originPoint").getAsString(), resultObject.get("surplusPoint").getAsString(), resultObject.get("myTool").getAsString(),
+                    String.format("%s/6000=%s", luckValue, luckRate),
                     resultObject.get("startTime").getAsString(), resultObject.get("endTime").getAsString(), totalTimeMillis));
         }
         NotifyUtil.notify(model);

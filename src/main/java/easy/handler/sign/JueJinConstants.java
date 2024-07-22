@@ -40,16 +40,6 @@ public class JueJinConstants {
     public static final String COUNTS = BASE_URL + "growth_api/v1/get_counts";
 
     /**
-     * 沾喜气
-     */
-    public static final String DIP_LUCKY = BASE_URL + "growth_api/v1/lottery_lucky/dip_lucky";
-
-    /**
-     * 查询可以沾喜气的用户列表
-     */
-    public static final String GLOBAL_BIG = BASE_URL + "growth_api/v1/lottery_history/global_big";
-
-    /**
      * 查询未收集的BUG
      */
     public static final String NOT_COLLECT_BUG = BASE_URL + "user_api/v1/bugfix/not_collect";
@@ -63,5 +53,10 @@ public class JueJinConstants {
      * 查询我的道具
      */
     public static final String MY_TOOL = BASE_URL + "growth_api/v1/lottery_history/items_by_page";
+
+    /**
+     * 我的幸运值
+     */
+    public static final String MY_LUCK = BASE_URL + "/growth_api/v1/lottery_lucky/my_lucky";
 
 }
