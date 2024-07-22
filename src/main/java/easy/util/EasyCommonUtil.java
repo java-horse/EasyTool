@@ -319,4 +319,15 @@ public class EasyCommonUtil {
         return null;
     }
 
+    /**
+     * 是否windows环境
+     *
+     * @return {@link java.lang.Boolean}
+     * @author mabin
+     * @date 2024/07/22 11:32
+     */
+    public static Boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
+
 }

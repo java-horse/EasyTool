@@ -11,9 +11,11 @@ import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
 import easy.helper.ServiceHelper;
 import easy.ui.AttributeItem;
+import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,6 +112,9 @@ public class SettingCoreView extends CoreCommonView {
     private List<AttributeItem> getDisplayTabList() {
         List<AttributeItem> attributeItemList = new ArrayList<>();
         for (WidgetCoreTabEnum tabEnum : WidgetCoreTabEnum.values()) {
+            if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !EasyCommonUtil.isWindows()) {
+                continue;
+            }
             if (Objects.nonNull(widgetConfig) && CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {
                 attributeItemList.add(new AttributeItem(tabEnum.getTitle(), null, AllIcons.Actions.PinTab,
                         null, widgetConfig.getWidgetCoreTabSet().contains(tabEnum.getTitle())));
