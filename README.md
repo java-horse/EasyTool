@@ -147,6 +147,7 @@ Background Image Plus背景图轮播、代码块一键截图等功能特性。�
   * Base64转码
   * Simple计算器（加、减、乘、除、取余、括号）
   * SQL日志还原
+  * Windows进程管理
 
 ## 示例|Example
 
