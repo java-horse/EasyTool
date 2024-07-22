@@ -64,6 +64,12 @@ public enum WidgetCoreTabEnum {
             return new ProcessCoreView().getContent();
         }
     },
+    UUID("UUID生成") {
+        @Override
+        public Component getComponent() {
+            return new UuidCoreView().getContent();
+        }
+    },
     ;
 
 

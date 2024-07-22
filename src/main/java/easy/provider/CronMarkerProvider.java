@@ -71,7 +71,7 @@ public class CronMarkerProvider implements LineMarkerProvider {
             if (StringUtils.isBlank(cron)) {
                 return;
             }
-            Editor editor = CommonDataKeys.EDITOR.getData(DataManager.getInstance().getDataContext());
+            Editor editor = CommonDataKeys.EDITOR.getData(DataManager.getInstance().getDataContext(e.getComponent()));
             if (Objects.isNull(editor)) {
                 return;
             }

@@ -16,6 +16,7 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.ui.ClickListener;
 import easy.base.Constants;
+import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
 import easy.icons.EasyIcons;
 import org.jetbrains.annotations.NonNls;
@@ -86,6 +87,12 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         PluginForUpdateHandler.forUpdate(project);
+                    }
+                });
+                add(new AnAction("效率组件", "效率组件", EasyIcons.ICON.PUZZLE) {
+                    @Override
+                    public void actionPerformed(@NotNull AnActionEvent e) {
+                        new WidgetCommonView().show();
                     }
                 });
                 addSeparator();
