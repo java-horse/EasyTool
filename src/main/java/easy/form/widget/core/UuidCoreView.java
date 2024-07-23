@@ -19,11 +19,11 @@ public class UuidCoreView extends CoreCommonView {
     private JTextArea uuidTextArea;
     private JSpinner uuidCountSpinner;
     private JSpinner uuidLengthSpinner;
-    private JComboBox uuidTypeComboBox;
+    private JComboBox<String> uuidTypeComboBox;
     private JButton generateButton;
     private JButton clearButton;
     private JButton copyButton;
-    private JComboBox upperComboBox;
+    private JComboBox<String> upperComboBox;
 
     private static final String UUID_SIMPLE_TYPE = "简化（去除横线）";
     private static final String UPPER = "大写";
