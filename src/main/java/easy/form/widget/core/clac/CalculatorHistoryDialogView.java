@@ -64,6 +64,7 @@ public class CalculatorHistoryDialogView extends DialogWrapper {
                 return false;
             }
         };
+        table.setAutoCreateRowSorter(true);
         refreshHistoryTable();
         EasyCommonUtil.addTableCellCopyListener(table);
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(table);

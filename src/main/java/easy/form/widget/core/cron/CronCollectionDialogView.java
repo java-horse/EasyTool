@@ -61,6 +61,7 @@ public class CronCollectionDialogView extends DialogWrapper {
                 return false;
             }
         };
+        cronTable.setAutoCreateRowSorter(true);
         refreshCronTable();
         EasyCommonUtil.addTableCellCopyListener(cronTable);
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(cronTable);

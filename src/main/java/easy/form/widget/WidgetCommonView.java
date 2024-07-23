@@ -8,7 +8,9 @@ import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
 import easy.form.widget.setting.SettingCoreView;
 import easy.helper.ServiceHelper;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,6 +39,9 @@ public class WidgetCommonView extends DialogWrapper {
             }
         } else {
             for (WidgetCoreTabEnum tabEnum : WidgetCoreTabEnum.values()) {
+                if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !EasyCommonUtil.isWindows()) {
+                    continue;
+                }
                 tabbedPane.add(tabEnum.getTitle(), tabEnum.getComponent());
                 widgetConfig.getWidgetCoreTabSet().add(tabEnum.getTitle());
             }

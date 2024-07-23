@@ -6,6 +6,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.ui.JBColor;
+import easy.base.Constants;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +82,7 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(timestampTextArea, convertButton);
         convertButton.addActionListener(e -> {
             try {
-                String timestampText = StringUtils.trim(datetimeTextArea.getText());
+                String timestampText = StringUtils.trim(timestampTextArea.getText());
                 if (StringUtils.isBlank(timestampText)) {
                     return;
                 }
@@ -109,7 +110,7 @@ public class TimestampCoreView extends CoreCommonView {
         areaListener(datetimeTextArea, restoreButton);
         restoreButton.addActionListener(e -> {
             try {
-                if (StringUtils.isBlank(timestampTextArea.getText())) {
+                if (StringUtils.isBlank(datetimeTextArea.getText())) {
                     return;
                 }
                 if (MessageUtil.showQuestionDialog("Confirm again restore?") != MessageConstants.OK) {
@@ -118,7 +119,7 @@ public class TimestampCoreView extends CoreCommonView {
                 long epochMilli = LocalDateTime.parse(StringUtils.trim(datetimeTextArea.getText()), DateTimeFormatter.ofPattern(String.valueOf(formatComboBox.getSelectedItem())))
                         .atZone(ZoneId.of(String.valueOf(zoneComboBox.getSelectedItem()))).toInstant().toEpochMilli();
                 if (String.valueOf(unitComboBox.getSelectedItem()).equals(SECOND_UNIX)) {
-                    epochMilli /= 1000;
+                    epochMilli /= Constants.NUM.ONE_THOUSAND;
                 }
                 timestampTextArea.setText(Long.toString(epochMilli));
             } catch (Exception ex) {

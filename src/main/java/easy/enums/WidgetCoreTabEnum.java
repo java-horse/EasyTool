@@ -70,7 +70,20 @@ public enum WidgetCoreTabEnum {
         public Component getComponent() {
             return new CalculatorCoreView().getContent();
         }
-    };
+    },
+    WINDOWS_PROCESS("Windows进程") {
+        @Override
+        public Component getComponent() {
+            return new ProcessCoreView().getContent();
+        }
+    },
+    UUID("UUID生成") {
+        @Override
+        public Component getComponent() {
+            return new UuidCoreView().getContent();
+        }
+    },
+    ;
 
 
     private final String title;

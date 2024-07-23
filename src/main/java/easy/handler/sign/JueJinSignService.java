@@ -156,7 +156,7 @@ public class JueJinSignService {
         if (Opt.ofNullable(signConfig.getDrawSwitch()).orElse(Boolean.FALSE)) {
             while (summaryPoint >= Opt.ofNullable(signConfig.getReserved()).orElse(120000)) {
                 if (rouletteDrawCount > Constants.NUM.ZERO) {
-                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(1000L));
+                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(1L) * 1000);
                 }
                 String drawResponse = postRequest(JueJinConstants.DRAW, null);
                 JsonObject drawObject = JsonUtil.fromObject(drawResponse);
@@ -172,7 +172,7 @@ public class JueJinSignService {
                     rouletteDrawCount++;
                 } else {
                     // 抽奖请求异常时, 睡眠后重试
-                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(2000L));
+                    ThreadUtil.sleep(Opt.ofNullable(signConfig.getDrawInternal()).orElse(2L) * 1000);
                 }
             }
         }

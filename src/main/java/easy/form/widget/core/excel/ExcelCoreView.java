@@ -69,6 +69,10 @@ public class ExcelCoreView extends CoreCommonView {
             StopWatch watch = new StopWatch();
             watch.start();
             List<Map<String, String>> dataList = parseFile(selectFileTextField.getText());
+            if (CollectionUtils.isEmpty(dataList)) {
+                watch.stop();
+                return;
+            }
             watch.stop();
             summaryTextLabel.setText(String.format("Summary: 共【%s】行, 耗时【%s】毫秒", dataList.size(), watch.getTotalTimeMillis()));
             resultTextArea.setText(JsonUtil.toPrettyJson(dataList));
@@ -77,6 +81,10 @@ public class ExcelCoreView extends CoreCommonView {
             StopWatch watch = new StopWatch();
             watch.start();
             List<Map<String, String>> dataList = parseFile(selectFileTextField.getText());
+            if (CollectionUtils.isEmpty(dataList)) {
+                watch.stop();
+                return;
+            }
             ExcelSqlInTypeDialogView excelSqlInTypeDialogView = new ExcelSqlInTypeDialogView();
             if (excelSqlInTypeDialogView.showAndGet()) {
                 String sqlJoin = StringUtils.EMPTY;
@@ -104,7 +112,7 @@ public class ExcelCoreView extends CoreCommonView {
 
     private List<Map<String, String>> parseFile(String filePath) {
         if (StringUtils.isBlank(filePath) || !FileUtil.exist(filePath)) {
-            MessageUtil.showInfoMessage("请上传合法Excel或CSV文件!");
+            MessageUtil.showInfoMessage("请上传Excel或CSV文件!");
             return Collections.emptyList();
         }
         File file = FileUtil.file(filePath);
