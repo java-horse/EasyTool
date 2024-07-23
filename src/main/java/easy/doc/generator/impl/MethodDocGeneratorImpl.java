@@ -40,6 +40,9 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
         if (!(psiElement instanceof PsiMethod psiMethod)) {
             return StringUtils.EMPTY;
         }
+        if (StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.IGNORE.getModel()) && Objects.nonNull(psiMethod.getDocComment())) {
+            return StringUtils.EMPTY;
+        }
         JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
         if (Objects.nonNull(javaDocMethodTemplateConfig) && Boolean.TRUE.equals(javaDocMethodTemplateConfig.getIsDefault())) {
             return defaultGenerate(psiMethod);

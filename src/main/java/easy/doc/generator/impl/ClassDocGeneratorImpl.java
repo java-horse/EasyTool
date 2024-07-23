@@ -34,6 +34,9 @@ public class ClassDocGeneratorImpl extends AbstractDocGenerator {
         if (!(psiElement instanceof PsiClass psiClass)) {
             return StringUtils.EMPTY;
         }
+        if (StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.IGNORE.getModel()) && Objects.nonNull(psiClass.getDocComment())) {
+            return StringUtils.EMPTY;
+        }
         JavaDocTemplateConfig javaDocClassTemplateConfig = javaDocConfig.getJavaDocClassTemplateConfig();
         if (Objects.nonNull(javaDocClassTemplateConfig) && Boolean.TRUE.equals(javaDocClassTemplateConfig.getIsDefault())) {
             return defaultGenerate(psiClass);

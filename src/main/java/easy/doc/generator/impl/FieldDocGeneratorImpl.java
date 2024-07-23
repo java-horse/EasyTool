@@ -35,6 +35,9 @@ public class FieldDocGeneratorImpl extends AbstractDocGenerator {
         if (!(psiElement instanceof PsiField psiField)) {
             return StringUtils.EMPTY;
         }
+        if (StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.IGNORE.getModel()) && Objects.nonNull(psiField.getDocComment())) {
+            return StringUtils.EMPTY;
+        }
         JavaDocTemplateConfig javaDocFieldTemplateConfig = javaDocConfig.getJavaDocFieldTemplateConfig();
         if (Objects.nonNull(javaDocFieldTemplateConfig) && Boolean.TRUE.equals(javaDocFieldTemplateConfig.getIsDefault())) {
             return defaultGenerate(psiField);
