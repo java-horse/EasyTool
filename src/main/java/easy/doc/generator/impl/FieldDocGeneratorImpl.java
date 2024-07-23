@@ -11,6 +11,7 @@ import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.service.JavaDocVariableGeneratorService;
+import easy.enums.JavaDocCommentCoverEnum;
 import easy.enums.JavaDocPropertyCommentModelEnum;
 import easy.enums.JavaDocPropertyCommentTypeEnum;
 import easy.helper.ServiceHelper;
@@ -139,7 +140,7 @@ public class FieldDocGeneratorImpl extends AbstractDocGenerator {
     private String customGenerate(PsiField psiField) {
         JavaDocTemplateConfig javaDocFieldTemplateConfig = javaDocConfig.getJavaDocFieldTemplateConfig();
         String doc = javaDocVariableGeneratorService.generate(psiField, javaDocFieldTemplateConfig.getTemplate(), javaDocFieldTemplateConfig.getCustomMap(), getFieldInnerVariable(psiField));
-        return mergeDoc(psiField, doc);
+        return StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.MERGE.getModel()) ? mergeDoc(psiField, doc) : doc;
     }
 
     private Map<String, Object> getFieldInnerVariable(PsiField psiField) {

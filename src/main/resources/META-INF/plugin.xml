@@ -117,7 +117,7 @@
         <li>【优化】优化时间戳转换TimestampView视窗，新增中国黄历转换显示</li>
         <li>【优化】优化类自动生成serialVersionUID字段时同步实现Serializable接口（GenUID）</li>
         <li>【优化】优化某些操作不支持只读源文件，避免误触报错</li>
-        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量</li>
+        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量, 支持配置注释覆盖模式(智能合并/强制覆盖)</li>
       </ul>
       <h3>v2.1.5</h3>
       <ul>

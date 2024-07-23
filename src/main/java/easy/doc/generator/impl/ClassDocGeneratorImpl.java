@@ -14,6 +14,7 @@ import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.service.JavaDocVariableGeneratorService;
+import easy.enums.JavaDocCommentCoverEnum;
 import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
@@ -160,7 +161,7 @@ public class ClassDocGeneratorImpl extends AbstractDocGenerator {
     private String customGenerate(PsiClass psiClass) {
         JavaDocTemplateConfig javaDocClassTemplateConfig = javaDocConfig.getJavaDocClassTemplateConfig();
         String doc = javaDocVariableGeneratorService.generate(psiClass, javaDocClassTemplateConfig.getTemplate(), javaDocClassTemplateConfig.getCustomMap(), getClassInnerVariable(psiClass));
-        return mergeDoc(psiClass, doc);
+        return StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.MERGE.getModel()) ? mergeDoc(psiClass, doc) : doc;
     }
 
     private Map<String, Object> getClassInnerVariable(PsiClass psiClass) {

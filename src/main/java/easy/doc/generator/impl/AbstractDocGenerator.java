@@ -7,9 +7,11 @@ import com.intellij.psi.PsiJavaDocumentedElement;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
 import easy.doc.generator.DocGenerator;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractDocGenerator implements DocGenerator {
 
@@ -24,23 +26,31 @@ public abstract class AbstractDocGenerator implements DocGenerator {
      */
     protected String mergeDoc(PsiJavaDocumentedElement psiElement, String targetDoc) {
         PsiDocComment sDoc = psiElement.getDocComment();
-        if (sDoc == null) {
+        if (Objects.isNull(sDoc)) {
             return targetDoc;
         }
+        PsiDocComment tDoc = PsiElementFactory.getInstance(psiElement.getProject()).createDocCommentFromText(targetDoc);
         List<String> docList = Lists.newArrayList();
-        PsiElementFactory factory = PsiElementFactory.getInstance(psiElement.getProject());
-        PsiDocComment tDoc = factory.createDocCommentFromText(targetDoc);
-        PsiDocTag[] sTags = sDoc.getTags();
         for (PsiElement child : tDoc.getChildren()) {
             if (!(child instanceof PsiDocTag docTag)) {
                 docList.add(child.getText());
                 continue;
             }
             boolean append = true;
-            for (PsiDocTag sTag : sTags) {
+            for (PsiDocTag sTag : sDoc.getTags()) {
                 if (sTag.getName().equals(docTag.getName())) {
-                    docList.add(sTag.getText());
-                    append = false;
+                    if (Objects.isNull(sTag.getValueElement()) || Objects.isNull(docTag.getValueElement())) {
+                        continue;
+                    }
+                    PsiElement[] sChildren = sTag.getValueElement().getChildren();
+                    PsiElement[] dChildren = docTag.getValueElement().getChildren();
+                    if (ArrayUtils.isEmpty(sChildren) || ArrayUtils.isEmpty(dChildren)) {
+                        continue;
+                    }
+                    if (StringUtils.equals(sChildren[0].getText(), dChildren[0].getText())) {
+                        docList.add(sTag.getText());
+                        append = false;
+                    }
                 }
             }
             if (append) {
