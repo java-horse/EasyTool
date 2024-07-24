@@ -148,7 +148,7 @@
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="注释覆写形式"/>
+              <text value="注释覆写模式"/>
             </properties>
           </component>
           <component id="82c70" class="javax.swing.JComboBox" binding="coverModelComboBox">
@@ -159,15 +159,25 @@
               <model>
                 <item value="智能合并"/>
                 <item value="强制覆盖"/>
+                <item value="忽略注释"/>
               </model>
             </properties>
           </component>
-          <component id="7c462" class="javax.swing.JLabel" binding="coverModelTipLabel">
+          <component id="67b88" class="javax.swing.JLabel" binding="coverModelTipLabel">
             <constraints>
-              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value=""/>
+            </properties>
+          </component>
+          <component id="6b3e6" class="javax.swing.JCheckBox" binding="coverHintPromptCheckBox">
+            <constraints>
+              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="气泡提示"/>
+              <toolTipText value="开启后，光标位置显示覆写模式"/>
             </properties>
           </component>
         </children>
