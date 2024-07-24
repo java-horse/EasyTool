@@ -3,6 +3,7 @@ package easy.form.widget.core;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
@@ -31,6 +32,8 @@ import org.apache.commons.lang3.StringUtils;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -58,7 +61,9 @@ public class QrCodeCoreView extends CoreCommonView {
     private Color foreColor = Color.BLACK;
     private Color backColor = Color.WHITE;
     private static BufferedImage qrCodeImage;
-    private static String uploadFilePath;
+    private static BufferedImage uploadQrCodeImage;
+
+    private static final String[] IMAGE_TYPE = {"png", "jpg", "jpeg", "gif", "bmp"};
 
     /**
      * 纠错级别
@@ -159,20 +164,20 @@ public class QrCodeCoreView extends CoreCommonView {
                 return;
             }
             FileSaverDescriptor fileSaverDescriptor = new FileSaverDescriptor(String.format("%s QrCode Save", Constants.PLUGIN_NAME),
-                    "Select a location to save the qrCode", "png");
+                    "Select a location to save the qrCode", IMAGE_TYPE);
             FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fileSaverDescriptor, ProjectManagerEx.getInstanceEx().getDefaultProject());
-            VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + "_QrCode_" + DateUtil.format(new Date(),
-                    DatePattern.PURE_DATETIME_PATTERN) + StrUtil.DOT + "png");
+            VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + "_QrCode_" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN));
             if (Objects.isNull(virtualFileWrapper)) {
                 return;
             }
-            try (FileOutputStream outputStream = new FileOutputStream(virtualFileWrapper.getFile())) {
-                ImageIO.write(qrCodeImage, "png", outputStream);
-                uploadFilePath = null;
+            File file = virtualFileWrapper.getFile();
+            try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                ImgUtil.write(qrCodeImage, FileUtil.extName(file), outputStream);
+                uploadQrCodeImage = null;
                 int confirmResult = MessageUtil.showOkCancelDialog("Open qrCode download success folder?", Messages.getInformationIcon());
                 if (confirmResult == MessageConstants.OK) {
                     // 打开所在文件夹
-                    File parentDir = virtualFileWrapper.getFile().getParentFile();
+                    File parentDir = file.getParentFile();
                     if (Objects.nonNull(parentDir) && parentDir.exists()) {
                         try {
                             Desktop.getDesktop().open(parentDir);
@@ -188,16 +193,32 @@ public class QrCodeCoreView extends CoreCommonView {
         qrCodeLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                uploadFilePath = Optional.ofNullable(FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor(),
-                                ProjectManagerEx.getInstance().getDefaultProject(), null))
-                        .map(VirtualFile::getPath).orElse(null);
-                if (StringUtils.isBlank(uploadFilePath) || !FileUtil.exist(uploadFilePath)) {
-                    return;
-                }
                 try {
-                    Image qrCodeUploadImage = ImageIO.read(new File(uploadFilePath));
-                    qrCodeUploadImage.getScaledInstance(Constants.NUM.THREE_HUNDRED, Constants.NUM.THREE_HUNDRED, Image.SCALE_SMOOTH);
-                    qrCodeLabel.setIcon(new ImageIcon(qrCodeUploadImage));
+                    int way = MessageUtil.showOkCancelDialog("请选择上传方式?", "打开文件夹", "复制粘贴板", Messages.getInformationIcon());
+                    BufferedImage bufferedImage = null;
+                    if (way == MessageConstants.OK) {
+                        // 文件夹上传
+                        String uploadFilePath = Optional.ofNullable(FileChooser.chooseFile(FileChooserDescriptorFactory.createSingleFileNoJarsDescriptor(),
+                                        ProjectManagerEx.getInstance().getDefaultProject(), null))
+                                .map(VirtualFile::getPath).orElse(null);
+                        if (StringUtils.isBlank(uploadFilePath) || !FileUtil.exist(uploadFilePath)) {
+                            return;
+                        }
+                        bufferedImage = ImageIO.read(new File(uploadFilePath));
+                    } else if (way == MessageConstants.CANCEL) {
+                        // 粘贴板读取
+                        Clipboard cp = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        if (cp.isDataFlavorAvailable(DataFlavor.imageFlavor)) {
+                            bufferedImage = (BufferedImage) cp.getData(DataFlavor.imageFlavor);
+                            qrCodeLabel.setIcon(new ImageIcon(bufferedImage));
+                        }
+                    }
+                    if (Objects.isNull(bufferedImage)) {
+                        return;
+                    }
+                    bufferedImage.getScaledInstance(Constants.NUM.THREE_HUNDRED, Constants.NUM.THREE_HUNDRED, Image.SCALE_SMOOTH);
+                    qrCodeLabel.setIcon(new ImageIcon(bufferedImage));
+                    uploadQrCodeImage = bufferedImage;
                     qrCodeImage = null;
                 } catch (Exception ex) {
                     MessageUtil.showErrorDialog(String.format("QrCode file upload error: %s", ex.getMessage()));
@@ -205,20 +226,19 @@ public class QrCodeCoreView extends CoreCommonView {
             }
         });
         identifyButton.addActionListener(e -> {
-            if (StringUtils.isBlank(uploadFilePath) || !FileUtil.exist(uploadFilePath)) {
+            if (Objects.isNull(uploadQrCodeImage)) {
                 MessageUtil.showErrorDialog("QrCode file is not upload!");
                 return;
             }
             try {
-                String decode = QrCodeUtil.decode(new File(uploadFilePath));
+                String decode = QrCodeUtil.decode(uploadQrCodeImage);
                 if (StringUtils.isBlank(decode)) {
                     MessageUtil.showErrorDialog("QrCode identify error");
                     return;
                 }
                 qrContentTextArea.setText(decode);
-                int confirmResult = MessageUtil.showOkCancelDialog("Jump qrCode identify success link?", Messages.getInformationIcon());
-                if (confirmResult == MessageConstants.OK) {
-                    // 一键跳转
+                if (StrUtil.startWithAnyIgnoreCase(decode, Constants.HTTPS, Constants.HTTP)
+                        && MessageUtil.showOkCancelDialog("Jump qrCode identify success link?") == MessageConstants.OK) {
                     EasyCommonUtil.openLink(decode);
                 }
             } catch (Exception ex) {
@@ -226,13 +246,13 @@ public class QrCodeCoreView extends CoreCommonView {
             }
         });
         clearButton.addActionListener(e -> {
-            if (ObjectUtils.anyNotNull(qrContentTextArea.getText(), qrCodeLabel.getIcon(), logoFileTextField.getText(), qrCodeImage, uploadFilePath)) {
+            if (ObjectUtils.anyNotNull(qrContentTextArea.getText(), qrCodeLabel.getIcon(), logoFileTextField.getText(), qrCodeImage, uploadQrCodeImage)) {
                 if (MessageUtil.showOkCancelDialog("Confirm clean qrCode data?") == MessageConstants.OK) {
                     qrContentTextArea.setText(StringUtils.EMPTY);
                     qrCodeLabel.setIcon(null);
                     logoFileTextField.setText(StringUtils.EMPTY);
                     qrCodeImage = null;
-                    uploadFilePath = null;
+                    uploadQrCodeImage = null;
                 }
             }
         });

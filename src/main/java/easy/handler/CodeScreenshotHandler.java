@@ -3,6 +3,7 @@ package easy.handler;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.text.StrPool;
 import com.intellij.codeInsight.hint.EditorFragmentComponent;
 import com.intellij.notification.NotificationType;
@@ -20,6 +21,7 @@ import com.intellij.ui.scale.JBUIScale;
 import easy.base.Constants;
 import easy.config.screenshot.CodeScreenshotConfig;
 import easy.enums.FontStyleEnum;
+import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -113,7 +115,8 @@ public class CodeScreenshotHandler {
             return;
         }
         try (FileOutputStream outputStream = new FileOutputStream(virtualFileWrapper.getFile())) {
-            ImageIO.write(image, config.getCustomFileNameSuffix(), outputStream);
+            ImgUtil.write(image, config.getCustomFileNameSuffix(), outputStream);
+            MessageUtil.showInfoMessage("Code Screenshot Save Success");
         } catch (Throwable t) {
             NotifyUtil.notify("Code screenshot file save error, please try again later!", NotificationType.ERROR);
         }
