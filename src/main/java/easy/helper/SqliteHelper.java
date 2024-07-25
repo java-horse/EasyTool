@@ -9,10 +9,12 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import easy.base.SqliteConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.sqlite.JDBC;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -41,13 +43,34 @@ public class SqliteHelper {
      */
     public SqliteHelper(String dbFilePath) {
         try {
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(JDBC.PREFIX + dbFilePath);
-            config.setDriverClassName(Driver);
-            dataSource = new HikariDataSource(config);
+            if (Objects.isNull(dataSource) || isSwitchDataSource(dbFilePath)) {
+                log.warn("sqlite switch sqlite db: " + dbFilePath);
+                HikariConfig config = new HikariConfig();
+                config.setJdbcUrl(JDBC.PREFIX + dbFilePath);
+                config.setDriverClassName(Driver);
+                dataSource = new HikariDataSource(config);
+            }
         } catch (Exception e) {
             log.error("sqlite connect error!", e);
         }
+    }
+
+    /**
+     * 是否切换数据源
+     *
+     * @param dbFilePath db文件路径
+     * @return {@link java.lang.Boolean}
+     * @throws SQLException sql异常
+     * @author mabin
+     * @date 2024/07/25 18:08
+     */
+    private Boolean isSwitchDataSource(String dbFilePath) throws SQLException {
+        if (Objects.nonNull(dataSource) && Objects.nonNull(dataSource.getConnection())) {
+            DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
+            String jdbcUrl = metaData.getURL();
+            return !StringUtils.equalsAnyIgnoreCase(jdbcUrl, JDBC.PREFIX + dbFilePath);
+        }
+        return false;
     }
 
     /**
