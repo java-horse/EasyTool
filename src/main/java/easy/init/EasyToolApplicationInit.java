@@ -16,9 +16,11 @@ import easy.action.ConvertAction;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.listener.AppActiveListener;
+import easy.listener.EventBusListener;
 import easy.listener.FileDocumentSaveListener;
 import easy.listener.TabHighlighterFileEditorListener;
 import easy.translate.TranslateService;
+import easy.util.EventBusUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -48,6 +50,7 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
         MessageBusConnection messageBusConnection = messageBus.connect();
         activeTabHighlightInit(project, application, messageBusConnection);
         fileDocumentSaveInit(project, messageBusConnection);
+        application.invokeLater(this::eventBusRegisterInit);
     }
 
     /**
@@ -122,6 +125,16 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
      */
     private void fileDocumentSaveInit(@NotNull Project project, @NotNull MessageBusConnection messageBusConnection) {
         messageBusConnection.subscribe(AppTopics.FILE_DOCUMENT_SYNC, new FileDocumentSaveListener(project));
+    }
+
+    /**
+     * EventBus事件监听器注册
+     *
+     * @author mabin
+     * @date 2024/07/25 10:53
+     */
+    private void eventBusRegisterInit() {
+        EventBusUtil.register(new EventBusListener());
     }
 
 }

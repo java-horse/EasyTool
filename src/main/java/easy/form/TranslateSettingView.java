@@ -15,19 +15,24 @@ import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.TextBrowseFolderListener;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.SimpleListCellRenderer;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.OnOffButton;
 import easy.base.Constants;
+import easy.base.SqliteConstants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.enums.TranslateLanguageEnum;
 import easy.helper.ServiceHelper;
+import easy.helper.SqliteHelper;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
@@ -154,7 +159,12 @@ public class TranslateSettingView {
     private JLabel libreServerUrlLabel;
     private JComboBox libreServerUrlComboBox;
     private JLabel previewSecretLabel;
-
+    private OnOffButton backupSwitchButton;
+    private TextFieldWithBrowseButton backupFilePath;
+    private JLabel backupTipLabel;
+    private JButton backupContentButton;
+    private JButton backupExportCSVButton;
+    private JButton backupOpenDirButton;
 
     private String secretPlainText;
 
@@ -218,8 +228,29 @@ public class TranslateSettingView {
         EasyCommonUtil.customLabelTipText(translateChannelTipLabel, TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
         EasyCommonUtil.customLabelTipText(customApiMaxCharLengthTipLabel, "每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
         EasyCommonUtil.customLabelTipText(customSupportLanguageTipLabel, String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
+        EasyCommonUtil.customLabelTipText(backupTipLabel, "备份文件必须是.db后缀名(文件路径层级太深可能会引发sqlLite连接异常)");
         // 设置按钮图标
         previewSecretLabel.setIcon(AllIcons.Actions.Preview);
+        // 翻译实时备份
+        backupFilePath.addBrowseFolderListener(new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor()
+                .withFileFilter(file -> StringUtils.endsWith(file.getName(), ".db"))));
+        backupSwitchButton.addItemListener(e -> backupFilePath.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+        backupContentButton.setIcon(AllIcons.Providers.Sqlite);
+        backupContentButton.addActionListener(e -> {
+            if (StringUtils.isBlank(backupFilePath.getText())) {
+                MessageUtil.showErrorDialog("请先选择实时备份文件!");
+                return;
+            }
+            if (Objects.nonNull(SqliteHelper.getConnection(backupFilePath.getText()))) {
+                // 自动创建备份表
+                SqliteHelper sqliteHelper = new SqliteHelper(backupFilePath.getText());
+                sqliteHelper.createTable(String.format(SqliteConstants.SQL.CREATE_TABLE_BACKUP, SqliteConstants.TABLE.BACKUP), SqliteConstants.TABLE.BACKUP);
+                sqliteHelper.createIndex("udx_source_channel", SqliteConstants.TABLE.BACKUP, true, "source", "channel");
+                MessageUtil.showInfoMessage(String.format("数据库【%s】测试连接成功", backupFilePath.getText()));
+                return;
+            }
+            MessageUtil.showErrorDialog(String.format("数据库【%s】测试连接失败", backupFilePath.getText()));
+        });
     }
 
     /**
@@ -1644,6 +1675,8 @@ public class TranslateSettingView {
         setCustomApiMaxCharLengthTextField(Integer.toString(translateConfig.getCustomApiMaxCharLength()));
         setCustomSupportLanguageTextField(translateConfig.getCustomSupportLanguage());
         setLibreServerUrlComboBox(translateConfig.getLibreServerUrl());
+        setBackupSwitchButton(translateConfig.getBackupSwitch());
+        setBackupFilePath(translateConfig.getBackupFilePath());
     }
 
     private void refreshGlobalWordMap() {
@@ -1991,6 +2024,22 @@ public class TranslateSettingView {
 
     public void setLibreServerUrlComboBox(String libreServerUrlComboBox) {
         this.libreServerUrlComboBox.setSelectedItem(libreServerUrlComboBox);
+    }
+
+    public OnOffButton getBackupSwitchButton() {
+        return backupSwitchButton;
+    }
+
+    public void setBackupSwitchButton(Boolean backupSwitchButton) {
+        this.backupSwitchButton.setSelected(backupSwitchButton);
+    }
+
+    public TextFieldWithBrowseButton getBackupFilePath() {
+        return backupFilePath;
+    }
+
+    public void setBackupFilePath(String backupFilePath) {
+        this.backupFilePath.setText(backupFilePath);
     }
 
 }
