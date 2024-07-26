@@ -65,7 +65,7 @@ public enum WidgetCoreTabEnum {
             return new Base64CoreView().getContent();
         }
     },
-    CALCULATOR("Simple计算器") {
+    CALCULATOR("Simple计算") {
         @Override
         public Component getComponent() {
             return new CalculatorCoreView().getContent();
@@ -77,10 +77,10 @@ public enum WidgetCoreTabEnum {
             return new ProcessCoreView().getContent();
         }
     },
-    UUID("UUID生成") {
+    UUID("ID生成") {
         @Override
         public Component getComponent() {
-            return new UuidCoreView().getContent();
+            return new IdCoreView().getContent();
         }
     },
     ;

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 public class ParamsVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
-    private TranslateService translateService = ServiceHelper.getService(TranslateService.class);
+    private final TranslateService translateService = ServiceHelper.getService(TranslateService.class);
 
     @Override
     public String generate(PsiElement element) {

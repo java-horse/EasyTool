@@ -2,9 +2,11 @@ package easy.form;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.text.csv.*;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -15,19 +17,24 @@ import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.ui.TextBrowseFolderListener;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.SimpleListCellRenderer;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
+import com.intellij.ui.components.OnOffButton;
 import easy.base.Constants;
+import easy.base.SqliteConstants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.enums.TranslateLanguageEnum;
 import easy.helper.ServiceHelper;
+import easy.helper.SqliteHelper;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
@@ -36,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
@@ -154,7 +162,13 @@ public class TranslateSettingView {
     private JLabel libreServerUrlLabel;
     private JComboBox libreServerUrlComboBox;
     private JLabel previewSecretLabel;
-
+    private OnOffButton backupSwitchButton;
+    private TextFieldWithBrowseButton backupFilePath;
+    private JLabel backupTipLabel;
+    private JButton backupContentButton;
+    private JButton backupExportCSVButton;
+    private JButton backupOpenDirButton;
+    private JButton backupClickCreateButton;
 
     private String secretPlainText;
 
@@ -218,8 +232,83 @@ public class TranslateSettingView {
         EasyCommonUtil.customLabelTipText(translateChannelTipLabel, TranslateEnum.getTips(String.valueOf(translateChannelBox.getSelectedItem())));
         EasyCommonUtil.customLabelTipText(customApiMaxCharLengthTipLabel, "每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
         EasyCommonUtil.customLabelTipText(customSupportLanguageTipLabel, String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
+        EasyCommonUtil.customLabelTipText(backupTipLabel, "备份文件必须是.db后缀名(文件路径层级太深可能会引发sqlLite连接异常)");
         // 设置按钮图标
         previewSecretLabel.setIcon(AllIcons.Actions.Preview);
+
+        // 翻译实时备份
+        backupFilePath.addBrowseFolderListener(new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor()
+                .withFileFilter(file -> StringUtils.endsWith(file.getName(), StrUtil.DOT + SqliteConstants.DB))));
+        backupSwitchButton.addItemListener(e -> backupFilePath.setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+        // 测试连接
+        backupContentButton.setIcon(AllIcons.Providers.Sqlite);
+        backupContentButton.addActionListener(e -> {
+            if (StringUtils.isBlank(backupFilePath.getText())) {
+                MessageUtil.showErrorDialog("请先选择实时备份文件!");
+                return;
+            }
+            if (Objects.nonNull(SqliteHelper.getConnection(backupFilePath.getText()))) {
+                // 自动创建备份表
+                SqliteHelper sqliteHelper = new SqliteHelper(backupFilePath.getText());
+                sqliteHelper.createTable(String.format(SqliteConstants.SQL.CREATE_TABLE_BACKUP, SqliteConstants.TABLE.BACKUP), SqliteConstants.TABLE.BACKUP);
+                sqliteHelper.createIndex("udx_source_channel", SqliteConstants.TABLE.BACKUP, true, "source", "channel");
+                MessageUtil.showInfoMessage(String.format("数据库【%s】测试连接成功", backupFilePath.getText()));
+                return;
+            }
+            MessageUtil.showErrorDialog(String.format("数据库【%s】测试连接失败", backupFilePath.getText()));
+        });
+        // 打开文件夹
+        backupOpenDirButton.setIcon(AllIcons.Actions.MenuOpen);
+        backupOpenDirButton.addActionListener(e -> {
+            if (StringUtils.isBlank(backupFilePath.getText()) || !FileUtil.exist(backupFilePath.getText())) {
+                MessageUtil.showErrorDialog("实时备份文件不存在!");
+                return;
+            }
+            File parentDir = FileUtil.file(backupFilePath.getText()).getParentFile();
+            if (Objects.nonNull(parentDir) && parentDir.exists()) {
+                try {
+                    Desktop.getDesktop().open(parentDir);
+                } catch (Exception ignored) {
+                }
+            }
+        });
+        // 点击创建
+        backupClickCreateButton.setIcon(AllIcons.Actions.AddFile);
+        backupClickCreateButton.addActionListener(e -> {
+            if (Boolean.FALSE.equals(backupSwitchButton.isSelected())) {
+                MessageUtil.showErrorDialog("请先开启实时备份!");
+                return;
+            }
+            if (StringUtils.isNotBlank(backupFilePath.getText())) {
+                MessageUtil.showErrorDialog("实时备份文件已存在, 无需二次创建!");
+                return;
+            }
+            String userHome = FileUtil.getUserHomePath();
+            if (StringUtils.isNotBlank(userHome)) {
+                String createPath = userHome + FileUtil.FILE_SEPARATOR + StrUtil.DOT + Constants.PLUGIN_NAME + FileUtil.FILE_SEPARATOR + "translate" + StrUtil.DOT + SqliteConstants.DB;
+                if (MessageUtil.showOkCancelDialog(String.format("即将创建【%】备份文件库, 点击继续", createPath)) == MessageConstants.OK) {
+                    if (!FileUtil.exist(createPath)) {
+                        FileUtil.touch(createPath);
+                    }
+                    backupFilePath.setText(createPath);
+                    if (MessageConstants.OK == MessageUtil.showOkCancelDialog(String.format("备份文件库【%s】创建成功, 是否测试连接?", createPath))) {
+                        SqliteHelper sqliteHelper = new SqliteHelper(backupFilePath.getText());
+                        sqliteHelper.createTable(String.format(SqliteConstants.SQL.CREATE_TABLE_BACKUP, SqliteConstants.TABLE.BACKUP), SqliteConstants.TABLE.BACKUP);
+                        sqliteHelper.createIndex("udx_source_channel", SqliteConstants.TABLE.BACKUP, true, "source", "channel");
+                        MessageUtil.showInfoMessage(String.format("备份文件库【%s】测试连接成功", backupFilePath.getText()));
+                    }
+                }
+            }
+        });
+        // 导出CSV
+        backupExportCSVButton.setIcon(AllIcons.Actions.Download);
+        backupExportCSVButton.addActionListener(e -> {
+            if (Boolean.FALSE.equals(backupSwitchButton.isSelected())) {
+                MessageUtil.showErrorDialog("请先开启实时备份!");
+                return;
+            }
+            MessageUtil.showInfoMessage("敬请期待...");
+        });
     }
 
     /**
@@ -1644,6 +1733,8 @@ public class TranslateSettingView {
         setCustomApiMaxCharLengthTextField(Integer.toString(translateConfig.getCustomApiMaxCharLength()));
         setCustomSupportLanguageTextField(translateConfig.getCustomSupportLanguage());
         setLibreServerUrlComboBox(translateConfig.getLibreServerUrl());
+        setBackupSwitchButton(translateConfig.getBackupSwitch());
+        setBackupFilePath(translateConfig.getBackupFilePath());
     }
 
     private void refreshGlobalWordMap() {
@@ -1991,6 +2082,22 @@ public class TranslateSettingView {
 
     public void setLibreServerUrlComboBox(String libreServerUrlComboBox) {
         this.libreServerUrlComboBox.setSelectedItem(libreServerUrlComboBox);
+    }
+
+    public OnOffButton getBackupSwitchButton() {
+        return backupSwitchButton;
+    }
+
+    public void setBackupSwitchButton(Boolean backupSwitchButton) {
+        this.backupSwitchButton.setSelected(backupSwitchButton);
+    }
+
+    public TextFieldWithBrowseButton getBackupFilePath() {
+        return backupFilePath;
+    }
+
+    public void setBackupFilePath(String backupFilePath) {
+        this.backupFilePath.setText(backupFilePath);
     }
 
 }

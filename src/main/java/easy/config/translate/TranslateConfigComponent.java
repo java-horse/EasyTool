@@ -8,6 +8,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import easy.base.Constants;
 import easy.base.ModelConstants;
 import easy.enums.*;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +45,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setGlobalWordMap(new TreeMap<>());
             translateConfig.setCustomApiMaxCharLength(Constants.NUM.ONE_THOUSAND);
             translateConfig.setCustomSupportLanguage(TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang);
+            translateConfig.setBackupSwitch(Boolean.FALSE);
+            translateConfig.setBackupFilePath(StringUtils.EMPTY);
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
@@ -57,6 +60,8 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setGlobalWordMap(Objects.isNull(translateConfig.getGlobalWordMap()) ? new TreeMap<>() : translateConfig.getGlobalWordMap());
             translateConfig.setCustomApiMaxCharLength(Objects.isNull(translateConfig.getCustomApiMaxCharLength()) ? Constants.NUM.ONE_THOUSAND : translateConfig.getCustomApiMaxCharLength());
             translateConfig.setCustomSupportLanguage(Objects.isNull(translateConfig.getCustomSupportLanguage()) ? TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang : translateConfig.getCustomSupportLanguage());
+            translateConfig.setBackupSwitch(Objects.isNull(translateConfig.getBackupSwitch()) ? Boolean.FALSE : translateConfig.getBackupSwitch());
+            translateConfig.setBackupFilePath(Objects.isNull(translateConfig.getBackupFilePath()) ? StringUtils.EMPTY : translateConfig.getBackupFilePath());
         }
         return translateConfig;
     }

@@ -19,12 +19,19 @@ dependencies {
     implementation("cn.hutool:hutool-crypto:5.8.28")
     implementation("cn.hutool:hutool-setting:5.8.28")
     implementation("cn.hutool:hutool-extra:5.8.28")
+    implementation("cn.hutool:hutool-db:5.8.28")
     implementation("cn.hutool:hutool-poi:5.8.28")
     implementation("com.cronutils:cron-utils:9.2.1") {
         exclude(group = "org.slf4j")
     }
     implementation("com.google.zxing:core:3.5.3")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0"){
+        exclude(group = "org.slf4j")
+    }
+    implementation("com.zaxxer:HikariCP:5.1.0"){
+        exclude(group = "org.slf4j")
+    }
 }
 
 intellij {

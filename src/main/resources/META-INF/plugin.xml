@@ -63,6 +63,7 @@
         <li>支持选中代码块一键截图功能, 快捷键: <em>CTRL + ALT + 5</em> </li>
         <li>支持Entity普通实体类批量生成JSON注解的View视窗, 快捷键: <em>CTRL + ALT + 6</em> </li>
         <li>支持常用的Widget工具小组件View视窗(EasyTool -> Widget -> Core), 快捷键: <em>CTRL + ALT + 7</em></li>
+        <li>支持翻译渠道服务内置Sqlite实时备份功能(由于打包中含有Sqlite驱动, 插件体积暴增)</li>
         <ul>
             <li>--<em>URL转码</em></li>
             <li>--<em>Cron预览</em></li>
@@ -99,25 +100,31 @@
         <li>Added simple calculator CalculatorView window supporting simple four operations</li>
         <li>Added small icon for the status bar plug-in that can be quickly operated</li>
         <li>Added Windows Process Management Component View window</li>
+        <li>Added ID Generation View Window (UUID、ObjectId、NanoId、SnowflakeId)</li>
         <li>Added the function of automatically generating JavaDoc comments when saving files</li>
+        <li>Added translation channel service built-in Sqlite real-time backup function</li>
         <li>Optimize the original right-Convert small function migration to the Widget Core View window</li>
         <li>Optimize supports automatic generation of Swagger annotations and supports both selection and cursor placement of elements</li>
         <li>Optimize TimestampView window added Chinese calendar conversion display</li>
         <li>Optimize class automatically generates serialVersionUID fields when synchronously implementing the Serializable interface</li>
         <li>Optimize some operations that do not support read-only source files to avoid false reports</li>
         <li>Optimize the JavaDoc to add automatically obtain Git user name, mailbox, branch and other built-in variables</li>
+        <li>Fixing methods with the same name in the same class always generates Swagger annotations for the first method</li>
         <li>-------------------------------</li>
         <li>【新增】新增Base64转码小组件View视窗</li>
         <li>【新增】新增支持简单四则运算的简易计算器CalculatorView视窗(加、减、乘、除、取余、括号等)</li>
         <li>【新增】新增可快捷操作的状态栏插件小图标</li>
         <li>【新增】新增Windows进程管理组件View视窗, 支持查询和终止等功能</li>
+        <li>【新增】新增ID生成组件View视窗（UUID、ObjectId、NanoId、SnowflakeId）</li>
         <li>【新增】新增文件保存时自动生成JavaDoc注释功能(实验性功能, 谨慎开启!)</li>
+        <li>【新增】新增翻译渠道服务内置Sqlite实时备份功能</li>
         <li>【优化】原右键Convert小功能迁移至 Widget Core View 视窗</li>
         <li>【优化】自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
         <li>【优化】优化时间戳转换TimestampView视窗，新增中国黄历转换显示</li>
         <li>【优化】优化类自动生成serialVersionUID字段时同步实现Serializable接口（GenUID）</li>
         <li>【优化】优化某些操作不支持只读源文件，避免误触报错</li>
-        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量</li>
+        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量, 支持配置注释覆盖模式(智能合并/强制覆盖)</li>
+        <li>【修复】修复同一个类中同名方法总是生成第一个方法的Swagger注解问题</li>
       </ul>
       <h3>v2.1.5</h3>
       <ul>
