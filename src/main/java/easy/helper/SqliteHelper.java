@@ -8,6 +8,7 @@ import cn.hutool.db.sql.SqlExecutor;
 import com.intellij.openapi.diagnostic.Logger;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.HikariPoolMXBean;
 import easy.base.SqliteConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class SqliteHelper {
     private static final Logger log = Logger.getInstance(SqliteHelper.class);
     private static final String Driver = "org.sqlite.JDBC";
     private static HikariDataSource dataSource;
-    private static Connection connection;
+    private Connection connection;
 
     /**
      * 构造函数
@@ -43,15 +44,32 @@ public class SqliteHelper {
      */
     public SqliteHelper(String dbFilePath) {
         try {
-            if (Objects.isNull(dataSource) || isSwitchDataSource(dbFilePath)) {
-                log.warn("sqlite switch sqlite db: " + dbFilePath);
-                HikariConfig config = new HikariConfig();
-                config.setJdbcUrl(JDBC.PREFIX + dbFilePath);
-                config.setDriverClassName(Driver);
-                dataSource = new HikariDataSource(config);
-            }
+            initDataSource(dbFilePath);
         } catch (Exception e) {
             log.error("sqlite connect error!", e);
+        }
+    }
+
+    /**
+     * 初始化数据源
+     *
+     * @param dbFilePath db文件路径
+     * @throws SQLException sql异常
+     * @author mabin
+     * @date 2024/07/26 11:22
+     */
+    private synchronized void initDataSource(String dbFilePath) {
+        if (Objects.isNull(dataSource) || isSwitchDataSource(dbFilePath)) {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(JDBC.PREFIX + dbFilePath);
+            config.setDriverClassName(Driver);
+            config.setAutoCommit(true);
+            config.setConnectionTimeout(50000);
+            config.setConnectionTestQuery("SELECT 1");
+            config.setMinimumIdle(5);
+            config.setMaximumPoolSize(10);
+            dataSource = new HikariDataSource(config);
+            log.warn("sqlite switch sqlite db: " + dbFilePath);
         }
     }
 
@@ -64,11 +82,14 @@ public class SqliteHelper {
      * @author mabin
      * @date 2024/07/25 18:08
      */
-    private Boolean isSwitchDataSource(String dbFilePath) throws SQLException {
-        if (Objects.nonNull(dataSource) && Objects.nonNull(dataSource.getConnection())) {
-            DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
-            String jdbcUrl = metaData.getURL();
-            return !StringUtils.equalsAnyIgnoreCase(jdbcUrl, JDBC.PREFIX + dbFilePath);
+    private Boolean isSwitchDataSource(String dbFilePath) {
+        if (Objects.nonNull(dataSource)) {
+            try (Connection connection = dataSource.getConnection()) {
+                DatabaseMetaData metaData = connection.getMetaData();
+                return !StringUtils.equalsAnyIgnoreCase(metaData.getURL(), JDBC.PREFIX + dbFilePath);
+            } catch (Exception e) {
+                log.error("sqlite switch connect error!", e);
+            }
         }
         return false;
     }
@@ -92,7 +113,7 @@ public class SqliteHelper {
             if (Objects.nonNull(connection)) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     log.error("sqlite close connect error!", e);
                 }
             }
@@ -109,7 +130,7 @@ public class SqliteHelper {
      */
     private void connect() {
         try {
-            if (Objects.isNull(connection)) {
+            if (Objects.isNull(connection) || connection.isClosed()) {
                 connection = dataSource.getConnection();
             }
         } catch (Exception e) {
@@ -135,7 +156,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite query error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite query time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -160,7 +181,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite query error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite query time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -183,7 +204,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite update error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -206,7 +227,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite update error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -228,7 +249,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite update error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -255,7 +276,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite createTable error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite createTable time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -287,7 +308,7 @@ public class SqliteHelper {
         } catch (Exception e) {
             log.error("sqlite createIndex error!", e);
         } finally {
-            destroyed();
+            close();
             watch.stop();
             log.warn("sqlite createIndex time: " + watch.getTotalTimeMillis() + "ms");
         }
@@ -299,11 +320,21 @@ public class SqliteHelper {
      * @author mabin
      * @date 2024/07/24 17:42
      */
-    public void destroyed() {
+    public void close() {
         try {
-            if (Objects.nonNull(connection)) {
+            if (Objects.nonNull(dataSource) && Objects.nonNull(dataSource.getHikariPoolMXBean())) {
+                HikariPoolMXBean hikariPoolMXBean = dataSource.getHikariPoolMXBean();
+                log.warn(String.format("HikariCP Before - total: %s, active: %s, idle: %s, waiting: %s", hikariPoolMXBean.getTotalConnections(),
+                        hikariPoolMXBean.getActiveConnections(), hikariPoolMXBean.getIdleConnections(), hikariPoolMXBean.getThreadsAwaitingConnection()));
+            }
+            if (Objects.nonNull(connection) && !connection.isClosed()) {
                 connection.close();
                 connection = null;
+            }
+            if (Objects.nonNull(dataSource) && Objects.nonNull(dataSource.getHikariPoolMXBean())) {
+                HikariPoolMXBean hikariPoolMXBean = dataSource.getHikariPoolMXBean();
+                log.warn(String.format("HikariCP End - total: %s, active: %s, idle: %s, waiting: %s", hikariPoolMXBean.getTotalConnections(),
+                        hikariPoolMXBean.getActiveConnections(), hikariPoolMXBean.getIdleConnections(), hikariPoolMXBean.getThreadsAwaitingConnection()));
             }
         } catch (SQLException e) {
             log.error("sqlite destroy error!", e);
