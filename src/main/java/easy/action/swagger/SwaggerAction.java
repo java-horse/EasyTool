@@ -71,26 +71,22 @@ public class SwaggerAction extends AnAction {
             new SwaggerViewDialog(project, psiClass, psiFile).show();
             return;
         }
-        // 二次弹窗确认
+        // 获取选中文本元素
         String selectedText = editor.getSelectionModel().getSelectedText();
+        // 获取光标所在PsiElement元素
+        PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
         if (StringUtils.isBlank(selectedText)) {
-            // 尝试获取光标所在PsiElement属性名称
-            PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
             if (Objects.nonNull(psiElement)) {
                 selectedText = EasyCommonUtil.getPsiElementName(psiElement);
             }
-            if (StringUtils.isBlank(selectedText)) {
-                HintManager.getInstance().showErrorHint(editor, "The mouse cursor should select the class name, method name, filed name");
-                return;
-            }
         }
+        // 二次弹窗确认
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
-            int confirmResult = MessageUtil.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"));
-            if (MessageConstants.YES == confirmResult) {
-                execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
+            if (MessageConstants.YES == MessageUtil.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"))) {
+                execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum, psiElement);
             }
         } else if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmNoCheckBox())) {
-            execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
+            execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum, psiElement);
         }
     }
 
@@ -106,8 +102,9 @@ public class SwaggerAction extends AnAction {
      * @author mabin
      * @date 2023/12/16 17:39
      */
-    private static void execSwagger(Project project, PsiFile psiFile, PsiClass psiClass, String selectedText, SwaggerServiceEnum swaggerAnnotationEnum) {
-        swaggerAnnotationEnum.getSwaggerGenerateService().initSwaggerConfig(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum);
+    private static void execSwagger(Project project, PsiFile psiFile, PsiClass psiClass, String selectedText,
+                                    SwaggerServiceEnum swaggerAnnotationEnum, PsiElement psiElement) {
+        swaggerAnnotationEnum.getSwaggerGenerateService().initSwaggerConfig(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum, psiElement);
         swaggerAnnotationEnum.getSwaggerGenerateService().doGenerate();
     }
 
