@@ -3,20 +3,24 @@ package easy.translate;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.db.handler.BeanHandler;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.diagnostic.Logger;
 import easy.base.Constants;
+import easy.base.SqliteConstants;
 import easy.config.translate.TranslateConfig;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
+import easy.helper.SqliteHelper;
 import easy.translate.model.KimiModelTranslate;
 import easy.translate.model.TongYiModelTranslate;
 import easy.translate.model.WenXinModelTranslate;
 import easy.translate.translate.*;
 import easy.util.EasyCommonUtil;
+import easy.util.EventBusUtil;
 import easy.util.LanguageUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -119,8 +123,8 @@ public class TranslateService {
         if (StringUtils.isBlank(source)) {
             return StringUtils.EMPTY;
         }
+        String translateChannel = translateConfig.getTranslateChannel();
         if (Objects.isNull(translate)) {
-            String translateChannel = translateConfig.getTranslateChannel();
             if (StringUtils.equals(translateChannel, TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
                 translateChannel = translateConfig.getOpenModelChannel();
             }
@@ -147,6 +151,11 @@ public class TranslateService {
             source = source.replaceAll(invalidChar, StringUtils.EMPTY);
         }
         if (LanguageUtil.isAllChinese(source)) {
+            // 优先sqliteDB匹配
+            String dbValue = querySqlite(source, translateChannel);
+            if (StringUtils.isNotBlank(dbValue)) {
+                return dbValue;
+            }
             String enStr = translate.ch2En(source);
             List<String> chList = StringUtils.isBlank(enStr) ? Lists.newArrayList() : Lists.newArrayList(StringUtils.split(enStr));
             chList = chList.stream().filter(c -> !Constants.STOP_WORDS.contains(c.toLowerCase()))
@@ -171,6 +180,7 @@ public class TranslateService {
                             .append(StringUtils.substring(lowEn, 1));
                 }
             }
+            sendBackUpEvent(source, builder.toString(), translateChannel);
             return builder.toString();
         }
         // 英译中: 全量单词映射处理->尝试分割分词->再次单词映射处理->翻译拼接处理
@@ -182,6 +192,11 @@ public class TranslateService {
             return originRes;
         }
         String analysisWords = analysisSource(source);
+        // 优先sqliteDB匹配
+        String dbValue = querySqlite(analysisWords, translateChannel);
+        if (StringUtils.isNotBlank(dbValue)) {
+            return dbValue;
+        }
         List<String> allWordList = new ArrayList<>(Arrays.asList(StringUtils.split(analysisWords, StringUtils.SPACE)));
         if (CollectionUtils.containsAny(wordMap.keySet(), allWordList)) {
             StringBuilder customBuilder = new StringBuilder();
@@ -192,10 +207,48 @@ public class TranslateService {
                 }
                 customBuilder.append(res);
             }
+            sendBackUpEvent(analysisWords, customBuilder.toString(), translateChannel);
             return customBuilder.toString();
         } else {
-            return translate.en2Ch(analysisWords);
+            String en2Ch = translate.en2Ch(analysisWords);
+            sendBackUpEvent(analysisWords, en2Ch, translateChannel);
+            return en2Ch;
         }
+    }
+
+    /**
+     * 发送备份事件
+     *
+     * @param source  来源
+     * @param target  目标
+     * @param channel 频道
+     * @author mabin
+     * @date 2024/07/25 10:55
+     */
+    private void sendBackUpEvent(String source, String target, String channel) {
+        if (StringUtils.isAnyBlank(source, target, channel)) {
+            return;
+        }
+        EventBusUtil.post(new EventBusUtil.TranslateBackUpEvent(source, target, channel));
+    }
+
+    /**
+     * 查询sqlite
+     *
+     * @param source           来源
+     * @param translateChannel
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/07/25 11:44
+     */
+    private String querySqlite(String source, String translateChannel) {
+        SqliteHelper sqliteHelper = new SqliteHelper(translateConfig.getBackupFilePath());
+        String sql = String.format("SELECT target FROM %s WHERE source = '%s' AND channel = '%s' LIMIT 1;", SqliteConstants.TABLE.BACKUP, source, translateChannel);
+        EventBusUtil.TranslateBackUpEvent backup = sqliteHelper.query(sql, BeanHandler.create(EventBusUtil.TranslateBackUpEvent.class));
+        if (Objects.isNull(backup)) {
+            return null;
+        }
+        return backup.getTarget();
     }
 
     /**

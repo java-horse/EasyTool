@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import easy.base.Constants;
 import easy.base.ModelConstants;
 import easy.enums.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -227,6 +228,15 @@ public class TranslateConfig {
      */
     private SortedMap<String, String> globalWordMap = new TreeMap<>();
 
+    /**
+     * 开启实时备份
+     */
+    private Boolean backupSwitch;
+    /**
+     * 备份文件路径
+     */
+    private String backupFilePath;
+
 
     /**
      * 重置翻译配置
@@ -277,6 +287,8 @@ public class TranslateConfig {
         customApiMaxCharLength = Constants.NUM.ONE_THOUSAND;
         customSupportLanguage = TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang;
         libreServerUrl = null;
+        backupSwitch = Boolean.FALSE;
+        backupFilePath = StringUtils.EMPTY;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -616,6 +628,22 @@ public class TranslateConfig {
 
     public void setLibreServerUrl(String libreServerUrl) {
         this.libreServerUrl = libreServerUrl;
+    }
+
+    public Boolean getBackupSwitch() {
+        return backupSwitch;
+    }
+
+    public void setBackupSwitch(Boolean backupSwitch) {
+        this.backupSwitch = backupSwitch;
+    }
+
+    public String getBackupFilePath() {
+        return backupFilePath;
+    }
+
+    public void setBackupFilePath(String backupFilePath) {
+        this.backupFilePath = backupFilePath;
     }
 
 }

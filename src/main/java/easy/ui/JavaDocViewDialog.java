@@ -188,7 +188,7 @@ public class JavaDocViewDialog extends DialogWrapper {
             // 生成Swagger
             if (Objects.nonNull(swaggerServiceEnum)) {
                 SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
+                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum, item.getPsiElement());
                 swaggerGenerateService.doGenerate();
             }
         }

@@ -173,7 +173,7 @@ public class SwaggerViewDialog extends DialogWrapper {
         SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
         for (AttributeItem item : selectedItemList) {
             // 生成Swagger
-            swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum);
+            swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum, item.getPsiElement());
             swaggerGenerateService.doGenerate();
             // 生成JavaDoc
             if (Boolean.TRUE.equals(syncGenJavaDocCheckBox.isSelected())) {
