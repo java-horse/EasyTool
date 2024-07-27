@@ -133,7 +133,7 @@ public class EasyCommonUtil {
      * @author mabin
      * @date 2024/03/31 17:39
      */
-    public static String format(Long time) {
+    public static String formatTime(Long time) {
         if (Objects.isNull(time) || time == 0) {
             return StringUtils.EMPTY;
         }
