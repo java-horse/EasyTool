@@ -62,7 +62,7 @@ public class ProcessCoreView extends CoreCommonView {
     }};
 
     public ProcessCoreView() {
-        EasyCommonUtil.customBackgroundText(portTextField, "请输入进程端口");
+        EasyCommonUtil.customBackgroundText(portTextField, "请输入端口/进程名");
         EasyCommonUtil.customBackgroundText(pidTextField, "请输入进程PID");
         processSummaryLabel.setForeground(JBColor.GREEN);
         searchButton.setIcon(AllIcons.Actions.Search);
@@ -71,16 +71,17 @@ public class ProcessCoreView extends CoreCommonView {
         searchButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String portText = portTextField.getText();
-                if (StringUtils.isBlank(portText) || StringUtils.equals(portText, "请输入进程端口")) {
-                    MessageUtil.showInfoMessage("请输入进程端口");
+                String searchText = portTextField.getText();
+                if (StringUtils.isBlank(searchText) || StringUtils.equals(searchText, "请输入端口/进程名")) {
+                    MessageUtil.showInfoMessage("请输入进程端口或名称");
                     return;
                 }
                 List<JsonObject> processList = searchSystemProcess();
                 if (CollectionUtils.isEmpty(processList)) {
-                    MessageUtil.showInfoMessage(String.format("未搜索到【%s】端口进程", portText));
+                    MessageUtil.showInfoMessage(String.format("未搜索到【%s】进程", searchText));
                     return;
                 }
+                // 匹配端口
                 List<JsonObject> searchPortList = processList.stream()
                         .filter(item -> {
                             String port;
@@ -92,18 +93,37 @@ public class ProcessCoreView extends CoreCommonView {
                             }
                             // 左键: 模糊匹配, 右键: 精确匹配
                             if (SwingUtilities.isLeftMouseButton(e)) {
-                                return StringUtils.contains(port.trim(), portText.trim());
+                                return StringUtils.contains(port.trim(), searchText.trim());
                             } else if (SwingUtilities.isRightMouseButton(e)) {
-                                return StringUtils.equals(port.trim(), portText.trim());
+                                return StringUtils.equals(port.trim(), searchText.trim());
                             } else {
                                 return false;
                             }
                         }).toList();
-                if (CollectionUtils.isEmpty(searchPortList)) {
-                    MessageUtil.showInfoMessage(String.format("未搜索到【%s】端口进程", portText));
+                if (CollectionUtils.isNotEmpty(searchPortList)) {
+                    refreshProcessTable(searchPortList);
                     return;
                 }
-                refreshProcessTable(searchPortList);
+                // 匹配进程名
+                List<JsonObject> searchProcessList = processList.stream()
+                        .filter(item -> {
+                            if (Objects.isNull(item.get(PROCESS))) {
+                                return false;
+                            }
+                            String process = item.get(PROCESS).getAsString();
+                            if (SwingUtilities.isLeftMouseButton(e)) {
+                                return StringUtils.contains(process, searchText.trim());
+                            } else if (SwingUtilities.isRightMouseButton(e)) {
+                                return StringUtils.equals(process, searchText.trim());
+                            } else {
+                                return false;
+                            }
+                        }).toList();
+                if (CollectionUtils.isNotEmpty(searchProcessList)) {
+                    refreshProcessTable(searchProcessList);
+                    return;
+                }
+                MessageUtil.showInfoMessage(String.format("未搜索到【%s】进程", searchText));
             }
         });
         refreshButton.addActionListener(e -> {

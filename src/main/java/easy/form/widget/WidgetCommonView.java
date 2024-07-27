@@ -3,6 +3,7 @@ package easy.form.widget;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.util.SystemInfo;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
@@ -39,7 +40,7 @@ public class WidgetCommonView extends DialogWrapper {
             }
         } else {
             for (WidgetCoreTabEnum tabEnum : WidgetCoreTabEnum.values()) {
-                if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !EasyCommonUtil.isWindows()) {
+                if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !SystemInfo.isWindows) {
                     continue;
                 }
                 tabbedPane.add(tabEnum.getTitle(), tabEnum.getComponent());
