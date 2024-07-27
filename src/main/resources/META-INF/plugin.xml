@@ -522,9 +522,6 @@
         <completion.contributor language="Markdown" order="first"
                                 implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
 
-        <searchEverywhereContributor
-                implementation="easy.restful.every.RestfulSearchEverywhereContributor"/>
-
     </extensions>
 
     <actions>
