@@ -1,17 +1,15 @@
 package easy.form.widget.setting;
 
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
-import easy.base.Constants;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
 import easy.helper.ServiceHelper;
 import easy.ui.AttributeItem;
-import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
 import org.apache.commons.collections.CollectionUtils;
@@ -112,7 +110,7 @@ public class SettingCoreView extends CoreCommonView {
     private List<AttributeItem> getDisplayTabList() {
         List<AttributeItem> attributeItemList = new ArrayList<>();
         for (WidgetCoreTabEnum tabEnum : WidgetCoreTabEnum.values()) {
-            if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !EasyCommonUtil.isWindows()) {
+            if (StringUtils.equals(tabEnum.getTitle(), WidgetCoreTabEnum.WINDOWS_PROCESS.getTitle()) && !SystemInfo.isWindows) {
                 continue;
             }
             if (Objects.nonNull(widgetConfig) && CollectionUtils.isNotEmpty(widgetConfig.getWidgetCoreTabSet())) {

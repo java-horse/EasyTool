@@ -38,7 +38,7 @@
             </constraints>
             <properties>
               <text value="Search"/>
-              <toolTipText value="搜索端口进程"/>
+              <toolTipText value="左键: 模糊匹配, 右键: 精确匹配"/>
             </properties>
           </component>
           <component id="5e0e" class="javax.swing.JLabel">
