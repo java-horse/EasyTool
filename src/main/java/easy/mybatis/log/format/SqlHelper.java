@@ -32,16 +32,7 @@ public class SqlHelper {
     private static String sql = null;
 
     static {
-        Set<String> types = new HashSet<>(16);
-        types.add("String");
-        types.add("Date");
-        types.add("Time");
-        types.add("LocalDate");
-        types.add("LocalTime");
-        types.add("LocalDateTime");
-        types.add("BigDecimal");
-        types.add("Timestamp");
-        NEED_BRACKETS = Collections.unmodifiableSet(types);
+        NEED_BRACKETS = Set.of("String", "Date", "Time", "LocalDate", "LocalTime", "LocalDateTime", "BigDecimal", "Timestamp");
     }
 
     /**

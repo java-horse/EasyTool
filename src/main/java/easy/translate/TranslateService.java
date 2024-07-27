@@ -49,7 +49,7 @@ public class TranslateService {
 
     private Map<String, Translate> translateMap;
 
-    private List<Translate> translateFreeList = new ArrayList<>();
+    private final List<Translate> translateFreeList = new ArrayList<>();
 
     private static final Object LOCK = new Object();
 

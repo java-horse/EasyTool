@@ -133,7 +133,7 @@ public class EasyCommonUtil {
      * @author mabin
      * @date 2024/03/31 17:39
      */
-    public static String formatTime(Long time) {
+    public static String format(Long time) {
         if (Objects.isNull(time) || time == 0) {
             return StringUtils.EMPTY;
         }
@@ -317,17 +317,6 @@ public class EasyCommonUtil {
             return psiField.getName();
         }
         return null;
-    }
-
-    /**
-     * 是否windows环境
-     *
-     * @return {@link java.lang.Boolean}
-     * @author mabin
-     * @date 2024/07/22 11:32
-     */
-    public static Boolean isWindows() {
-        return System.getProperty("os.name").toLowerCase().contains("windows");
     }
 
 }

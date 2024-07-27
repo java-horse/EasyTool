@@ -28,6 +28,7 @@ import easy.base.Constants;
 import easy.handler.Str2JsonHandler;
 import easy.mybatis.log.format.SqlHelper;
 import easy.util.MessageUtil;
+import easy.widget.core.CoreCommonView;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +41,7 @@ import java.awt.*;
  * @author: mabin
  * @date: 2024/01/18 17:10:40
  */
-public class ConvertCoreView {
+public class ConvertCoreView extends CoreCommonView {
     private JPanel panel;
     private JPanel leftPanel;
     private JPanel leftToolBar;

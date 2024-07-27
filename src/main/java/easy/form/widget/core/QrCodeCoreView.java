@@ -214,6 +214,7 @@ public class QrCodeCoreView extends CoreCommonView {
                         }
                     }
                     if (Objects.isNull(bufferedImage)) {
+                        MessageUtil.showInfoMessage("未识别读取到图片信息!");
                         return;
                     }
                     bufferedImage.getScaledInstance(Constants.NUM.THREE_HUNDRED, Constants.NUM.THREE_HUNDRED, Image.SCALE_SMOOTH);
