@@ -41,6 +41,7 @@ public class EventBusUtil {
         private String channel;
         private String createTime;
         private String modifiedTime;
+        private String ide;
 
         public TranslateBackUpEvent(String source, String target, String channel) {
             this.source = source;
@@ -94,6 +95,14 @@ public class EventBusUtil {
 
         public void setModifiedTime(String modifiedTime) {
             this.modifiedTime = modifiedTime;
+        }
+
+        public String getIde() {
+            return ide;
+        }
+
+        public void setIde(String ide) {
+            this.ide = ide;
         }
     }
 

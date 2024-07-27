@@ -93,6 +93,7 @@ public class ProcessCoreView extends CoreCommonView {
         refreshButton.addActionListener(e -> {
             refreshProcessTable(searchSystemProcess());
             startTimer();
+            MessageUtil.showInfoMessage("系统进程刷新成功");
         });
         killButton.addActionListener(e -> {
             String pidText = pidTextField.getText();

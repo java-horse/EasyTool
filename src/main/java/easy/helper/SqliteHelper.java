@@ -188,6 +188,24 @@ public class SqliteHelper {
         return null;
     }
 
+    /**
+     * 分页查询
+     *
+     * @param sql             sql
+     * @param page            第页
+     * @param size            尺寸
+     * @param beanListHandler 豆列表处理程序
+     * @return {@link java.util.List<T>}
+     * @author mabin
+     * @date 2024/07/27 09:58
+     */
+    public <T> List<T> page(@NotNull String sql, int page, int size, @NotNull BeanListHandler<T> beanListHandler) {
+        if (page == 0 || size == 0) {
+            return null;
+        }
+        return query(sql + " limit " + (page - 1) * size + "," + size, beanListHandler);
+    }
+
 
     /**
      * 执行更新(包括增、删、改)
