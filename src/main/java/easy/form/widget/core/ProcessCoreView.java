@@ -104,6 +104,7 @@ public class ProcessCoreView extends CoreCommonView {
                         }).toList();
                 if (CollectionUtils.isNotEmpty(searchPortList)) {
                     refreshProcessTable(searchPortList);
+                    stopTimer();
                     return;
                 }
                 // 匹配进程名
@@ -123,6 +124,7 @@ public class ProcessCoreView extends CoreCommonView {
                         }).toList();
                 if (CollectionUtils.isNotEmpty(searchProcessList)) {
                     refreshProcessTable(searchProcessList);
+                    stopTimer();
                     return;
                 }
                 MessageUtil.showInfoMessage(String.format("未搜索到【%s】进程", searchText));
@@ -130,6 +132,7 @@ public class ProcessCoreView extends CoreCommonView {
         });
         refreshButton.addActionListener(e -> {
             refreshProcessTable(searchSystemProcess());
+            startTimer();
             MessageUtil.showInfoMessage("系统进程刷新成功");
         });
         killButton.addActionListener(e -> {
