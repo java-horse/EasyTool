@@ -1,9 +1,13 @@
 package easy.form.widget.core.clac;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.CopyPasteManagerEx;
+import com.intellij.openapi.project.ex.ProjectManagerEx;
+import com.intellij.openapi.ui.Messages;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.helper.ServiceHelper;
@@ -13,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -58,6 +63,7 @@ public class CalculatorCoreView extends CoreCommonView {
     private JButton bracketLeftButton;
     private JButton bracketRightButton;
     private JButton remainderButton;
+    private JButton chineseButton;
 
     private final static List<String> NUMBER = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
     private final static List<String> OPERATOR = List.of("+", "-", "*", "/", "%", "(", ")", ".");
@@ -90,6 +96,19 @@ public class CalculatorCoreView extends CoreCommonView {
 
         historyButton.setIcon(AllIcons.Actions.SearchWithHistory);
         historyButton.addActionListener(e -> new CalculatorHistoryDialogView().show());
+        chineseButton.setIcon(AllIcons.Actions.Refresh);
+        areaListener(resultTextArea, chineseButton);
+        chineseButton.addActionListener(e -> {
+            if (StringUtils.isBlank(resultTextArea.getText()) || !NumberUtil.isNumber(resultTextArea.getText())) {
+                return;
+            }
+            String result = Messages.showMultilineInputDialog(ProjectManagerEx.getInstance().getDefaultProject(),
+                   "转繁体中文大写金额(默认单位: 元)", "Convert Traditional Chinese",
+                    Convert.digitToChinese(Convert.toBigDecimal(resultTextArea.getText())), Messages.getInformationIcon(), null);
+            if (StringUtils.isNotBlank(result)) {
+                CopyPasteManagerEx.getInstanceEx().setContents(new StringSelection(result));
+            }
+        });
     }
 
     /**
