@@ -194,7 +194,7 @@ public class QrCodeCoreView extends CoreCommonView {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    int way = MessageUtil.showOkCancelDialog("请选择上传方式?", "打开文件夹", "复制粘贴板", Messages.getInformationIcon());
+                    int way = MessageUtil.showOkCancelDialog("请选择上传方式?", "文件夹上传", "粘贴板读取", Messages.getInformationIcon());
                     BufferedImage bufferedImage = null;
                     if (way == MessageConstants.OK) {
                         // 文件夹上传
@@ -212,6 +212,8 @@ public class QrCodeCoreView extends CoreCommonView {
                             bufferedImage = (BufferedImage) cp.getData(DataFlavor.imageFlavor);
                             qrCodeLabel.setIcon(new ImageIcon(bufferedImage));
                         }
+                    } else {
+                        return;
                     }
                     if (Objects.isNull(bufferedImage)) {
                         MessageUtil.showInfoMessage("未识别读取到图片信息!");

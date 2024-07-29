@@ -4,12 +4,12 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.ui.JBColor;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.enums.WidgetCoreTabEnum;
 import easy.form.widget.setting.SettingCoreView;
 import easy.helper.ServiceHelper;
-import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +22,7 @@ import java.util.Objects;
 public class WidgetCommonView extends DialogWrapper {
     private JPanel panel;
     private JTabbedPane tabbedPane;
+    private static final String SETTING_TAB = "Tab设置";
 
     public WidgetCommonView() {
         super(ProjectManagerEx.getInstance().getDefaultProject());
@@ -47,10 +48,14 @@ public class WidgetCommonView extends DialogWrapper {
                 widgetConfig.getWidgetCoreTabSet().add(tabEnum.getTitle());
             }
         }
-        tabbedPane.addTab("Tab设置", new SettingCoreView().getContent());
+        tabbedPane.addTab(SETTING_TAB, new SettingCoreView().getContent());
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             tabbedPane.setIconAt(i, AllIcons.Actions.PinTab);
-            tabbedPane.setToolTipTextAt(i, tabbedPane.getTitleAt(i));
+            String tabTitle = tabbedPane.getTitleAt(i);
+            tabbedPane.setToolTipTextAt(i, tabTitle);
+            if (StringUtils.equals(tabTitle, SETTING_TAB)) {
+                tabbedPane.setForegroundAt(i, JBColor.RED);
+            }
         }
         init();
     }

@@ -2,8 +2,8 @@ package easy.form.widget.core;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.NumberUtil;
 import com.google.gson.JsonObject;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.ide.CopyPasteManager;
@@ -12,6 +12,7 @@ import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.refactoring.ui.StringTableCellEditor;
 import com.intellij.ui.JBColor;
+import easy.base.Constants;
 import easy.util.EasyCommonUtil;
 import easy.util.MessageUtil;
 import easy.widget.core.CoreCommonView;
@@ -240,6 +241,11 @@ public class ProcessCoreView extends CoreCommonView {
             row.add(Objects.isNull(processObject.get(MEMORY)) ? StringUtils.EMPTY : processObject.get(MEMORY).getAsString());
             rowVector.add(row);
         }
+        // 按照内存占用倒序
+        rowVector.sort(Comparator.comparing((Vector<String> row) -> {
+            String memory = StringUtils.replaceEach(row.get(row.size() - 1), new String[]{",", "K"}, new String[]{StringUtils.EMPTY, StringUtils.EMPTY});
+            return StringUtils.isBlank(memory) || !NumberUtil.isNumber(memory) ? Constants.NUM.ZERO : Integer.parseInt(memory);
+        }).reversed());
         DefaultTableModel cronTableModel = new DefaultTableModel(rowVector, TABLE_NAMES);
         processTable.setModel(cronTableModel);
         processTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
