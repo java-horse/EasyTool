@@ -13,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.Instant;
@@ -27,41 +29,21 @@ public class TimestampCoreView extends CoreCommonView {
     private JPanel panel;
     private JTextArea timestampTextArea;
     private JTextArea datetimeTextArea;
-    private JComboBox unitComboBox;
-    private JComboBox zoneComboBox;
+    private JComboBox<String> unitComboBox;
+    private JComboBox<String> zoneComboBox;
     private JButton convertButton;
     private JButton restoreButton;
-    private JComboBox formatComboBox;
-    private JButton timestampButton;
+    private JComboBox<String> formatComboBox;
     private JLabel timestampLabel;
     private JButton clearButton;
     private JLabel chineseDateLabel;
 
-    private Timer timer;
-
+    private static Timer timer;
 
     private static final String SECOND_UNIX = "Second";
-    private static final String START = "Start";
-    private static final String STOP = "Stop";
     private static final String TIMESTAMP_PREFIX = "Timestamp: ";
 
     public TimestampCoreView() {
-        // 初始化定时器
-        timestampButton.setText(STOP);
-        timestampButton.setIcon(AllIcons.Actions.Suspend);
-        timestampButton.addActionListener(e -> {
-            if (StringUtils.equals(timestampButton.getText(), START)) {
-                timestampButton.setText(STOP);
-                timestampButton.setIcon(AllIcons.Actions.Suspend);
-                startTimer();
-            } else {
-                timestampButton.setText(START);
-                timestampButton.setIcon(AllIcons.Actions.Execute);
-                stopTimer();
-            }
-        });
-        startTimer();
-
         timestampLabel.setToolTipText("Click auto copy timestamp");
         timestampLabel.setForeground(JBColor.GREEN);
         timestampLabel.addMouseListener(new MouseAdapter() {
@@ -135,6 +117,17 @@ public class TimestampCoreView extends CoreCommonView {
                 chineseDateLabel.setText(StringUtils.EMPTY);
             }
         });
+        panel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                startTimer();
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                stopTimer();
+            }
+        });
     }
 
     /**
@@ -154,7 +147,7 @@ public class TimestampCoreView extends CoreCommonView {
                 }
                 timestampLabel.setText(String.format("%s%s", TIMESTAMP_PREFIX, epochMilli));
             }
-        }, 100, 1000);
+        }, 1000, 1000);
     }
 
     /**
@@ -166,6 +159,7 @@ public class TimestampCoreView extends CoreCommonView {
     private void stopTimer() {
         if (Objects.nonNull(timer)) {
             timer.cancel();
+            timer = null;
         }
     }
 
