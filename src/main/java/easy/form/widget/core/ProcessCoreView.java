@@ -2,6 +2,7 @@ package easy.form.widget.core;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.CharsetUtil;
 import com.google.gson.JsonObject;
 import com.intellij.icons.AllIcons;
@@ -22,6 +23,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -41,7 +44,7 @@ public class ProcessCoreView extends CoreCommonView {
     private JLabel processSummaryLabel;
     private JButton refreshButton;
 
-    private Timer timer;
+    private static Timer timer;
 
     private static final String PID = "PID";
     private static final String PROTOCOL = "Protocol";
@@ -93,7 +96,7 @@ public class ProcessCoreView extends CoreCommonView {
                             }
                             // 左键: 模糊匹配, 右键: 精确匹配
                             if (SwingUtilities.isLeftMouseButton(e)) {
-                                return StringUtils.contains(port.trim(), searchText.trim());
+                                return StringUtils.containsIgnoreCase(port.trim(), searchText.trim());
                             } else if (SwingUtilities.isRightMouseButton(e)) {
                                 return StringUtils.equals(port.trim(), searchText.trim());
                             } else {
@@ -112,7 +115,7 @@ public class ProcessCoreView extends CoreCommonView {
                             }
                             String process = item.get(PROCESS).getAsString();
                             if (SwingUtilities.isLeftMouseButton(e)) {
-                                return StringUtils.contains(process, searchText.trim());
+                                return StringUtils.containsIgnoreCase(process, searchText.trim());
                             } else if (SwingUtilities.isRightMouseButton(e)) {
                                 return StringUtils.equals(process, searchText.trim());
                             } else {
@@ -173,8 +176,46 @@ public class ProcessCoreView extends CoreCommonView {
                 }
             }
         });
-        // 启动定时器
-//        startTimer();
+        panel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                startTimer();
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                stopTimer();
+            }
+        });
+    }
+
+    /**
+     * 启动计时器
+     *
+     * @author mabin
+     * @date 2024/07/10 11:40
+     */
+    private void startTimer() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                refreshProcessTable(searchSystemProcess());
+            }
+        }, 5000, 10000);
+    }
+
+    /**
+     * 停止计时器
+     *
+     * @author mabin
+     * @date 2024/07/10 11:40
+     */
+    private void stopTimer() {
+        if (Objects.nonNull(timer)) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     /**
@@ -201,7 +242,7 @@ public class ProcessCoreView extends CoreCommonView {
         processTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         processTable.setPreferredScrollableViewportSize(new Dimension(-1, processTable.getRowHeight() * processTable.getRowCount()));
         processTable.setFillsViewportHeight(true);
-        processSummaryLabel.setText(String.format("Summary: 进程【%s】刷新, 共【%s】条", DateUtil.now(), processList.size()));
+        processSummaryLabel.setText(String.format("Summary: 进程【%s】自动刷新, 共【%s】条", DateUtil.now(), processList.size()));
     }
 
     /**
