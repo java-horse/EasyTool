@@ -458,7 +458,8 @@
 
         <editorTabColorProvider implementation="easy.provider.CustomEditorTabColorProvider"/>
         <consoleFilterProvider implementation="easy.provider.MyBatisLogConsoleFilterProvider"/>
-        <statusBarWidgetFactory order="before LineSeparator, after Position, before lineSeparatorWidget, after positionWidget"
+        <statusBarWidgetFactory id="EasyToolPluginStatusBarWidget"
+                                order="before LineSeparator, after Position, before lineSeparatorWidget, after positionWidget"
                                 implementation="easy.provider.PluginStatusBarWidgetProvider"/>
         <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                       implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
