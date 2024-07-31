@@ -36,10 +36,10 @@ public class SqliteConstants {
                 SELECT count(*) FROM sqlite_master WHERE type='index' AND name='%s' AND tbl_name='%s';
                 """;
         String QUERY_COUNT = """
-                SELECT count(*) FROM %s;
+                SELECT count(*) FROM %s
                 """;
         String QUERY_TABLE = """
-                SELECT * FROM %s;
+                SELECT * FROM %s
                 """;
     }
 

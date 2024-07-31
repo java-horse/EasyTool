@@ -1,4 +1,4 @@
-package easy.form;
+package easy.form.translate;
 
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,8 @@ public class WordMapAddView extends DialogWrapper {
     protected JComponent createCenterPanel() {
         EasyCommonUtil.customBackgroundText(sourceTextField, BundleUtil.getI18n("global.source.word.tip.text"));
         EasyCommonUtil.customBackgroundText(targetTextField, BundleUtil.getI18n("global.target.word.tip.text"));
+        Dimension size = panel.getPreferredSize();
+        setSize(Math.max(size.width, 500), size.height);
         return panel;
     }
 
