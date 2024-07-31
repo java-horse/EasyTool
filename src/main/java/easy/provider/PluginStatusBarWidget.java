@@ -1,6 +1,5 @@
 package easy.provider;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -16,18 +15,25 @@ import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.ui.ClickListener;
 import easy.base.Constants;
+import easy.config.translate.TranslateConfig;
+import easy.config.translate.TranslateConfigComponent;
+import easy.enums.ToolWindowEnum;
+import easy.form.translate.BackUpManagementView;
 import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
+import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implements StatusBarWidget, IconLikeCustomStatusBarWidget {
-    public static final String ID = Constants.PLUGIN_NAME + "PluginStatusBarWidget";
+    private final TranslateConfig translateConfig = ServiceHelper.getService(TranslateConfigComponent.class).getState();
 
+    public static final String ID = Constants.PLUGIN_NAME + "PluginStatusBarWidget";
     private Project project;
 
     public PluginStatusBarWidget(@NotNull Project project) {
@@ -83,23 +89,30 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
         return new DefaultActionGroup(Constants.PLUGIN_NAME, true) {
             {
                 addSeparator();
-                add(new AnAction("检查更新", "检查更新", AllIcons.Ide.Notification.PluginUpdate) {
+                add(new AnAction(ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         PluginForUpdateHandler.forUpdate(project);
                     }
                 });
-                add(new AnAction("效率组件", "效率组件", EasyIcons.ICON.PUZZLE) {
+                add(new AnAction(ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         new WidgetCommonView().show();
                     }
                 });
                 addSeparator();
-                add(new AnAction("插件设置", "插件设置", EasyIcons.ICON.SETTING) {
+                add(new AnAction(ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+                    }
+                });
+                addSeparator(Objects.nonNull(translateConfig) ? translateConfig.getTranslateChannel() : null);
+                add(new AnAction(ToolWindowEnum.TRANSLATE_BACKUP.title, ToolWindowEnum.TRANSLATE_BACKUP.title, ToolWindowEnum.TRANSLATE_BACKUP.icon) {
+                    @Override
+                    public void actionPerformed(@NotNull AnActionEvent e) {
+                        new BackUpManagementView().show();
                     }
                 });
             }

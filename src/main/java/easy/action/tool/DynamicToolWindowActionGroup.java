@@ -29,7 +29,9 @@ public class DynamicToolWindowActionGroup extends DefaultActionGroup {
                 new PluginForUpdateAction(),
                 new ToolWindowAction(ToolWindowEnum.SEARCH_API),
                 new ToolWindowAction(ToolWindowEnum.WECHAT_OFFICIAL),
+                new ToolWindowAction(ToolWindowEnum.WIDGET),
                 new ToolWindowAction(ToolWindowEnum.PLUGIN_SETTING),
+                new ToolWindowAction(ToolWindowEnum.TRANSLATE_BACKUP),
                 new MyBatisLogAction(),
         };
     }

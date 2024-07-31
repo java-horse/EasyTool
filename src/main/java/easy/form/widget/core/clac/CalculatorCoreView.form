@@ -18,9 +18,13 @@
           <component id="959d4" class="javax.swing.JTextArea" binding="resultTextArea">
             <constraints/>
             <properties>
+              <editable value="false"/>
               <font name="JetBrains Mono" size="20" style="1"/>
               <text value=""/>
             </properties>
+            <clientProperties>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
           </component>
         </children>
       </scrollpane>
@@ -295,7 +299,7 @@
           </component>
         </children>
       </grid>
-      <grid id="845c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="845c" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -305,11 +309,25 @@
         <children>
           <component id="bb767" class="javax.swing.JButton" binding="historyButton" default-binding="true">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="History"/>
               <toolTipText value="计算历史记录"/>
+            </properties>
+          </component>
+          <hspacer id="bf333">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </hspacer>
+          <component id="d49e8" class="javax.swing.JButton" binding="chineseButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Chinese"/>
+              <toolTipText value="阿拉伯数值转繁体中文金额"/>
             </properties>
           </component>
         </children>

@@ -1,6 +1,7 @@
 package easy.form.widget.core;
 
 import cn.hutool.core.date.ChineseDate;
+import cn.hutool.core.lang.Console;
 import cn.hutool.core.util.NumberUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
@@ -122,7 +123,6 @@ public class TimestampCoreView extends CoreCommonView {
             public void componentShown(ComponentEvent e) {
                 startTimer();
             }
-
             @Override
             public void componentHidden(ComponentEvent e) {
                 stopTimer();

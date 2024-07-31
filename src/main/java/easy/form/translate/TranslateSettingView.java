@@ -1,4 +1,4 @@
-package easy.form;
+package easy.form.translate;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
@@ -35,6 +35,8 @@ import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
 import easy.enums.TranslateLanguageEnum;
+import easy.form.OpenModelPreviewKeyView;
+import easy.form.SupportView;
 import easy.helper.ServiceHelper;
 import easy.helper.SqliteHelper;
 import easy.translate.TranslateService;
@@ -171,9 +173,9 @@ public class TranslateSettingView {
     private TextFieldWithBrowseButton backupFilePath;
     private JLabel backupTipLabel;
     private JButton backupContentButton;
-    private JButton backupExportCSVButton;
     private JButton backupOpenDirButton;
     private JButton backupClickCreateButton;
+    private JButton backupManagementButton;
 
     private String secretPlainText;
 
@@ -305,53 +307,18 @@ public class TranslateSettingView {
                 }
             }
         });
-        // 导出CSV
-        backupExportCSVButton.setIcon(AllIcons.Actions.Download);
-        backupExportCSVButton.addActionListener(e -> {
-            if (Boolean.FALSE.equals(backupSwitchButton.isSelected())) {
-                MessageUtil.showErrorDialog("请先开启实时备份!");
+        // 备份管理
+        backupManagementButton.setIcon(AllIcons.Debugger.Db_db_object);
+        backupManagementButton.addActionListener(e -> {
+            if (Boolean.FALSE.equals(backupSwitchButton.isSelected() || StringUtils.isBlank(backupFilePath.getText()))) {
+                MessageUtil.showErrorDialog("请先开启并选择实时备份文件!");
                 return;
             }
             if (Objects.isNull(SqliteHelper.getConnection(backupFilePath.getText()))) {
                 MessageUtil.showErrorDialog(String.format("备份文件库【%s】测试连接失败", backupFilePath.getText()));
                 return;
             }
-            SqliteHelper sqliteHelper = new SqliteHelper(backupFilePath.getText());
-            Number number = sqliteHelper.query(String.format(SqliteConstants.SQL.QUERY_COUNT, SqliteConstants.TABLE.BACKUP), new NumberHandler());
-            if (Objects.isNull(number) || number.longValue() == 0) {
-                MessageUtil.showInfoMessage("暂无备份数据!");
-                return;
-            }
-            if (MessageConstants.OK == MessageUtil.showInfoMessage(String.format("翻译备份数据共【%s】条, 确认全部导出?", number.longValue()))) {
-                FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s translate backup export", Constants.PLUGIN_NAME),
-                        "Select a location to save the backup file", "csv");
-                FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
-                VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + StrPool.UNDERLINE + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN));
-                if (Objects.isNull(virtualFileWrapper)) {
-                    return;
-                }
-                // 分页查询并组装csv数据(size=100)
-                File file = virtualFileWrapper.getFile();
-                CsvWriter csvWriter = CsvUtil.getWriter(file, CharsetUtil.CHARSET_UTF_8);
-                csvWriter.writeHeaderLine("源数据", "目标数据", "翻译渠道", "创建时间", "修改时间", "IDE");
-                long page = number.longValue() / Constants.NUM.HUNDRED + 1;
-                for (int i = 1; i <= page; i++) {
-                    List<EventBusUtil.TranslateBackUpEvent> backUpDataList = sqliteHelper.page(String.format(SqliteConstants.SQL.QUERY_TABLE,
-                            SqliteConstants.TABLE.BACKUP), i, Constants.NUM.HUNDRED, BeanListHandler.create(EventBusUtil.TranslateBackUpEvent.class));
-                    if (CollectionUtils.isNotEmpty(backUpDataList)) {
-                        for (EventBusUtil.TranslateBackUpEvent backUp : backUpDataList) {
-                            csvWriter.writeLine(backUp.getSource(), backUp.getTarget(), backUp.getChannel(), backUp.getCreateTime(), backUp.getModifiedTime(), backUp.getIde());
-                        }
-                    }
-                }
-                csvWriter.close();
-                if (MessageConstants.OK == MessageUtil.showOkCancelDialog(String.format("成功导出【%s】条数据", number.longValue()), "打开文件夹", "取消")) {
-                    try {
-                        Desktop.getDesktop().open(file.getParentFile());
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
+            new BackUpManagementView().show();
         });
     }
 

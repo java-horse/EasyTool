@@ -8,7 +8,7 @@ import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
-import easy.form.TranslateSettingView;
+import easy.form.translate.TranslateSettingView;
 import easy.helper.ServiceHelper;
 import easy.helper.SqliteHelper;
 import easy.util.ValidatorUtil;

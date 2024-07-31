@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -201,7 +202,7 @@ public class SqliteHelper {
      */
     public <T> List<T> page(@NotNull String sql, int page, int size, @NotNull BeanListHandler<T> beanListHandler) {
         if (page == 0 || size == 0) {
-            return null;
+            return Collections.emptyList();
         }
         return query(sql + " limit " + (page - 1) * size + "," + size, beanListHandler);
     }
