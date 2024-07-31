@@ -96,6 +96,12 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.7</h3>
+      <ul>
+        <li>xxx</li>
+        <li>-------------------------------</li>
+        <li>【优化】xxx</li>
+      </ul>
       <h3>v2.1.6</h3>
       <ul>
         <li>Added Base64 Transcoding Widget View Windows</li>
