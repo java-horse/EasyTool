@@ -24,7 +24,6 @@ public class Constants {
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-tool-plugin";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easytool/reviews";
     public static final Set<String> STOP_WORDS = Sets.newHashSet("the", "of");
-    public static final String UID = "serialVersionUID";
     public static final String BREAK_LINE = "&br;";
     public static final Set<String> BASE_TYPE_SET = Sets.newHashSet("byte", "short", "int", "long", "char", "float", "double", "boolean");
     public static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
@@ -110,6 +109,7 @@ public class Constants {
         int TWENTY = 20;
         int EIGHTY = 80;
         int HUNDRED = 100;
+        int TWO_HUNDRED = 200;
         int THREE_HUNDRED = 300;
         int ONE_THOUSAND = 1000;
         int TWO_THOUSAND = 2000;

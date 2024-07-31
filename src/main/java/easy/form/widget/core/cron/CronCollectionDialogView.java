@@ -16,7 +16,6 @@ import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.MessageConstants;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBScrollPane;
@@ -38,13 +37,11 @@ import java.awt.*;
 import java.util.*;
 
 public class CronCollectionDialogView extends DialogWrapper {
-    private JPanel panel;
-    private JScrollPane cronScrollPane;
     private JTable cronTable;
 
     private final WidgetConfig widgetConfig = ServiceHelper.getService(WidgetConfigComponent.class).getState();
 
-    private static Vector<String> cronTableNames = new Vector<>() {{
+    private static final Vector<String> CRON_TABLE_NAMES = new Vector<>() {{
         add("Cron表达式");
         add("执行描述");
     }};
@@ -58,12 +55,13 @@ public class CronCollectionDialogView extends DialogWrapper {
 
     @Override
     protected @Nullable JComponent createCenterPanel() {
-        panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());
         cronTable = new JBTable() {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+        cronTable.setAutoCreateRowSorter(true);
         refreshCronTable();
         EasyCommonUtil.addTableCellCopyListener(cronTable);
         ToolbarDecorator toolbarDecorator = ToolbarDecorator.createDecorator(cronTable);
@@ -87,7 +85,7 @@ public class CronCollectionDialogView extends DialogWrapper {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {
-                    MessageUtil.showWarningDialog("收藏夹Cron表达式为空");
+                    MessageUtil.showWarningDialog("Cron收藏夹为空");
                     return;
                 }
                 // 创建文件保存弹窗
@@ -100,7 +98,7 @@ public class CronCollectionDialogView extends DialogWrapper {
                 }
                 // 组装并导出csv文件
                 CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
-                csvWriter.writeHeaderLine("Cron表达式", "执行描述");
+                csvWriter.writeHeaderLine(CRON_TABLE_NAMES.toArray(new String[]{}));
                 for (Map.Entry<String, String> entry : widgetConfig.getCronCollectionMap().entrySet()) {
                     csvWriter.writeLine(entry.getKey(), entry.getValue());
                 }
@@ -108,8 +106,25 @@ public class CronCollectionDialogView extends DialogWrapper {
                 MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
+        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.clear.text"),
+                BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {
+                    MessageUtil.showWarningDialog("Cron收藏夹为空");
+                    return;
+                }
+                if (MessageUtil.showOkCancelDialog("确认清空Cron收藏夹记录?") == MessageConstants.OK) {
+                    for (String key : new ArrayList<>(widgetConfig.getCronCollectionMap().keySet())) {
+                        widgetConfig.getCronCollectionMap().remove(key);
+                    }
+                    refreshCronTable();
+                    MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
+                }
+            }
+        });
         toolbarDecorator.setActionGroup(defaultActionGroup);
-        cronScrollPane = new JBScrollPane(toolbarDecorator.createPanel());
+        JScrollPane cronScrollPane = new JBScrollPane(toolbarDecorator.createPanel());
         panel.add(cronScrollPane);
         Dimension size = panel.getPreferredSize();
         setSize(Math.max(size.width, 700), Math.max(size.height, 400));
@@ -127,9 +142,6 @@ public class CronCollectionDialogView extends DialogWrapper {
             return;
         }
         LinkedHashMap<String, String> cronCollectionMap = widgetConfig.getCronCollectionMap();
-        if (MapUtils.isEmpty(cronCollectionMap)) {
-            return;
-        }
         Vector<Vector<String>> rowVector = new Vector<>(cronCollectionMap.size());
         for (Map.Entry<String, String> entry : cronCollectionMap.entrySet()) {
             Vector<String> row = new Vector<>(4);
@@ -137,7 +149,7 @@ public class CronCollectionDialogView extends DialogWrapper {
             row.add(entry.getValue());
             rowVector.add(row);
         }
-        DefaultTableModel cronTableModel = new DefaultTableModel(rowVector, cronTableNames);
+        DefaultTableModel cronTableModel = new DefaultTableModel(rowVector, CRON_TABLE_NAMES);
         cronTable.setModel(cronTableModel);
         cronTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         cronTable.setPreferredScrollableViewportSize(new Dimension(-1, cronTable.getRowHeight() * cronTable.getRowCount()));

@@ -91,7 +91,7 @@ public class Swagger3GenerateServiceImpl extends AbstractSwaggerGenerateService 
     protected void genFieldAnnotation(PsiField psiField) {
         String fieldName = PsiElementUtil.getPsiElementNameIdentifierText(psiField);
         StringBuilder schemaBuilder = new StringBuilder().append(Constants.AT).append(SwaggerAnnotationEnum.SCHEMA.getClassName());
-        if (StringUtils.equals(fieldName, Constants.UID)) {
+        if (StringUtils.equals(fieldName, CommonClassNames.SERIAL_VERSION_UID_FIELD_NAME)) {
             schemaBuilder.append(String.format("(%s = true)", Constants.ANNOTATION_ATTR.HIDDEN));
         } else {
             String fieldCommentDesc = StringUtils.EMPTY;

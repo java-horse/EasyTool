@@ -212,6 +212,10 @@
             <properties>
               <model>
                 <item value="png"/>
+                <item value="jpg"/>
+                <item value="jpeg"/>
+                <item value="gif"/>
+                <item value="bmp"/>
               </model>
             </properties>
           </component>

@@ -19,6 +19,10 @@ import com.intellij.openapi.projectRoots.impl.JavaSdkImpl;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.MessageConstants;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -291,6 +295,28 @@ public class EasyCommonUtil {
                 }
             }
         });
+    }
+
+    /**
+     * 获取psi元素名称
+     *
+     * @param psiElement psi元素
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/07/11 18:02
+     */
+    public static String getPsiElementName(PsiElement psiElement) {
+        if (Objects.isNull(psiElement)) {
+            return null;
+        }
+        if (psiElement instanceof PsiClass psiClass) {
+            return psiClass.getName();
+        } else if (psiElement instanceof PsiMethod psiMethod) {
+            return psiMethod.getName();
+        } else if (psiElement instanceof PsiField psiField) {
+            return psiField.getName();
+        }
+        return null;
     }
 
 }

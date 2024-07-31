@@ -90,8 +90,8 @@ public class GitCommitMessageView extends DialogWrapper {
             typeComboBox.addItem(desc);
         }
         typeComboBox.setSelectedItem(descList.get(Constants.NUM.ZERO));
-        PropertiesComponent projectComponent = PropertiesComponent.getInstance(project);
-        String lastCommitMessage = projectComponent.getValue(Constants.Persistence.GIT_COMMIT_MESSAGE.LAST_COMMIT_MESSAGE);
+        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(project);
+        String lastCommitMessage = propertiesComponent.getValue(Constants.Persistence.GIT_COMMIT_MESSAGE.LAST_COMMIT_MESSAGE);
         if (StrUtil.isNotBlank(lastCommitMessage)) {
             GitCommitMessageTemplate commitMessageTemplate = JsonUtil.fromJson(lastCommitMessage, GitCommitMessageTemplate.class);
             if (Objects.nonNull(commitMessageTemplate)) {

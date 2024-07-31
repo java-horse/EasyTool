@@ -1,13 +1,16 @@
 package easy.settings;
 
+import cn.hutool.core.io.FileUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import easy.base.SqliteConstants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.OpenModelTranslateEnum;
 import easy.enums.TranslateEnum;
-import easy.form.TranslateSettingView;
+import easy.form.translate.TranslateSettingView;
 import easy.helper.ServiceHelper;
+import easy.helper.SqliteHelper;
 import easy.util.ValidatorUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
@@ -87,7 +90,10 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !Objects.equals(translateConfig.getWenxinModel(), translateSettingView.getWenxinModelComboBox().getSelectedItem())
                 || !StringUtils.equals(translateConfig.getWenxinApiKey(), translateSettingView.getWenxinApiKeyTextField().getText())
                 || !StringUtils.equals(translateConfig.getWenxinApiSecret(), String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()))
-                || !StringUtils.equals(translateConfig.getLibreServerUrl(), String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()));
+                || !StringUtils.equals(translateConfig.getLibreServerUrl(), String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()))
+                || !translateConfig.getBackupSwitch().equals(translateSettingView.getBackupSwitchButton().isSelected())
+                || !StringUtils.equals(translateConfig.getBackupFilePath(), translateSettingView.getBackupFilePath().getText());
+
     }
 
     @Override
@@ -142,6 +148,8 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setWenxinApiKey(translateSettingView.getWenxinApiKeyTextField().getText());
         translateConfig.setWenxinApiSecret(String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()));
         translateConfig.setLibreServerUrl(String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()));
+        translateConfig.setBackupSwitch(translateSettingView.getBackupSwitchButton().isSelected());
+        translateConfig.setBackupFilePath(translateSettingView.getBackupFilePath().getText());
         // 配置检查
         checkTranslateConfig();
     }
@@ -217,6 +225,17 @@ public class TranslateSettingConfigurable implements Configurable {
         }
         if (TranslateEnum.LIBRE.getTranslate().equals(translateConfig.getTranslateChannel())) {
             ValidatorUtil.isTrue(Objects.nonNull(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()), TranslateEnum.LIBRE.getTranslate() + "翻译URL不能为空");
+        }
+        // 实时翻译备份
+        if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            ValidatorUtil.notBlank(translateConfig.getBackupFilePath(), "实时备份文件路径不能为空");
+            ValidatorUtil.isTrue(FileUtil.exist(translateConfig.getBackupFilePath()) && FileUtil.isFile(translateConfig.getBackupFilePath())
+                            && StringUtils.equals(FileUtil.extName(translateConfig.getBackupFilePath()), SqliteConstants.DB),
+                    String.format("请选择正确的备份文件(.%s文件)", SqliteConstants.DB));
+            // 静默创建备份表
+            SqliteHelper sqliteHelper = new SqliteHelper(translateConfig.getBackupFilePath());
+            sqliteHelper.createTable(String.format(SqliteConstants.SQL.CREATE_TABLE_BACKUP, SqliteConstants.TABLE.BACKUP), SqliteConstants.TABLE.BACKUP);
+            sqliteHelper.createIndex("udx_source_channel", SqliteConstants.TABLE.BACKUP, true, "source", "channel");
         }
     }
 

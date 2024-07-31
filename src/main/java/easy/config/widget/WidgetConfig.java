@@ -15,6 +15,11 @@ public class WidgetConfig {
      */
     private LinkedHashMap<String, String> cronCollectionMap;
 
+    /**
+     * 计算历史集合映射
+     */
+    private LinkedHashMap<String, String> calculatorHistoryMap;
+
 
     public Set<String> getWidgetCoreTabSet() {
         return widgetCoreTabSet;
@@ -32,4 +37,11 @@ public class WidgetConfig {
         this.cronCollectionMap = cronCollectionMap;
     }
 
+    public LinkedHashMap<String, String> getCalculatorHistoryMap() {
+        return calculatorHistoryMap;
+    }
+
+    public void setCalculatorHistoryMap(LinkedHashMap<String, String> calculatorHistoryMap) {
+        this.calculatorHistoryMap = calculatorHistoryMap;
+    }
 }

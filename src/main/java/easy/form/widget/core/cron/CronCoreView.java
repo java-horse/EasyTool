@@ -103,13 +103,16 @@ public class CronCoreView extends CoreCommonView {
                             return true;
                         }
                     });
+            if (StringUtils.isBlank(inputResult)) {
+                return;
+            }
             if (Objects.nonNull(widgetConfig)) {
                 LinkedHashMap<String, String> cronCollectionMap = widgetConfig.getCronCollectionMap();
                 if (StringUtils.isNotBlank(cronCollectionMap.get(cron))) {
                     int confirm = MessageUtil.showYesNoDialog(String.format("Cron表达式【%s】已存在, 是否覆盖?", cron));
                     if (confirm == MessageConstants.YES) {
                         cronCollectionMap.put(cron, inputResult);
-                        int jump = MessageUtil.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron));
+                        int jump = MessageUtil.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron), BundleUtil.getI18n("global.button.jump.text"));
                         if (jump == MessageConstants.OK) {
                             new CronCollectionDialogView().show();
                         }
@@ -117,9 +120,7 @@ public class CronCoreView extends CoreCommonView {
                     return;
                 }
                 cronCollectionMap.put(cron, inputResult);
-                int jump = Messages.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron), Constants.PLUGIN_NAME,
-                        BundleUtil.getI18n("global.button.jump.text"), BundleUtil.getI18n("global.button.cancel.text"),
-                        Messages.getQuestionIcon());
+                int jump = MessageUtil.showOkCancelDialog(String.format("Cron表达式【%s】保存成功", cron), BundleUtil.getI18n("global.button.jump.text"));
                 if (jump == MessageConstants.OK) {
                     new CronCollectionDialogView().show();
                 }

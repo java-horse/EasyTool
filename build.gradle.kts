@@ -4,8 +4,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.17.3"
 }
 
-group = "mabin"
-version = "2.1.5"
+group = "easy.tool"
+version = "2.1.6"
 
 repositories {
     maven {
@@ -19,10 +19,17 @@ dependencies {
     implementation("cn.hutool:hutool-crypto:5.8.28")
     implementation("cn.hutool:hutool-setting:5.8.28")
     implementation("cn.hutool:hutool-extra:5.8.28")
+    implementation("cn.hutool:hutool-db:5.8.28")
     implementation("com.cronutils:cron-utils:9.2.1") {
         exclude(group = "org.slf4j")
     }
     implementation("com.google.zxing:core:3.5.3")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0"){
+        exclude(group = "org.slf4j")
+    }
+    implementation("com.zaxxer:HikariCP:5.1.0"){
+        exclude(group = "org.slf4j")
+    }
 }
 
 intellij {
@@ -30,7 +37,12 @@ intellij {
     // 2023.3.4
     version.set("2022.2.4")
     type.set("IC")
-    plugins.set(listOf("com.intellij.java", "markdown", "properties", "org.jetbrains.plugins.yaml"))
+    plugins.set(listOf(
+            "com.intellij.java",
+            "markdown",
+            "properties",
+            "org.jetbrains.plugins.yaml",
+            "Git4Idea"))
 }
 
 tasks {

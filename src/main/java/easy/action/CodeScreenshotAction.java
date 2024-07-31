@@ -102,7 +102,6 @@ public class CodeScreenshotAction extends AnAction {
         }
         String md5 = SecureUtil.md5(selectedText);
         if (Objects.nonNull(SCREEN_CACHE.getIfPresent(md5))) {
-            System.out.println("md5=" + md5);
             return true;
         }
         SCREEN_CACHE.put(md5, md5);

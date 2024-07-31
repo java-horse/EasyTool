@@ -31,6 +31,14 @@ public class MessageUtil {
         return showOkCancelDialog(message, Messages.getQuestionIcon());
     }
 
+    public static int showOkCancelDialog(@NotNull String message, @NotNull String okButtonText) {
+        return Messages.showOkCancelDialog(message, Constants.PLUGIN_NAME, okButtonText, BundleUtil.getI18n("global.button.cancel.text"), Messages.getQuestionIcon());
+    }
+
+    public static int showOkCancelDialog(@NotNull String message, @NotNull String okButtonText, @NotNull String cancelButtonText) {
+        return Messages.showOkCancelDialog(message, Constants.PLUGIN_NAME, okButtonText, cancelButtonText, Messages.getQuestionIcon());
+    }
+
     public static int showOkCancelDialog(@NotNull String message, @NotNull Icon icon) {
         return Messages.showOkCancelDialog(message, Constants.PLUGIN_NAME, BundleUtil.getI18n("global.button.confirm.text"),
                 BundleUtil.getI18n("global.button.cancel.text"), icon);
@@ -42,10 +50,6 @@ public class MessageUtil {
 
     public static int showOkCancelDialog(@NotNull String message, @NotNull Icon icon, @NotNull String cancelButtonText) {
         return Messages.showOkCancelDialog(message, Constants.PLUGIN_NAME, BundleUtil.getI18n("global.button.confirm.text"), cancelButtonText, icon);
-    }
-
-    public static int showOkCancelDialog(@NotNull String message, @NotNull String okButtonText, @NotNull String cancelButtonText) {
-        return Messages.showOkCancelDialog(message, Constants.PLUGIN_NAME, okButtonText, cancelButtonText, Messages.getQuestionIcon());
     }
 
     public static int showOkCancelDialog(@NotNull String message, @NotNull String okButtonText, @NotNull String cancelButtonText, @NotNull Icon icon) {

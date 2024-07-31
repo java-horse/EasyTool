@@ -10,10 +10,11 @@ import com.intellij.psi.util.PsiTreeUtil;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.SpringAnnotationEnum;
 import easy.enums.SwaggerServiceEnum;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class DynamicSwaggerActionGroup extends DefaultActionGroup {
 
@@ -32,7 +33,11 @@ public class DynamicSwaggerActionGroup extends DefaultActionGroup {
         Editor editor = e.getData(CommonDataKeys.EDITOR);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
         PsiClass psiClass = PsiTreeUtil.findChildOfAnyType(psiFile, PsiClass.class);
-        if (ObjectUtils.anyNull(project, editor, psiFile, psiClass)) {
+        if (Objects.isNull(project) || Objects.isNull(editor) || Objects.isNull(psiFile) || Objects.isNull(psiClass)) {
+            e.getPresentation().setEnabledAndVisible(false);
+            return;
+        }
+        if (!psiFile.isWritable()) {
             e.getPresentation().setEnabledAndVisible(false);
             return;
         }

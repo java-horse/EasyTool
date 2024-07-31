@@ -1,5 +1,6 @@
 package easy.util;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -50,6 +51,9 @@ public class LanguageUtil {
      * @date 2023/9/5 11:35
      **/
     public static boolean isContainsChinese(String str) {
+        if (Objects.isNull(str) || str.isBlank()) {
+            return false;
+        }
         char[] ch = str.toCharArray();
         for (char c : ch) {
             if (isChinese(c)) {

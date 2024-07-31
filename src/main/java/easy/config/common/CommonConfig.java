@@ -2,6 +2,7 @@ package easy.config.common;
 
 import com.intellij.ui.JBColor;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -27,6 +28,7 @@ public class CommonConfig {
     private Boolean tabHighlightEnableCheckBox;
     private Boolean convertCharEnableCheckBox;
     private Boolean pluginAutoUpdateEnable;
+    private Boolean swaggerHintCheckBox;
 
     public Boolean getSwaggerConfirmYesCheckBox() {
         return swaggerConfirmYesCheckBox;
@@ -130,6 +132,14 @@ public class CommonConfig {
 
     public void setPluginAutoUpdateEnable(Boolean pluginAutoUpdateEnable) {
         this.pluginAutoUpdateEnable = pluginAutoUpdateEnable;
+    }
+
+    public Boolean getSwaggerHintCheckBox() {
+        return swaggerHintCheckBox;
+    }
+
+    public void setSwaggerHintCheckBox(Boolean swaggerHintCheckBox) {
+        this.swaggerHintCheckBox = swaggerHintCheckBox;
     }
 
     /**

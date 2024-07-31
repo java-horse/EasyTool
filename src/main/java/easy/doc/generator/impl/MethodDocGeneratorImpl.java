@@ -15,6 +15,7 @@ import easy.config.doc.JavaDocConfig;
 import easy.config.doc.JavaDocConfigComponent;
 import easy.config.doc.JavaDocTemplateConfig;
 import easy.doc.service.JavaDocVariableGeneratorService;
+import easy.enums.JavaDocCommentCoverEnum;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
@@ -37,6 +38,9 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
     @Override
     public String generate(PsiElement psiElement) {
         if (!(psiElement instanceof PsiMethod psiMethod)) {
+            return StringUtils.EMPTY;
+        }
+        if (StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.IGNORE.getModel()) && Objects.nonNull(psiMethod.getDocComment())) {
             return StringUtils.EMPTY;
         }
         JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
@@ -332,7 +336,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
     private String customGenerate(PsiMethod psiMethod) {
         JavaDocTemplateConfig javaDocMethodTemplateConfig = javaDocConfig.getJavaDocMethodTemplateConfig();
         String doc = javaDocVariableGeneratorService.generate(psiMethod, javaDocMethodTemplateConfig.getTemplate(), javaDocMethodTemplateConfig.getCustomMap(), getMethodInnerVariable(psiMethod));
-        return mergeDoc(psiMethod, doc);
+        return StringUtils.equals(javaDocConfig.getCoverModel(), JavaDocCommentCoverEnum.MERGE.getModel()) ? mergeDoc(psiMethod, doc) : doc;
     }
 
     private Map<String, Object> getMethodInnerVariable(PsiMethod psiMethod) {
@@ -344,7 +348,6 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
                 Arrays.stream(psiMethod.getTypeParameters()).map(PsiTypeParameter::getQualifiedName).toArray(String[]::new));
         map.put("methodParamNames",
                 Arrays.stream(psiMethod.getParameterList().getParameters()).map(PsiParameter::getName).toArray(String[]::new));
-        map.put("branch", VcsUtil.getCurrentBranch(psiMethod.getProject()));
         return map;
     }
 

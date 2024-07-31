@@ -8,13 +8,17 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.psi.util.PsiUtil;
 import easy.base.Constants;
 import easy.enums.*;
 import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
+import easy.util.MessageUtil;
+import easy.util.NotifyUtil;
 import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,6 +37,10 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     protected String selectionText;
     protected Boolean isController;
     protected SwaggerServiceEnum serviceEnum;
+    /**
+     * 当前光标所在PsiElement元素(允许为空)
+     */
+    protected PsiElement psiElement;
 
     /**
      * 初始Swagger配置
@@ -46,7 +54,8 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
      * @date 2024/04/22 15:14
      */
     @Override
-    public void initSwaggerConfig(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText, SwaggerServiceEnum swaggerAnnotationEnum) {
+    public void initSwaggerConfig(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText,
+                                  SwaggerServiceEnum swaggerAnnotationEnum, @Nullable PsiElement psiElement) {
         this.project = project;
         this.psiFile = psiFile;
         this.psiClass = psiClass;
@@ -54,6 +63,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         this.elementFactory = JavaPsiFacade.getElementFactory(project);
         this.isController = PsiElementUtil.isController(psiClass);
         this.serviceEnum = swaggerAnnotationEnum;
+        this.psiElement = psiElement;
     }
 
     /**
@@ -66,7 +76,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     public void doGenerate() {
         WriteCommandAction.runWriteCommandAction(project, () -> {
             if (StringUtils.isNotBlank(selectionText)) {
-                genSelection(psiClass, StringUtils.trim(selectionText));
+                genSelection(StringUtils.trim(selectionText));
                 return;
             }
             genClassAnnotation(psiClass);
@@ -93,12 +103,11 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     /**
      * 生成选中文本指定区域注解
      *
-     * @param psiClass      psi级
      * @param selectionText 选择文本
      * @author mabin
      * @date 2024/04/22 16:15
      */
-    private void genSelection(PsiClass psiClass, String selectionText) {
+    private void genSelection(String selectionText) {
         Map<String, PsiClass> psiClassMap = Maps.newHashMap();
         psiClassMap.put(PsiElementUtil.getPsiElementNameIdentifierText(psiClass), psiClass);
         if (!isController) {
@@ -113,6 +122,18 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
         }
         for (PsiMethod psiMethod : psiClass.getMethods()) {
             if (StringUtils.equals(selectionText, PsiElementUtil.getPsiElementNameIdentifierText(psiMethod))) {
+                // 根据参数列表区分同名参数
+                if (Objects.nonNull(psiElement) && psiElement instanceof PsiMethod currentPsiMethod) {
+                    PsiMethod[] searchPsiMethods = psiClass.findMethodsByName(selectionText, false);
+                    if (searchPsiMethods.length >= Constants.NUM.TWO) {
+                        for (PsiMethod searchPsiMethod : searchPsiMethods) {
+                            if (PsiUtil.allMethodsHaveSameSignature(new PsiMethod[]{currentPsiMethod, searchPsiMethod})) {
+                                genMethodAnnotation(currentPsiMethod);
+                                return;
+                            }
+                        }
+                    }
+                }
                 genMethodAnnotation(psiMethod);
                 return;
             }
@@ -125,6 +146,7 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
                 return;
             }
         }
+        NotifyUtil.notify("鼠标光标应选中或放置在类名，方法名，字段名上!");
     }
 
     /**

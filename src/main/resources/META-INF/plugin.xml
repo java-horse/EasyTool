@@ -23,7 +23,7 @@
         <li>支持中文字符自动转为英文字符，支持自定义转换映射配置</li>
         <li>支持根据 Javadoc 生成 Swagger2.x、Swagger3.x 相关注解，如果没有 Javadoc 会尝试翻译处理(在线翻译请提前配置翻译引擎, 可能会有点慢, 造成页面卡顿 请耐心等待)。支持选中类名、方法名、字段名等细粒度生成处理</li>
         <li>支持一键导入YApi接口文档, 包括YApi项目UI配置页面, 兼容各颗粒度范围导入(文件、类、接口)</li>
-        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> </li>
+        <li>支持中英文互译，且支持设置多种免费翻译引擎(默认使用金山翻译, 建议设置其他翻译渠道, 提高准确率和响应速度), 快捷键: <em>CTRL + \</em> (可能存在与IDEA内置快捷键冲突，请自行更换)</li>
         <ul>
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
@@ -33,7 +33,7 @@
             <li>--<em>火山翻译</em></li>
             <li>--<em>讯飞翻译</em></li>
             <li>--<em>华为翻译</em></li>
-            <li>--<em>小牛翻译</em></li>
+            <li>--<em>小牛翻译</em>(极力推荐，免费权益额度高)</li>
             <li>--<em>彩云翻译</em></li>
             <li>--<em>同花顺翻译</em></li>
             <li>--<em>CNKI学术翻译</em></li>
@@ -62,6 +62,21 @@
         <li>支持Markdown、Txt文件中输入 <em>英文冒号+Emoji英文字符</em> 自动提示</li>
         <li>支持选中代码块一键截图功能, 快捷键: <em>CTRL + ALT + 5</em> </li>
         <li>支持Entity普通实体类批量生成JSON注解的View视窗, 快捷键: <em>CTRL + ALT + 6</em> </li>
+        <li>支持常用的Widget工具小组件View视窗(EasyTool -> Widget -> Core), 快捷键: <em>CTRL + ALT + 7</em></li>
+        <li>支持翻译渠道服务内置Sqlite实时备份功能(由于打包中含有Sqlite驱动, 插件体积暴增)</li>
+        <ul>
+            <li>--<em>URL转码</em></li>
+            <li>--<em>Cron预览</em></li>
+            <li>--<em>QR二维码（条形码）生成</em></li>
+            <li>--<em>YML转换</em></li>
+            <li>--<em>EXCEL解析</em></li>
+            <li>--<em>Timestamp时间戳转换</em></li>
+            <li>--<em>Base64转码</em></li>
+            <li>--<em>Simple简易计算器</em></li>
+            <li>--<em>SQL日志还原</em></li>
+            <li>--<em>Windows进程管理</em></li>
+            <li>--<em>ID生成</em></li>
+        </ul>
       </ul>
       <h3>Getting started</h3>
       <ul>
@@ -81,6 +96,38 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.6</h3>
+      <ul>
+        <li>Added Base64 Transcoding Widget View Windows</li>
+        <li>Added simple calculator CalculatorView window supporting simple four operations</li>
+        <li>Added small icon for the status bar plug-in that can be quickly operated</li>
+        <li>Added Windows Process Management Component View window</li>
+        <li>Added ID Generation View Window (UUID、ObjectId、NanoId、SnowflakeId)</li>
+        <li>Added the function of automatically generating JavaDoc comments when saving files</li>
+        <li>Added translation channel service built-in Sqlite real-time backup function</li>
+        <li>Optimize the original right-Convert small function migration to the Widget Core View window</li>
+        <li>Optimize supports automatic generation of Swagger annotations and supports both selection and cursor placement of elements</li>
+        <li>Optimize TimestampView window added Chinese calendar conversion display</li>
+        <li>Optimize class automatically generates serialVersionUID fields when synchronously implementing the Serializable interface</li>
+        <li>Optimize some operations that do not support read-only source files to avoid false reports</li>
+        <li>Optimize the JavaDoc to add automatically obtain Git user name, mailbox, branch and other built-in variables</li>
+        <li>Fixing methods with the same name in the same class always generates Swagger annotations for the first method</li>
+        <li>-------------------------------</li>
+        <li>【新增】新增Base64转码小组件View视窗</li>
+        <li>【新增】新增支持简单四则运算的简易计算器CalculatorView视窗(加、减、乘、除、取余、括号等)</li>
+        <li>【新增】新增可快捷操作的状态栏插件小图标</li>
+        <li>【新增】新增Windows进程管理组件View视窗, 支持查询和终止等功能</li>
+        <li>【新增】新增ID生成组件View视窗（UUID、ObjectId、NanoId、SnowflakeId）</li>
+        <li>【新增】新增文件保存时自动生成JavaDoc注释功能(实验性功能, 谨慎开启!)</li>
+        <li>【新增】新增翻译渠道服务内置Sqlite实时备份功能</li>
+        <li>【优化】优化原右键Convert小功能迁移至 Widget Core View 视窗</li>
+        <li>【优化】优化自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
+        <li>【优化】优化时间戳转换TimestampView视窗，新增中国黄历转换显示</li>
+        <li>【优化】优化类自动生成serialVersionUID字段时同步实现Serializable接口（GenUID）</li>
+        <li>【优化】优化某些操作不支持只读源文件，避免误触报错</li>
+        <li>【优化】优化JavaDoc新增自动获取Git用户名、邮箱、分支等内置变量, 支持配置注释覆盖模式(智能合并/强制覆盖)</li>
+        <li>【修复】修复同一个类中同名方法总是生成第一个方法的Swagger注解问题</li>
+      </ul>
       <h3>v2.1.5</h3>
       <ul>
         <li>Added plugin to automatically update experimental features</li>
@@ -403,13 +450,21 @@
     <depends>org.intellij.plugins.markdown</depends>
     <depends>com.intellij.properties</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
+    <depends>Git4Idea</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
         <postStartupActivity implementation="easy.init.EasyToolApplicationInit"/>
-        <editorTabColorProvider implementation="easy.highlight.CustomEditorTabColorProvider"/>
 
-        <consoleFilterProvider implementation="easy.mybatis.log.MyBatisLogConsoleFilterProvider"/>
+        <editorTabColorProvider implementation="easy.provider.CustomEditorTabColorProvider"/>
+        <consoleFilterProvider implementation="easy.provider.MyBatisLogConsoleFilterProvider"/>
+        <statusBarWidgetFactory order="before LineSeparator, after Position, before lineSeparatorWidget, after positionWidget"
+                                implementation="easy.provider.PluginStatusBarWidgetProvider"/>
+        <codeInsight.template.postfixTemplateProvider language="JAVA"
+                                                      implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
+        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
+                                        implementationClass="easy.provider.CronMarkerProvider"/>
+
         <executor implementation="easy.mybatis.log.ui.MyBatisLogExecutor"/>
 
         <errorHandler implementation="easy.diagnostic.GiteeIssueSubmitter"/>
@@ -460,13 +515,7 @@
                                  displayName="BackgroundImage"
                                  instance="easy.form.BackgroundImageSettingView"/>
 
-
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
-
-        <codeInsight.template.postfixTemplateProvider language="JAVA"
-                                                      implementationClass="easy.postfix.postfix.GeneratePostfixTemplateProvider"/>
-        <codeInsight.lineMarkerProvider id="EasyToolCronMarkerProvider" language="JAVA"
-                                        implementationClass="easy.provider.CronMarkerProvider"/>
 
         <completion.contributor language="JAVA" order="last"
                                 implementationClass="easy.git.emoji.prompt.contributor.JavaEmojiCompletionContributor"/>
@@ -474,9 +523,6 @@
                                 implementationClass="easy.git.emoji.prompt.contributor.PlainTextCompletionContributor"/>
         <completion.contributor language="Markdown" order="first"
                                 implementationClass="easy.git.emoji.prompt.contributor.MarkdownEmojiCompletionContributor"/>
-
-        <searchEverywhereContributor
-                implementation="easy.restful.every.RestfulSearchEverywhereContributor"/>
 
     </extensions>
 
@@ -549,10 +595,6 @@
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.GIT">
             <add-to-group group-id="Vcs.MessageActionGroup" anchor="first"/>
         </action>
-        <!--Convert动态转换-->
-        <group id="EasyToolConvertDynamicActions" class="easy.action.convert.DynamicConvertActionGroup"
-               text="Convert" description="EasyTool development assistance tools"
-               icon="easy.icons.EasyIcons.ICON.CONVERT" popup="true" compact="true"/>
         <!--Cron解析-->
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
@@ -640,7 +682,6 @@
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
             <reference ref="EasyToolWidgetToolActionGroups"/>
-            <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
@@ -657,7 +698,6 @@
             <reference ref="EasyToolTranslateAction"/>
             <reference ref="EasyToolWebSearchDynamicActions"/>
             <reference ref="EasyToolRestfulSearchAction"/>
-            <reference ref="EasyToolConvertDynamicActions"/>
             <reference ref="EasyToolCronParseAction"/>
             <reference ref="EasyToolMyBatisLogAction"/>
             <reference ref="DynamicBackgroundImageActionGroups"/>
