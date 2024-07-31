@@ -72,8 +72,10 @@
             <li>--<em>EXCEL解析</em></li>
             <li>--<em>Timestamp时间戳转换</em></li>
             <li>--<em>Base64转码</em></li>
-            <li>--<em>Simple计算器</em></li>
+            <li>--<em>Simple简易计算器</em></li>
             <li>--<em>SQL日志还原</em></li>
+            <li>--<em>Windows进程管理</em></li>
+            <li>--<em>ID生成</em></li>
         </ul>
       </ul>
       <h3>Getting started</h3>
@@ -118,8 +120,8 @@
         <li>【新增】新增ID生成组件View视窗（UUID、ObjectId、NanoId、SnowflakeId）</li>
         <li>【新增】新增文件保存时自动生成JavaDoc注释功能(实验性功能, 谨慎开启!)</li>
         <li>【新增】新增翻译渠道服务内置Sqlite实时备份功能</li>
-        <li>【优化】原右键Convert小功能迁移至 Widget Core View 视窗</li>
-        <li>【优化】自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
+        <li>【优化】优化原右键Convert小功能迁移至 Widget Core View 视窗</li>
+        <li>【优化】优化自动生成Swagger注解同时支持选中和光标放置元素两种方式</li>
         <li>【优化】优化时间戳转换TimestampView视窗，新增中国黄历转换显示</li>
         <li>【优化】优化类自动生成serialVersionUID字段时同步实现Serializable接口（GenUID）</li>
         <li>【优化】优化某些操作不支持只读源文件，避免误触报错</li>
