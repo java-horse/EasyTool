@@ -1,6 +1,5 @@
 package easy.form;
 
-import com.intellij.notification.NotificationType;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.OnOffButton;
@@ -11,7 +10,7 @@ import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
-import easy.util.NotifyUtil;
+import easy.util.MessageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,10 +97,8 @@ public class CommonSettingView {
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
         tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
-        pluginAutoUpdateEnableButton.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                NotifyUtil.notify(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME), NotificationType.WARNING);
-            }
+        pluginAutoUpdateEnableButton.addActionListener(e -> {
+            MessageUtil.showWarningDialog(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME));
         });
     }
 
