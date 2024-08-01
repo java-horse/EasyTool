@@ -101,12 +101,13 @@ public class TabHighlighterFileEditorListener implements FileEditorManagerListen
     }
 
     private void highlight(VirtualFile file, EditorWindow editorWindow, Integer colorFactor) {
-        CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
         int colorStep = colorFactor * Convert.toInt(commonConfig.getTabHighlightGradientStepFormattedTextField());
-        int red = Math.max(persistentColor.getRed() - colorStep, Constants.NUM.ZERO);
-        int green = Math.max(persistentColor.getGreen() - colorStep, Constants.NUM.ZERO);
-        int blue = Math.max(persistentColor.getBlue() - colorStep, Constants.NUM.ZERO);
-        setTabColor(new JBColor(Color.MAGENTA, new Color(red, green, blue)), file, editorWindow);
+        Color color = new Color(commonConfig.getTabHighlightBackgroundColor(), true);
+        int red = Math.max(color.getRed() - colorStep, Constants.NUM.ZERO);
+        int green = Math.max(color.getGreen() - colorStep, Constants.NUM.ZERO);
+        int blue = Math.max(color.getBlue() - colorStep, Constants.NUM.ZERO);
+        Color regularColor = new Color(red, green, blue);
+        setTabColor(new JBColor(regularColor, regularColor), file, editorWindow);
     }
 
     private void unHighlight(@NotNull FileColorManager fileColorManager, VirtualFile file, EditorWindow editorWindow) {

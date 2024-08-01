@@ -53,10 +53,10 @@ public class QrCodeCoreView extends CoreCommonView {
     private JButton foreColorButton;
     private JButton backColorButton;
     private JSpinner marginSpinner;
-    private JComboBox errorCorrectionLevelComboBox;
+    private JComboBox<String> errorCorrectionLevelComboBox;
     private JButton clearButton;
     private JLabel qrCodeTipLabel;
-    private JComboBox codeTypeComboBox;
+    private JComboBox<String> codeTypeComboBox;
 
     private Color foreColor = Color.BLACK;
     private Color backColor = Color.WHITE;

@@ -16,7 +16,6 @@ import easy.util.NotifyUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.Objects;
 
 /**
  * @project: EasyTool
@@ -159,8 +158,7 @@ public class CommonSettingView {
             setTranslateConfirmInputModelNoCheckBox(Boolean.TRUE);
         }
         setTabHighlightEnableCheckBox(commonConfig.getTabHighlightEnableCheckBox());
-        CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
-        setTabBackgroundColorPanel(Objects.isNull(persistentColor) ? new JBColor(Color.MAGENTA, new Color(174, 80, 250)) : persistentColor.getColor());
+        setTabBackgroundColorPanel(new JBColor(new Color(commonConfig.getTabHighlightBackgroundColor(), true), new Color(commonConfig.getTabHighlightBackgroundColor(), true)));
         setTabHighlightSizeComboBox(commonConfig.getTabHighlightSizeComboBox());
         setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
         setConvertCharEnableCheckBox(commonConfig.getConvertCharEnableCheckBox());
