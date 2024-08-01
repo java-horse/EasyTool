@@ -168,7 +168,7 @@ public class PluginForUpdateHandler {
         return new NotificationAction("🎊 升级特性") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
-                new CommonNotifyDialog(Constants.PLUGIN_NAME, parsePluginNotes(notes, remoteVersion)).show();
+                new CommonNotifyDialog(Constants.PLUGIN_NAME, parsePluginNotes(notes, remoteVersion), Boolean.FALSE).show();
             }
         };
     }

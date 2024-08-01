@@ -28,7 +28,7 @@
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
             <li>--<em>金山翻译(Free)</em></li>
-            <li>--<em>阿里翻译</em></li>
+            <li>--<em>阿里翻译</em>(极力推荐，免费权益额度高)</li>
             <li>--<em>腾讯翻译</em></li>
             <li>--<em>火山翻译</em></li>
             <li>--<em>讯飞翻译</em></li>
@@ -80,10 +80,10 @@
       </ul>
       <h3>Getting started</h3>
       <ul>
-        <li>1. Install IDEA or any JetBrains IDE, such as Clion, PyCharm...</li>
+        <li>1. Install IDEA or any JetBrains IDE, such as IntelliJ IDEA, Android Studio...</li>
         <li>2. Launch the IDE and open plugin settings</li>
         <li>3. Search for the plugin <em>EasyTool</em> and click on install</li>
-        <li>4. Set Chinese and English character mappings, translation engine keys</li>
+        <li>4. Set Chinese and English character mappings, translation engine keys...</li>
         <li>5. Now you can enjoy using the <em>EasyTool</em> plugin function</li>
       </ul>
       <h3>Source</h3>
@@ -98,9 +98,9 @@
         <![CDATA[
       <h3>v2.1.7</h3>
       <ul>
-        <li>xxx</li>
+        <li>Optimize batch generation JavaDoc and Swagger view windows to support background task progress bars</li>
         <li>-------------------------------</li>
-        <li>【优化】xxx</li>
+        <li>【优化】优化批量生成JavaDoc、Swagger、Json注解的View视窗支持展示后台任务进度条</li>
       </ul>
       <h3>v2.1.6</h3>
       <ul>

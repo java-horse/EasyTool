@@ -9,7 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import easy.ui.WidgetToolViewDialog;
+import easy.ui.WidgetAnnotationViewDialog;
 import easy.util.PsiElementUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public class WidgetToolAnnotationAction extends AnAction {
         if (!PsiElementUtil.isEntity(psiClass)) {
             return;
         }
-        new WidgetToolViewDialog(project, psiFile, psiClass).show();
+        new WidgetAnnotationViewDialog(project, psiFile, psiClass).show();
     }
 
     @Override

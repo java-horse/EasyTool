@@ -38,7 +38,7 @@ public class DoFastJsonAnnotationService extends DoAbstractAnnotationService {
      */
     @Override
     public void removeAnnotation(PsiElement psiElement) {
-        WriteCommandAction.runWriteCommandAction(project, () -> doRemove( ExtraPackageNameEnum.JSON_FIELD.getName(),
+        WriteCommandAction.runWriteCommandAction(project, () -> doRemove(ExtraPackageNameEnum.JSON_FIELD.getName(),
                 psiElement instanceof PsiField ? (PsiField) psiElement : (PsiClass) psiElement));
     }
 

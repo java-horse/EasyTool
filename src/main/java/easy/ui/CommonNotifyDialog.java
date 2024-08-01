@@ -19,19 +19,22 @@ import javax.swing.*;
 public class CommonNotifyDialog extends DialogWrapper {
 
     private final String content;
+    private final Boolean isEnable;
 
     /**
      * 构造函数
      *
-     * @param title   标题
-     * @param content 内容
+     * @param title    标题
+     * @param content  内容
+     * @param isEnable 是启用
      * @author mabin
      * @date 2024/04/25 17:24
      */
-    public CommonNotifyDialog(@NotNull String title, @NotNull String content) {
+    public CommonNotifyDialog(@NotNull String title, @NotNull String content, @NotNull Boolean isEnable) {
         super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle(title);
         this.content = content;
+        this.isEnable = isEnable;
         init();
     }
 
@@ -40,6 +43,7 @@ public class CommonNotifyDialog extends DialogWrapper {
         JTextPane textPane = new JTextPane();
         textPane.setContentType(ContentType.TEXT_HTML.getValue());
         textPane.setText(content);
+        textPane.setEnabled(isEnable);
         return textPane;
     }
 

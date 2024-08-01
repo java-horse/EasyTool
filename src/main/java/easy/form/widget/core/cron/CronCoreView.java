@@ -84,7 +84,7 @@ public class CronCoreView extends CoreCommonView {
         cronPreviewSpinner.setModel(new SpinnerNumberModel(Constants.NUM.FIVE, Constants.NUM.ONE, Constants.NUM.TEN, Constants.NUM.ONE));
         exampleButton.setIcon(AllIcons.Ide.LocalScope);
         exampleButton.addActionListener(e -> new CommonNotifyDialog(String.format("%s Cron Expression Example", Constants.PLUGIN_NAME),
-                genExampleCron()).show());
+                genExampleCron(), Boolean.TRUE).show());
         collecteButton.addActionListener(e -> {
             String cron = StringUtils.trim(upTextArea.getText());
             if (StringUtils.isBlank(cron)) {
