@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
@@ -23,6 +22,7 @@ import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
 import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
+import easy.util.EasyCommonUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -105,7 +105,7 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                 add(new AnAction(ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
-                        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+                        EasyCommonUtil.getPluginSettingAction(project);
                     }
                 });
                 addSeparator(Objects.nonNull(translateConfig) ? translateConfig.getTranslateChannel() : null);

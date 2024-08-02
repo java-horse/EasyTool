@@ -99,8 +99,10 @@
       <h3>v2.1.7</h3>
       <ul>
         <li>Optimize batch generation JavaDoc and Swagger view windows to support background task progress bars</li>
+        <li>Optimize background map carousel setting item UI to enhance human-computer interaction</li>
         <li>-------------------------------</li>
         <li>【优化】优化批量生成JavaDoc、Swagger、Json注解的View视窗支持展示后台任务进度条</li>
+        <li>【优化】优化背景图轮播、代码一键截图设置项UI, 增强人机交互性</li>
       </ul>
       <h3>v2.1.6</h3>
       <ul>
@@ -488,6 +490,7 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
         <applicationService serviceImplementation="easy.config.screenshot.CodeScreenshotConfigComponent"/>
         <applicationService serviceImplementation="easy.config.widget.WidgetConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.background.BackgroundImageConfigComponent"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -520,7 +523,7 @@
                                  instance="easy.settings.CodeScreenshotSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
-                                 instance="easy.form.BackgroundImageSettingView"/>
+                                 instance="easy.settings.BackgroundSettingConfigurable"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 

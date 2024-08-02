@@ -294,7 +294,7 @@ public class PluginForUpdateHandler {
         }, new NotificationAction("⚙️ 修改自动更新") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                ShowSettingsUtil.getInstance().showSettingsDialog(ProjectManagerEx.getInstance().getDefaultProject(), Constants.PLUGIN_NAME);
+                EasyCommonUtil.getPluginSettingAction(ProjectManagerEx.getInstance().getDefaultProject());
             }
         });
     }

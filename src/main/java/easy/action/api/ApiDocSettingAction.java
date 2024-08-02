@@ -8,6 +8,7 @@ import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import easy.base.Constants;
 import easy.enums.ApiDocTypeEnum;
+import easy.util.EasyCommonUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class ApiDocSettingAction extends AnAction {
         if (Objects.isNull(project)) {
             return;
         }
-        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+        EasyCommonUtil.getPluginSettingAction(project);
     }
 
     @Override

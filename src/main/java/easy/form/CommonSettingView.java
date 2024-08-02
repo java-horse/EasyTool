@@ -98,7 +98,9 @@ public class CommonSettingView {
         });
         tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
         pluginAutoUpdateEnableButton.addActionListener(e -> {
-            MessageUtil.showWarningDialog(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME));
+            if (pluginAutoUpdateEnableButton.isSelected()) {
+                MessageUtil.showWarningDialog(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME));
+            }
         });
     }
 
