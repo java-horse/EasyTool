@@ -89,20 +89,20 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
         return new DefaultActionGroup(Constants.PLUGIN_NAME, true) {
             {
                 addSeparator();
-                add(new AnAction(ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.icon) {
+                add(new AnAction(() -> ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         PluginForUpdateHandler.forUpdate(project);
                     }
                 });
-                add(new AnAction(ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.icon) {
+                add(new AnAction(() -> ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         new WidgetCommonView().show();
                     }
                 });
                 addSeparator();
-                add(new AnAction(ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
+                add(new AnAction(() -> ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         EasyCommonUtil.getPluginSettingAction(project);

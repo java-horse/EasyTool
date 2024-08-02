@@ -80,8 +80,7 @@ public class CronCollectionDialogView extends DialogWrapper {
         });
         DefaultActionGroup defaultActionGroup = new DefaultActionGroup();
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.export.text"),
-                BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {
@@ -106,8 +105,7 @@ public class CronCollectionDialogView extends DialogWrapper {
                 MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.clear.text"),
-                BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCronCollectionMap())) {

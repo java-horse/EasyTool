@@ -2,17 +2,32 @@ package easy.form.api;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.StrPool;
+import cn.hutool.core.text.csv.CsvUtil;
+import cn.hutool.core.text.csv.CsvWriter;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
+import com.intellij.icons.AllIcons;
 import com.intellij.notification.NotificationType;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileChooser.FileChooserFactory;
+import com.intellij.openapi.fileChooser.FileSaverDescriptor;
+import com.intellij.openapi.fileChooser.FileSaverDialog;
 import com.intellij.openapi.ide.CopyPasteManager;
+import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.MessageConstants;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.OnOffButton;
 import com.intellij.ui.table.JBTable;
 import easy.api.model.yapi.YApiTableDTO;
 import easy.api.sdk.yapi.model.ApiProject;
+import easy.base.Constants;
 import easy.config.api.YApiConfig;
 import easy.config.api.YApiConfigComponent;
 import easy.enums.ApiDocTypeEnum;
@@ -21,7 +36,9 @@ import easy.icons.EasyIcons;
 import easy.util.BundleUtil;
 import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +51,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
@@ -116,6 +134,35 @@ public class YApiSettingView {
                 refreshYapiTable();
             }
         });
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
+            @Override
+            public void actionPerformed(@NotNull AnActionEvent e) {
+                Map<String, YApiTableDTO> yapiTableMap = yApiConfig.getYapiTableMap();
+                if (MapUtils.isEmpty(yapiTableMap)) {
+                    MessageUtil.showInfoMessage("暂无导出数据");
+                    return;
+                }
+                // 创建文件保存弹窗
+                FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s %s token export", Constants.PLUGIN_NAME, ApiDocTypeEnum.YAPI.getTitle()),
+                        "Select a location to save the project token", "csv");
+                FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, ProjectManagerEx.getInstance().getDefaultProject());
+                VirtualFileWrapper virtualFileWrapper = saveFileDialog.save(Constants.PLUGIN_NAME + StrPool.UNDERLINE + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_PATTERN) + StrPool.DOT + "csv");
+                if (Objects.isNull(virtualFileWrapper)) {
+                    return;
+                }
+                // 组装并导出csv文件
+                CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
+                csvWriter.writeHeaderLine(COLUMN_NAMES.toArray(new String[]{}));
+                for (Map.Entry<String, YApiTableDTO> entry : yapiTableMap.entrySet()) {
+                    YApiTableDTO apiTableDTO = entry.getValue();
+                    csvWriter.writeLine(apiTableDTO.getProjectId(), apiTableDTO.getProjectName(), apiTableDTO.getProjectToken());
+                }
+                csvWriter.close();
+                MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
+            }
+        });
+        toolbarDecorator.setActionGroup(actionGroup);
         mainPanel = toolbarDecorator.createPanel();
     }
 
