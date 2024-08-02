@@ -2,6 +2,9 @@ package easy.ui;
 
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.psi.PsiClass;
@@ -10,6 +13,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
 import com.intellij.util.ui.JBUI;
+import easy.base.Constants;
 import easy.enums.ExtraPackageNameEnum;
 import easy.enums.WidgetAnnotationRuleEnum;
 import easy.enums.WidgetAnnotationToolEnum;
@@ -31,22 +35,21 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.*;
 
-public class WidgetToolViewDialog extends DialogWrapper {
+public class WidgetAnnotationViewDialog extends DialogWrapper {
 
     private static final String ADD = "Add";
     private static final String REMOVE = "Remove";
 
     private JBList<AttributeItem> attributesList;
-    private List<AttributeItem> attributes;
-    private Project project;
-    private PsiFile psiFile;
-    private PsiClass psiClass;
+    private final List<AttributeItem> attributes;
+    private final Project project;
+    private final PsiFile psiFile;
+    private final PsiClass psiClass;
     private ButtonGroup operateButtonGroup;
     private ButtonGroup jsonButtonGroup;
     private ButtonGroup ruleButtonGroup;
-    private JCheckBox allCheckbox;
 
-    public WidgetToolViewDialog(Project project, PsiFile psiFile, PsiClass psiClass) {
+    public WidgetAnnotationViewDialog(Project project, PsiFile psiFile, PsiClass psiClass) {
         super(project);
         setTitle("Widget Annotation View");
         this.project = project;
@@ -190,7 +193,7 @@ public class WidgetToolViewDialog extends DialogWrapper {
         centerPanel.add(new JScrollPane(attributesList), BorderLayout.CENTER);
 
         JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        allCheckbox = new JCheckBox("Select All");
+        JCheckBox allCheckbox = new JCheckBox("Select All");
         allCheckbox.addItemListener(e -> {
             for (int i = 0; i < attributesList.getModel().getSize(); i++) {
                 attributesList.getModel().getElementAt(i).setSelected(e.getStateChange() == ItemEvent.SELECTED);
@@ -225,11 +228,12 @@ public class WidgetToolViewDialog extends DialogWrapper {
             return;
         }
         // 操作类型
-        String operate = StringUtils.EMPTY;
+        List<String> operates = new ArrayList<>();
         for (Enumeration<AbstractButton> buttons = operateButtonGroup.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
-                operate = button.getText();
+                operates.add(button.getText());
+                break;
             }
         }
         // 注解类型
@@ -238,26 +242,44 @@ public class WidgetToolViewDialog extends DialogWrapper {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
                 typeEnum = WidgetAnnotationToolEnum.getEnum(button.getText());
+                break;
             }
         }
         // 处理规则
-        WidgetAnnotationRuleEnum ruleEnum = null;
+        List<WidgetAnnotationRuleEnum> ruleEnums = new ArrayList<>();
         for (Enumeration<AbstractButton> buttons = ruleButtonGroup.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
-                ruleEnum = WidgetAnnotationRuleEnum.getEnum(button.getText());
+                ruleEnums.add(WidgetAnnotationRuleEnum.getEnum(button.getText()));
+                break;
             }
         }
-        if (Objects.isNull(typeEnum) || Objects.isNull(ruleEnum)) {
+        if (Objects.isNull(typeEnum) || CollectionUtils.isEmpty(operates) || CollectionUtils.isEmpty(ruleEnums)) {
             return;
         }
         DoAnnotationService annotationService = typeEnum.getAnnotationService();
-        for (AttributeItem item : selectedItemList) {
-            switch (operate) {
-                case ADD -> annotationService.addAnnotation(project, psiFile, item.getPsiElement(), ruleEnum.genName(item.getRealName()));
-                case REMOVE -> annotationService.removeAnnotation(item.getPsiElement());
+        String operate = operates.get(0);
+        WidgetAnnotationRuleEnum ruleEnum = ruleEnums.get(0);
+        ProgressManager.getInstance().run(new Task.Backgroundable(project, String.format("%s Generate %s Annotation",
+                Constants.PLUGIN_NAME, typeEnum.getName()), true) {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                int total = selectedItemList.size();
+                indicator.setIndeterminate(false);
+                for (int i = 0; i < total; i++) {
+                    AttributeItem item = selectedItemList.get(i);
+                    switch (operate) {
+                        case ADD -> annotationService.addAnnotation(project, psiFile, item.getPsiElement(), ruleEnum.genName(item.getRealName()));
+                        case REMOVE -> annotationService.removeAnnotation(item.getPsiElement());
+                    }
+                    if (indicator.isCanceled()) {
+                        break;
+                    }
+                    indicator.setFraction((double) (i + 1) / total);
+                    indicator.setText(String.format("%s completed success", item.getName()));
+                }
             }
-        }
+        });
         super.doOKAction();
     }
 

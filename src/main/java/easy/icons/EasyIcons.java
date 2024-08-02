@@ -55,6 +55,8 @@ public class EasyIcons {
         Icon CODE_SCREENSHOT = IconLoader.getIcon("icons/code_screenshot.svg", EasyIcons.class);
         Icon WIDGET = IconLoader.getIcon("icons/widget.svg", EasyIcons.class);
         Icon PUZZLE = IconLoader.getIcon("icons/puzzle.svg", EasyIcons.class);
+        Icon CUTE_GET = IconLoader.getIcon("icons/restful/cute/GET.svg", EasyIcons.class);
+        Icon DEFAULT_GET = IconLoader.getIcon("icons/restful/default/GET.png", EasyIcons.class);
     }
 
 }

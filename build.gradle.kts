@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "easy.tool"
-version = "2.1.6-beat"
+version = "2.1.7-beat"
 
 repositories {
     maven {

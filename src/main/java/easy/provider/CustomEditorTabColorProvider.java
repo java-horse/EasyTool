@@ -7,6 +7,7 @@ import com.intellij.openapi.fileEditor.impl.EditorWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.FileColorManager;
+import com.intellij.ui.JBColor;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.helper.ServiceHelper;
@@ -31,7 +32,7 @@ public class CustomEditorTabColorProvider implements EditorTabColorProvider {
             if (Objects.nonNull(activeWindow) && Objects.nonNull(commonConfig) && Boolean.TRUE.equals(commonConfig.getTabHighlightEnableCheckBox())) {
                 EditorComposite selectedComposite = activeWindow.getSelectedComposite();
                 if (Objects.nonNull(selectedComposite) && Objects.equals(virtualFile, selectedComposite.getFile())) {
-                    return commonConfig.getPersistentColor().getColor();
+                    return new JBColor(new Color(commonConfig.getTabHighlightBackgroundColor(), true), new Color(commonConfig.getTabHighlightBackgroundColor(), true));
                 }
             }
         } catch (Throwable ignored) {

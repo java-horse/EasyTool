@@ -21,11 +21,11 @@
       <component id="946be" class="javax.swing.JLabel" binding="innerPaddingLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
+            <preferred-size width="175" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Inner Padding(内边距)"/>
+          <text value="内边距"/>
         </properties>
       </component>
       <component id="3b1fa" class="javax.swing.JSlider" binding="innerPaddingSlider">
@@ -40,11 +40,11 @@
       <component id="efc97" class="javax.swing.JLabel" binding="outerPaddingLabel">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
+            <preferred-size width="175" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Outer Padding(外边距)"/>
+          <text value="外边距"/>
         </properties>
       </component>
       <component id="256e4" class="javax.swing.JSlider" binding="outerPaddingSlider">
@@ -59,11 +59,11 @@
       <component id="1bd3" class="javax.swing.JLabel" binding="windowRoundnessLabel">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
+            <preferred-size width="175" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Window Roundness(轮廓弧度)"/>
+          <text value="轮廓弧度"/>
         </properties>
       </component>
       <component id="9f3b8" class="javax.swing.JSlider" binding="windowRoundnessSlider">
@@ -78,11 +78,11 @@
       <component id="e8dda" class="javax.swing.JLabel">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
+            <preferred-size width="175" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Background Color(背景色)"/>
+          <text value="背景色"/>
         </properties>
       </component>
       <component id="fd28e" class="javax.swing.JFormattedTextField" binding="formattedTextField">
@@ -136,23 +136,23 @@
       <component id="616ee" class="javax.swing.JCheckBox" binding="removeIndentationCheckBox">
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="22"/>
+            <preferred-size width="175" height="22"/>
           </grid>
         </constraints>
         <properties>
           <selected value="true"/>
-          <text value="Remove Indentation(删除缩进)"/>
+          <text value="删除代码缩进"/>
         </properties>
       </component>
       <component id="1229b" class="javax.swing.JCheckBox" binding="showWindowIconsCheckBox">
         <constraints>
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="22"/>
+            <preferred-size width="175" height="22"/>
           </grid>
         </constraints>
         <properties>
           <selected value="true"/>
-          <text value="Show Window Icons(显示窗口图标)"/>
+          <text value="显示左上角三色图标"/>
         </properties>
       </component>
       <grid id="a158a" binding="filePanel" layout-manager="GridLayoutManager" row-count="13" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -169,7 +169,7 @@
             </constraints>
             <properties>
               <selected value="true"/>
-              <text value="Auto Copy Payboard"/>
+              <text value="自动复制到剪切板"/>
             </properties>
           </component>
           <component id="195fa" class="javax.swing.JLabel" binding="customFileNameLabel">
@@ -177,7 +177,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Custom File Name"/>
+              <text value="文件名模板"/>
             </properties>
           </component>
           <component id="974da" class="javax.swing.JTextField" binding="customFileNameTextField">
@@ -224,7 +224,7 @@
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Font Family"/>
+              <text value="水印字体"/>
             </properties>
           </component>
           <component id="5e9a8" class="com.intellij.ui.FontComboBox" binding="fontFamilyFontComboBox">
@@ -238,7 +238,7 @@
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Font Size"/>
+              <text value="字体大小"/>
             </properties>
           </component>
           <component id="3893c" class="javax.swing.JTextField" binding="fontSizeTextField">
@@ -254,7 +254,7 @@
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Font Style"/>
+              <text value="字体类型"/>
             </properties>
           </component>
           <component id="abd28" class="javax.swing.JComboBox" binding="fontStyleComboBox">
@@ -282,7 +282,7 @@
               <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Water Mark Text"/>
+              <text value="水印文本"/>
             </properties>
           </component>
           <vspacer id="b9810">
@@ -295,7 +295,7 @@
               <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Font Color"/>
+              <text value="字体颜色"/>
             </properties>
           </component>
           <component id="af97f" class="javax.swing.JTextField" binding="fontColorTextField">
@@ -319,7 +319,7 @@
               <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Auto Add Water Mark"/>
+              <text value="自动加水印"/>
             </properties>
           </component>
           <component id="171f6" class="javax.swing.JCheckBox" binding="autoFullScreenWatermarkCheckBox" default-binding="true">
@@ -327,7 +327,7 @@
               <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Auto Full Screen Watermark"/>
+              <text value="自动添加全屏水印"/>
             </properties>
           </component>
           <component id="51609" class="javax.swing.JLabel" binding="fontWaterMarkTransparencyLabel">
@@ -335,7 +335,7 @@
               <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Water Mark Transparency(透明度)"/>
+              <text value="透明度"/>
             </properties>
           </component>
           <component id="eedd3" class="javax.swing.JSlider" binding="fontWaterMarkTransparencySlider">
@@ -360,7 +360,7 @@
               <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Water Mark Rotate(旋转角度)"/>
+              <text value="旋转角度"/>
             </properties>
           </component>
           <component id="ccdb6" class="javax.swing.JSlider" binding="fontWaterMarkRotateSlider">
@@ -385,7 +385,7 @@
               <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Water Mark Sparsity(稀疏度)"/>
+              <text value="稀疏度"/>
             </properties>
           </component>
           <component id="6c0d4" class="javax.swing.JSlider" binding="fontWaterMarkSparsitySlider">
@@ -411,11 +411,11 @@
       <component id="12d67" class="javax.swing.JLabel" binding="scaleLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="245" height="17"/>
+            <preferred-size width="175" height="17"/>
           </grid>
         </constraints>
         <properties>
-          <text value="Scale(比例)"/>
+          <text value="图片比例"/>
         </properties>
       </component>
     </children>

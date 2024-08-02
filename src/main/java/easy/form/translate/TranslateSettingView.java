@@ -7,8 +7,6 @@ import cn.hutool.core.text.StrPool;
 import cn.hutool.core.text.csv.*;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.db.handler.BeanListHandler;
-import cn.hutool.db.handler.NumberHandler;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -42,9 +40,7 @@ import easy.helper.SqliteHelper;
 import easy.translate.TranslateService;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
-import easy.util.EventBusUtil;
 import easy.util.MessageUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,7 +52,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -459,8 +454,7 @@ public class TranslateSettingView {
         });
         DefaultActionGroup defaultActionGroup = new DefaultActionGroup();
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.export.text"),
-                BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 创建文件保存弹窗
@@ -487,8 +481,7 @@ public class TranslateSettingView {
                 }
             }
         });
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.import.text"),
-                BundleUtil.getI18n("global.button.import.text"), AllIcons.ToolbarDecorator.Import) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.import.text"), AllIcons.ToolbarDecorator.Import) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导入CSV文件
@@ -519,8 +512,7 @@ public class TranslateSettingView {
             }
         });
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.download.text"),
-                BundleUtil.getI18n("global.button.download.text"), AllIcons.Actions.Download) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.download.text"), AllIcons.Actions.Download) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 // 导出CSV模板文件
@@ -541,8 +533,7 @@ public class TranslateSettingView {
                 }
             }
         });
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.clear.text"),
-                BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (MessageConstants.OK == MessageUtil.showOkCancelDialog("确认清空全局单词映射？")) {

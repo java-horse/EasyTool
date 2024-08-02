@@ -1,6 +1,5 @@
 package easy.form;
 
-import com.intellij.notification.NotificationType;
 import com.intellij.ui.ColorPanel;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.OnOffButton;
@@ -8,14 +7,14 @@ import easy.base.Constants;
 import easy.config.common.CommonConfig;
 import easy.config.common.CommonConfigComponent;
 import easy.helper.ServiceHelper;
+import easy.icons.EasyIcons;
 import easy.util.BundleUtil;
 import easy.util.EasyCommonUtil;
-import easy.util.NotifyUtil;
+import easy.util.MessageUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.util.Objects;
 
 /**
  * @project: EasyTool
@@ -63,6 +62,8 @@ public class CommonSettingView {
     private JLabel pluginUpdateGroupLabel;
     private JLabel pluginAutoUpdateEnableLabel;
     private OnOffButton pluginAutoUpdateEnableButton;
+    private JCheckBox swaggerHintCheckBox;
+    private JLabel restfulDisplayApiPreviewLabel;
 
     public CommonSettingView() {
         // 设置提示小图标和提示信息
@@ -70,8 +71,20 @@ public class CommonSettingView {
         // 设置监听器
         swaggerConfirmYesCheckBox.addChangeListener(e -> swaggerConfirmNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         swaggerConfirmNoCheckBox.addChangeListener(e -> swaggerConfirmYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
-        searchApiDefaultIconRadioButton.addChangeListener(e -> searchApiCuteIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
-        searchApiCuteIconRadioButton.addChangeListener(e -> searchApiDefaultIconRadioButton.setSelected(!((JRadioButton) e.getSource()).isSelected()));
+        searchApiDefaultIconRadioButton.addChangeListener(e -> {
+            boolean selected = ((JRadioButton) e.getSource()).isSelected();
+            searchApiCuteIconRadioButton.setSelected(!selected);
+            if (selected) {
+                restfulDisplayApiPreviewLabel.setIcon(EasyIcons.ICON.CUTE_GET);
+            }
+        });
+        searchApiCuteIconRadioButton.addChangeListener(e -> {
+            boolean selected = ((JRadioButton) e.getSource()).isSelected();
+            searchApiDefaultIconRadioButton.setSelected(!selected);
+            if (selected) {
+                restfulDisplayApiPreviewLabel.setIcon(EasyIcons.ICON.DEFAULT_GET);
+            }
+        });
         translateConfirmInputModelYesCheckBox.addChangeListener(e -> translateConfirmInputModelNoCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         translateConfirmInputModelNoCheckBox.addChangeListener(e -> translateConfirmInputModelYesCheckBox.setSelected(!((JCheckBox) e.getSource()).isSelected()));
         tabBackgroundColorPanel.setEnabled(false);
@@ -84,9 +97,9 @@ public class CommonSettingView {
             tabHighlightGradientStepFormattedTextField.setEnabled(selected);
         });
         tabHighlightEnableCheckBox.setSelected(commonConfig.getTabHighlightEnableCheckBox());
-        pluginAutoUpdateEnableButton.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                NotifyUtil.notify(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME), NotificationType.WARNING);
+        pluginAutoUpdateEnableButton.addActionListener(e -> {
+            if (pluginAutoUpdateEnableButton.isSelected()) {
+                MessageUtil.showWarningDialog(String.format("插件【%s】自动更新属于实验性功能, 存在不稳定性, 建议在IDE插件面板更新", Constants.PLUGIN_NAME));
             }
         });
     }
@@ -144,13 +157,13 @@ public class CommonSettingView {
             setTranslateConfirmInputModelNoCheckBox(Boolean.TRUE);
         }
         setTabHighlightEnableCheckBox(commonConfig.getTabHighlightEnableCheckBox());
-        CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
-        setTabBackgroundColorPanel(Objects.isNull(persistentColor) ? new JBColor(Color.MAGENTA, new Color(174, 80, 250)) : persistentColor.getColor());
+        setTabBackgroundColorPanel(new JBColor(new Color(commonConfig.getTabHighlightBackgroundColor(), true), new Color(commonConfig.getTabHighlightBackgroundColor(), true)));
         setTabHighlightSizeComboBox(commonConfig.getTabHighlightSizeComboBox());
         setTabHighlightGradientStepFormattedTextField(commonConfig.getTabHighlightGradientStepFormattedTextField());
         setConvertCharEnableCheckBox(commonConfig.getConvertCharEnableCheckBox());
         setRestfulDisplayApiCommentCheckBox(commonConfig.getRestfulDisplayApiCommentCheckBox());
         setPluginAutoUpdateEnableButton(commonConfig.getPluginAutoUpdateEnable());
+        setSwaggerHintCheckBox(commonConfig.getSwaggerHintCheckBox());
     }
 
     public JComponent getComponent() {
@@ -411,6 +424,14 @@ public class CommonSettingView {
 
     public void setPluginAutoUpdateEnableButton(Boolean pluginAutoUpdateEnableButton) {
         this.pluginAutoUpdateEnableButton.setSelected(pluginAutoUpdateEnableButton);
+    }
+
+    public JCheckBox getSwaggerHintCheckBox() {
+        return swaggerHintCheckBox;
+    }
+
+    public void setSwaggerHintCheckBox(Boolean swaggerHintCheckBox) {
+        this.swaggerHintCheckBox.setSelected(swaggerHintCheckBox);
     }
 
 }

@@ -84,9 +84,15 @@ public class SwaggerAction extends AnAction {
         if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmYesCheckBox())) {
             if (MessageConstants.YES == MessageUtil.showYesNoDialog(BundleUtil.getI18n("swagger.confirm.generate.text"))) {
                 execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum, psiElement);
+                if (Boolean.TRUE.equals(commonConfig.getSwaggerHintCheckBox())) {
+                    HintManager.getInstance().showInformationHint(editor, swaggerAnnotationEnum.getName());
+                }
             }
         } else if (Boolean.TRUE.equals(commonConfig.getSwaggerConfirmNoCheckBox())) {
             execSwagger(project, psiFile, psiClass, selectedText, swaggerAnnotationEnum, psiElement);
+            if (Boolean.TRUE.equals(commonConfig.getSwaggerHintCheckBox())) {
+                HintManager.getInstance().showInformationHint(editor, swaggerAnnotationEnum.getName());
+            }
         }
     }
 
