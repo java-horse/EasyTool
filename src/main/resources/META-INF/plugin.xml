@@ -491,6 +491,7 @@
         <applicationService serviceImplementation="easy.config.screenshot.CodeScreenshotConfigComponent"/>
         <applicationService serviceImplementation="easy.config.widget.WidgetConfigComponent"/>
         <applicationService serviceImplementation="easy.config.background.BackgroundImageConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.convert.ConvertCharConfigComponent"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -515,7 +516,7 @@
                           instance="easy.settings.api.YApiSettingConfigurable"/>
         </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
-                                 instance="easy.settings.ConvertSettingConfigurable"/>
+                                 instance="easy.settings.ConvertCharSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.CodeScreenshot"
@@ -537,10 +538,6 @@
     </extensions>
 
     <actions>
-        <!--中英字符互转-->
-        <action id="EasyToolCoreAction" class="easy.action.ConvertAction" text="EasyToolCore"
-                description="EasyTool development assistance tools">
-        </action>
         <!--中英互译-->
         <action id="EasyToolTranslateAction" class="easy.action.TranslateAction" text="Translate"
                 description="Translation between Chinese and English" icon="easy.icons.EasyIcons.ICON.TRANSLATE">
