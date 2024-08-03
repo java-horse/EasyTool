@@ -46,7 +46,6 @@ public class CronParseAction extends AnAction {
         }
         String title = "最近" + Constants.NUM.TEN + "次执行时间";
         HintManager.getInstance().showInformationHint(editor, title + StringUtils.LF + StringUtils.join(cronList, StringUtils.LF));
-        
     }
 
     @Override

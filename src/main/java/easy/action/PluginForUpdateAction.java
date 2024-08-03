@@ -22,7 +22,7 @@ public class PluginForUpdateAction extends AnAction {
 
 
     public PluginForUpdateAction() {
-        super(ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.desc, ToolWindowEnum.FOR_UPDATE.icon);
+        super("ForUpdate", ToolWindowEnum.FOR_UPDATE.desc, ToolWindowEnum.FOR_UPDATE.icon);
     }
 
     @Override
