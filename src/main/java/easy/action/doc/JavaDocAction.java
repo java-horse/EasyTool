@@ -1,4 +1,4 @@
-package easy.action;
+package easy.action.doc;
 
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;

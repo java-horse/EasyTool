@@ -1,5 +1,6 @@
 package easy.ui;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -275,8 +276,9 @@ public class WidgetAnnotationViewDialog extends DialogWrapper {
                     if (indicator.isCanceled()) {
                         break;
                     }
-                    indicator.setFraction((double) (i + 1) / total);
-                    indicator.setText(String.format("%s completed success", item.getName()));
+                    double fraction = (double) (i + 1) / total;
+                    indicator.setFraction(fraction);
+                    indicator.setText(String.format("%s completed success %s", item.getName(), NumberUtil.formatPercent(fraction, 2)));
                 }
             }
         });

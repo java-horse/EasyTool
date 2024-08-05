@@ -20,17 +20,17 @@ public class ParamsVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
 
     @Override
     public String generate(PsiElement element) {
-        if (!(element instanceof PsiMethod)) {
+        if (!(element instanceof PsiMethod psiMethod)) {
             return StringUtils.EMPTY;
         }
 
-        List<String> paramNameList = Arrays.stream(((PsiMethod) element).getParameterList().getParameters()).map(PsiParameter::getName).collect(Collectors.toList());
+        List<String> paramNameList = Arrays.stream(psiMethod.getParameterList().getParameters()).map(PsiParameter::getName).collect(Collectors.toList());
         if (paramNameList.isEmpty()) {
             return StringUtils.EMPTY;
         }
 
         List<ParamGroup> paramGroupList = new ArrayList<>();
-        PsiDocComment docComment = ((PsiMethodImpl) element).getDocComment();
+        PsiDocComment docComment = psiMethod.getDocComment();
         Map<String, PsiDocTag> psiDocTagMap = new HashMap<>();
         if (docComment != null) {
             PsiDocTag[] paramsDocArray = docComment.findTagsByName("param");

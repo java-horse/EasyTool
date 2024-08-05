@@ -98,9 +98,11 @@
         <![CDATA[
       <h3>v2.1.7</h3>
       <ul>
+        <li>Added support for batch selected file generation JavaDoc in the left project directory.</li>
         <li>Optimize batch generation JavaDoc and Swagger view windows to support background task progress bars</li>
         <li>Optimize background map carousel setting item UI to enhance human-computer interaction</li>
         <li>-------------------------------</li>
+        <li>【新增】新增支持左侧工程目录批量选中文件生成JavaDoc</li>
         <li>【优化】优化批量生成JavaDoc、Swagger、Json注解的View视窗支持展示后台任务进度条</li>
         <li>【优化】优化背景图轮播、代码一键截图设置项UI, 增强人机交互性</li>
       </ul>
@@ -606,19 +608,23 @@
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
         <!--JavaDoc注释生成-->
-        <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="GenJavaDoc"
+        <action id="EasyToolJavaDocAction" class="easy.action.doc.JavaDocAction" text="GenJavaDoc"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
         </action>
-        <action id="EasyToolJavaDocViewAction" class="easy.action.JavaDocAction" text="JavaDocView"
+        <action id="EasyToolJavaDocViewAction" class="easy.action.doc.JavaDocAction" text="JavaDocView"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 4"/>
+        </action>
+        <action id="EasyToolJavaDocBatchAction" class="easy.action.doc.JavaDocBatchAction" text="GenJavaDoc"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <group id="EasyToolJavaDocActionGroups" text="JavaDoc" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.JAVA" popup="true" compact="true">
