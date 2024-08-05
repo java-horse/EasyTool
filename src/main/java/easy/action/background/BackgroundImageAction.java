@@ -1,5 +1,6 @@
 package easy.action.background;
 
+import cn.hutool.core.io.FileUtil;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -10,7 +11,9 @@ import easy.background.ImagesHandler;
 import easy.config.background.BackgroundImageConfig;
 import easy.config.background.BackgroundImageConfigComponent;
 import easy.enums.BackgroundImageActionEnum;
+import easy.enums.BackgroundImageChangeScopeEnum;
 import easy.helper.ServiceHelper;
+import easy.util.MessageUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +62,29 @@ public class BackgroundImageAction extends AnAction {
             propertiesComponent.setValue(IdeBackgroundUtil.EDITOR_PROP, null);
             propertiesComponent.setValue(IdeBackgroundUtil.FRAME_PROP, null);
             ImagesHandler.INSTANCE.clearRandomImageList();
+        } else if (StringUtils.equals(actionText, BackgroundImageActionEnum.NEXT.title)) {
+            // 手动切换下一张背景图
+            if (BackgroundService.isRunning()) {
+                MessageUtil.showWarningDialog("背景轮播任务正在运行中...");
+                return;
+            }
+            if (StringUtils.isBlank(config.getImageFilePath()) || !FileUtil.exist(config.getImageFilePath())) {
+                // TODO 显示跳转按钮
+                MessageUtil.showOkCancelDialog("配置文件路径不存在");
+                return;
+            }
+            String nextImage = ImagesHandler.INSTANCE.getRandomImage(config.getImageFilePath());
+            if (StringUtils.isNotBlank(nextImage)) {
+                PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+                if (BackgroundImageChangeScopeEnum.BOTH.getName().equals(config.getImageScope())) {
+                    propertiesComponent.setValue(IdeBackgroundUtil.EDITOR_PROP, nextImage);
+                    propertiesComponent.setValue(IdeBackgroundUtil.FRAME_PROP, nextImage);
+                } else if (BackgroundImageChangeScopeEnum.FRAME.getName().equals(config.getImageScope())) {
+                    propertiesComponent.setValue(IdeBackgroundUtil.FRAME_PROP, nextImage);
+                } else if (BackgroundImageChangeScopeEnum.EDITOR.getName().equals(config.getImageScope())) {
+                    propertiesComponent.setValue(IdeBackgroundUtil.EDITOR_PROP, nextImage);
+                }
+            }
         }
     }
 

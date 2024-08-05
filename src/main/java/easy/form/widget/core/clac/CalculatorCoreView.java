@@ -8,6 +8,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.CopyPasteManagerEx;
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.JBColor;
 import easy.config.widget.WidgetConfig;
 import easy.config.widget.WidgetConfigComponent;
 import easy.helper.ServiceHelper;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,12 +105,14 @@ public class CalculatorCoreView extends CoreCommonView {
                 return;
             }
             String result = Messages.showMultilineInputDialog(ProjectManagerEx.getInstance().getDefaultProject(),
-                   "转繁体中文大写金额(默认单位: 元)", "Convert Traditional Chinese",
+                    "转繁体中文大写金额(默认单位: 元)", "Convert Traditional Chinese",
                     Convert.digitToChinese(Convert.toBigDecimal(resultTextArea.getText())), Messages.getInformationIcon(), null);
             if (StringUtils.isNotBlank(result)) {
                 CopyPasteManagerEx.getInstanceEx().setContents(new StringSelection(result));
             }
         });
+        expressionTextField.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        expressionTextField.setForeground(JBColor.GREEN);
     }
 
     /**
