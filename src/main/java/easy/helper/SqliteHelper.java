@@ -79,7 +79,6 @@ public class SqliteHelper {
      *
      * @param dbFilePath db文件路径
      * @return {@link java.lang.Boolean}
-     * @throws SQLException sql异常
      * @author mabin
      * @date 2024/07/25 18:08
      */

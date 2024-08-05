@@ -1,5 +1,7 @@
 package easy.config.doc;
 
+import javax.swing.*;
+
 public class JavaDocConfig {
 
     private String author;
@@ -16,6 +18,8 @@ public class JavaDocConfig {
     private Boolean methodBatchEnable;
     private Boolean fieldBatchEnable;
     private Boolean innerClassBatchEnable;
+    private Boolean getAndSetMethodBatchEnable;
+    private Boolean constructorMethodBatchEnable;
 
     // 类、方法、属性的JavaDoc模板配置持久化
     private JavaDocTemplateConfig javaDocClassTemplateConfig = new JavaDocTemplateConfig();
@@ -165,5 +169,21 @@ public class JavaDocConfig {
 
     public void setInnerClassBatchEnable(Boolean innerClassBatchEnable) {
         this.innerClassBatchEnable = innerClassBatchEnable;
+    }
+
+    public Boolean getGetAndSetMethodBatchEnable() {
+        return getAndSetMethodBatchEnable;
+    }
+
+    public void setGetAndSetMethodBatchEnable(Boolean getAndSetMethodBatchEnable) {
+        this.getAndSetMethodBatchEnable = getAndSetMethodBatchEnable;
+    }
+
+    public Boolean getConstructorMethodBatchEnable() {
+        return constructorMethodBatchEnable;
+    }
+
+    public void setConstructorMethodBatchEnable(Boolean constructorMethodBatchEnable) {
+        this.constructorMethodBatchEnable = constructorMethodBatchEnable;
     }
 }

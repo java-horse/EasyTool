@@ -38,6 +38,8 @@ public class JavaDocConfigComponent implements PersistentStateComponent<JavaDocC
             javaDocConfig.setMethodBatchEnable(Boolean.TRUE);
             javaDocConfig.setFieldBatchEnable(Boolean.TRUE);
             javaDocConfig.setInnerClassBatchEnable(Boolean.FALSE);
+            javaDocConfig.setGetAndSetMethodBatchEnable(Boolean.FALSE);
+            javaDocConfig.setConstructorMethodBatchEnable(Boolean.FALSE);
         } else {
             javaDocConfig.setAuthor(StringUtils.isBlank(javaDocConfig.getAuthor()) ? Constants.JAVA_DOC.DEFAULT_AUTHOR : javaDocConfig.getAuthor());
             javaDocConfig.setDateFormat(StringUtils.isBlank(javaDocConfig.getDateFormat()) ? Constants.JAVA_DOC.DEFAULT_DATE_FORMAT : javaDocConfig.getDateFormat());
@@ -53,6 +55,8 @@ public class JavaDocConfigComponent implements PersistentStateComponent<JavaDocC
             javaDocConfig.setMethodBatchEnable(Objects.isNull(javaDocConfig.getMethodBatchEnable()) ? Boolean.TRUE : javaDocConfig.getMethodBatchEnable());
             javaDocConfig.setFieldBatchEnable(Objects.isNull(javaDocConfig.getFieldBatchEnable()) ? Boolean.TRUE : javaDocConfig.getFieldBatchEnable());
             javaDocConfig.setInnerClassBatchEnable(Objects.isNull(javaDocConfig.getInnerClassBatchEnable()) ? Boolean.FALSE : javaDocConfig.getInnerClassBatchEnable());
+            javaDocConfig.setGetAndSetMethodBatchEnable(Objects.isNull(javaDocConfig.getGetAndSetMethodBatchEnable()) ? Boolean.FALSE : javaDocConfig.getGetAndSetMethodBatchEnable());
+            javaDocConfig.setConstructorMethodBatchEnable(Objects.isNull(javaDocConfig.getConstructorMethodBatchEnable()) ? Boolean.FALSE : javaDocConfig.getConstructorMethodBatchEnable());
         }
         return javaDocConfig;
     }
