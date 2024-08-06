@@ -1,5 +1,6 @@
 package easy.form;
 
+import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,9 +22,9 @@ public class SupportView extends DialogWrapper {
     private JPanel panel;
 
     public SupportView() {
-        super(false);
-        init();
+        super(ProjectManagerEx.getInstance().getDefaultProject());
         setTitle("感谢支持开发者");
+        init();
     }
 
     @Nullable

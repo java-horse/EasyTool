@@ -1,7 +1,5 @@
 package easy.git.emoji;
 
-import com.intellij.openapi.util.SystemInfo;
-
 import java.util.List;
 
 /**
@@ -68,13 +66,6 @@ public class Gitmojis {
                     ", description='" + description + '\'' +
                     '}';
         }
-    }
-
-    /**
-     * 静态工具类方法：默认是否显示表情符
-     */
-    public static boolean defaultDisplayEmoji() {
-        return !SystemInfo.isWindows;
     }
 
     /**

@@ -4,7 +4,6 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.util.ProcessingContext;
 import easy.config.emoji.GitEmojiConfig;
@@ -28,7 +27,6 @@ import java.util.List;
  */
 public class EmojiCompletionProvider extends CompletionProvider<CompletionParameters> {
 
-    private static final Logger log = Logger.getInstance(EmojiCompletionProvider.class);
     private GitEmojiConfig gitEmojiConfig = ServiceHelper.getService(GitEmojiConfigComponent.class).getState();
     private final GitEmojiHelper gitEmojiHelper = new GitEmojiHelper();
 

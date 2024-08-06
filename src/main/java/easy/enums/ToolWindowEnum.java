@@ -19,7 +19,8 @@ public enum ToolWindowEnum {
     SEARCH_API("搜索API", "搜索API", EasyIcons.ICON.API),
     FOR_UPDATE("检查更新", "检查插件最新版本", AllIcons.Ide.Notification.PluginUpdate),
     WIDGET("效率组件", "Widget效率小组件", EasyIcons.ICON.PUZZLE),
-    TRANSLATE_BACKUP("翻译备份", "翻译备份", AllIcons.Debugger.Db_db_object);
+    TRANSLATE_BACKUP("翻译备份", "翻译备份", AllIcons.Debugger.Db_db_object),
+    SUPPORT("纯享咖啡", "纯享咖啡", AllIcons.Actions.InlayGlobe);
 
     ToolWindowEnum(String title, String desc, Icon icon) {
         this.title = title;

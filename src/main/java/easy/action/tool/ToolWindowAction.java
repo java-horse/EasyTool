@@ -1,10 +1,9 @@
 package easy.action.tool;
 
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
-import easy.base.Constants;
 import easy.enums.ToolWindowEnum;
+import easy.form.SupportView;
 import easy.form.WeChatOfficialView;
 import easy.form.translate.BackUpManagementView;
 import easy.form.widget.WidgetCommonView;
@@ -53,6 +52,8 @@ public class ToolWindowAction extends AnAction {
             new BackUpManagementView().show();
         } else if (StringUtils.equals(ToolWindowEnum.WIDGET.title, actionText)) {
             new WidgetCommonView().show();
+        } else if (StringUtils.equals(ToolWindowEnum.SUPPORT.title, actionText)) {
+            new SupportView().show();
         }
     }
 

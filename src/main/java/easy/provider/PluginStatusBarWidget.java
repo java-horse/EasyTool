@@ -17,6 +17,7 @@ import easy.base.Constants;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
 import easy.enums.ToolWindowEnum;
+import easy.form.SupportView;
 import easy.form.translate.BackUpManagementView;
 import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
@@ -107,6 +108,12 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         EasyCommonUtil.getPluginSettingAction(project);
+                    }
+                });
+                add(new AnAction(() -> ToolWindowEnum.SUPPORT.title, ToolWindowEnum.SUPPORT.icon) {
+                    @Override
+                    public void actionPerformed(@NotNull AnActionEvent e) {
+                        new SupportView().show();
                     }
                 });
                 addSeparator(Objects.nonNull(translateConfig) ? translateConfig.getTranslateChannel() : null);
