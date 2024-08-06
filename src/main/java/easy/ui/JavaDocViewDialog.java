@@ -1,10 +1,13 @@
 package easy.ui;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
@@ -44,7 +47,6 @@ public class JavaDocViewDialog extends DialogWrapper {
     private PsiFile psiFile;
     private JBList<AttributeItem> attributesList;
     private List<AttributeItem> attributes;
-    private JCheckBox allCheckbox;
     private JCheckBox syncGenSwagger2CheckBox;
     private JCheckBox syncGenSwagger3CheckBox;
 
@@ -100,7 +102,7 @@ public class JavaDocViewDialog extends DialogWrapper {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        allCheckbox = new JCheckBox("Select All");
+        JCheckBox allCheckbox = new JCheckBox("Select All");
         allCheckbox.addItemListener(e -> {
             for (int i = 0; i < attributesList.getModel().getSize(); i++) {
                 attributesList.getModel().getElementAt(i).setSelected(e.getStateChange() == ItemEvent.SELECTED);
@@ -173,25 +175,42 @@ public class JavaDocViewDialog extends DialogWrapper {
             return;
         }
         // 获取swagger版本
-        SwaggerServiceEnum swaggerServiceEnum = null;
+        SwaggerServiceEnum swaggerServiceEnum;
         if (syncGenSwagger2CheckBox.isSelected()) {
             swaggerServiceEnum = SwaggerServiceEnum.SWAGGER_2;
         } else if (syncGenSwagger3CheckBox.isSelected()) {
             swaggerServiceEnum = SwaggerServiceEnum.SWAGGER_3;
+        } else {
+            swaggerServiceEnum = null;
         }
-        for (AttributeItem item : selectedItemList) {
-            // 生成JavaDoc
-            String comment = JavaDocGenerateService.generate(item.getPsiElement());
-            if (StringUtils.isNotBlank(comment)) {
-                javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+        // 展示进度条
+        ProgressManager.getInstance().run(new Task.Backgroundable(project, String.format("%s Generate JavaDoc and Swagger", Constants.PLUGIN_NAME), true) {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                indicator.setIndeterminate(false);
+                int total = selectedItemList.size();
+                for (int i = 0; i < total; i++) {
+                    // 生成JavaDoc
+                    AttributeItem item = selectedItemList.get(i);
+                    String comment = JavaDocGenerateService.generate(item.getPsiElement());
+                    if (StringUtils.isNotBlank(comment)) {
+                        javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+                    }
+                    // 生成Swagger
+                    if (Objects.nonNull(swaggerServiceEnum)) {
+                        SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
+                        swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum, item.getPsiElement());
+                        swaggerGenerateService.doGenerate();
+                    }
+                    if (indicator.isCanceled()) {
+                        break;
+                    }
+                    double fraction = (double) (i + 1) / total;
+                    indicator.setFraction(fraction);
+                    indicator.setText(String.format("%s completed success %s", item.getName(), NumberUtil.formatPercent(fraction, 2)));
+                }
             }
-            // 生成Swagger
-            if (Objects.nonNull(swaggerServiceEnum)) {
-                SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-                swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum, item.getPsiElement());
-                swaggerGenerateService.doGenerate();
-            }
-        }
+        });
         super.doOKAction();
     }
 
@@ -203,7 +222,7 @@ public class JavaDocViewDialog extends DialogWrapper {
     /**
      * 获取属性列表
      *
-     * @return {@link java.util.List<easy.ui.AttributeItem>}
+     * @return {@link List< AttributeItem>}
      * @author mabin
      * @date 2024/06/01 09:42
      */
@@ -259,7 +278,7 @@ public class JavaDocViewDialog extends DialogWrapper {
      * 获取粗体文本
      *
      * @param text 文本
-     * @return {@link java.lang.String}
+     * @return {@link String}
      * @author mabin
      * @date 2024/05/30 10:46
      */

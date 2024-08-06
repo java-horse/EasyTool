@@ -1,10 +1,13 @@
 package easy.ui;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBList;
@@ -160,29 +163,44 @@ public class SwaggerViewDialog extends DialogWrapper {
             return;
         }
         // 获取选中swagger版本
-        SwaggerServiceEnum swaggerServiceEnum = null;
+        List<SwaggerServiceEnum> swaggerServiceEnums = new ArrayList<>();
         for (Enumeration<AbstractButton> buttons = swaggerButtonGroup.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
-                swaggerServiceEnum = SwaggerServiceEnum.getSwaggerAnnotationEnum(button.getText());
+                swaggerServiceEnums.add(SwaggerServiceEnum.getSwaggerAnnotationEnum(button.getText()));
+                break;
             }
         }
-        if (Objects.isNull(swaggerServiceEnum)) {
+        if (CollectionUtils.isEmpty(swaggerServiceEnums) || Objects.isNull(swaggerServiceEnums.get(0))) {
             return;
         }
-        SwaggerGenerateService swaggerGenerateService = swaggerServiceEnum.getSwaggerGenerateService();
-        for (AttributeItem item : selectedItemList) {
-            // 生成Swagger
-            swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnum, item.getPsiElement());
-            swaggerGenerateService.doGenerate();
-            // 生成JavaDoc
-            if (Boolean.TRUE.equals(syncGenJavaDocCheckBox.isSelected())) {
-                String comment = JavaDocGenerateService.generate(item.getPsiElement());
-                if (StringUtils.isNotBlank(comment)) {
-                    javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+        SwaggerGenerateService swaggerGenerateService = swaggerServiceEnums.get(0).getSwaggerGenerateService();
+        ProgressManager.getInstance().run(new Task.Backgroundable(project, String.format("%s Generate Swagger and JavaDoc", Constants.PLUGIN_NAME), true) {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                indicator.setIndeterminate(false);
+                int total = selectedItemList.size();
+                for (int i = 0; i < total; i++) {
+                    // 生成Swagger
+                    AttributeItem item = selectedItemList.get(i);
+                    swaggerGenerateService.initSwaggerConfig(project, psiFile, psiClass, item.getRealName(), swaggerServiceEnums.get(0), item.getPsiElement());
+                    swaggerGenerateService.doGenerate();
+                    // 生成JavaDoc
+                    if (Boolean.TRUE.equals(syncGenJavaDocCheckBox.isSelected())) {
+                        String comment = JavaDocGenerateService.generate(item.getPsiElement());
+                        if (StringUtils.isNotBlank(comment)) {
+                            javaDocWriterService.writeJavadoc(project, item.getPsiElement(), comment, Constants.NUM.ZERO);
+                        }
+                    }
+                    if (indicator.isCanceled()) {
+                        break;
+                    }
+                    double fraction = (double) (i + 1) / total;
+                    indicator.setFraction(fraction);
+                    indicator.setText(String.format("%s completed success %s", item.getName(), NumberUtil.formatPercent(fraction, 2)));
                 }
             }
-        }
+        });
         super.doOKAction();
     }
 

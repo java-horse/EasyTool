@@ -3,7 +3,9 @@ package easy.base;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * EasyChar公共基础属性信息
@@ -16,11 +18,7 @@ public class Constants {
 
     public static final String PLUGIN_ID = "easy.char";
     public static final String PLUGIN_NAME = "EasyTool";
-    public static final int TOTAL_LENGTH = 45;
-    public static final int SPLIT_LENGTH = 2;
-    public static final char PREFIX_CHAR = '/';
     public static final String AT = "@";
-    public static final String DEFAULT_STRING = "， , 。 . ： : ； ; ！ ! ？ ? “ \" ” \" ‘ ' ’ ' 【 [ 】 ] （ ( ） ) 「 { 」 } 《 < 》 >".replace(" ", "\n");
     public static final String GITEE_URL = "https://gitee.com/milubin/easy-tool-plugin";
     public static final String JETBRAINS_URL = "https://plugins.jetbrains.com/plugin/21589-easytool/reviews";
     public static final Set<String> STOP_WORDS = Sets.newHashSet("the", "of");
@@ -29,6 +27,26 @@ public class Constants {
     public static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0";
     public static final String HTTP = "http://";
     public static final String HTTPS = "https://";
+    public static final Map<String, String> DEFAULT_CHAR_MAPPING = new TreeMap<>() {{
+        put("，", ",");
+        put("。", ".");
+        put("：", ":");
+        put("；", ";");
+        put("！", "!");
+        put("？", "?");
+        put("“", "\"");
+        put("”", "\"");
+        put("‘", "'");
+        put("’", "'");
+        put("【", "[");
+        put("】", "]");
+        put("（", "(");
+        put("）", ")");
+        put("「", "{");
+        put("」", "}");
+        put("《", "<");
+        put("》", ">");
+    }};
 
     /**
      * 插件持久化变量
@@ -68,18 +86,6 @@ public class Constants {
          */
         public interface GIT_COMMIT_MESSAGE {
             String LAST_COMMIT_MESSAGE = PLUGIN_NAME + "." + GIT_COMMIT_MESSAGE.class.getSimpleName() + ".last_commit_message";
-        }
-
-        /**
-         * Background Image Plus 功能扩展
-         */
-        public interface BACKGROUND_IMAGE {
-            String FOLDER = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_folder";
-            String IMAGE_COUNT = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_count";
-            String CHANGE_SWITCH = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_change_switch";
-            String INTERVAL = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_interval";
-            String TIME_UNIT = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_time_unit";
-            String CHANGE_SCOPE = PLUGIN_NAME + "." + BACKGROUND_IMAGE.class.getSimpleName() + "background_images_change_scope";
         }
 
         /**

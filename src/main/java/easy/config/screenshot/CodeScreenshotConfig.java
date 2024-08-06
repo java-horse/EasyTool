@@ -1,7 +1,5 @@
 package easy.config.screenshot;
 
-import javax.swing.*;
-
 /**
  * 代码截图配置
  *

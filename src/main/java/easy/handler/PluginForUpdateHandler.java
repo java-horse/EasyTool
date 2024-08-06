@@ -168,7 +168,7 @@ public class PluginForUpdateHandler {
         return new NotificationAction("🎊 升级特性") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent anActionEvent, @NotNull Notification notification) {
-                new CommonNotifyDialog(Constants.PLUGIN_NAME, parsePluginNotes(notes, remoteVersion)).show();
+                new CommonNotifyDialog(Constants.PLUGIN_NAME, parsePluginNotes(notes, remoteVersion), Boolean.FALSE).show();
             }
         };
     }
@@ -294,7 +294,7 @@ public class PluginForUpdateHandler {
         }, new NotificationAction("⚙️ 修改自动更新") {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
-                ShowSettingsUtil.getInstance().showSettingsDialog(ProjectManagerEx.getInstance().getDefaultProject(), Constants.PLUGIN_NAME);
+                EasyCommonUtil.getPluginSettingAction(ProjectManagerEx.getInstance().getDefaultProject());
             }
         });
     }

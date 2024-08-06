@@ -32,11 +32,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setRestfulDisplayApiCommentCheckBox(Boolean.FALSE);
             commonConfig.setTranslateConfirmInputModelYesCheckBox(Boolean.TRUE);
             commonConfig.setTabHighlightEnableCheckBox(Boolean.FALSE);
-            CommonConfig.PersistentColor persistentColor = new CommonConfig.PersistentColor();
-            persistentColor.setRed(174);
-            persistentColor.setGreen(80);
-            persistentColor.setBlue(250);
-            commonConfig.setPersistentColor(persistentColor);
+            commonConfig.setTabHighlightBackgroundColor(0xff7857be);
             commonConfig.setTabHighlightSizeComboBox(Integer.toString(Constants.NUM.ONE));
             commonConfig.setTabHighlightGradientStepFormattedTextField(Integer.toString(Constants.NUM.TEN));
             commonConfig.setConvertCharEnableCheckBox(Boolean.TRUE);
@@ -48,18 +44,7 @@ public class CommonConfigComponent implements PersistentStateComponent<CommonCon
             commonConfig.setRestfulDisplayApiCommentCheckBox(Objects.isNull(commonConfig.getRestfulDisplayApiCommentCheckBox()) ? Boolean.FALSE : commonConfig.getRestfulDisplayApiCommentCheckBox());
             commonConfig.setTranslateConfirmInputModelYesCheckBox(Objects.isNull(commonConfig.getTranslateConfirmInputModelYesCheckBox()) ? Boolean.TRUE : commonConfig.getTranslateConfirmInputModelYesCheckBox());
             commonConfig.setTabHighlightEnableCheckBox(Objects.isNull(commonConfig.getTabHighlightEnableCheckBox()) ? Boolean.FALSE : commonConfig.getTabHighlightEnableCheckBox());
-            CommonConfig.PersistentColor persistentColor = commonConfig.getPersistentColor();
-            if (Objects.isNull(persistentColor)) {
-                persistentColor = new CommonConfig.PersistentColor();
-                persistentColor.setRed(174);
-                persistentColor.setGreen(80);
-                persistentColor.setBlue(250);
-            } else {
-                persistentColor.setRed(persistentColor.getRed());
-                persistentColor.setGreen(persistentColor.getGreen());
-                persistentColor.setBlue(persistentColor.getBlue());
-            }
-            commonConfig.setPersistentColor(persistentColor);
+            commonConfig.setTabHighlightBackgroundColor(Objects.isNull(commonConfig.getTabHighlightBackgroundColor()) ? 0xff7857be : commonConfig.getTabHighlightBackgroundColor());
             commonConfig.setTabHighlightSizeComboBox(Objects.isNull(commonConfig.getTabHighlightSizeComboBox()) ? Integer.toString(Constants.NUM.ONE) : commonConfig.getTabHighlightSizeComboBox());
             commonConfig.setTabHighlightGradientStepFormattedTextField(Objects.isNull(commonConfig.getTabHighlightGradientStepFormattedTextField()) ? Integer.toString(Constants.NUM.TEN) : commonConfig.getTabHighlightGradientStepFormattedTextField());
             commonConfig.setConvertCharEnableCheckBox(Objects.isNull(commonConfig.getConvertCharEnableCheckBox()) ? Boolean.TRUE : commonConfig.getConvertCharEnableCheckBox());

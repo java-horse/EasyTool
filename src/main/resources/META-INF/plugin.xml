@@ -28,7 +28,7 @@
             <li>--<em>百度翻译</em></li>
             <li>--<em>有道翻译</em></li>
             <li>--<em>金山翻译(Free)</em></li>
-            <li>--<em>阿里翻译</em></li>
+            <li>--<em>阿里翻译</em>(极力推荐，免费权益额度高)</li>
             <li>--<em>腾讯翻译</em></li>
             <li>--<em>火山翻译</em></li>
             <li>--<em>讯飞翻译</em></li>
@@ -80,10 +80,10 @@
       </ul>
       <h3>Getting started</h3>
       <ul>
-        <li>1. Install IDEA or any JetBrains IDE, such as Clion, PyCharm...</li>
+        <li>1. Install IDEA or any JetBrains IDE, such as IntelliJ IDEA, Android Studio...</li>
         <li>2. Launch the IDE and open plugin settings</li>
         <li>3. Search for the plugin <em>EasyTool</em> and click on install</li>
-        <li>4. Set Chinese and English character mappings, translation engine keys</li>
+        <li>4. Set Chinese and English character mappings, translation engine keys...</li>
         <li>5. Now you can enjoy using the <em>EasyTool</em> plugin function</li>
       </ul>
       <h3>Source</h3>
@@ -96,6 +96,18 @@
 
     <change-notes>
         <![CDATA[
+      <h3>v2.1.7</h3>
+      <ul>
+        <li>Added support for batch selected file generation JavaDoc in the left project directory.</li>
+        <li>Optimize batch generation JavaDoc and Swagger view windows to support background task progress bars</li>
+        <li>Optimize background map carousel setting item UI to enhance human-computer interaction</li>
+        <li>Fix the problem that some scenes of the translation engine cannot be used normally</li>
+        <li>-------------------------------</li>
+        <li>【新增】新增支持左侧工程目录批量选中文件生成JavaDoc</li>
+        <li>【优化】优化批量生成JavaDoc、Swagger、Json注解的View视窗支持展示后台任务进度条</li>
+        <li>【优化】优化背景图轮播、代码一键截图设置项UI, 增强人机交互性</li>
+        <li>【修复】修复翻译引擎某些场景无法正常使用问题</li>
+      </ul>
       <h3>v2.1.6</h3>
       <ul>
         <li>Added Base64 Transcoding Widget View Windows</li>
@@ -482,6 +494,8 @@
         <applicationService serviceImplementation="easy.doc.service.JavaDocVariableGeneratorService"/>
         <applicationService serviceImplementation="easy.config.screenshot.CodeScreenshotConfigComponent"/>
         <applicationService serviceImplementation="easy.config.widget.WidgetConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.background.BackgroundImageConfigComponent"/>
+        <applicationService serviceImplementation="easy.config.convert.ConvertCharConfigComponent"/>
 
         <projectService serviceImplementation="easy.restful.search.RestfulSearchConfiguration"/>
 
@@ -506,7 +520,7 @@
                           instance="easy.settings.api.YApiSettingConfigurable"/>
         </applicationConfigurable>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.convert" displayName="Convert"
-                                 instance="easy.settings.ConvertSettingConfigurable"/>
+                                 instance="easy.settings.ConvertCharSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.gitEmoji" displayName="GitEmoji"
                                  instance="easy.settings.GitEmojiSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.CodeScreenshot"
@@ -514,7 +528,7 @@
                                  instance="easy.settings.CodeScreenshotSettingConfigurable"/>
         <applicationConfigurable parentId="easy.tool.settings" id="easy.tool.settings.backgroundImage"
                                  displayName="BackgroundImage"
-                                 instance="easy.form.BackgroundImageSettingView"/>
+                                 instance="easy.settings.BackgroundSettingConfigurable"/>
 
         <notificationGroup displayType="BALLOON" id="easy.tool.notify.group" isLogByDefault="true"/>
 
@@ -528,10 +542,6 @@
     </extensions>
 
     <actions>
-        <!--中英字符互转-->
-        <action id="EasyToolCoreAction" class="easy.action.ConvertAction" text="EasyToolCore"
-                description="EasyTool development assistance tools">
-        </action>
         <!--中英互译-->
         <action id="EasyToolTranslateAction" class="easy.action.TranslateAction" text="Translate"
                 description="Translation between Chinese and English" icon="easy.icons.EasyIcons.ICON.TRANSLATE">
@@ -600,19 +610,23 @@
         <action id="EasyToolCronParseAction" class="easy.action.CronParseAction" text="CronParse"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.CLOCK"/>
         <!--JavaDoc注释生成-->
-        <action id="EasyToolJavaDocAction" class="easy.action.JavaDocAction" text="GenJavaDoc"
+        <action id="EasyToolJavaDocAction" class="easy.action.doc.JavaDocAction" text="GenJavaDoc"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt M"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="alt M"/>
         </action>
-        <action id="EasyToolJavaDocViewAction" class="easy.action.JavaDocAction" text="JavaDocView"
+        <action id="EasyToolJavaDocViewAction" class="easy.action.doc.JavaDocAction" text="JavaDocView"
                 description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl alt 4"/>
             <keyboard-shortcut keymap="Default for XWin" first-keystroke="ctrl alt 4"/>
+        </action>
+        <action id="EasyToolJavaDocBatchAction" class="easy.action.doc.JavaDocBatchAction" text="GenJavaDoc"
+                description="EasyTool development assistance tools" icon="easy.icons.EasyIcons.ICON.JAVA">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <group id="EasyToolJavaDocActionGroups" text="JavaDoc" description="EasyTool development assistance tools"
                icon="easy.icons.EasyIcons.ICON.JAVA" popup="true" compact="true">

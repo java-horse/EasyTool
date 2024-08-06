@@ -3,6 +3,7 @@ package easy.swagger;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.intellij.openapi.application.ex.ApplicationManagerEx;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
@@ -13,7 +14,6 @@ import easy.base.Constants;
 import easy.enums.*;
 import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
-import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
 import easy.util.PsiElementUtil;
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,14 +56,16 @@ public abstract class AbstractSwaggerGenerateService implements SwaggerGenerateS
     @Override
     public void initSwaggerConfig(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText,
                                   SwaggerServiceEnum swaggerAnnotationEnum, @Nullable PsiElement psiElement) {
-        this.project = project;
-        this.psiFile = psiFile;
-        this.psiClass = psiClass;
-        this.selectionText = selectionText;
-        this.elementFactory = JavaPsiFacade.getElementFactory(project);
-        this.isController = PsiElementUtil.isController(psiClass);
-        this.serviceEnum = swaggerAnnotationEnum;
-        this.psiElement = psiElement;
+        ApplicationManagerEx.getApplicationEx().runReadAction(() -> {
+            this.project = project;
+            this.psiFile = psiFile;
+            this.psiClass = psiClass;
+            this.selectionText = selectionText;
+            this.elementFactory = JavaPsiFacade.getElementFactory(project);
+            this.isController = PsiElementUtil.isController(psiClass);
+            this.serviceEnum = swaggerAnnotationEnum;
+            this.psiElement = psiElement;
+        });
     }
 
     /**

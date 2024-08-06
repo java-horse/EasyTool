@@ -52,10 +52,7 @@ public class CommonSettingConfigurable implements Configurable {
                 || !Objects.equals(commonConfig.getTranslateConfirmInputModelYesCheckBox(), commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getTranslateConfirmInputModelNoCheckBox(), commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected())
                 || !Objects.equals(commonConfig.getTabHighlightEnableCheckBox(), commonSettingView.getTabHighlightEnableCheckBox().isSelected())
-                || (Objects.isNull(commonConfig.getPersistentColor()) || Objects.isNull(commonSettingView.getTabBackgroundColorPanel())
-                || !Objects.equals(commonConfig.getPersistentColor().getRed(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getRed())
-                || !Objects.equals(commonConfig.getPersistentColor().getGreen(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getGreen())
-                || !Objects.equals(commonConfig.getPersistentColor().getBlue(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getBlue()))
+                || !Objects.equals(commonConfig.getTabHighlightBackgroundColor(), commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getRGB())
                 || !Objects.equals(commonConfig.getTabHighlightSizeComboBox(), commonSettingView.getTabHighlightSizeComboBox().getSelectedItem())
                 || !StringUtils.equals(commonConfig.getTabHighlightGradientStepFormattedTextField(), commonSettingView.getTabHighlightGradientStepFormattedTextField().getText())
                 || !Objects.equals(commonConfig.getConvertCharEnableCheckBox(), commonSettingView.getConvertCharEnableCheckBox().isSelected())
@@ -78,12 +75,7 @@ public class CommonSettingConfigurable implements Configurable {
         commonConfig.setTranslateConfirmInputModelYesCheckBox(commonSettingView.getTranslateConfirmInputModelYesCheckBox().isSelected());
         commonConfig.setTranslateConfirmInputModelNoCheckBox(commonSettingView.getTranslateConfirmInputModelNoCheckBox().isSelected());
         commonConfig.setTabHighlightEnableCheckBox(commonSettingView.getTabHighlightEnableCheckBox().isSelected());
-        Color color = commonSettingView.getTabBackgroundColorPanel().getSelectedColor();
-        CommonConfig.PersistentColor persistentColor = new CommonConfig.PersistentColor();
-        persistentColor.setRed(color.getRed());
-        persistentColor.setGreen(color.getGreen());
-        persistentColor.setBlue(color.getBlue());
-        commonConfig.setPersistentColor(persistentColor);
+        commonConfig.setTabHighlightBackgroundColor(commonSettingView.getTabBackgroundColorPanel().getSelectedColor().getRGB());
         commonConfig.setTabHighlightSizeComboBox(String.valueOf(commonSettingView.getTabHighlightSizeComboBox().getSelectedItem()));
         String tabHighlightGradientStepFormattedTextField = commonSettingView.getTabHighlightGradientStepFormattedTextField().getText();
         commonConfig.setTabHighlightGradientStepFormattedTextField(tabHighlightGradientStepFormattedTextField);

@@ -35,8 +35,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class CalculatorHistoryDialogView extends DialogWrapper {
 
@@ -79,8 +79,7 @@ public class CalculatorHistoryDialogView extends DialogWrapper {
         });
         DefaultActionGroup defaultActionGroup = new DefaultActionGroup();
         defaultActionGroup.addSeparator();
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.export.text"),
-                BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.export.text"), AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCalculatorHistoryMap())) {
@@ -99,15 +98,14 @@ public class CalculatorHistoryDialogView extends DialogWrapper {
                 CsvWriter csvWriter = CsvUtil.getWriter(virtualFileWrapper.getFile(), CharsetUtil.CHARSET_UTF_8);
                 csvWriter.writeHeaderLine(TABLE_NAMES.toArray(new String[]{}));
                 for (Map.Entry<String, String> entry : widgetConfig.getCalculatorHistoryMap().entrySet()) {
-                    List<String> keyList= StrUtil.split(entry.getKey(), StrUtil.UNDERLINE);
+                    List<String> keyList = StrUtil.split(entry.getKey(), StrUtil.UNDERLINE);
                     csvWriter.writeLine(keyList.get(1), entry.getValue(), keyList.get(0));
                 }
                 csvWriter.close();
                 MessageUtil.showInfoMessage(BundleUtil.getI18n("global.message.handle.success"));
             }
         });
-        defaultActionGroup.addAction(new AnAction(BundleUtil.getI18n("global.button.clear.text"),
-                BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
+        defaultActionGroup.addAction(new AnAction(() -> BundleUtil.getI18n("global.button.clear.text"), AllIcons.Actions.GC) {
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 if (Objects.isNull(widgetConfig) || MapUtils.isEmpty(widgetConfig.getCalculatorHistoryMap())) {
@@ -144,7 +142,7 @@ public class CalculatorHistoryDialogView extends DialogWrapper {
         }
         Vector<Vector<String>> rowVector = new Vector<>(widgetConfig.getCalculatorHistoryMap().size());
         for (Map.Entry<String, String> entry : widgetConfig.getCalculatorHistoryMap().entrySet()) {
-            List<String> keyList= StrUtil.split(entry.getKey(), StrUtil.UNDERLINE);
+            List<String> keyList = StrUtil.split(entry.getKey(), StrUtil.UNDERLINE);
             Vector<String> row = new Vector<>(5);
             row.add(keyList.get(1));
             row.add(entry.getValue());

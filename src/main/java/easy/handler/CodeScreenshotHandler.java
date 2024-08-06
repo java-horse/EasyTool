@@ -25,6 +25,7 @@ import easy.util.MessageUtil;
 import easy.util.NotifyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -59,7 +60,7 @@ public class CodeScreenshotHandler {
      * @author mabin
      * @date 2024/06/04 14:46
      */
-    public static BufferedImage createImage(@NotNull Editor editor, CodeScreenshotConfig config) {
+    public static @Nullable BufferedImage createImage(@NotNull Editor editor, CodeScreenshotConfig config) {
         TextRange range = getRange(editor);
         Document document = editor.getDocument();
         EditorState state = EditorState.from(editor);
@@ -98,7 +99,7 @@ public class CodeScreenshotHandler {
      * @author mabin
      * @date 2024/06/05 09:32
      */
-    public static void saveImage(BufferedImage image, Project project, CodeScreenshotConfig config) {
+    public static void saveImage(BufferedImage image, Project project, @NotNull CodeScreenshotConfig config) {
         FileSaverDescriptor fsd = new FileSaverDescriptor(String.format("%s Code Screenshot Save", Constants.PLUGIN_NAME),
                 "Select a location to save the code screenshot", config.getCustomFileNameSuffix());
         FileSaverDialog saveFileDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, project);
@@ -130,7 +131,7 @@ public class CodeScreenshotHandler {
      * @author mabin
      * @date 2024/06/11 16:38
      */
-    public static BufferedImage addImageWaterMark(BufferedImage targetImg, CodeScreenshotConfig config) {
+    public static @Nullable BufferedImage addImageWaterMark(BufferedImage targetImg, CodeScreenshotConfig config) {
         try {
             int width = targetImg.getWidth();
             int height = targetImg.getHeight();

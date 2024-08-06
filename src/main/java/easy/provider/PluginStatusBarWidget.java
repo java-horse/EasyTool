@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
@@ -23,6 +22,8 @@ import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
 import easy.helper.ServiceHelper;
 import easy.icons.EasyIcons;
+import easy.util.EasyCommonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,23 +90,23 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
         return new DefaultActionGroup(Constants.PLUGIN_NAME, true) {
             {
                 addSeparator();
-                add(new AnAction(ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.icon) {
+                add(new AnAction(() -> ToolWindowEnum.FOR_UPDATE.title, ToolWindowEnum.FOR_UPDATE.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         PluginForUpdateHandler.forUpdate(project);
                     }
                 });
-                add(new AnAction(ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.icon) {
+                add(new AnAction(() -> ToolWindowEnum.WIDGET.title, ToolWindowEnum.WIDGET.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         new WidgetCommonView().show();
                     }
                 });
                 addSeparator();
-                add(new AnAction(ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
+                add(new AnAction(() -> ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
-                        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+                        EasyCommonUtil.getPluginSettingAction(project);
                     }
                 });
                 addSeparator(Objects.nonNull(translateConfig) ? translateConfig.getTranslateChannel() : null);
@@ -113,6 +114,12 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
                         new BackUpManagementView().show();
+                    }
+
+                    @Override
+                    public void update(@NotNull AnActionEvent e) {
+                        e.getPresentation().setEnabled(Boolean.TRUE.equals(translateConfig.getBackupSwitch())
+                                && StringUtils.isNotBlank(translateConfig.getBackupFilePath()));
                     }
                 });
             }

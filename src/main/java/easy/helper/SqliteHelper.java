@@ -79,7 +79,6 @@ public class SqliteHelper {
      *
      * @param dbFilePath db文件路径
      * @return {@link java.lang.Boolean}
-     * @throws SQLException sql异常
      * @author mabin
      * @date 2024/07/25 18:08
      */
@@ -159,7 +158,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite query time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite query consume: " + watch.getTotalTimeMillis() + "ms");
         }
         return null;
     }
@@ -184,7 +183,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite query time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite query consume: " + watch.getTotalTimeMillis() + "ms");
         }
         return null;
     }
@@ -225,7 +224,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite update consume: " + watch.getTotalTimeMillis() + "ms");
         }
         return 0;
     }
@@ -248,7 +247,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite update consume: " + watch.getTotalTimeMillis() + "ms");
         }
     }
 
@@ -270,7 +269,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite update time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite update consume: " + watch.getTotalTimeMillis() + "ms");
         }
     }
 
@@ -297,7 +296,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite createTable time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite createTable consume: " + watch.getTotalTimeMillis() + "ms");
         }
     }
 
@@ -329,7 +328,7 @@ public class SqliteHelper {
         } finally {
             close();
             watch.stop();
-            log.warn("sqlite createIndex time: " + watch.getTotalTimeMillis() + "ms");
+            log.warn("sqlite createIndex consume: " + watch.getTotalTimeMillis() + "ms");
         }
     }
 

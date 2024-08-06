@@ -2,8 +2,9 @@ package easy.background;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
-import com.intellij.ide.util.PropertiesComponent;
-import easy.base.Constants;
+import easy.config.background.BackgroundImageConfig;
+import easy.config.background.BackgroundImageConfigComponent;
+import easy.helper.ServiceHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,8 +16,10 @@ import java.util.List;
 public enum ImagesHandler {
 
     INSTANCE;
+
+    private BackgroundImageConfig config = ServiceHelper.getService(BackgroundImageConfigComponent.class).getState();
     private List<String> randomImageList = null;
-    private List<String> swapImageList = Collections.synchronizedList(new ArrayList<>());
+    private final List<String> swapImageList = Collections.synchronizedList(new ArrayList<>());
     private String lastFolder = null;
 
     /**
@@ -81,6 +84,14 @@ public enum ImagesHandler {
         }
     }
 
+    /**
+     * 读取图像文件夹列表
+     *
+     * @param folder 文件夹
+     * @return {@link java.util.List<java.lang.String>}
+     * @author mabin
+     * @date 2024/08/01 17:35
+     */
     private List<String> readImageFolderList(String folder) {
         if (StringUtils.isBlank(folder)) {
             return null;
@@ -104,13 +115,12 @@ public enum ImagesHandler {
         if (!root.exists()) {
             return;
         }
-        File[] list = root.listFiles();
-        if (list == null) {
+        File[] lists = root.listFiles();
+        if (lists == null) {
             return;
         }
-        ArrayUtil.shuffle(list);
-        int imageCount = PropertiesComponent.getInstance().getInt(Constants.Persistence.BACKGROUND_IMAGE.IMAGE_COUNT, Constants.NUM.FIVE);
-        for (File file : list) {
+        ArrayUtil.shuffle(lists);
+        for (File file : lists) {
             if (file.isDirectory()) {
                 collectImages(images, file.getAbsolutePath());
                 continue;
@@ -118,7 +128,7 @@ public enum ImagesHandler {
             if (isImage(file)) {
                 images.add(file.getAbsolutePath());
             }
-            if (images.size() >= imageCount) {
+            if (images.size() >= config.getImageCount()) {
                 break;
             }
         }
@@ -135,7 +145,7 @@ public enum ImagesHandler {
     private boolean isImage(File file) {
         String extName = StringUtils.lowerCase(FileUtil.extName(file));
         return switch (extName) {
-            case "jpg", "jpeg", "png", "gif", "webp" -> true;
+            case "jpg", "png", "gif" -> true;
             default -> false;
         };
     }

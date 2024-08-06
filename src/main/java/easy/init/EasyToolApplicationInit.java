@@ -5,6 +5,7 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -12,9 +13,9 @@ import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
-import easy.action.ConvertAction;
 import easy.config.translate.TranslateConfig;
 import easy.config.translate.TranslateConfigComponent;
+import easy.handler.ConvertCharHandler;
 import easy.listener.AppActiveListener;
 import easy.listener.EventBusListener;
 import easy.listener.FileDocumentSaveListener;
@@ -96,7 +97,10 @@ public class EasyToolApplicationInit implements StartupActivity, DumbAware {
      * @date 2023/12/20 14:07
      */
     private void convertInit(@NotNull Application application) {
-        application.invokeLater(ConvertAction::new);
+        application.invokeLater(() -> {
+            TypedAction typedAction = TypedAction.getInstance();
+            typedAction.setupRawHandler(new ConvertCharHandler(typedAction.getRawHandler()));
+        });
     }
 
     /**

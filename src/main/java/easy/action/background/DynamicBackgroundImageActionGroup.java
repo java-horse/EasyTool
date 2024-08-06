@@ -18,6 +18,7 @@ public class DynamicBackgroundImageActionGroup extends DefaultActionGroup {
         return new AnAction[]{
                 new BackgroundImageAction(BackgroundImageActionEnum.START),
                 new BackgroundImageAction(BackgroundImageActionEnum.RESTART),
+                new BackgroundImageAction(BackgroundImageActionEnum.NEXT),
                 new BackgroundImageAction(BackgroundImageActionEnum.PAUSE),
                 new BackgroundImageAction(BackgroundImageActionEnum.CLEAR)
         };

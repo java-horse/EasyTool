@@ -9,6 +9,7 @@ import easy.form.WeChatOfficialView;
 import easy.form.translate.BackUpManagementView;
 import easy.form.widget.WidgetCommonView;
 import easy.handler.PluginForUpdateHandler;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +40,7 @@ public class ToolWindowAction extends AnAction {
         if (StringUtils.equals(ToolWindowEnum.WECHAT_OFFICIAL.title, actionText)) {
             new WeChatOfficialView().show();
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
-            ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
+            EasyCommonUtil.getPluginSettingAction(project);
         } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {
             AnAction action = ActionManager.getInstance().getAction("EasyToolRestfulSearchAction");
             if (Objects.isNull(action)) {

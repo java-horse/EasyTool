@@ -22,10 +22,10 @@ public class CommonConfig {
     private Boolean restfulDisplayApiCommentCheckBox;
     private Boolean translateConfirmInputModelYesCheckBox;
     private Boolean translateConfirmInputModelNoCheckBox;
-    private PersistentColor persistentColor;
     private String tabHighlightSizeComboBox;
     private String tabHighlightGradientStepFormattedTextField;
     private Boolean tabHighlightEnableCheckBox;
+    private Integer tabHighlightBackgroundColor;
     private Boolean convertCharEnableCheckBox;
     private Boolean pluginAutoUpdateEnable;
     private Boolean swaggerHintCheckBox;
@@ -78,12 +78,12 @@ public class CommonConfig {
         this.translateConfirmInputModelNoCheckBox = translateConfirmInputModelNoCheckBox;
     }
 
-    public PersistentColor getPersistentColor() {
-        return persistentColor;
+    public Integer getTabHighlightBackgroundColor() {
+        return tabHighlightBackgroundColor;
     }
 
-    public void setPersistentColor(PersistentColor persistentColor) {
-        this.persistentColor = persistentColor;
+    public void setTabHighlightBackgroundColor(Integer tabHighlightBackgroundColor) {
+        this.tabHighlightBackgroundColor = tabHighlightBackgroundColor;
     }
 
     public String getTabHighlightSizeComboBox() {
@@ -140,56 +140,6 @@ public class CommonConfig {
 
     public void setSwaggerHintCheckBox(Boolean swaggerHintCheckBox) {
         this.swaggerHintCheckBox = swaggerHintCheckBox;
-    }
-
-    /**
-     * tab标签颜色持久化
-     *
-     * @author mabin
-     * @return
-     * @date 2023/12/20 14:41
-     */
-    public static class PersistentColor {
-        private Integer red;
-        private Integer green;
-        private Integer blue;
-
-        public Color getColor() {
-            return new JBColor(Color.MAGENTA, new Color(red, green, blue));
-        }
-
-        public Integer getRed() {
-            return red;
-        }
-
-        public void setRed(Integer red) {
-            this.red = red;
-        }
-
-        public Integer getGreen() {
-            return green;
-        }
-
-        public void setGreen(Integer green) {
-            this.green = green;
-        }
-
-        public Integer getBlue() {
-            return blue;
-        }
-
-        public void setBlue(Integer blue) {
-            this.blue = blue;
-        }
-
-        @Override
-        public String toString() {
-            return "PersistentColor{" +
-                    "red=" + red +
-                    ", green=" + green +
-                    ", blue=" + blue +
-                    '}';
-        }
     }
 
 }

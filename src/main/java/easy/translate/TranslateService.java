@@ -152,9 +152,11 @@ public class TranslateService {
         }
         if (LanguageUtil.isAllChinese(source)) {
             // 优先sqliteDB匹配
-            String dbValue = querySqlite(source, translateChannel);
-            if (StringUtils.isNotBlank(dbValue)) {
-                return dbValue;
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+                String dbValue = querySqlite(source, translateChannel);
+                if (StringUtils.isNotBlank(dbValue)) {
+                    return dbValue;
+                }
             }
             String enStr = translate.ch2En(source);
             List<String> chList = StringUtils.isBlank(enStr) ? Lists.newArrayList() : Lists.newArrayList(StringUtils.split(enStr));
@@ -180,7 +182,9 @@ public class TranslateService {
                             .append(StringUtils.substring(lowEn, 1));
                 }
             }
-            sendBackUpEvent(source, builder.toString(), translateChannel);
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+                sendBackUpEvent(source, builder.toString(), translateChannel);
+            }
             return builder.toString();
         }
         // 英译中: 全量单词映射处理->尝试分割分词->再次单词映射处理->翻译拼接处理
@@ -193,9 +197,11 @@ public class TranslateService {
         }
         String analysisWords = analysisSource(source);
         // 优先sqliteDB匹配
-        String dbValue = querySqlite(analysisWords, translateChannel);
-        if (StringUtils.isNotBlank(dbValue)) {
-            return dbValue;
+        if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            String dbValue = querySqlite(analysisWords, translateChannel);
+            if (StringUtils.isNotBlank(dbValue)) {
+                return dbValue;
+            }
         }
         List<String> allWordList = new ArrayList<>(Arrays.asList(StringUtils.split(analysisWords, StringUtils.SPACE)));
         if (CollectionUtils.containsAny(wordMap.keySet(), allWordList)) {
@@ -207,11 +213,15 @@ public class TranslateService {
                 }
                 customBuilder.append(res);
             }
-            sendBackUpEvent(analysisWords, customBuilder.toString(), translateChannel);
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+                sendBackUpEvent(analysisWords, customBuilder.toString(), translateChannel);
+            }
             return customBuilder.toString();
         } else {
             String en2Ch = translate.en2Ch(analysisWords);
-            sendBackUpEvent(analysisWords, en2Ch, translateChannel);
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+                sendBackUpEvent(analysisWords, en2Ch, translateChannel);
+            }
             return en2Ch;
         }
     }
