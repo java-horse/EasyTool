@@ -1,11 +1,15 @@
 package easy.form.widget.core.excel;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.csv.*;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.google.common.collect.Lists;
 import com.intellij.ide.CopyPasteManagerEx;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
@@ -37,7 +41,7 @@ public class ExcelCoreView extends CoreCommonView {
     private JLabel selectFileTipLabel;
     private JTextArea resultTextArea;
     private TextFieldWithBrowseButton selectFileTextField;
-    private JComboBox encodeComboBox;
+    private JComboBox<String> encodeComboBox;
     private JLabel summaryTextLabel;
     private JButton sqlButton;
 
@@ -85,21 +89,48 @@ public class ExcelCoreView extends CoreCommonView {
                 watch.stop();
                 return;
             }
-            ExcelSqlInTypeDialogView excelSqlInTypeDialogView = new ExcelSqlInTypeDialogView();
+            ExcelSqlTypeDialogView excelSqlInTypeDialogView = new ExcelSqlTypeDialogView();
             if (excelSqlInTypeDialogView.showAndGet()) {
-                String sqlJoin = StringUtils.EMPTY;
+                ExcelSqlTypeDialogView.SqlTypeConfig sqlTypeConfig = excelSqlInTypeDialogView.getSqlTypeConfig();
+                String sqlJoin;
                 List<String> filterList = dataList.stream().map(Map::values).flatMap(Collection::stream)
                         .filter(StringUtils::isNotBlank)
                         .distinct().toList();
-                if (StringUtils.equals(excelSqlInTypeDialogView.getSqlInType(), ExcelSqlInTypeDialogView.STRING)) {
-                    sqlJoin = filterList.stream().map(s -> "'" + s + "'").collect(Collectors.joining(StrUtil.COMMA + StrUtil.LF));
-                } else if (StringUtils.equals(excelSqlInTypeDialogView.getSqlInType(), ExcelSqlInTypeDialogView.INTEGER)) {
-                    sqlJoin = String.join(StrUtil.COMMA + StrUtil.LF, filterList);
+                if (StringUtils.equals(sqlTypeConfig.getSqlInType(), ExcelSqlInTypeDialogView.STRING)) {
+                    if (sqlTypeConfig.getSplitEnable()) {
+                        List<List<String>> partList = Lists.partition(filterList.stream().map(s -> "'" + s + "'").collect(Collectors.toList()), sqlTypeConfig.getSplitSize());
+                        for (List<String> list : partList) {
+                            FileUtil.writeUtf8String(String.join(StrUtil.COMMA + StrUtil.LF, list), sqlTypeConfig.getSplitFilePath() + File.separator +
+                                    DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + ".txt");
+                            ThreadUtil.sleep(200);
+                        }
+                        watch.stop();
+                        summaryTextLabel.setText(String.format("Summary: 共【%s】条 拆分【%s】文件, 耗时【%s】毫秒", filterList.size(), partList.size(), watch.getTotalTimeMillis()));
+                    } else {
+                        sqlJoin = String.join(StrUtil.COMMA + StrUtil.LF, filterList.stream().map(s -> "'" + s + "'").toList());
+                        resultTextArea.setText(sqlJoin);
+                        watch.stop();
+                        summaryTextLabel.setText(String.format("Summary: 共【%s】行, 过滤去重【%s】行, 剩余【%s】行, 耗时【%s】毫秒", dataList.size(),
+                                dataList.size() - filterList.size(), filterList.size(), watch.getTotalTimeMillis()));
+                    }
+                } else if (StringUtils.equals(sqlTypeConfig.getSqlInType(), ExcelSqlInTypeDialogView.INTEGER)) {
+                    if (sqlTypeConfig.getSplitEnable()) {
+                        List<List<String>> partList = Lists.partition(filterList, sqlTypeConfig.getSplitSize());
+                        for (List<String> list : partList) {
+                            FileUtil.writeUtf8String(String.join(StrUtil.COMMA + StrUtil.LF, list), sqlTypeConfig.getSplitFilePath() + File.separator +
+                                    DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + ".txt");
+                            ThreadUtil.sleep(200);
+                        }
+                        watch.stop();
+                        summaryTextLabel.setText(String.format("Summary: 共【%s】条, 拆分【%s】文件, 耗时【%s】毫秒", filterList.size(), partList.size(), watch.getTotalTimeMillis()));
+                    } else {
+                        sqlJoin = String.join(StrUtil.COMMA + StrUtil.LF, filterList);
+                        resultTextArea.setText(sqlJoin);
+                        watch.stop();
+                        summaryTextLabel.setText(String.format("Summary: 共【%s】行, 过滤去重【%s】行, 剩余【%s】行, 耗时【%s】毫秒", dataList.size(),
+                                dataList.size() - filterList.size(), filterList.size(), watch.getTotalTimeMillis()));
+                    }
                 }
-                watch.stop();
-                resultTextArea.setText(sqlJoin);
-                summaryTextLabel.setText(String.format("Summary: 共【%s】行, 过滤去重【%s】行, 剩余【%s】行, 耗时【%s】毫秒", dataList.size(),
-                        dataList.size() - filterList.size(), filterList.size(), watch.getTotalTimeMillis()));
             }
         });
         copyButton.addActionListener(e -> {

@@ -2,6 +2,7 @@ package easy.form.widget.core.excel;
 
 import com.intellij.openapi.project.ex.ProjectManagerEx;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.components.JBCheckBox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +14,7 @@ public class ExcelSqlInTypeDialogView extends DialogWrapper {
     private JPanel panel;
     private JRadioButton stringRadioButton;
     private JRadioButton integerRadioButton;
+    private JBCheckBox splitCheckBox;
     private ButtonGroup buttonGroup;
 
     public static final String STRING = "String";
