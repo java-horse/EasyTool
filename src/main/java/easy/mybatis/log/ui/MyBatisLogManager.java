@@ -221,7 +221,7 @@ public class MyBatisLogManager implements Disposable {
     @NotNull
     public static MyBatisLogManager createInstance(@NotNull Project project) {
         MyBatisLogManager manager = getInstance(project);
-        if (Objects.nonNull(manager) && !Disposer.isDisposed(manager)) {
+        if (Objects.nonNull(manager)) {
             Disposer.dispose(manager);
         }
         manager = new MyBatisLogManager(project);
