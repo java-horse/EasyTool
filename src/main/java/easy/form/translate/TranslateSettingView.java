@@ -171,6 +171,8 @@ public class TranslateSettingView {
     private JButton backupOpenDirButton;
     private JButton backupClickCreateButton;
     private JButton backupManagementButton;
+    private JLabel cacheSwitchTipLabel;
+    private OnOffButton cacheSwitchButton;
 
     private String secretPlainText;
 
@@ -235,6 +237,7 @@ public class TranslateSettingView {
         EasyCommonUtil.customLabelTipText(customApiMaxCharLengthTipLabel, "每次请求最大字符数, 太大会导致接口响应变慢, 可以尝试调整该选项来优化速度!");
         EasyCommonUtil.customLabelTipText(customSupportLanguageTipLabel, String.format("语言代码默目前只支持: %s,%s", TranslateLanguageEnum.EN.lang, TranslateLanguageEnum.ZH_CN.lang));
         EasyCommonUtil.customLabelTipText(backupTipLabel, "备份文件必须是.db后缀名(文件路径层级太深可能会引发sqlite连接异常)");
+        EasyCommonUtil.customLabelTipText(cacheSwitchTipLabel, "开启翻译实时备份后, 此翻译内存缓存将失效");
         // 设置按钮图标
         previewSecretLabel.setIcon(AllIcons.Actions.Preview);
 
@@ -1737,6 +1740,7 @@ public class TranslateSettingView {
         setLibreServerUrlComboBox(translateConfig.getLibreServerUrl());
         setBackupSwitchButton(translateConfig.getBackupSwitch());
         setBackupFilePath(translateConfig.getBackupFilePath());
+        setCacheSwitchButton(translateConfig.getCacheSwitch());
     }
 
     private void refreshGlobalWordMap() {
@@ -2100,6 +2104,14 @@ public class TranslateSettingView {
 
     public void setBackupFilePath(String backupFilePath) {
         this.backupFilePath.setText(backupFilePath);
+    }
+
+    public OnOffButton getCacheSwitchButton() {
+        return cacheSwitchButton;
+    }
+
+    public void setCacheSwitchButton(Boolean cacheSwitchButton) {
+        this.cacheSwitchButton.setSelected(cacheSwitchButton);
     }
 
 }

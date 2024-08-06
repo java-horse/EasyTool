@@ -237,6 +237,11 @@ public class TranslateConfig {
      */
     private String backupFilePath;
 
+    /**
+     * 翻译缓存开关
+     */
+    private Boolean cacheSwitch;
+
 
     /**
      * 重置翻译配置
@@ -289,6 +294,7 @@ public class TranslateConfig {
         libreServerUrl = null;
         backupSwitch = Boolean.FALSE;
         backupFilePath = StringUtils.EMPTY;
+        cacheSwitch = Boolean.TRUE;
     }
 
     public SortedMap<String, String> getGlobalWordMap() {
@@ -646,4 +652,11 @@ public class TranslateConfig {
         this.backupFilePath = backupFilePath;
     }
 
+    public Boolean getCacheSwitch() {
+        return cacheSwitch;
+    }
+
+    public void setCacheSwitch(Boolean cacheSwitch) {
+        this.cacheSwitch = cacheSwitch;
+    }
 }

@@ -33,12 +33,15 @@ public abstract class AbstractTranslate implements Translate {
         if (StringUtils.isBlank(zhStr)) {
             return StringUtils.EMPTY;
         }
-        String enStr = ch2EnCacheMap.get(zhStr);
-        if (StringUtils.isNotBlank(enStr)) {
-            return enStr;
+        String enStr;
+        if (Boolean.TRUE.equals(translateConfig.getCacheSwitch())) {
+            enStr = ch2EnCacheMap.get(zhStr);
+            if (StringUtils.isNotBlank(enStr)) {
+                return enStr;
+            }
         }
         enStr = translateCh2En(zhStr);
-        if (StringUtils.isNotBlank(enStr)) {
+        if (Boolean.TRUE.equals(translateConfig.getCacheSwitch()) && StringUtils.isNotBlank(enStr)) {
             ch2EnCacheMap.put(zhStr, enStr);
         }
         return enStr;
@@ -57,12 +60,15 @@ public abstract class AbstractTranslate implements Translate {
         if (StringUtils.isBlank(enStr)) {
             return StringUtils.EMPTY;
         }
-        String zhStr = en2ChCacheMap.get(enStr);
-        if (StringUtils.isNotBlank(zhStr)) {
-            return zhStr;
+        String zhStr;
+        if (Boolean.TRUE.equals(translateConfig.getCacheSwitch())) {
+            zhStr = en2ChCacheMap.get(enStr);
+            if (StringUtils.isNotBlank(zhStr)) {
+                return zhStr;
+            }
         }
         zhStr = translateEn2Ch(enStr);
-        if (StringUtils.isNotBlank(zhStr)) {
+        if (Boolean.TRUE.equals(translateConfig.getCacheSwitch()) && StringUtils.isNotBlank(zhStr)) {
             en2ChCacheMap.put(enStr, zhStr);
         }
         return zhStr;

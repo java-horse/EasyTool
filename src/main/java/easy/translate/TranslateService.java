@@ -53,7 +53,7 @@ public class TranslateService {
 
     private static final Object LOCK = new Object();
 
-    private static final List<String> INVALID_CHARACTERS_LIST = Collections.unmodifiableList(Arrays.asList("/\\*\\*", "\\*", "\n", "\t", "\r"));
+    private static final List<String> INVALID_CHARACTERS_LIST = List.of("/\\*\\*", "\\*", "\n", "\t", "\r");
     private static final Pattern SPLIT_CAMEL_CASE_PATTERN = Pattern.compile("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])");
     private static final Pattern SPECIAL_CHAR_PATTERN = Pattern.compile("^\\W+");
 
@@ -152,7 +152,7 @@ public class TranslateService {
         }
         if (LanguageUtil.isAllChinese(source)) {
             // 优先sqliteDB匹配
-            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch()) && StringUtils.isNotBlank(translateConfig.getBackupFilePath())) {
                 String dbValue = querySqlite(source, translateChannel);
                 if (StringUtils.isNotBlank(dbValue)) {
                     return dbValue;
@@ -182,7 +182,7 @@ public class TranslateService {
                             .append(StringUtils.substring(lowEn, 1));
                 }
             }
-            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch()) && StringUtils.isNotBlank(translateConfig.getBackupFilePath())) {
                 sendBackUpEvent(source, builder.toString(), translateChannel);
             }
             return builder.toString();
@@ -197,7 +197,7 @@ public class TranslateService {
         }
         String analysisWords = analysisSource(source);
         // 优先sqliteDB匹配
-        if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+        if (Boolean.TRUE.equals(translateConfig.getBackupSwitch()) && StringUtils.isNotBlank(translateConfig.getBackupFilePath())) {
             String dbValue = querySqlite(analysisWords, translateChannel);
             if (StringUtils.isNotBlank(dbValue)) {
                 return dbValue;
@@ -213,13 +213,13 @@ public class TranslateService {
                 }
                 customBuilder.append(res);
             }
-            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch()) && StringUtils.isNotBlank(translateConfig.getBackupFilePath())) {
                 sendBackUpEvent(analysisWords, customBuilder.toString(), translateChannel);
             }
             return customBuilder.toString();
         } else {
             String en2Ch = translate.en2Ch(analysisWords);
-            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch())) {
+            if (Boolean.TRUE.equals(translateConfig.getBackupSwitch()) && StringUtils.isNotBlank(translateConfig.getBackupFilePath())) {
                 sendBackUpEvent(analysisWords, en2Ch, translateChannel);
             }
             return en2Ch;

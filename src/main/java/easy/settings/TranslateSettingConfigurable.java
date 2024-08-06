@@ -92,8 +92,8 @@ public class TranslateSettingConfigurable implements Configurable {
                 || !StringUtils.equals(translateConfig.getWenxinApiSecret(), String.valueOf(translateSettingView.getWenxinApiSecretPasswordField().getPassword()))
                 || !StringUtils.equals(translateConfig.getLibreServerUrl(), String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()))
                 || !translateConfig.getBackupSwitch().equals(translateSettingView.getBackupSwitchButton().isSelected())
-                || !StringUtils.equals(translateConfig.getBackupFilePath(), translateSettingView.getBackupFilePath().getText());
-
+                || !StringUtils.equals(translateConfig.getBackupFilePath(), translateSettingView.getBackupFilePath().getText())
+                || !translateConfig.getCacheSwitch().equals(translateSettingView.getCacheSwitchButton().isSelected());
     }
 
     @Override
@@ -150,6 +150,7 @@ public class TranslateSettingConfigurable implements Configurable {
         translateConfig.setLibreServerUrl(String.valueOf(translateSettingView.getLibreServerUrlComboBox().getSelectedItem()));
         translateConfig.setBackupSwitch(translateSettingView.getBackupSwitchButton().isSelected());
         translateConfig.setBackupFilePath(translateSettingView.getBackupFilePath().getText());
+        translateConfig.setCacheSwitch(translateSettingView.getCacheSwitchButton().isSelected());
         // 配置检查
         checkTranslateConfig();
     }

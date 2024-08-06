@@ -47,6 +47,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setCustomSupportLanguage(TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang);
             translateConfig.setBackupSwitch(Boolean.FALSE);
             translateConfig.setBackupFilePath(StringUtils.EMPTY);
+            translateConfig.setCacheSwitch(Boolean.TRUE);
         } else {
             translateConfig.setTranslateChannel(Objects.isNull(translateConfig.getTranslateChannel()) ? TranslateEnum.BAIDU.getTranslate() : translateConfig.getTranslateChannel());
             translateConfig.setOpenModelChannel(Objects.isNull(translateConfig.getOpenModelChannel()) ? OpenModelTranslateEnum.TONG_YI.getModel() : translateConfig.getOpenModelChannel());
@@ -62,6 +63,7 @@ public class TranslateConfigComponent implements PersistentStateComponent<Transl
             translateConfig.setCustomSupportLanguage(Objects.isNull(translateConfig.getCustomSupportLanguage()) ? TranslateLanguageEnum.EN.lang + StrUtil.COMMA + TranslateLanguageEnum.ZH_CN.lang : translateConfig.getCustomSupportLanguage());
             translateConfig.setBackupSwitch(Objects.isNull(translateConfig.getBackupSwitch()) ? Boolean.FALSE : translateConfig.getBackupSwitch());
             translateConfig.setBackupFilePath(Objects.isNull(translateConfig.getBackupFilePath()) ? StringUtils.EMPTY : translateConfig.getBackupFilePath());
+            translateConfig.setCacheSwitch(Objects.isNull(translateConfig.getCacheSwitch()) ? Boolean.TRUE : translateConfig.getCacheSwitch());
         }
         return translateConfig;
     }
