@@ -101,10 +101,12 @@
         <li>Added support for batch selected file generation JavaDoc in the left project directory.</li>
         <li>Optimize batch generation JavaDoc and Swagger view windows to support background task progress bars</li>
         <li>Optimize background map carousel setting item UI to enhance human-computer interaction</li>
+        <li>Fix the problem that some scenes of the translation engine cannot be used normally</li>
         <li>-------------------------------</li>
         <li>【新增】新增支持左侧工程目录批量选中文件生成JavaDoc</li>
         <li>【优化】优化批量生成JavaDoc、Swagger、Json注解的View视窗支持展示后台任务进度条</li>
         <li>【优化】优化背景图轮播、代码一键截图设置项UI, 增强人机交互性</li>
+        <li>【修复】修复翻译引擎某些场景无法正常使用问题</li>
       </ul>
       <h3>v2.1.6</h3>
       <ul>

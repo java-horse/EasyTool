@@ -69,7 +69,6 @@ public class BackgroundImageAction extends AnAction {
                 return;
             }
             if (StringUtils.isBlank(config.getImageFilePath()) || !FileUtil.exist(config.getImageFilePath())) {
-                // TODO 显示跳转按钮
                 MessageUtil.showOkCancelDialog("配置文件路径不存在");
                 return;
             }
