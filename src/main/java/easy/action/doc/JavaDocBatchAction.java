@@ -21,6 +21,7 @@ import easy.doc.service.JavaDocWriterService;
 import easy.enums.ExtraPackageNameEnum;
 import easy.form.doc.BatchJavaDocCheckView;
 import easy.helper.ServiceHelper;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -68,14 +69,13 @@ public class JavaDocBatchAction extends DumbAwareAction {
             }
             if (javaDocConfig.getInnerClassBatchEnable()) {
                 // 递归获取有效内部类
-                recursionPsiClass(psiClass, tempPsiClassList);
+                EasyCommonUtil.recursionPsiClass(psiClass, tempPsiClassList);
             }
             for (PsiClass tempPsiClass : tempPsiClassList) {
                 if (javaDocConfig.getClassBatchEnable() || javaDocConfig.getInnerClassBatchEnable()) {
                     psiElementMap.put(tempPsiClass, tempPsiClass.getQualifiedName());
                 }
                 if (javaDocConfig.getMethodBatchEnable()) {
-
                     psiElementMap.putAll(Arrays.stream(tempPsiClass.getMethods()).filter(psiMethod -> {
                         if (!psiMethod.isPhysical()) {
                             return false;
@@ -143,27 +143,6 @@ public class JavaDocBatchAction extends DumbAwareAction {
                 indicator.setText(String.format("%s completed consume %sms", Constants.PLUGIN_NAME, watch.getTotalTimeMillis()));
             }
         });
-    }
-
-    /**
-     * 递归获取PsiClass下的所有内部类
-     *
-     * @param psiClass          psi等级
-     * @param innerPsiClassList 内部psi类列表
-     * @author mabin
-     * @date 2024/08/05 14:16
-     */
-    private void recursionPsiClass(@NotNull PsiClass psiClass, @NotNull List<PsiClass> innerPsiClassList) {
-        PsiClass[] innerClasses = psiClass.getInnerClasses();
-        if (ArrayUtils.isNotEmpty(innerClasses)) {
-            for (PsiClass innerClass : innerClasses) {
-                if (!innerClass.isPhysical()) {
-                    continue;
-                }
-                innerPsiClassList.add(innerClass);
-                recursionPsiClass(innerClass, innerPsiClassList);
-            }
-        }
     }
 
     @Override

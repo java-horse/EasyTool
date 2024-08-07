@@ -2,6 +2,7 @@ package easy.util;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
@@ -34,7 +35,9 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -317,6 +320,60 @@ public class EasyCommonUtil {
             return psiField.getName();
         }
         return null;
+    }
+
+    /**
+     * 递归获取PsiClass下的所有内部类
+     *
+     * @param psiClass          psi等级
+     * @param innerPsiClassList 内部psi类列表
+     * @author mabin
+     * @date 2024/08/05 14:16
+     */
+    public static void recursionPsiClass(@NotNull PsiClass psiClass, @NotNull List<PsiClass> innerPsiClassList) {
+        for (PsiClass innerClass : psiClass.getInnerClasses()) {
+            if (!innerClass.isPhysical()) {
+                continue;
+            }
+            innerPsiClassList.add(innerClass);
+            recursionPsiClass(innerClass, innerPsiClassList);
+        }
+    }
+
+    /**
+     * 递归获取PsiClass下的所有PsiMethod元素
+     *
+     * @param psiClass PsiClass类 包含当前类和内部类
+     * @return {@link List< PsiMethod>}
+     * @author mabin
+     * @date 2024/08/07 13:53
+     */
+    public static List<PsiMethod> recursionPsiMethod(@NotNull PsiClass psiClass) {
+        List<PsiClass> psiClassList = Lists.newArrayList(psiClass);
+        recursionPsiClass(psiClass, psiClassList);
+        List<PsiMethod> psiMethodList = Lists.newArrayList();
+        for (PsiClass aClass : psiClassList) {
+            psiMethodList.addAll(Arrays.stream(aClass.getMethods()).filter(PsiElement::isPhysical).toList());
+        }
+        return psiMethodList;
+    }
+
+    /**
+     * 递归获取PsiClass下的所有PsiField元素
+     *
+     * @param psiClass PsiClass类
+     * @return {@link List< PsiField>}
+     * @author mabin
+     * @date 2024/08/07 13:54
+     */
+    public static List<PsiField> recursionPsiField(@NotNull PsiClass psiClass) {
+        List<PsiClass> psiClassList = Lists.newArrayList(psiClass);
+        recursionPsiClass(psiClass, psiClassList);
+        List<PsiField> psiFieldList = Lists.newArrayList();
+        for (PsiClass aClass : psiClassList) {
+            psiFieldList.addAll(Arrays.stream(aClass.getFields()).filter(PsiElement::isPhysical).toList());
+        }
+        return psiFieldList;
     }
 
 }

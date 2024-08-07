@@ -1,5 +1,6 @@
 package easy.action.doc;
 
+import com.google.common.collect.Lists;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -7,9 +8,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import easy.base.Constants;
 import easy.config.doc.JavaDocConfig;
@@ -18,9 +17,12 @@ import easy.doc.service.JavaDocGenerateService;
 import easy.doc.service.JavaDocWriterService;
 import easy.helper.ServiceHelper;
 import easy.ui.JavaDocViewDialog;
+import easy.util.BundleUtil;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 public class JavaDocAction extends AnAction {
@@ -42,7 +44,7 @@ public class JavaDocAction extends AnAction {
             return;
         }
         if (!psiFile.isWritable()) {
-            HintManager.getInstance().showErrorHint(editor, "This is read-only source file!");
+            HintManager.getInstance().showErrorHint(editor, "This is read-only source file");
             return;
         }
         String text = e.getPresentation().getText();
@@ -51,8 +53,9 @@ public class JavaDocAction extends AnAction {
             return;
         }
         PsiElement psiElement = e.getData(CommonDataKeys.PSI_ELEMENT);
-        if (Objects.isNull(psiElement) || Objects.isNull(psiElement.getNode())) {
-            HintManager.getInstance().showErrorHint(editor, "The mouse cursor should be placed on the class name, method name, property name");
+        if (Objects.isNull(psiElement) || Objects.isNull(psiElement.getNode())
+                || !isEffectivePsiElement(psiClass, psiElement)) {
+            HintManager.getInstance().showErrorHint(editor, BundleUtil.getI18n("hint.javadoc.warn.text"));
             return;
         }
         String comment = JavaDocGenerateService.generate(psiElement);
@@ -65,6 +68,33 @@ public class JavaDocAction extends AnAction {
                 && Boolean.TRUE.equals(javaDocConfig.getCoverHintPrompt())) {
             HintManager.getInstance().showInformationHint(editor, javaDocConfig.getCoverModel());
         }
+    }
+
+    /**
+     * 是否有效的psi元素
+     *
+     * @param psiClass   PsiClass类
+     * @param psiElement psi元素
+     * @return boolean
+     * @author mabin
+     * @date 2024/08/07 13:38
+     */
+    private boolean isEffectivePsiElement(PsiClass psiClass, PsiElement psiElement) {
+        if (Objects.isNull(psiElement) || Objects.isNull(psiClass)) {
+            return false;
+        }
+        if (psiElement instanceof PsiClass currentPsiClass) {
+            List<PsiClass> psiClassList = Lists.newArrayList(psiClass);
+            EasyCommonUtil.recursionPsiClass(psiClass, psiClassList);
+            return psiClassList.contains(currentPsiClass);
+        } else if (psiElement instanceof PsiMethod psiMethod) {
+            List<PsiMethod> psiMethodList = EasyCommonUtil.recursionPsiMethod(psiClass);
+            return psiMethodList.contains(psiMethod);
+        } else if (psiElement instanceof PsiField psiField) {
+            List<PsiField> psiFieldList = EasyCommonUtil.recursionPsiField(psiClass);
+            return psiFieldList.contains(psiField);
+        }
+        return false;
     }
 
     @Override
