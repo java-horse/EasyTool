@@ -1,7 +1,9 @@
 package easy.action.tool;
 
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
+import easy.base.Constants;
 import easy.enums.ToolWindowEnum;
 import easy.form.SupportView;
 import easy.form.WeChatOfficialView;
@@ -39,7 +41,7 @@ public class ToolWindowAction extends AnAction {
         if (StringUtils.equals(ToolWindowEnum.WECHAT_OFFICIAL.title, actionText)) {
             new WeChatOfficialView().show();
         } else if (StringUtils.equals(ToolWindowEnum.PLUGIN_SETTING.title, actionText)) {
-            EasyCommonUtil.getPluginSettingAction(project);
+            ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
         } else if (StringUtils.equals(ToolWindowEnum.SEARCH_API.title, actionText)) {
             AnAction action = ActionManager.getInstance().getAction("EasyToolRestfulSearchAction");
             if (Objects.isNull(action)) {

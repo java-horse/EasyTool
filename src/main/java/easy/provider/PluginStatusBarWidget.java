@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
@@ -107,7 +108,7 @@ public class PluginStatusBarWidget extends TextPanel.WithIconAndArrows implement
                 add(new AnAction(() -> ToolWindowEnum.PLUGIN_SETTING.title, ToolWindowEnum.PLUGIN_SETTING.icon) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
-                        EasyCommonUtil.getPluginSettingAction(project);
+                        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
                     }
                 });
                 add(new AnAction(() -> ToolWindowEnum.SUPPORT.title, ToolWindowEnum.SUPPORT.icon) {

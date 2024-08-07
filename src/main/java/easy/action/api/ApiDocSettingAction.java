@@ -29,7 +29,7 @@ public class ApiDocSettingAction extends AnAction {
         if (Objects.isNull(project)) {
             return;
         }
-        EasyCommonUtil.getPluginSettingAction(project);
+        ShowSettingsUtil.getInstance().showSettingsDialog(project, Constants.PLUGIN_NAME);
     }
 
     @Override
