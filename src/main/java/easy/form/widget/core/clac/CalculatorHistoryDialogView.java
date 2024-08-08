@@ -149,6 +149,7 @@ public class CalculatorHistoryDialogView extends DialogWrapper {
             row.add(keyList.get(0));
             rowVector.add(row);
         }
+        rowVector.sort(Comparator.comparing((Vector<String> row) -> row.get(2)).reversed());
         DefaultTableModel cronTableModel = new DefaultTableModel(rowVector, TABLE_NAMES);
         table.setModel(cronTableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
