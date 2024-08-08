@@ -24,7 +24,6 @@ import easy.helper.ServiceHelper;
 import easy.util.EasyCommonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +49,7 @@ public class JavaDocBatchAction extends DumbAwareAction {
         PsiManager psiManager = PsiManager.getInstance(project);
         for (VirtualFile virtualFile : virtualFiles) {
             PsiFile psiFile = psiManager.findFile(virtualFile);
-            if (Objects.isNull(psiFile) || !(psiFile instanceof PsiJavaFile psiJavaFile)) {
+            if (Objects.isNull(psiFile) || !(psiFile instanceof PsiJavaFile psiJavaFile) || !psiFile.isWritable()) {
                 continue;
             }
             psiClassList.addAll(Arrays.stream(psiJavaFile.getClasses()).toList());
