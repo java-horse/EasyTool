@@ -24,6 +24,9 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.impl.JavaPsiFacadeEx;
+import com.intellij.psi.impl.source.javadoc.PsiDocTokenImpl;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.ui.JBColor;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
@@ -374,6 +377,34 @@ public class EasyCommonUtil {
             psiFieldList.addAll(Arrays.stream(aClass.getFields()).filter(PsiElement::isPhysical).toList());
         }
         return psiFieldList;
+    }
+
+    /**
+     * 获取PsiClass的注释描述
+     *
+     * @param psiClassName psi类名
+     * @param project
+     * @return {@link java.lang.String}
+     * @author mabin
+     * @date 2024/08/08 17:20
+     */
+    public static String getPsiClassJavaDocCommentDesc(@NotNull String psiClassName, @NotNull Project project) {
+        if (StringUtils.isBlank(psiClassName)) {
+            return StringUtils.EMPTY;
+        }
+        PsiClass psiClass = JavaPsiFacadeEx.getInstance(project).findClass(psiClassName, GlobalSearchScope.allScope(project));
+        if (Objects.isNull(psiClass) || Objects.isNull(psiClass.getDocComment())) {
+            return StringUtils.EMPTY;
+        }
+        for (PsiElement element : psiClass.getDocComment().getDescriptionElements()) {
+            if (element instanceof PsiDocTokenImpl) {
+                String doc = element.getText().replaceAll("[ \\n\\t*]+", StringUtils.EMPTY);
+                if (StringUtils.isNotBlank(doc)) {
+                    return doc;
+                }
+            }
+        }
+        return StringUtils.EMPTY;
     }
 
 }

@@ -19,7 +19,7 @@ public class ThrowsVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
         if (!(element instanceof PsiMethod)) {
             return StringUtils.EMPTY;
         }
-        List<PsiClassType> exceptionTypeList = Arrays.stream(((PsiMethod) element).getThrowsList().getReferencedTypes()).collect(Collectors.toList());
+        List<PsiClassType> exceptionTypeList = Arrays.stream(((PsiMethod) element).getThrowsList().getReferencedTypes()).toList();
         if (exceptionTypeList.isEmpty()) {
             return StringUtils.EMPTY;
         }

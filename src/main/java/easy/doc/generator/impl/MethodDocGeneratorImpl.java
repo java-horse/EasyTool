@@ -21,7 +21,6 @@ import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
 import easy.util.EasyCommonUtil;
 import easy.util.NotifyUtil;
-import easy.util.VcsUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,7 +53,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
     private String defaultGenerate(PsiMethod psiMethod) {
         List<String> paramNameList = Arrays.stream(psiMethod.getParameterList().getParameters()).map(PsiParameter::getName).collect(Collectors.toList());
         PsiTypeElement returns = psiMethod.getReturnTypeElement() == null ? null : psiMethod.getReturnTypeElement();
-        String returnName = returns == null ? StringUtils.EMPTY : returns.getType().getCanonicalText();
+        String returnName = returns == null ? StringUtils.EMPTY : returns.getText();
         List<PsiClassType> exceptionTypeList = Arrays.stream(psiMethod.getThrowsList().getReferencedTypes()).collect(Collectors.toList());
         if (psiMethod.getDocComment() != null) {
             List<PsiElement> elements = Lists.newArrayList(psiMethod.getDocComment().getChildren());
@@ -85,7 +84,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
         for (String paramName : paramNameList) {
             sb.append("* @param ").append(paramName).append(StringUtils.SPACE).append(translateService.translate(paramName)).append(StringUtils.LF);
         }
-        if (!returnName.isEmpty() && !"void".equals(returnName)) {
+        if (!returnName.isEmpty() && !"void".equalsIgnoreCase(returnName)) {
             if (Constants.BASE_TYPE_SET.contains(returnName)) {
                 sb.append("* @return ").append(returnName).append(StringUtils.LF);
             } else {
@@ -94,13 +93,19 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
                     sb.append(getLinkTypeReturnDoc(returnName));
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
-                    sb.append("* @return ").append(translateService.translate(returnName)).append(StringUtils.LF);
+                    String canonicalText = returns.getType().getCanonicalText();
+                    String psiClassComment = EasyCommonUtil.getPsiClassJavaDocCommentDesc(canonicalText, psiMethod.getProject());
+                    sb.append("* @return ").append(canonicalText).append(StringUtils.SPACE)
+                            .append(StringUtils.isBlank(psiClassComment) ? translateService.translate(returnName) : psiClassComment)
+                            .append(StringUtils.LF);
                 }
             }
         }
         for (PsiClassType exceptionType : exceptionTypeList) {
+            String psiClassComment = EasyCommonUtil.getPsiClassJavaDocCommentDesc(returnName, psiMethod.getProject());
             sb.append("* @throws ").append(exceptionType.getName()).append(StringUtils.SPACE)
-                    .append(translateService.translate(exceptionType.getName())).append(StringUtils.LF);
+                    .append(StringUtils.isBlank(psiClassComment) ? translateService.translate(returnName) : psiClassComment)
+                    .append(StringUtils.LF);
         }
         sb.append("*/");
         return sb.toString();
@@ -165,7 +170,7 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
         if (returns == null) {
             return StringUtils.EMPTY;
         }
-        String returnName = returns.getType().getCanonicalText();
+        String returnName = returns.getText();
         for (Iterator<PsiElement> iterator = elements.iterator(); iterator.hasNext(); ) {
             PsiElement element = iterator.next();
             if (!"PsiDocTag:@return".equalsIgnoreCase(element.toString())) {
@@ -174,13 +179,13 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
             PsiDocTagValue value = ((PsiDocTag) element).getValueElement();
             if (value == null || StringUtils.isBlank(value.getText())) {
                 iterator.remove();
-            } else if (ObjectUtils.isEmpty(returnName) || "void".equals(returnName)) {
+            } else if (ObjectUtils.isEmpty(returnName) || "void".equalsIgnoreCase(returnName)) {
                 iterator.remove();
             } else {
                 isInsert = false;
             }
         }
-        if (isInsert && ObjectUtils.isNotEmpty(returnName) && !"void".equals(returnName)) {
+        if (isInsert && ObjectUtils.isNotEmpty(returnName) && !"void".equalsIgnoreCase(returnName)) {
             if (Constants.BASE_TYPE_SET.contains(returnName)) {
                 return "@return " + returnName + StringUtils.LF;
             } else {
@@ -189,7 +194,10 @@ public class MethodDocGeneratorImpl extends AbstractDocGenerator {
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
                     return getLinkTypeReturnDoc(returnName);
                 } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
-                    return "* @return " + translateService.translate(returnName) + StringUtils.LF;
+                    String canonicalText = returns.getType().getCanonicalText();
+                    String psiClassComment = EasyCommonUtil.getPsiClassJavaDocCommentDesc(canonicalText, returns.getProject());
+                    return "* @return " + canonicalText + StringUtils.SPACE +
+                            (StringUtils.isBlank(psiClassComment) ? translateService.translate(returnName) : psiClassComment) + StringUtils.LF;
                 }
             }
         }

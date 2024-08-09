@@ -7,6 +7,7 @@ import easy.config.doc.JavaDocConfig;
 import easy.enums.JavaDocMethodReturnTypeEnum;
 import easy.helper.ServiceHelper;
 import easy.translate.TranslateService;
+import easy.util.EasyCommonUtil;
 import org.apache.commons.lang3.StringUtils;
 
 public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
@@ -20,7 +21,7 @@ public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
         if (psiMethod.getReturnTypeElement() == null) {
             return StringUtils.EMPTY;
         }
-        String returnName = psiMethod.getReturnTypeElement().getType().getCanonicalText();
+        String returnName = psiMethod.getReturnTypeElement().getText();
         if (Constants.BASE_TYPE_SET.contains(returnName)) {
             return "@return " + returnName;
         } else if ("void".equalsIgnoreCase(returnName)) {
@@ -32,7 +33,9 @@ public class ReturnVariableGeneratorImpl extends AbstractVariableGeneratorImpl {
             } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.LINK.getType())) {
                 return String.format("@return {@link %s}", returnName);
             } else if (StringUtils.equals(javaDocConfig.getMethodReturnType(), JavaDocMethodReturnTypeEnum.COMMENT.getType())) {
-                return "@return " + translateService.translate(returnName);
+                String canonicalText = psiMethod.getReturnTypeElement().getType().getCanonicalText();
+                String psiClassComment = EasyCommonUtil.getPsiClassJavaDocCommentDesc(canonicalText, psiMethod.getProject());
+                return "@return " + canonicalText + StringUtils.SPACE + (StringUtils.isBlank(psiClassComment) ? translateService.translate(returnName) : psiClassComment);
             }
             return String.format("@return {@link %s}", returnName);
         }
