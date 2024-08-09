@@ -59,7 +59,7 @@ public class WordMapAddView extends DialogWrapper {
     }
 
     public Map.Entry<String, String> getMapping() {
-        return new SimpleEntry<>(sourceTextField.getText().toLowerCase(), targetTextField.getText());
+        return new SimpleEntry<>(sourceTextField.getText(), targetTextField.getText());
     }
 
 }
