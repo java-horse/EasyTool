@@ -4,6 +4,8 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.google.common.collect.Lists;
 import com.intellij.icons.AllIcons;
+import com.intellij.ide.IdeTooltip;
+import com.intellij.ide.IdeTooltipManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationAction;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -27,7 +29,9 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.impl.JavaPsiFacadeEx;
 import com.intellij.psi.impl.source.javadoc.PsiDocTokenImpl;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.ui.HintHint;
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.panels.Wrapper;
 import easy.base.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -405,6 +409,28 @@ public class EasyCommonUtil {
             }
         }
         return StringUtils.EMPTY;
+    }
+
+    /**
+     * 设置提示文本
+     *
+     * @param component 组件
+     * @param tipText   提示文本
+     * @author mabin
+     * @date 2024/08/09 10:39
+     */
+    public static void setTipText(@NotNull JComponent component, @NotNull String tipText) {
+        if (tipText.isBlank()) {
+            return;
+        }
+        Point centerPoint = SwingUtilities.convertPoint(component, new Point(component.getWidth() / 2,
+                component.getHeight()), component.getParent());
+        Point point = new Point(centerPoint.x, centerPoint.y + component.getHeight());
+        JEditorPane tipComponent = IdeTooltipManager.initPane(tipText, new HintHint(component, point).setAwtTooltip(true), null);
+        IdeTooltip ideTooltip = new IdeTooltip(component, point, new Wrapper(tipComponent))
+                .setBorderColor(JBColor.RED)
+                .setToCenter(true);
+        IdeTooltipManager.getInstance().show(ideTooltip, true);
     }
 
 }

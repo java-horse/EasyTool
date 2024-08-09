@@ -35,7 +35,8 @@ public enum TranslateEnum {
     CNKI("CNKI学术翻译", "https://dict.cnki.net/fyzs-front-api/translate/literaltranslation", "", ""),
     OPEN_BIG_MODEL("开源大模型", "", "", ""),
     CUSTOM("自定义API", "", "", ""),
-    LIBRE("Libre翻译", "", "", "");
+    LIBRE("Libre翻译", "", "", ""),
+    SPLIT("仅单词分割(不翻译)", "", "", "");
 
     private final String translate;
     private final String url;

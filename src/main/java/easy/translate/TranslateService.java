@@ -96,6 +96,7 @@ public class TranslateService {
                     .put(TranslateEnum.CNKI.getTranslate(), new CNKIFreeTranslate().init(translateConfig))
                     .put(TranslateEnum.CUSTOM.getTranslate(), new CustomTranslate().init(translateConfig))
                     .put(TranslateEnum.LIBRE.getTranslate(), new LibreTranslate().init(translateConfig))
+                    .put(TranslateEnum.SPLIT.getTranslate(), new SplitTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.TONG_YI.getModel(), new TongYiModelTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.KIMI.getModel(), new KimiModelTranslate().init(translateConfig))
                     .put(OpenModelTranslateEnum.WEN_XIN.getModel(), new WenXinModelTranslate().init(translateConfig))

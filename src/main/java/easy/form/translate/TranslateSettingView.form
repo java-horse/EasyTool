@@ -53,6 +53,7 @@
                 <item value="微软翻译(Free)"/>
                 <item value="谷歌翻译(API)"/>
                 <item value="谷歌翻译(Free)"/>
+                <item value="仅单词分割(不翻译)"/>
                 <item value="开源大模型"/>
                 <item value="自定义API"/>
                 <item value="Libre翻译"/>

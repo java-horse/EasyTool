@@ -99,8 +99,10 @@
       <h3>v2.1.8</h3>
       <ul>
         <li>Optimization Support Translation Engine Memory Cache Switch Configuration Item</li>
+        <li>Added only word segmentation translation processing method to meet the needs of some users</li>
         <li>-------------------------------</li>
         <li>【优化】优化支持翻译引擎内存缓存开关配置项(开启翻译实时备份的情况下有助于节省内存)</li>
+        <li>【新增】新增仅单词分割翻译处理方式, 适配部分用户需求</li>
       </ul>
       <h3>v2.1.7</h3>
       <ul>

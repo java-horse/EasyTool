@@ -224,10 +224,12 @@ public class TranslateSettingView {
                 if (Objects.equals(translateChannelBox.getSelectedItem(), TranslateEnum.OPEN_BIG_MODEL.getTranslate())) {
                     model = String.valueOf(openModelComboBox.getSelectedItem());
                 }
-                if (StringUtils.isNoneBlank(secretPlainText, model)) {
-                    if (new OpenModelPreviewKeyView(model, secretPlainText).showAndGet()) {
-                        CopyPasteManager.getInstance().setContents(new StringSelection(secretPlainText));
-                    }
+                if (StringUtils.isAnyBlank(secretPlainText, model)) {
+                    EasyCommonUtil.setTipText(previewSecretLabel, "无法预览未配置的密钥");
+                    return;
+                }
+                if (new OpenModelPreviewKeyView(model, secretPlainText).showAndGet()) {
+                    CopyPasteManager.getInstance().setContents(new StringSelection(secretPlainText));
                 }
             }
         });

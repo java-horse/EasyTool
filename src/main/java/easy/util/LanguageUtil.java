@@ -1,7 +1,10 @@
 package easy.util;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 语言处理工具
@@ -127,6 +130,21 @@ public class LanguageUtil {
      */
     public static String[] splitCamelCase(String str) {
         return SPLIT_CAMEL_CASE_PATTERN.matcher(str).replaceAll(" ").split(" ");
+    }
+
+    /**
+     * 单词分割
+     *
+     * @param word 字
+     * @return {@link List< String>}
+     * @author mabin
+     * @date 2024/08/09 09:57
+     */
+    public static List<String> splitWord(String word) {
+        word = word.replaceAll("(?<=[^A-Z])[A-Z][^A-Z]", "_$0")
+                .replaceAll("[A-Z]{2,}", "_$0")
+                .replaceAll("_+", "_");
+        return Arrays.stream(word.split("_")).map(String::toLowerCase).collect(Collectors.toList());
     }
 
 }
